@@ -251,9 +251,7 @@ convert_to_grob <- function(x, height, width, more_args = list()){
     }
     
     if(!is.null(rownames(x)) & !is.null(colnames(x))){
-      x <- rbind(
-        c('', colnames(x)),
-        cbind(rownames(x), x))
+      x <- rbind(c('', colnames(x)), cbind(rownames(x), x))
       more_args[['colnames_present']] <- T
       more_args[['rownames_present']] <- T
     } else if(!is.null(rownames(x))){

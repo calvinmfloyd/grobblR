@@ -26,7 +26,9 @@ summary_df <- iris %>%
 gg <- ggplot(iris) + geom_point(aes(x = Sepal.Length, y = Sepal.Width, color = Species))
 
 g <- grob_layout(
-  grob_row(prop = 1, border = T, border_args = gpar(fill = 'transparent', lineend = 'round', col = 'red', alpha = 0.5),
+  grob_row(prop = 1,
+    border = T,
+    border_args = gpar(lwd = 10, col = 'red', alpha = 0.5),
     grob_col(
       'Iris Dataset Grob',
       prop = 1,
@@ -45,7 +47,7 @@ g <- grob_layout(
   grob_row(prop = 2,
     grob_col(prop = 1, 'iris.png', more_args = list(maintain_aspect_ratio = T))),
   grob_row(prop = 1,
-    grob_col(prop = 1, first_paragraph, more_args = list(txt_just = 0, txt_align = 0)))
+    grob_col(prop = 1, first_paragraph, more_args = list(txt_just = 0, txt_align = 0), border = T))
 )
 
 ggsave('g.pdf', g$grob, height = as.numeric(g$total_height), width = as.numeric(g$total_width), units = 'mm')

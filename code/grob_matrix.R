@@ -72,6 +72,8 @@ grob_matrix <- function(df, gm_obj, tot_height = numeric(), tot_width = numeric(
     txt_angle = 0,
     border_width = 1)
   
+  bg_color_not_inputted <- all(dim(gm_obj@bg_color) == 0)
+  
   for(val_name in names(def_vals_matrices)){
     def_vals_matrices[[val_name]] <- ifelse(
       all(dim(slot(gm_obj, val_name)) == 1),
@@ -103,6 +105,13 @@ grob_matrix <- function(df, gm_obj, tot_height = numeric(), tot_width = numeric(
   if(gm_obj@colnames_present & gm_obj@rownames_present){
     gm_obj@borders[1,1] <- ''
     gm_obj@bg_color[1,1] <- NA
+  }
+  
+  if((gm_obj@colnames_present | gm_obj@rownames_present) & bg_color_not_inputted){
+    gm_obj@bg_color <- rbind(
+      gm_obj@bg_color[1,],
+      matrix(rep(c('white', 'gray90'), each = nc, length = nr*nc - nc), byrow = T, nrow = nr-1)
+    )
   }
   
   # ----
