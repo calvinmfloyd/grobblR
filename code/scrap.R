@@ -26,7 +26,7 @@ summary_df <- iris %>%
 gg <- ggplot(iris) + geom_point(aes(x = Sepal.Length, y = Sepal.Width, color = Species))
 
 g <- grob_layout(
-  grob_row(prop = 1,
+  grob_row(prop = 1, border = T, border_args = gpar(fill = 'transparent', lineend = 'round', col = 'red', alpha = 0.5),
     grob_col(
       'Iris Dataset Grob',
       prop = 1,
@@ -38,10 +38,10 @@ g <- grob_layout(
   grob_row(prop = 2, 
     grob_col(head(as.matrix(iris), 20), prop = 3),
     grob_col(prop = 3,
-       grob_row(prop = 2,
+       grob_row(prop = 1,
          grob_col(prop = 1, gg)),
        grob_row(prop = 1,
-         grob_col(prop = 1, head(as.matrix(iris), 5))))),
+         grob_col(prop = 1, head(as.matrix(iris), 5), border = T)))),
   grob_row(prop = 2,
     grob_col(prop = 1, 'iris.png', more_args = list(maintain_aspect_ratio = T))),
   grob_row(prop = 1,
@@ -62,13 +62,12 @@ grob_row(
 ) -> g
 
 
-# grob_col(prop = 1,
-#    grob_row(
-#      grob_col(prop = 1, head(as.matrix(iris), 20))),
-#    grob_row(
-#      grob_col(prop = 1, head(as.matrix(iris), 10)))
-# ) -> g
 
-grob <- g$grob
+pic_grob <- convert_to_grob('iris.png', 100, 100)
+rect_grob <- rectGrob(height = unit(100, 'mm'), width = unit(100, 'mm'), gp = x)
+grob <- grobTree(rect_grob, pic_grob)
 grid.arrange(grob)
+
+
+
 

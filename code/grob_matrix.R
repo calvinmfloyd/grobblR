@@ -41,7 +41,7 @@ grob_matrix <- function(df, gm_obj, tot_height = numeric(), tot_width = numeric(
     
   } else {
     
-    cex_vals <- seq(0.1, 20, 0.1)
+    cex_vals <- seq(0.01, 20, 0.01)
     rh <- tot_height/nr - 2*gm_obj@cell_sep
     cw <- tot_width/nc - 2*gm_obj@cell_sep
     widest_element <- c(df)[which(strwidth(c(df), units = 'in') == max(strwidth(c(df), units = 'in')))[1]]
@@ -84,7 +84,6 @@ grob_matrix <- function(df, gm_obj, tot_height = numeric(), tot_width = numeric(
   # ----
   
   # Adding in Row Name / Column Name attributes ----
-  
   rn_cn_shared_vals <- c('bg_color', 'txt_color', 'fnt_face', 'border_color', 'border_width')
   
   if(gm_obj@rownames_present){
@@ -107,6 +106,7 @@ grob_matrix <- function(df, gm_obj, tot_height = numeric(), tot_width = numeric(
   }
   
   # ----
+  
   raw_grobs <- gList()
   for(j in 1:nc){
     for(i in 1:nr){

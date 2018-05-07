@@ -1,23 +1,12 @@
 
 # Grob Layout ----
 grob_layout <- function(...,
-                        layout_matrix_only = FALSE,
                         page_height = 280,
                         page_width = 216,
                         page_padding = 5,
-                        grob_padding = 5,
+                        grob_padding = 2,
                         row_heights = c(),
                         column_widths = c()){
-  
-  # Least Common Multiple Function used during the creation of the Layout Matrix ----
-  lcm <- function(v){
-    i <- v[which(v == max(v))[1]]
-    while(TRUE) {
-      if(all(i %% v == 0)) return(i)
-      i <- i + 1
-    }
-  }
-  # ----
   
   # Initializing Variables ----
   ph <- page_height - 2*page_padding
@@ -27,40 +16,7 @@ grob_layout <- function(...,
   
   # Creating the Layout Matrix, using LCM ----
   nr <- length(g_info)
-  # grobs_per_row <- sapply(1:nr, function(i) length(g_info[[i]]))
-  # row_width_sums <- sapply(
-  #   1:nr,
-  #   function(i){
-  #     sum(sapply(1:grobs_per_row[i], function(j) g_info[[i]][[j]]$width))
-  # })  
-  # 
-  # row_ind_widths <- sapply(
-  #   1:nr,
-  #   function(i){
-  #     sapply(1:grobs_per_row[i], function(j) g_info[[i]][[j]]$width)
-  # })
-  # 
-  # nc <- lcm(row_width_sums)
-  # lm_cols_by_row <- sapply(1:nr, function(i) row_ind_widths[[i]]*(nc %/% row_width_sums[i]))
-  # 
-  # lm_vec <- unlist(sapply(
-  #   1:nr,
-  #   function(i){
-  #     unlist(sapply(
-  #       1:grobs_per_row[i],
-  #       function(j) c(1, rep(0, lm_cols_by_row[[i]][j] - 1))
-  #     ))
-  #   }))
-  
-  # layout_matrix <- matrix(
-  #   cumsum(lm_vec),
-  #   nrow = nr,
-  #   ncol = nc,
-  #   byrow = TRUE)
-  
   layout_matrix <- matrix(1:nr, ncol = 1)
-  
-  # if(layout_matrix_only) return(layout_matrix)
   # ----
   
   # Calculating Row Heights ----
@@ -85,13 +41,6 @@ grob_layout <- function(...,
   
   # Readjusting Grob Widths to fit in the given Page Height and Page Width ----
   raw_grobs <- gList()
-  # for(i in 1:nr){
-  #   for(j in 1:grobs_per_row[i]){
-  #     grob_number <- unique(layout_matrix[i,])[j]
-  #     g_info[[i]][[j]]$more_args[['tot_height']] <- row_heights[i] - 2*grob_padding
-  #     g_info[[i]][[j]]$more_args[['tot_width']] <- sum(column_widths[which(layout_matrix[i,] == grob_number)]) - 2*grob_padding
-  #     raw_grobs <- gList(raw_grobs, convert_to_grob(g_info[[i]][[j]]$x, g_info[[i]][[j]]$more_args))
-  # }}
   for(i in 1:nr){
     g_info[[i]]$height <- row_heights[i]
     g_info[[i]]$width <- pw
@@ -110,7 +59,6 @@ grob_layout <- function(...,
     'grob' = grob,
     'row_heights' = unit(row_heights, 'mm'),
     'column_widths' = unit(column_widths, 'mm'),
-    'layout_matrix' = layout_matrix,
     'total_height' = unit(page_height, 'mm'),
     'total_width' = unit(page_width, 'mm'),
     'page_padding' = unit(page_padding, 'mm'),
@@ -118,14 +66,8 @@ grob_layout <- function(...,
 }
 # ----
 
-# is.grobbable function ----
-is.grobbable <- function(x){
-  is.character(x) | is.ggplot(x) | is.matrix(x) | is.data.frame(x) | is.na(x)
-}
-# ----
-
 # Grob Row / Grob Row Class ----
-grob_row <- function(..., prop = 1){
+grob_row <- function(..., prop = 1, border = F, border_args = gpar()){
   
   grob_row_class <- R6Class("grob_row",
     public = list(
@@ -134,43 +76,59 @@ grob_row <- function(..., prop = 1){
       padding = 0,
       proportion = 1,
       grob_classes = list(),
-      initialize = function(grob_classes, proportion){
+      border = F,
+      border_args = gpar(),
+      initialize = function(grob_classes, proportion, border, border_args){
+        stopifnot(is.list(grob_classes), is.numeric(proportion), is.logical(border), is.list(border_args))
         self$grob_classes <- grob_classes
         self$proportion <- proportion
-        }
-    ),
+        self$border <- border
+        self$border_args <- border_args
+        }),
     active = list(
       grob = function(gc = self$grob_classes,
                       ht = self$height,
                       wth = self$width,
-                      pad = self$padding){
+                      pad = self$padding,
+                      bor = self$border,
+                      bor_args = self$border_args){
 
         props <- unlist(lapply(1:length(gc), function(i) gc[[i]]$proportion))
         widths <- (props/sum(props))*(wth - 2*pad)
-        ht <- ht - 2*pad
+        height <- ht - 2*pad
         raw_grobs <- gList()
         
         for(i in 1:length(gc)){
-          gc[[i]]$height <- ht
+          gc[[i]]$height <- height
           gc[[i]]$width <- widths[i]
+          gc[[i]]$padding <- pad
           raw_grobs <- gList(raw_grobs, gc[[i]]$grob)
         }  
         
-        arrangeGrob(
+        g <- arrangeGrob(
           grobs = raw_grobs,
           layout_matrix = matrix(1:length(raw_grobs), nrow = 1),
-          height = unit(ht, 'mm'),
+          height = unit(height, 'mm'),
           width = unit(widths, 'mm'))
+        
+        if(bor){
+          # bor_args <- gpar(bor_args, gpar(fill = 'transparent'))
+          g <- grobTree(g, rectGrob(height = unit(ht, 'mm'), width = unit(wth, 'mm'), gp = bor_args))
+        }
+        g
       }
     ))
   
-  grob_row_class$new(grob_classes = list(...), proportion = prop)
-  
+  grob_row_class$new(
+    grob_classes = list(...),
+    proportion = prop,
+    border = border,
+    border_args = border_args)
 }
 # ----
 
 # Grob Column / Grob Column Class ----
-grob_col <- function(..., prop = 1, more_args = list()){
+grob_col <- function(..., prop = 1, more_args = list(), border = F, border_args = gpar()){
   
   grob_col_class <- R6Class("grob_col",
     public = list(
@@ -180,11 +138,15 @@ grob_col <- function(..., prop = 1, more_args = list()){
       width = 0,
       padding = 0,
       more_args = list(),
-      initialize = function(contents, more_args, proportion){
+      border = F,
+      border_args = gpar(),
+      initialize = function(contents, more_args, proportion, border, border_args){
         stopifnot(is.list(contents), is.list(more_args), is.numeric(proportion))
         self$contents <- contents
         self$proportion <- proportion
         self$more_args <- more_args
+        self$border <- border
+        self$border_args <- border_args
       }
     ),
     active = list(
@@ -192,35 +154,47 @@ grob_col <- function(..., prop = 1, more_args = list()){
                       m_a = self$more_args,
                       ht = self$height,
                       wth = self$width,
-                      pad = self$padding){
+                      pad = self$padding,
+                      bor = self$border,
+                      bor_args = self$bor_args){
           
-          wth <- wth - 2*pad
-          heights <- rep((ht - 2*pad)/length(contents), length(contents))
+          wth_w_padding <- wth - 2*pad
+          hts_w_padding <- rep((ht - 2*pad)/length(contents), length(contents))
+          hts <- rep(ht/length(contents), length(contents))
           raw_grobs <- gList()
           
           for(i in 1:length(contents)){
             if(is.R6(contents[[i]])){
               height_props <- sapply(1:length(contents), function(i) contents[[i]]$proportion)
-              contents[[i]]$height <- (ht - 2*pad)*(height_props/sum(height_props))[i]
+              contents[[i]]$height <- ht*(height_props/sum(height_props))[i]
               contents[[i]]$width <- wth
+              contents[[i]]$padding <- pad
               raw_grobs <- gList(raw_grobs, contents[[i]]$grob)
             } else {
-              raw_grobs <- gList(
-                raw_grobs,
-                convert_to_grob(x = contents[[i]], height = heights[i], width = wth, more_args = m_a))
+              g <- convert_to_grob(x = contents[[i]], height = hts_w_padding[i], width = wth_w_padding, more_args = m_a)
+              if(bor){
+                bor_args <- gpar(bor_args, gpar(fill = 'transparent'))
+                g <- grobTree(g, rectGrob(height = unit(hts[i], 'mm'), width = unit(wth, 'mm'), gp = bor_args))
+              }
+              raw_grobs <- gList(raw_grobs, g)
             }
           }
           
           arrangeGrob(
             grobs = raw_grobs,
             layout_matrix = matrix(1:length(raw_grobs), ncol = 1),
-            height = unit(heights, 'mm'),
+            height = unit(hts, 'mm'),
             width = unit(wth, 'mm'))
       }
     ))
 
   grob_col_contents <- list(...)
-  grob_col_class$new(contents = grob_col_contents, more_args = more_args, proportion = prop)
+  grob_col_class$new(
+    contents = grob_col_contents,
+    more_args = more_args,
+    proportion = prop,
+    border = border,
+    border_args = border_args)
 }
 # ----
 
@@ -258,8 +232,6 @@ convert_to_grob <- function(x, height, width, more_args = list()){
     group_elements = "logical",
     rownames_present = "logical",
     colnames_present = "logical",
-    # tot_height = "numeric",
-    # tot_width = "numeric",
     row_heights = "numeric",
     col_widths = "numeric",
     cell_sep = "numeric",
@@ -303,15 +275,14 @@ convert_to_grob <- function(x, height, width, more_args = list()){
   }
   else if(ifelse(is.character(x), grepl('.png', x), F)){
     # converting to image grob if x is a string with '.png' in it
-    if(!file.exists(x)) stop("PNG file does not exist.")
+    stopifnot(file.exists(x))
     
     setClass(
       "grob_image",
       slots = c(
         hjust = "numeric",
         vjust = "numeric",
-        maintain_aspect_ratio = "logical"
-      ),
+        maintain_aspect_ratio = "logical"),
       prototype = more_args
     )
     
