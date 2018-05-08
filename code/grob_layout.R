@@ -319,7 +319,22 @@ convert_to_grob <- function(x, height, width, more_args = list()){
   }
   else if(is.ggplot(x)){
     
-    g <- ggplotGrob(x)
+    png_name <- sprintf("ggplot_grob_%s_%s.png", format(Sys.time(), '%m_%d_%Y'), format(Sys.time(), "%H_%M_%S"))
+    ggsave(png_name, x, height = height, width = width, unit = 'mm')
+    # g <- ggplotGrob(x)
+    
+    setClass(
+      "grob_image",
+      slots = c(
+        hjust = "numeric",
+        vjust = "numeric",
+        maintain_aspect_ratio = "logical"),
+      prototype = more_args
+    )
+    
+    gi_obj <- new('grob_image')
+    g <- grob_image(png_name, gi_obj, tot_height = height, tot_width = width)
+    file.remove(png_name)
     
   } 
   else if(is.na(x)){
