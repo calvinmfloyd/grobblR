@@ -1,3 +1,13 @@
+#' Converts a raw .png file to a grob, with flexible aesthetics. Used within
+#' the GrobblR::convert_to_grob() function.
+#'
+#' @param img_path The local path to the raw .png file.
+#' @param gi_obj An object of class "grob_image" which contains aesthetic parameters for
+#' the image grob. Created within the GrobblR::convert_to_grob() function.
+#' @param tot_height A numeric value designating the total height of the matrix grob in mm.
+#' @param tot_width A numeric value designating the total width of the matrix grob in mm.
+#' @return A grob of the raw .png file.
+#' @export
 
 grob_image <- function(img_path, gi_obj, tot_height = numeric(), tot_width = numeric()){
   

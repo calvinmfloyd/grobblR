@@ -1,8 +1,11 @@
 
 source('grob_matrix.R')
 source('grob_layout.R')
+source('line_creator.R')
 source('grob_image.R')
-source('grob_text.R')
+source('grob_row.R')
+source('grob_col.R')
+source('convert_to_grob.R')
 
 library(UsingR)
 library(dplyr)
@@ -12,6 +15,16 @@ library(grid)
 library(gridExtra)
 library(png)
 library(R6)
+
+# Making the package ----
+
+install.packages("devtools")
+library("devtools")
+devtools::install_github("klutometis/roxygen")
+library(roxygen2)
+
+
+# ----
 
 pars <- unlist(strsplit(lorem, "\n\n"))
 first_paragraph <- pars[1]
@@ -70,6 +83,9 @@ rect_grob <- rectGrob(height = unit(100, 'mm'), width = unit(100, 'mm'), gp = x)
 grob <- grobTree(rect_grob, pic_grob)
 grid.arrange(grob)
 
+ggsave('g.png', gg, height = 100, width = 100, unit = 'mm')
+g <- ggplotGrob(gg)
 
-
+g1 <- arrangeGrob(grobs = gList(g), ncol = 1, nrow = 1, heights = unit(100, 'mm'), widths = unit(100, 'mm'))
+ggsave('g1.pdf', g1)
 

@@ -1,3 +1,13 @@
+#' Converts a data.frame/matrix to a grob, with flexible aesthetics. Used within
+#' the GrobblR::convert_to_grob() function.
+#'
+#' @param df The data.frame/matrix to be converted to a grob.
+#' @param gm_obj An object of class "grob_matrix" which contains aesthetic parameters for
+#' the matrix grob. Created within the GrobblR::convert_to_grob() function.
+#' @param tot_height A numeric value designating the total height of the matrix grob in mm.
+#' @param tot_width A numeric value designating the total width of the matrix grob in mm.
+#' @return A matrix with each row representing a 
+#' @export
 
 grob_matrix <- function(df, gm_obj, tot_height = numeric(), tot_width = numeric()){
 
