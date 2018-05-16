@@ -54,11 +54,11 @@ grob_matrix <- function(df, gm_obj, tot_height = numeric(), tot_width = numeric(
     cex_vals <- seq(0.01, 20, 0.01)
     rh <- tot_height/nr - 2*gm_obj@cell_sep
     cw <- tot_width/nc - 2*gm_obj@cell_sep
-    widest_element <- c(df)[which(strwidth(c(df), units = 'in') == max(strwidth(c(df), units = 'in')))[1]]
-    tallest_element <- c(df)[which(strheight(c(df), units = 'in') == max(strheight(c(df), units = 'in')))[1]]
+    widest_element <- c(df)[which(graphics::strwidth(c(df), units = 'in') == max(graphics::strwidth(c(df), units = 'in')))[1]]
+    tallest_element <- c(df)[which(graphics::strheight(c(df), units = 'in') == max(graphics::strheight(c(df), units = 'in')))[1]]
     
-    poss_str_widths <- sapply(cex_vals, function(c) in_to_mm(strwidth(widest_element, cex = c, units = 'inches')))
-    poss_str_heights <- sapply(cex_vals, function(c) in_to_mm(strheight(tallest_element, cex = c, units = 'inches')))
+    poss_str_widths <- sapply(cex_vals, function(c) in_to_mm(graphics::strwidth(widest_element, cex = c, units = 'inches')))
+    poss_str_heights <- sapply(cex_vals, function(c) in_to_mm(graphics::strheight(tallest_element, cex = c, units = 'inches')))
     
     def_txt_cex <- min(c(cex_vals[max(which(poss_str_widths <= cw))], cex_vals[max(which(poss_str_heights <= rh))]))
     
@@ -126,24 +126,24 @@ grob_matrix <- function(df, gm_obj, tot_height = numeric(), tot_width = numeric(
   
   # ----
   
-  raw_grobs <- gList()
+  raw_grobs <- grid::gList()
   for(j in 1:nc){
     for(i in 1:nr){
       
-      rect_grob <- rectGrob(
-        gp = gpar(
+      rect_grob <- grid::rectGrob(
+        gp = grid::gpar(
           fill = gm_obj@bg_color[i,j],
           col = gm_obj@bg_color[i,j],
           alpha = gm_obj@bg_alpha[i,j]))
       
-      text_grob <- textGrob(
+      text_grob <- grid::textGrob(
         df[i,j],
         x = unit(gm_obj@txt_align[i,j], "npc"),
         y = unit(gm_obj@txt_v_align[i,j], "npc"),
         hjust = gm_obj@txt_just[i,j],
         vjust = gm_obj@txt_v_just[i,j],
         rot = gm_obj@txt_angle[i,j],
-        gp = gpar(
+        gp = grid::gpar(
           fontface = gm_obj@fnt_face[i,j],
           fontfamily = gm_obj@txt_font[i,j],
           cex = gm_obj@txt_cex[i,j],
@@ -155,21 +155,21 @@ grob_matrix <- function(df, gm_obj, tot_height = numeric(), tot_width = numeric(
       if(length(borders_split) > 0){
         for(side in 1:length(borders_split)){
           
-          cell_border_gs <- gList(
+          cell_border_gs <- grid::gList(
             cell_border_gs, 
-            segmentsGrob(
+            grid::segmentsGrob(
               x0 = unit(ifelse(borders_split[side] %in% c("right"), 1, 0), "npc"),
               y0 = unit(ifelse(borders_split[side] %in% c("top"), 1, 0), "npc"),
               x1 = unit(ifelse(borders_split[side] %in% c("top", "bottom", "right"), 1, 0), "npc"),
               y1 = unit(ifelse(borders_split[side] %in% c("left", "right", "top"), 1, 0), "npc"),
-              gp = gpar(col = gm_obj@border_color[i,j], lwd = gm_obj@border_width[i,j])))
+              gp = grid::gpar(col = gm_obj@border_color[i,j], lwd = gm_obj@border_width[i,j])))
         }
         
-        raw_grobs <- gList(raw_grobs, grobTree(rect_grob, cell_border_gs, text_grob))
+        raw_grobs <- grid::gList(raw_grobs, grid::grobTree(rect_grob, cell_border_gs, text_grob))
       
       } else {
         
-        raw_grobs <- gList(raw_grobs, grobTree(rect_grob, text_grob))
+        raw_grobs <- grid::gList(raw_grobs, grid::grobTree(rect_grob, text_grob))
         
       }
     }}
@@ -218,7 +218,7 @@ grob_matrix <- function(df, gm_obj, tot_height = numeric(), tot_width = numeric(
     for(i in 1:nr){
       ind_row_heights <- mapply(
         function(txt, cex, face, fam){
-          in_to_mm(strheight(txt, units = 'inches', cex = cex, family = fam, font = face))
+          in_to_mm(graphics::strheight(txt, units = 'inches', cex = cex, family = fam, font = face))
         },
         df[i,],
         gm_obj@txt_cex[i,],
@@ -240,7 +240,7 @@ grob_matrix <- function(df, gm_obj, tot_height = numeric(), tot_width = numeric(
     for(i in 1:nc){
       ind_col_widths <- mapply(
         function(txt, cex, face, fam){
-          in_to_mm(strwidth(txt, units = 'inches', cex = cex, family = fam, font = face))
+          in_to_mm(graphics::strwidth(txt, units = 'inches', cex = cex, family = fam, font = face))
         },
         df[,i],
         gm_obj@txt_cex[,i],
@@ -258,7 +258,7 @@ grob_matrix <- function(df, gm_obj, tot_height = numeric(), tot_width = numeric(
   # ----
   first_element_indices <- unlist(lapply(unique(c(layout_matrix)), function(x) min(which(c(layout_matrix) == x))))
   
-  arrangeGrob(
+  gridExtra::arrangeGrob(
     grobs = raw_grobs[first_element_indices],
     heights = unit(gm_obj@row_heights, 'mm'),
     widths = unit(gm_obj@col_widths, 'mm'),

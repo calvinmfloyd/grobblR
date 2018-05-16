@@ -114,7 +114,7 @@ convert_to_grob <- function(x, height, width, more_args = list()){
     }
     
     txt_matrix <- matrix(lines$lines, ncol = 1)
-    browser()
+    
     for(arg_name in names(more_args)[!names(more_args) %in% non_matrix_slots]){
       more_args[[arg_name]] <- convert_to_matrix(more_args[[arg_name]])
     }
@@ -128,10 +128,10 @@ convert_to_grob <- function(x, height, width, more_args = list()){
     g <- grob_matrix(txt_matrix, gm_obj, tot_height = height, tot_width = width)
     
   }
-  else if(is.ggplot(x)){
+  else if(ggplot2::is.ggplot(x)){
     
     png_name <- sprintf("ggplot_grob_%s_%s.png", format(Sys.time(), '%m_%d_%Y'), format(Sys.time(), "%H_%M_%S"))
-    ggsave(png_name, x, height = height, width = width, unit = 'mm')
+    ggplot2::ggsave(png_name, x, height = height, width = width, unit = 'mm')
     
     setClass(
       "grob_image",
@@ -149,10 +149,10 @@ convert_to_grob <- function(x, height, width, more_args = list()){
   } 
   else if(is.na(x)){
     
-    g <- nullGrob()
+    g <- grid::nullGrob()
     
   }
-  else if(is.grob(x)){
+  else if(grid::is.grob(x)){
     
     g <- x
     

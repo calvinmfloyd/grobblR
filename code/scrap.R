@@ -17,12 +17,12 @@ library(png)
 library(R6)
 
 # Making the package ----
-
-install.packages("devtools")
+install.packages('roxygen2')
 library("devtools")
-devtools::install_github("klutometis/roxygen")
 library(roxygen2)
 
+create('grobblR')
+document()
 
 # ----
 

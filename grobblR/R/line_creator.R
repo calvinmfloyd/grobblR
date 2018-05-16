@@ -17,21 +17,21 @@ line_creator <- function(cex_val, string, height, width, one_line = FALSE){
   
   if(one_line){
     
-    string_width <- in_to_mm(strwidth(string, cex = cex_val, units = 'inches'))
+    string_width <- in_to_mm(graphics::strwidth(string, cex = cex_val, units = 'inches'))
     potential_rh <- height - height*0.5
-    actual_rh <- in_to_mm(strheight(string, cex = cex_val, units = 'inches'))
+    actual_rh <- in_to_mm(graphics::strheight(string, cex = cex_val, units = 'inches'))
     
     list(
       'valid' = actual_rh < potential_rh & string_width < width,
       'lines' = string,
-      'width_of_lines' = in_to_mm(strwidth(string, cex = cex_val, units = 'inches')))
+      'width_of_lines' = in_to_mm(graphics::strwidth(string, cex = cex_val, units = 'inches')))
     
   }
   else {
     
     words <- unlist(strsplit(string, ' '))
     n_words <- length(words)
-    width_of_words <- in_to_mm(strwidth(paste(words, ' '), cex = cex_val, units = 'inches'))
+    width_of_words <- in_to_mm(graphics::strwidth(paste(words, ' '), cex = cex_val, units = 'inches'))
     
     out_of_words <- FALSE
     line_index_start <- 1
@@ -46,13 +46,13 @@ line_creator <- function(cex_val, string, height, width, one_line = FALSE){
     n_lines <- max(words_to_line)
     lines <- sapply(1:n_lines, function(x) paste(words[words_to_line == x], collapse = ' '))
     
-    width_of_lines <- in_to_mm(strwidth(lines, cex = cex_val, units = 'inches'))
+    width_of_lines <- in_to_mm(graphics::strwidth(lines, cex = cex_val, units = 'inches'))
 
     potential_rh <- (height/n_lines) - (height/n_lines)*0.5
-    actual_rh <- max(in_to_mm(strheight(lines, cex = cex_val, units = 'inches')))
+    actual_rh <- max(in_to_mm(graphics::strheight(lines, cex = cex_val, units = 'inches')))
     list(
       'valid' = actual_rh < potential_rh,
       'lines' = lines,
-      'width_of_lines' = in_to_mm(strwidth(lines, cex = cex_val, units = 'inches')))
+      'width_of_lines' = in_to_mm(graphics::strwidth(lines, cex = cex_val, units = 'inches')))
   }
 }

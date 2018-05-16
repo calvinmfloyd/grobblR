@@ -49,16 +49,16 @@ grob_layout <- function(...,
   # ----
   
   # Readjusting Grob Widths to fit in the given Page Height and Page Width ----
-  raw_grobs <- gList()
+  raw_grobs <- grid::gList()
   for(i in 1:nr){
     g_info[[i]]$height <- row_heights[i]
     g_info[[i]]$width <- pw
     g_info[[i]]$padding <- grob_padding
-    raw_grobs <- gList(raw_grobs, g_info[[i]]$grob)
+    raw_grobs <- grid::gList(raw_grobs, g_info[[i]]$grob)
   }
   # ----
   
-  grob <- arrangeGrob(
+  grob <- gridExtra::arrangeGrob(
     grobs = raw_grobs,
     heights = unit(row_heights, 'mm'),
     widths = unit(pw, 'mm'),

@@ -27,7 +27,7 @@ grob_image <- function(img_path, gi_obj, tot_height = numeric(), tot_width = num
     if(slot(gi_obj, slot_name) < 0 | slot(gi_obj, slot_name) > 1) stop(sprintf("%s argument must be between 0 and 1.", val_name))
   }
   
-  raw_png <- readPNG(normalizePath(file.path(img_path)))
+  raw_png <- png::readPNG(normalizePath(file.path(img_path)))
   edit_dims <- ifelse(length(gi_obj@maintain_aspect_ratio) == 0, FALSE, gi_obj@maintain_aspect_ratio)
   if(edit_dims){
 
@@ -44,7 +44,7 @@ grob_image <- function(img_path, gi_obj, tot_height = numeric(), tot_width = num
     
   }
   
-  rasterGrob(
+  grid::rasterGrob(
     raw_png,
     height = unit(height_adj, "mm"),
     width = unit(width_adj, "mm"),
