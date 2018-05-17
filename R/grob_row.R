@@ -2,7 +2,7 @@
 #' function its shape. Works hand in hand with the GrobblR::grob_col() function.
 #'
 #' @param ... A series of grob_col's.
-#' @param height_prop The numeric proportion of the given height which
+#' @param p The numeric proportion of the given height which
 #' should be given to sub_grob's outputted in this grob row. Defaults to 1.
 #' @param border A TRUE/FALSE argument corresponding to whether or not a border
 #' around the outputted sub-grob (or sub_grob's) is desired. Defaults to FALSE.
@@ -12,7 +12,7 @@
 #' the grob_col's to create their sub-grob's.
 #' @export
 
-grob_row <- function(..., height_prop = 1, border = F, border_args = gpar()){
+grob_row <- function(..., p = 1, border = F, border_args = gpar()){
 
   grob_row_class <- R6::R6Class(
     "grob_row",
@@ -66,7 +66,7 @@ grob_row <- function(..., height_prop = 1, border = F, border_args = gpar()){
 
   grob_row_class$new(
     grob_classes = list(...),
-    proportion = height_prop,
+    proportion = p,
     border = border,
     border_args = border_args)
 }

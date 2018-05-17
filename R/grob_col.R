@@ -3,7 +3,7 @@
 #'
 #' @param ... Either the object to be converted to a grob, or a combination of
 #' grob_row's which need to be converted to sub-grob's.
-#' @param width_prop The numeric proportion of the width given to the outer grob_row which
+#' @param p The numeric proportion of the width given to the outer grob_row which
 #' should be given to the sub-grob outputted by this function. Defaults to 1.
 #' @param more_args A list of arguments corresponding to the desired sub-grob which
 #' affect its appearance. Default is an empty list.
@@ -15,7 +15,7 @@
 #' The sub-grob is obtained with grob_col$grob.
 #' @export
 
-grob_col <- function(..., width_prop = 1, more_args = list(), border = F, border_args = gpar()){
+grob_col <- function(..., p = 1, more_args = list(), border = F, border_args = gpar()){
 
   grob_col_class <- R6::R6Class(
     "grob_col",
@@ -60,9 +60,7 @@ grob_col <- function(..., width_prop = 1, more_args = list(), border = F, border
             raw_grobs <- grid::gList(raw_grobs, contents[[i]]$grob)
           } else {
             g <- convert_to_grob(x = contents[[i]], height = hts_w_padding[i], width = wth_w_padding, more_args = m_a)
-            if(bor){
-              g <- grid::grobTree(g, rectGrob(height = unit(hts[i], 'mm'), width = unit(wth, 'mm'), gp = bor_args))
-            }
+            if(bor) g <- grid::grobTree(g, rectGrob(height = unit(hts[i], 'mm'), width = unit(wth, 'mm'), gp = bor_args))
             raw_grobs <- grid::gList(raw_grobs, g)
           }
         }
@@ -79,7 +77,7 @@ grob_col <- function(..., width_prop = 1, more_args = list(), border = F, border
   grob_col_class$new(
     contents = grob_col_contents,
     more_args = more_args,
-    proportion = width_prop,
+    proportion = p,
     border = border,
     border_args = border_args)
 }

@@ -5,17 +5,17 @@
 \title{The grob column function which helps gives the grob from the GrobblR::grob_layout()
 function its shape. Works hand in hand with the GrobblR::grob_row() function.}
 \usage{
-grob_col(..., width_prop = 1, more_args = list(), border = F,
+grob_col(..., p = 1, more_args = list(), border = F,
   border_args = gpar())
 }
 \arguments{
 \item{...}{Either the object to be converted to a grob, or a combination of
 grob_row's which need to be converted to sub-grob's.}
 
-\item{width_prop}{The numeric proportion of the width given to the outer grob_row which
+\item{p}{The numeric proportion of the width given to the outer grob_row which
 should be given to the sub-grob outputted by this function. Defaults to 1.}
 
-\item{more_args}{A list of arguments corresponding to the desired sub-grob which 
+\item{more_args}{A list of arguments corresponding to the desired sub-grob which
 affect its appearance. Default is an empty list.}
 
 \item{border}{A TRUE/FALSE argument corresponding to whether or not a border

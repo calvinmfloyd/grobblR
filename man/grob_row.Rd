@@ -2,15 +2,15 @@
 % Please edit documentation in R/grob_row.R
 \name{grob_row}
 \alias{grob_row}
-\title{The grob row function which helps gives the grob from the GrobblR::grob_layout() 
+\title{The grob row function which helps gives the grob from the GrobblR::grob_layout()
 function its shape. Works hand in hand with the GrobblR::grob_col() function.}
 \usage{
-grob_row(..., height_prop = 1, border = F, border_args = gpar())
+grob_row(..., p = 1, border = F, border_args = gpar())
 }
 \arguments{
 \item{...}{A series of grob_col's.}
 
-\item{height_prop}{The numeric proportion of the given height which
+\item{p}{The numeric proportion of the given height which
 should be given to sub_grob's outputted in this grob row. Defaults to 1.}
 
 \item{border}{A TRUE/FALSE argument corresponding to whether or not a border
@@ -24,6 +24,6 @@ An R6 class which contains all the information needed to carry on to
 the grob_col's to create their sub-grob's.
 }
 \description{
-The grob row function which helps gives the grob from the GrobblR::grob_layout() 
+The grob row function which helps gives the grob from the GrobblR::grob_layout()
 function its shape. Works hand in hand with the GrobblR::grob_col() function.
 }

@@ -1,4 +1,12 @@
 
+source('convert_to_grob.R')
+source('grob_col.R')
+source('grob_row.R')
+source('grob_layout.R')
+source('grob_matrix.R')
+source('grob_image.R')
+source('line_creator.R')
+
 library(UsingR)
 library(dplyr)
 library(ggplot2)
@@ -47,7 +55,7 @@ g <- grob_layout(
         border_color = 'gray40',
         border_width = 10))),
   grob_row(height_prop = 2,
-    grob_col(head(as.matrix(iris), 20), width_prop = 3),
+    grob_col(width_prop = 3, head(as.matrix(iris), 20)),
     grob_col(width_prop = 3,
        grob_row(height_prop = 1,
          grob_col(width_prop = 1, gg)),
