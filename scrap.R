@@ -1,12 +1,4 @@
 
-source('grob_matrix.R')
-source('grob_layout.R')
-source('line_creator.R')
-source('grob_image.R')
-source('grob_row.R')
-source('grob_col.R')
-source('convert_to_grob.R')
-
 library(UsingR)
 library(dplyr)
 library(ggplot2)
@@ -20,6 +12,10 @@ library(R6)
 install.packages('roxygen2')
 library("devtools")
 library(roxygen2)
+
+library(devtools)
+install_github('grobblR', 'calvinmfloyd')
+library(grobblR)
 
 create('grobblR')
 document()
@@ -39,28 +35,28 @@ summary_df <- iris %>%
 gg <- ggplot(iris) + geom_point(aes(x = Sepal.Length, y = Sepal.Width, color = Species))
 
 g <- grob_layout(
-  grob_row(prop = 1,
+  grob_row(height_prop = 1,
     border = T,
     border_args = gpar(lwd = 10, col = 'red', alpha = 0.5),
     grob_col(
       'Iris Dataset Grob',
-      prop = 1,
+      width_prop = 1,
       more_args = list(
         one_line = T,
         txt_color = 'gray40',
         border_color = 'gray40',
         border_width = 10))),
-  grob_row(prop = 2, 
-    grob_col(head(as.matrix(iris), 20), prop = 3),
-    grob_col(prop = 3,
-       grob_row(prop = 1,
-         grob_col(prop = 1, gg)),
-       grob_row(prop = 1,
-         grob_col(prop = 1, head(as.matrix(iris), 5), border = T)))),
-  grob_row(prop = 2,
-    grob_col(prop = 1, 'iris.png', more_args = list(maintain_aspect_ratio = T))),
-  grob_row(prop = 1,
-    grob_col(prop = 1, first_paragraph, more_args = list(txt_just = 0, txt_align = 0), border = T))
+  grob_row(height_prop = 2,
+    grob_col(head(as.matrix(iris), 20), width_prop = 3),
+    grob_col(width_prop = 3,
+       grob_row(height_prop = 1,
+         grob_col(width_prop = 1, gg)),
+       grob_row(height_prop = 1,
+         grob_col(width_prop = 1, head(as.matrix(iris), 5), border = T)))),
+  grob_row(height_prop = 2,
+    grob_col(width_prop = 1, 'iris.png', more_args = list(maintain_aspect_ratio = T))),
+  grob_row(height_prop = 1,
+    grob_col(width_prop = 1, first_paragraph, more_args = list(txt_just = 0, txt_align = 0), border = T))
 )
 
 ggsave('g.pdf', g$grob, height = as.numeric(g$total_height), width = as.numeric(g$total_width), units = 'mm')
