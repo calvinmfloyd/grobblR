@@ -71,7 +71,7 @@ g <- grob_layout(
     grob_col(p = 1, first_paragraph, more_args = list(txt_just = 0, txt_align = 0)))
 )
 
-ggsave('g.pdf', g$grob, height = as.numeric(g$total_height), width = as.numeric(g$total_width), units = 'mm')
+ggsave('g1.pdf', g$grob, height = as.numeric(g$total_height), width = as.numeric(g$total_width), units = 'mm')
 
 grob_row(
   grob_col(prop = 1, summary_df, more_args = list(txt_color = 'red')),
