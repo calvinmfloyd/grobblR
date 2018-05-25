@@ -2,14 +2,13 @@
 #' the GrobblR::convert_to_grob() function.
 #'
 #' @param df The data.frame/matrix to be converted to a grob.
-#' @param gm_obj An object of class "grob_matrix" which contains aesthetic parameters for
-#' the matrix grob. Created within the GrobblR::convert_to_grob() function.
+#' @param gm_list A list which contains aesthetic parameters for the matrix grob. Created within the GrobblR::convert_to_grob() function.
 #' @param tot_height A numeric value designating the total height of the matrix grob in mm.
 #' @param tot_width A numeric value designating the total width of the matrix grob in mm.
 #' @return A matrix with each row representing a
 #' @export
 
-grob_matrix <- function(df, gm_obj, tot_height = numeric(), tot_width = numeric()){
+grob_matrix <- function(df, gm_list, tot_height = numeric(), tot_width = numeric()){
 
   in_to_mm <- function(x) x*25.4
 
@@ -34,16 +33,16 @@ grob_matrix <- function(df, gm_obj, tot_height = numeric(), tot_width = numeric(
     colname_borders = '')
 
   for(val_name in names(def_vals_non_matrices)){
-    if(length(slot(gm_obj, val_name)) == 0){
-      slot(gm_obj, val_name) <- def_vals_non_matrices[[val_name]]
+    if(length(gm_list[[val_name]]) == 0){
+      gm_list[[val_name]] <- def_vals_non_matrices[[val_name]]
     }
   }
   # ----
 
   # Making adjustments to txt_cex, if need be ----
-  adjust_cex <- length(gm_obj@txt_cex) == 0 &
-    (length(tot_height) == 1 & length(gm_obj@row_heights) == 0) &
-    (length(tot_width) == 1 & length(gm_obj@col_widths) == 0)
+  adjust_cex <- length(gm_list$txt_cex) == 0 &
+    (length(tot_height) == 1 & length(gm_list$row_heights) == 0) &
+    (length(tot_width) == 1 & length(gm_list$col_widths) == 0)
 
   if(!adjust_cex){
 
@@ -52,8 +51,8 @@ grob_matrix <- function(df, gm_obj, tot_height = numeric(), tot_width = numeric(
   } else {
 
     cex_vals <- seq(0.01, 20, 0.01)
-    rh <- tot_height/nr - 2*gm_obj@cell_sep
-    cw <- tot_width/nc - 2*gm_obj@cell_sep
+    rh <- tot_height/nr - 2*gm_list$cell_sep
+    cw <- tot_width/nc - 2*gm_list$cell_sep
     widest_element <- c(df)[which(graphics::strwidth(c(df), units = 'in') == max(graphics::strwidth(c(df), units = 'in')))[1]]
     tallest_element <- c(df)[which(graphics::strheight(c(df), units = 'in') == max(graphics::strheight(c(df), units = 'in')))[1]]
 
@@ -81,15 +80,15 @@ grob_matrix <- function(df, gm_obj, tot_height = numeric(), tot_width = numeric(
     txt_angle = 0,
     border_width = 1)
 
-  bg_color_not_inputted <- all(dim(gm_obj@bg_color) == 0)
+  bg_color_not_inputted <- all(dim(gm_list$bg_color) == 0)
 
   for(val_name in names(def_vals_matrices)){
     def_vals_matrices[[val_name]] <- ifelse(
-      all(dim(slot(gm_obj, val_name)) == 1),
-      slot(gm_obj, val_name)[1,1],
+      all(dim(gm_list[[val_name]]) == 1),
+      gm_list[[val_name]][1,1],
       def_vals_matrices[[val_name]])
-    if(all(dim(slot(gm_obj, val_name)) <= 1)){
-      slot(gm_obj, val_name) <- matrix(def_vals_matrices[[val_name]], nrow = nr, ncol = nc)
+    if(all(dim(gm_list[[val_name]]) <= 1)){
+      gm_list[[val_name]] <- matrix(def_vals_matrices[[val_name]], nrow = nr, ncol = nc)
     }
   }
   # ----
@@ -97,28 +96,28 @@ grob_matrix <- function(df, gm_obj, tot_height = numeric(), tot_width = numeric(
   # Adding in Row Name / Column Name attributes ----
   rn_cn_shared_vals <- c('bg_color', 'txt_color', 'fnt_face', 'border_color', 'border_width')
 
-  if(gm_obj@rownames_present){
-    gm_obj@borders[,1] <- gm_obj@rowname_borders
+  if(gm_list$rownames_present){
+    gm_list$borders[,1] <- gm_list$rowname_borders
     for(val_name in rn_cn_shared_vals){
-      slot(gm_obj, val_name)[,1] <- slot(gm_obj, paste0('rowname_colname_', val_name))
+      gm_list[[val_name]][,1] <- gm_list[[paste0('rowname_colname_', val_name)]]
     }
   }
 
-  if(gm_obj@colnames_present){
-    gm_obj@borders[1,] <- gm_obj@colname_borders
+  if(gm_list$colnames_present){
+    gm_list$borders[1,] <- gm_list$colname_borders
     for(val_name in rn_cn_shared_vals){
-      slot(gm_obj, val_name)[1,] <- slot(gm_obj, paste0('rowname_colname_', val_name))
+      gm_list[[val_name]][1,] <- gm_list[[paste0('rowname_colname_', val_name)]]
     }
   }
 
-  if(gm_obj@colnames_present & gm_obj@rownames_present){
-    gm_obj@borders[1,1] <- ''
-    gm_obj@bg_color[1,1] <- NA
+  if(gm_list$colnames_present & gm_list$rownames_present){
+    gm_list$borders[1,1] <- ''
+    gm_list$bg_color[1,1] <- NA
   }
 
-  if((gm_obj@colnames_present | gm_obj@rownames_present) & bg_color_not_inputted){
-    gm_obj@bg_color <- rbind(
-      gm_obj@bg_color[1,],
+  if((gm_list$colnames_present | gm_list$rownames_present) & bg_color_not_inputted){
+    gm_list$bg_color <- rbind(
+      gm_list$bg_color[1,],
       matrix(rep(c('white', 'gray90'), each = nc, length = nr*nc - nc), byrow = T, nrow = nr-1)
     )
   }
@@ -131,25 +130,25 @@ grob_matrix <- function(df, gm_obj, tot_height = numeric(), tot_width = numeric(
 
       rect_grob <- grid::rectGrob(
         gp = grid::gpar(
-          fill = gm_obj@bg_color[i,j],
-          col = gm_obj@bg_color[i,j],
-          alpha = gm_obj@bg_alpha[i,j]))
+          fill = gm_list$bg_color[i,j],
+          col = gm_list$bg_color[i,j],
+          alpha = gm_list$bg_alpha[i,j]))
 
       text_grob <- grid::textGrob(
         df[i,j],
-        x = unit(gm_obj@txt_align[i,j], "npc"),
-        y = unit(gm_obj@txt_v_align[i,j], "npc"),
-        hjust = gm_obj@txt_just[i,j],
-        vjust = gm_obj@txt_v_just[i,j],
-        rot = gm_obj@txt_angle[i,j],
+        x = unit(gm_list$txt_align[i,j], "npc"),
+        y = unit(gm_list$txt_v_align[i,j], "npc"),
+        hjust = gm_list$txt_just[i,j],
+        vjust = gm_list$txt_v_just[i,j],
+        rot = gm_list$txt_angle[i,j],
         gp = grid::gpar(
-          fontface = gm_obj@fnt_face[i,j],
-          fontfamily = gm_obj@txt_font[i,j],
-          cex = gm_obj@txt_cex[i,j],
-          col = gm_obj@txt_color[i,j]))
+          fontface = gm_list$fnt_face[i,j],
+          fontfamily = gm_list$txt_font[i,j],
+          cex = gm_list$txt_cex[i,j],
+          col = gm_list$txt_color[i,j]))
 
       cell_border_gs <- gList()
-      borders_split <- unlist(strsplit(gm_obj@borders[i,j], split = ', ', fixed = TRUE))
+      borders_split <- unlist(strsplit(gm_list$borders[i,j], split = ', ', fixed = TRUE))
 
       if(length(borders_split) > 0){
         for(side in 1:length(borders_split)){
@@ -161,7 +160,7 @@ grob_matrix <- function(df, gm_obj, tot_height = numeric(), tot_width = numeric(
               y0 = unit(ifelse(borders_split[side] %in% c("top"), 1, 0), "npc"),
               x1 = unit(ifelse(borders_split[side] %in% c("top", "bottom", "right"), 1, 0), "npc"),
               y1 = unit(ifelse(borders_split[side] %in% c("left", "right", "top"), 1, 0), "npc"),
-              gp = grid::gpar(col = gm_obj@border_color[i,j], lwd = gm_obj@border_width[i,j])))
+              gp = grid::gpar(col = gm_list$border_color[i,j], lwd = gm_list$border_width[i,j])))
         }
 
         raw_grobs <- grid::gList(raw_grobs, grid::grobTree(rect_grob, cell_border_gs, text_grob))
@@ -174,7 +173,7 @@ grob_matrix <- function(df, gm_obj, tot_height = numeric(), tot_width = numeric(
     }}
 
   # ----
-  if(gm_obj@group_elements){
+  if(gm_list$group_elements){
     ue <- unique(c(as.matrix(df)))
     level_df <- data.frame(element = ue, level = 1:length(ue), stringsAsFactors = F)
     matched_df <- matrix(level_df$level[match(df, level_df$element)], nrow = nr)
@@ -211,7 +210,7 @@ grob_matrix <- function(df, gm_obj, tot_height = numeric(), tot_width = numeric(
   }
   # ----
 
-  if(length(gm_obj@row_heights) == 0 & length(tot_height) == 0){
+  if(length(gm_list$row_heights) == 0 & length(tot_height) == 0){
 
     tmp_row_heights <- c()
     for(i in 1:nr){
@@ -220,20 +219,20 @@ grob_matrix <- function(df, gm_obj, tot_height = numeric(), tot_width = numeric(
           in_to_mm(graphics::strheight(txt, units = 'inches', cex = cex, family = fam, font = face))
         },
         df[i,],
-        gm_obj@txt_cex[i,],
-        gm_obj@fnt_face[i,],
-        gm_obj@txt_font[i,])
-      tmp_row_heights <- c(tmp_row_heights, max(ind_row_heights) + 2*gm_obj@cell_sep)
+        gm_list$txt_cex[i,],
+        gm_list$fnt_face[i,],
+        gm_list$txt_font[i,])
+      tmp_row_heights <- c(tmp_row_heights, max(ind_row_heights) + 2*gm_list$cell_sep)
     }
-    gm_obj@row_heights <- rep(max(tmp_row_heights), nr)
+    gm_list$row_heights <- rep(max(tmp_row_heights), nr)
 
-  } else if(length(tot_height) == 1 & length(gm_obj@row_heights) != nr){
+  } else if(length(tot_height) == 1 & length(gm_list$row_heights) != nr){
 
-    gm_obj@row_heights <- rep(tot_height/nr, nr)
+    gm_list$row_heights <- rep(tot_height/nr, nr)
 
   }
 
-  if(length(gm_obj@col_widths) == 0 & length(tot_width) == 0){
+  if(length(gm_list$col_widths) == 0 & length(tot_width) == 0){
 
     tmp_col_widths <- c()
     for(i in 1:nc){
@@ -242,16 +241,16 @@ grob_matrix <- function(df, gm_obj, tot_height = numeric(), tot_width = numeric(
           in_to_mm(graphics::strwidth(txt, units = 'inches', cex = cex, family = fam, font = face))
         },
         df[,i],
-        gm_obj@txt_cex[,i],
-        gm_obj@fnt_face[,i],
-        gm_obj@txt_font[,i])
-      tmp_col_widths <- c(tmp_col_widths, max(ind_col_widths) + 2*gm_obj@cell_sep)
+        gm_list$txt_cex[,i],
+        gm_list$fnt_face[,i],
+        gm_list$txt_font[,i])
+      tmp_col_widths <- c(tmp_col_widths, max(ind_col_widths) + 2*gm_list$cell_sep)
     }
-    gm_obj@col_widths <- tmp_col_widths
+    gm_list$col_widths <- tmp_col_widths
 
-  } else if(length(tot_width) == 1 & length(gm_obj@col_widths) != nc){
+  } else if(length(tot_width) == 1 & length(gm_list$col_widths) != nc){
 
-    gm_obj@col_widths <- rep(tot_width/nc, nc)
+    gm_list$col_widths <- rep(tot_width/nc, nc)
 
   }
   # ----
@@ -259,8 +258,8 @@ grob_matrix <- function(df, gm_obj, tot_height = numeric(), tot_width = numeric(
 
   gridExtra::arrangeGrob(
     grobs = raw_grobs[first_element_indices],
-    heights = unit(gm_obj@row_heights, 'mm'),
-    widths = unit(gm_obj@col_widths, 'mm'),
+    heights = unit(gm_list$row_heights, 'mm'),
+    widths = unit(gm_list$col_widths, 'mm'),
     layout_matrix = layout_matrix)
 
 }
