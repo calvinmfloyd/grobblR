@@ -5,20 +5,19 @@
 \title{Converts a data.frame/matrix to a grob, with flexible aesthetics. Used within
 the GrobblR::convert_to_grob() function.}
 \usage{
-grob_matrix(df, gm_obj, tot_height = numeric(), tot_width = numeric())
+grob_matrix(df, gm_list, tot_height = numeric(), tot_width = numeric())
 }
 \arguments{
 \item{df}{The data.frame/matrix to be converted to a grob.}
 
-\item{gm_obj}{An object of class "grob_matrix" which contains aesthetic parameters for
-the matrix grob. Created within the GrobblR::convert_to_grob() function.}
+\item{gm_list}{A list which contains aesthetic parameters for the matrix grob.}
 
 \item{tot_height}{A numeric value designating the total height of the matrix grob in mm.}
 
 \item{tot_width}{A numeric value designating the total width of the matrix grob in mm.}
 }
 \value{
-A matrix with each row representing a
+A grob of df, with the corresponding aesthetics.
 }
 \description{
 Converts a data.frame/matrix to a grob, with flexible aesthetics. Used within

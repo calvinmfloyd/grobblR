@@ -2,10 +2,10 @@
 #' the GrobblR::convert_to_grob() function.
 #'
 #' @param df The data.frame/matrix to be converted to a grob.
-#' @param gm_list A list which contains aesthetic parameters for the matrix grob. Created within the GrobblR::convert_to_grob() function.
+#' @param gm_list A list which contains aesthetic parameters for the matrix grob.
 #' @param tot_height A numeric value designating the total height of the matrix grob in mm.
 #' @param tot_width A numeric value designating the total width of the matrix grob in mm.
-#' @return A matrix with each row representing a
+#' @return A grob of df, with the corresponding aesthetics.
 #' @export
 
 grob_matrix <- function(df, gm_list, tot_height = numeric(), tot_width = numeric()){
@@ -21,16 +21,7 @@ grob_matrix <- function(df, gm_list, tot_height = numeric(), tot_width = numeric
   # Adding in default values (non-matrices) if they are missing ----
   def_vals_non_matrices <- list(
     group_elements = FALSE,
-    rownames_present = FALSE,
-    colnames_present = FALSE,
-    cell_sep = 1,
-    rowname_colname_bg_color = 'gray40',
-    rowname_colname_txt_color = 'white',
-    rowname_colname_fnt_face = 1,
-    rowname_colname_border_color = 'gray40',
-    rowname_colname_border_width = 1,
-    rowname_borders = '',
-    colname_borders = '')
+    cell_sep = 1)
 
   for(val_name in names(def_vals_non_matrices)){
     if(length(gm_list[[val_name]]) == 0){
@@ -84,44 +75,13 @@ grob_matrix <- function(df, gm_list, tot_height = numeric(), tot_width = numeric
 
   for(val_name in names(def_vals_matrices)){
     def_vals_matrices[[val_name]] <- ifelse(
-      all(dim(gm_list[[val_name]]) == 1),
+      all(is.null(gm_list[[val_name]])) | all(dim(gm_list[[val_name]]) == 1),
       gm_list[[val_name]][1,1],
       def_vals_matrices[[val_name]])
     if(all(dim(gm_list[[val_name]]) <= 1)){
       gm_list[[val_name]] <- matrix(def_vals_matrices[[val_name]], nrow = nr, ncol = nc)
     }
   }
-  # ----
-
-  # Adding in Row Name / Column Name attributes ----
-  rn_cn_shared_vals <- c('bg_color', 'txt_color', 'fnt_face', 'border_color', 'border_width')
-
-  if(gm_list$rownames_present){
-    gm_list$borders[,1] <- gm_list$rowname_borders
-    for(val_name in rn_cn_shared_vals){
-      gm_list[[val_name]][,1] <- gm_list[[paste0('rowname_colname_', val_name)]]
-    }
-  }
-
-  if(gm_list$colnames_present){
-    gm_list$borders[1,] <- gm_list$colname_borders
-    for(val_name in rn_cn_shared_vals){
-      gm_list[[val_name]][1,] <- gm_list[[paste0('rowname_colname_', val_name)]]
-    }
-  }
-
-  if(gm_list$colnames_present & gm_list$rownames_present){
-    gm_list$borders[1,1] <- ''
-    gm_list$bg_color[1,1] <- NA
-  }
-
-  if((gm_list$colnames_present | gm_list$rownames_present) & bg_color_not_inputted){
-    gm_list$bg_color <- rbind(
-      gm_list$bg_color[1,],
-      matrix(rep(c('white', 'gray90'), each = nc, length = nr*nc - nc), byrow = T, nrow = nr-1)
-    )
-  }
-
   # ----
 
   raw_grobs <- grid::gList()

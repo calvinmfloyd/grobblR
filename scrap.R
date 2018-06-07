@@ -40,6 +40,16 @@ summary_df <- iris %>%
     mean_petal_width = mean(Petal.Width)) %>%
   as.matrix()
 
+txt_col_df <- matrix('blue', nrow = nrow(summary_df), ncol = ncol(summary_df))
+txt_col_df[rep(c(T,F), length = nrow(summary_df)),] <- 'red'
+
+g <- convert_to_grob(
+  summary_df,
+  more_args = list(bg_color = txt_col_df, bg_alpha = 0.5, rowname_txt_color = 'red'),
+  height = 50, width = 100)
+
+grid.arrange(g)
+
 gg <- ggplot(iris) + geom_point(aes(x = Sepal.Length, y = Sepal.Width, color = Species))
 
 g <- grob_layout(

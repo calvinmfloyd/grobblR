@@ -5,13 +5,12 @@
 \title{Converts a raw .png file to a grob, with flexible aesthetics. Used within
 the GrobblR::convert_to_grob() function.}
 \usage{
-grob_image(img_path, gi_obj, tot_height = numeric(), tot_width = numeric())
+grob_image(img_path, gi_list, tot_height = numeric(), tot_width = numeric())
 }
 \arguments{
 \item{img_path}{The local path to the raw .png file.}
 
-\item{gi_obj}{An object of class "grob_image" which contains aesthetic parameters for
-the image grob. Created within the GrobblR::convert_to_grob() function.}
+\item{gi_list}{An list which contains aesthetic parameters for the image grob. Created within the GrobblR::convert_to_grob() function.}
 
 \item{tot_height}{A numeric value designating the total height of the matrix grob in mm.}
 

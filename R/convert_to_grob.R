@@ -27,10 +27,9 @@ convert_to_grob <- function(x, height, width, more_args = list()){
   }
 
   cex_vals <- seq(0.05, 50, 0.05)
-  logical_slots <- c('group_elements', 'rownames_present', 'colnames_present')
-  numeric_slots <- c('cell_sep', 'row_heights', 'col_widths', 'rowname_colname_fnt_face', 'rowname_colname_border_width')
-  character_slots <- c('rowname_colname_bg_color', 'rowname_colname_txt_color', 'rowname_colname_border_color', 'rowname_borders', 'colname_borders')
-  non_matrix_slots <- c(logical_slots, numeric_slots, character_slots)
+  logical_slots <- c('group_elements')
+  numeric_slots <- c('cell_sep', 'row_heights', 'col_widths')
+  non_matrix_slots <- c(logical_slots, numeric_slots)
 
   gm_list <- list(
     fnt_face = matrix(ncol = 0, nrow = 0),
@@ -48,18 +47,12 @@ convert_to_grob <- function(x, height, width, more_args = list()){
     txt_font = matrix(ncol = 0, nrow = 0),
     txt_angle = matrix(ncol = 0, nrow = 0),
     group_elements = logical(),
-    rownames_present = logical(),
-    colnames_present = logical(),
     row_heights = numeric(),
     col_widths = numeric(),
-    cell_sep = numeric(),
-    rowname_colname_fnt_face = numeric(),
-    rowname_colname_border_width = numeric(),
-    rowname_colname_bg_color = character(),
-    rowname_colname_txt_color = character(),
-    rowname_colname_border_color = character(),
-    rowname_borders = character(),
-    colname_borders = character())
+    cell_sep = numeric())
+
+  rn_gm_list <- gm_list
+  cn_gm_list <- gm_list
 
   gi_list <- list(
     maintain_aspect_ratio = logical(),
@@ -74,20 +67,71 @@ convert_to_grob <- function(x, height, width, more_args = list()){
       more_args[[arg_name]] <- convert_to_matrix(more_args[[arg_name]])
     }
 
-    if(!is.null(rownames(x)) & !is.null(colnames(x))){
-      x <- rbind(c('', colnames(x)), cbind(rownames(x), x))
-      more_args[['colnames_present']] <- T
-      more_args[['rownames_present']] <- T
-    } else if(!is.null(rownames(x))){
-      x <- cbind(rownames(x), x)
-      more_args[['rownames_present']] <- T
-    } else if(!is.null(colnames(x))){
-      x <- rbind(colnames(x), x)
-      more_args[['colnames_present']] <- T
+    gm_list <- sub_list_elements(gm_list, more_args)
+    cn_pres <- !is.null(colnames(x))
+    rn_pres <- !is.null(rownames(x))
+    width_adj <- ifelse(rn_pres, 1, 0)
+    height_adj <- ifelse(cn_pres, 1, 0)
+
+    if(rn_pres){
+
+      if(any(grepl('rowname_', names(more_args)))){
+        for(name in names(more_args)[grepl('rowname', names(more_args))]){
+          rn_gm_list[[gsub('rowname_', '', name)]] <- more_args[[name]]
+        }
+      }
+
+      rn_df <- matrix(rownames(x), ncol = 1)
+      rn_grob <- grob_matrix(
+        rn_df
+        ,tot_height = height - height_adj*height/(nrow(x) + 1)
+        ,tot_width = width/(ncol(x) + 1)
+        ,gm_list = rn_gm_list)
     }
 
-    gm_list <- sub_list_elements(gm_list, more_args)
-    g <- grob_matrix(x, gm_list, tot_height = height, tot_width = width)
+    if(cn_pres){
+
+      if(any(grepl('colname_', names(more_args)))){
+        for(name in names(more_args)[grepl('colname', names(more_args))]){
+          rn_gm_list[[gsub('colname_', '', name)]] <- more_args[[name]]
+        }
+      }
+
+      cn_df <- matrix(colnames(x), nrow = 1)
+      cn_grob <- grob_matrix(
+        cn_df
+        ,tot_height = height/(nrow(x) + 1)
+        ,tot_width = width - width_adj*width/(ncol(x) + 1)
+        ,gm_list = cn_gm_list)
+    }
+
+    data_grob <- grob_matrix(
+      x
+      ,gm_list = gm_list
+      ,tot_height = height - height*height_adj/(nrow(x) + 1)
+      ,tot_width = width - width*width_adj/(ncol(x) + 1))
+
+    if(cn_pres & !rn_pres){
+      g <- arrangeGrob(
+        grobs = gList(cn_grob, data_grob)
+        ,nrow = 2
+        ,ncol = 1
+        ,widths = unit(width, 'mm')
+        ,heights = unit(c(height/(nrow(x) + 1), height - height/(nrow(x) + 1)), 'mm'))
+    } else if(!cn_pres & rn_pres){
+      g <- arrangeGrob(
+        grobs = gList(rn_grob, data_grob)
+        ,nrow = 1
+        ,ncol = 2
+        ,widths = unit(c(width/(ncol(x) + 1), width - width/(ncol(x) + 1)), 'mm')
+        ,heights = unit(height, 'mm'))
+    } else {
+      g <- arrangeGrob(
+        grobs = gList(cn_grob, rn_grob, data_grob)
+        ,layout_matrix = rbind(c(NA, 1), c(2, 3))
+        ,widths = unit(c(width/(ncol(x) + 1), width - width/(ncol(x) + 1)), 'mm')
+        ,heights = unit(c(height/(nrow(x) + 1), height - height/(nrow(x) + 1)), 'mm'))
+    }
 
   }
   else if(ifelse(is.character(x), grepl('.png', x), F)){
