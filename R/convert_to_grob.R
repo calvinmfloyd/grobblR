@@ -125,12 +125,16 @@ convert_to_grob <- function(x, height, width, more_args = list()){
         ,ncol = 2
         ,widths = unit(c(width/(ncol(x) + 1), width - width/(ncol(x) + 1)), 'mm')
         ,heights = unit(height, 'mm'))
-    } else {
+    } else if(cn_pres & rn_pres){
       g <- arrangeGrob(
         grobs = gList(cn_grob, rn_grob, data_grob)
         ,layout_matrix = rbind(c(NA, 1), c(2, 3))
         ,widths = unit(c(width/(ncol(x) + 1), width - width/(ncol(x) + 1)), 'mm')
         ,heights = unit(c(height/(nrow(x) + 1), height - height/(nrow(x) + 1)), 'mm'))
+    } else {
+
+      g <- data_grob
+
     }
 
   }
