@@ -5,15 +5,15 @@
 #' the main grob outputted its shape and look.
 #' @param page_height The numeric height of the grob in mm. Default is 280 mm -
 #' which is the height of an upright 8.5 x 11 in piece of copy paper.
-#' @param page_width The numeric width of the grob in mm. Default is 216 mm - 
+#' @param page_width The numeric width of the grob in mm. Default is 216 mm -
 #' which is the width of an upright 8.5 x 11 in piece of copy paper.
-#' @param page_padding The numeric amount of padding around the edge of the grob 
+#' @param page_padding The numeric amount of padding around the edge of the grob
 #' in mm. Default is 5 mm.
-#' @param grob_padding The numeric amount of padding for each individual grob 
+#' @param grob_padding The numeric amount of padding for each individual grob
 #' within their designated grid of area in mm. Default is 2 mm.
 #' @param row_heights If the user wants to designate specific row heights
-#' instead relying on the proportions within the grob_row functions, 
-#' set this parameter equal to a vector of numeric values corresponding 
+#' instead relying on the proportions within the grob_row functions,
+#' set this parameter equal to a vector of numeric values corresponding
 #' to the individual row heights in mm. Length must be equal to the number
 #' of grob_row function's on the upper most level of the grob.
 #' @return A list containing the total grob, and other values related to its
@@ -26,18 +26,18 @@ grob_layout <- function(...,
                         page_padding = 5,
                         grob_padding = 2,
                         row_heights = c()){
-  
+
   # Initializing Variables ----
   ph <- page_height - 2*page_padding
   pw <- page_width - 2*page_padding
   g_info <- list(...)
   # ----
-  
+
   # Creating the Layout Matrix, using LCM ----
   nr <- length(g_info)
   layout_matrix <- matrix(1:nr, ncol = 1)
   # ----
-  
+
   # Calculating Row Heights ----
   rh_inputted <- length(row_heights) > 0
   rh_wrong_length <- length(row_heights) != nr
@@ -47,7 +47,7 @@ grob_layout <- function(...,
     row_heights <- ph*(row_props/sum(row_props))
   }
   # ----
-  
+
   # Readjusting Grob Widths to fit in the given Page Height and Page Width ----
   raw_grobs <- grid::gList()
   for(i in 1:nr){
@@ -57,19 +57,19 @@ grob_layout <- function(...,
     raw_grobs <- grid::gList(raw_grobs, g_info[[i]]$grob)
   }
   # ----
-  
+
   grob <- gridExtra::arrangeGrob(
     grobs = raw_grobs,
-    heights = unit(row_heights, 'mm'),
-    widths = unit(pw, 'mm'),
+    heights = grid::unit(row_heights, 'mm'),
+    widths = grid::unit(pw, 'mm'),
     layout_matrix = layout_matrix)
-  
+
   list(
     'grob' = grob,
-    'row_heights' = unit(row_heights, 'mm'),
-    'column_widths' = unit(pw, 'mm'),
-    'total_height' = unit(page_height, 'mm'),
-    'total_width' = unit(page_width, 'mm'),
-    'page_padding' = unit(page_padding, 'mm'),
-    'grob_padding' = unit(grob_padding, 'mm'))
+    'row_heights' = grid::unit(row_heights, 'mm'),
+    'column_widths' = grid::unit(pw, 'mm'),
+    'total_height' = grid::unit(page_height, 'mm'),
+    'total_width' = grid::unit(page_width, 'mm'),
+    'page_padding' = grid::unit(page_padding, 'mm'),
+    'grob_padding' = grid::unit(grob_padding, 'mm'))
 }
