@@ -96,8 +96,8 @@ grob_matrix <- function(df, gm_list, tot_height = numeric(), tot_width = numeric
 
       text_grob <- grid::textGrob(
         df[i,j],
-        x = unit(gm_list$txt_align[i,j], "npc"),
-        y = unit(gm_list$txt_v_align[i,j], "npc"),
+        x = grid::unit(gm_list$txt_align[i,j], "npc"),
+        y = grid::unit(gm_list$txt_v_align[i,j], "npc"),
         hjust = gm_list$txt_just[i,j],
         vjust = gm_list$txt_v_just[i,j],
         rot = gm_list$txt_angle[i,j],
@@ -116,10 +116,10 @@ grob_matrix <- function(df, gm_list, tot_height = numeric(), tot_width = numeric
           cell_border_gs <- grid::gList(
             cell_border_gs,
             grid::segmentsGrob(
-              x0 = unit(ifelse(borders_split[side] %in% c("right"), 1, 0), "npc"),
-              y0 = unit(ifelse(borders_split[side] %in% c("top"), 1, 0), "npc"),
-              x1 = unit(ifelse(borders_split[side] %in% c("top", "bottom", "right"), 1, 0), "npc"),
-              y1 = unit(ifelse(borders_split[side] %in% c("left", "right", "top"), 1, 0), "npc"),
+              x0 = grid::unit(ifelse(borders_split[side] %in% c("right"), 1, 0), "npc"),
+              y0 = grid::unit(ifelse(borders_split[side] %in% c("top"), 1, 0), "npc"),
+              x1 = grid::unit(ifelse(borders_split[side] %in% c("top", "bottom", "right"), 1, 0), "npc"),
+              y1 = grid::unit(ifelse(borders_split[side] %in% c("left", "right", "top"), 1, 0), "npc"),
               gp = grid::gpar(col = gm_list$border_color[i,j], lwd = gm_list$border_width[i,j])))
         }
 
@@ -218,8 +218,8 @@ grob_matrix <- function(df, gm_list, tot_height = numeric(), tot_width = numeric
 
   gridExtra::arrangeGrob(
     grobs = raw_grobs[first_element_indices],
-    heights = unit(gm_list$row_heights, 'mm'),
-    widths = unit(gm_list$col_widths, 'mm'),
+    heights = grid::unit(gm_list$row_heights, 'mm'),
+    widths = grid::unit(gm_list$col_widths, 'mm'),
     layout_matrix = layout_matrix)
 
 }

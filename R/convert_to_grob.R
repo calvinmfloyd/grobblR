@@ -93,7 +93,7 @@ convert_to_grob <- function(x, height, width, more_args = list()){
 
       if(any(grepl('colname_', names(more_args)))){
         for(name in names(more_args)[grepl('colname', names(more_args))]){
-          rn_gm_list[[gsub('colname_', '', name)]] <- more_args[[name]]
+          cn_gm_list[[gsub('colname_', '', name)]] <- more_args[[name]]
         }
       }
 
@@ -116,21 +116,21 @@ convert_to_grob <- function(x, height, width, more_args = list()){
         grobs = gList(cn_grob, data_grob)
         ,nrow = 2
         ,ncol = 1
-        ,widths = unit(width, 'mm')
-        ,heights = unit(c(height/(nrow(x) + 1), height - height/(nrow(x) + 1)), 'mm'))
+        ,widths = grid::unit(width, 'mm')
+        ,heights = grid::unit(c(height/(nrow(x) + 1), height - height/(nrow(x) + 1)), 'mm'))
     } else if(!cn_pres & rn_pres){
       g <- arrangeGrob(
         grobs = gList(rn_grob, data_grob)
         ,nrow = 1
         ,ncol = 2
-        ,widths = unit(c(width/(ncol(x) + 1), width - width/(ncol(x) + 1)), 'mm')
-        ,heights = unit(height, 'mm'))
+        ,widths = grid::unit(c(width/(ncol(x) + 1), width - width/(ncol(x) + 1)), 'mm')
+        ,heights = grid::unit(height, 'mm'))
     } else if(cn_pres & rn_pres){
       g <- arrangeGrob(
         grobs = gList(cn_grob, rn_grob, data_grob)
         ,layout_matrix = rbind(c(NA, 1), c(2, 3))
-        ,widths = unit(c(width/(ncol(x) + 1), width - width/(ncol(x) + 1)), 'mm')
-        ,heights = unit(c(height/(nrow(x) + 1), height - height/(nrow(x) + 1)), 'mm'))
+        ,widths = grid::unit(c(width/(ncol(x) + 1), width - width/(ncol(x) + 1)), 'mm')
+        ,heights = grid::unit(c(height/(nrow(x) + 1), height - height/(nrow(x) + 1)), 'mm'))
     } else {
 
       g <- data_grob
@@ -172,7 +172,7 @@ convert_to_grob <- function(x, height, width, more_args = list()){
   else if(ggplot2::is.ggplot(x)){
 
     png_name <- sprintf("ggplot_grob_%s_%s.png", format(Sys.time(), '%m_%d_%Y'), format(Sys.time(), "%H_%M_%S"))
-    ggplot2::ggsave(png_name, x, height = height, width = width, unit = 'mm')
+    ggplot2::ggsave(png_name, x, height = height, width = width, grid::unit = 'mm')
     gi_list <- sub_list_elements(gi_list, more_args)
     g <- grob_image(png_name, gi_list, tot_height = height, tot_width = width)
     file.remove(png_name)

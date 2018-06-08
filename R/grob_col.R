@@ -15,7 +15,7 @@
 #' The sub-grob is obtained with grob_col$grob.
 #' @export
 
-grob_col <- function(..., p = 1, more_args = list(), border = F, border_args = gpar()){
+grob_col <- function(..., p = 1, more_args = list(), border = F, border_args = grid::gpar()){
 
   grob_col_class <- R6::R6Class(
     "grob_col",
@@ -60,7 +60,7 @@ grob_col <- function(..., p = 1, more_args = list(), border = F, border_args = g
             raw_grobs <- grid::gList(raw_grobs, contents[[i]]$grob)
           } else {
             g <- convert_to_grob(x = contents[[i]], height = hts_w_padding[i], width = wth_w_padding, more_args = m_a)
-            if(bor) g <- grid::grobTree(g, rectGrob(height = unit(hts[i], 'mm'), width = unit(wth, 'mm'), gp = bor_args))
+            if(bor) g <- grid::grobTree(g, rectGrob(height = grid::unit(hts[i], 'mm'), width = grid::unit(wth, 'mm'), gp = bor_args))
             raw_grobs <- grid::gList(raw_grobs, g)
           }
         }
@@ -68,8 +68,8 @@ grob_col <- function(..., p = 1, more_args = list(), border = F, border_args = g
         gridExtra::arrangeGrob(
           grobs = raw_grobs,
           layout_matrix = matrix(1:length(raw_grobs), ncol = 1),
-          height = unit(hts, 'mm'),
-          width = unit(wth, 'mm'))
+          height = grid::unit(hts, 'mm'),
+          width = grid::unit(wth, 'mm'))
       }
     ))
 

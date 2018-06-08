@@ -2,7 +2,7 @@
 #' the GrobblR::convert_to_grob() function.
 #'
 #' @param img_path The local path to the raw .png file.
-#' @param gi_list An list which contains aesthetic parameters for the image grob. Created within the GrobblR::convert_to_grob() function.
+#' @param gi_list An list which contains aesthetic parameters for the image grob.
 #' @param tot_height A numeric value designating the total height of the matrix grob in mm.
 #' @param tot_width A numeric value designating the total width of the matrix grob in mm.
 #' @return A grob of the raw .png file.
@@ -45,8 +45,8 @@ grob_image <- function(img_path, gi_list, tot_height = numeric(), tot_width = nu
 
   grid::rasterGrob(
     raw_png,
-    height = unit(height_adj, "mm"),
-    width = unit(width_adj, "mm"),
+    height = grid::unit(height_adj, "mm"),
+    width = grid::unit(width_adj, "mm"),
     hjust = gi_list$hjust,
     vjust = gi_list$vjust)
 

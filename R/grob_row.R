@@ -12,7 +12,7 @@
 #' the grob_col's to create their sub-grob's.
 #' @export
 
-grob_row <- function(..., p = 1, border = F, border_args = gpar()){
+grob_row <- function(..., p = 1, border = F, border_args = grid::gpar()){
 
   grob_row_class <- R6::R6Class(
     "grob_row",
@@ -54,11 +54,11 @@ grob_row <- function(..., p = 1, border = F, border_args = gpar()){
         g <- gridExtra::arrangeGrob(
           grobs = raw_grobs,
           layout_matrix = matrix(1:length(raw_grobs), nrow = 1),
-          height = unit(height, 'mm'),
-          width = unit(widths, 'mm'))
+          height = grid::unit(height, 'mm'),
+          width = grid::unit(widths, 'mm'))
 
         if(bor){
-          g <- grid::grobTree(g, grid::rectGrob(height = unit(ht, 'mm'), width = unit(wth, 'mm'), gp = bor_args))
+          g <- grid::grobTree(g, grid::rectGrob(height = grid::unit(ht, 'mm'), width = grid::unit(wth, 'mm'), gp = bor_args))
         }
         g
       }
