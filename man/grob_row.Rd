@@ -5,7 +5,7 @@
 \title{The grob row function which helps gives the grob from the GrobblR::grob_layout()
 function its shape. Works hand in hand with the GrobblR::grob_col() function.}
 \usage{
-grob_row(..., p = 1, border = F, border_args = gpar())
+grob_row(..., p = 1, border = F, border_args = grid::gpar())
 }
 \arguments{
 \item{...}{A series of grob_col's.}

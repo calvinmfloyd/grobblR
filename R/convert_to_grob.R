@@ -84,6 +84,7 @@ convert_to_grob <- function(x, height, width, more_args = list()){
       rn_df <- matrix(rownames(x), ncol = 1)
       rn_grob <- grob_matrix(
         rn_df
+        ,m_type = 4
         ,tot_height = height - height_adj*height/(nrow(x) + 1)
         ,tot_width = width/(ncol(x) + 1)
         ,gm_list = rn_gm_list)
@@ -100,6 +101,7 @@ convert_to_grob <- function(x, height, width, more_args = list()){
       cn_df <- matrix(colnames(x), nrow = 1)
       cn_grob <- grob_matrix(
         cn_df
+        ,m_type = 3
         ,tot_height = height/(nrow(x) + 1)
         ,tot_width = width - width_adj*width/(ncol(x) + 1)
         ,gm_list = cn_gm_list)
@@ -107,27 +109,28 @@ convert_to_grob <- function(x, height, width, more_args = list()){
 
     data_grob <- grob_matrix(
       x
+      ,m_type = ifelse(cn_pres | rn_pres, 2, 1)
       ,gm_list = gm_list
       ,tot_height = height - height*height_adj/(nrow(x) + 1)
       ,tot_width = width - width*width_adj/(ncol(x) + 1))
 
     if(cn_pres & !rn_pres){
       g <- arrangeGrob(
-        grobs = gList(cn_grob, data_grob)
+        grobs = grid::gList(cn_grob, data_grob)
         ,nrow = 2
         ,ncol = 1
         ,widths = grid::unit(width, 'mm')
         ,heights = grid::unit(c(height/(nrow(x) + 1), height - height/(nrow(x) + 1)), 'mm'))
     } else if(!cn_pres & rn_pres){
       g <- arrangeGrob(
-        grobs = gList(rn_grob, data_grob)
+        grobs = grid::gList(rn_grob, data_grob)
         ,nrow = 1
         ,ncol = 2
         ,widths = grid::unit(c(width/(ncol(x) + 1), width - width/(ncol(x) + 1)), 'mm')
         ,heights = grid::unit(height, 'mm'))
     } else if(cn_pres & rn_pres){
       g <- arrangeGrob(
-        grobs = gList(cn_grob, rn_grob, data_grob)
+        grobs = grid::gList(cn_grob, rn_grob, data_grob)
         ,layout_matrix = rbind(c(NA, 1), c(2, 3))
         ,widths = grid::unit(c(width/(ncol(x) + 1), width - width/(ncol(x) + 1)), 'mm')
         ,heights = grid::unit(c(height/(nrow(x) + 1), height - height/(nrow(x) + 1)), 'mm'))
@@ -172,7 +175,7 @@ convert_to_grob <- function(x, height, width, more_args = list()){
   else if(ggplot2::is.ggplot(x)){
 
     png_name <- sprintf("ggplot_grob_%s_%s.png", format(Sys.time(), '%m_%d_%Y'), format(Sys.time(), "%H_%M_%S"))
-    ggplot2::ggsave(png_name, x, height = height, width = width, grid::unit = 'mm')
+    ggplot2::ggsave(png_name, x, height = height, width = width, unit = 'mm')
     gi_list <- sub_list_elements(gi_list, more_args)
     g <- grob_image(png_name, gi_list, tot_height = height, tot_width = width)
     file.remove(png_name)

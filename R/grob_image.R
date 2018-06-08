@@ -1,5 +1,4 @@
-#' Converts a raw .png file to a grob, with flexible aesthetics. Used within
-#' the GrobblR::convert_to_grob() function.
+#' Converts a raw .png file to a grob, with flexible aesthetics. Used within the grobblR::convert_to_grob() function.
 #'
 #' @param img_path The local path to the raw .png file.
 #' @param gi_list An list which contains aesthetic parameters for the image grob.

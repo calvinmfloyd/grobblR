@@ -1,5 +1,5 @@
-#' The grob column function which helps gives the grob from the GrobblR::grob_layout()
-#' function its shape. Works hand in hand with the GrobblR::grob_row() function.
+#' The grob column function which helps gives the grob from the grobblR::grob_layout()
+#' function its shape. Works hand in hand with the grobblR::grob_row() function.
 #'
 #' @param ... Either the object to be converted to a grob, or a combination of
 #' grob_row's which need to be converted to sub-grob's.

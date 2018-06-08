@@ -2,11 +2,11 @@
 % Please edit documentation in R/grob_col.R
 \name{grob_col}
 \alias{grob_col}
-\title{The grob column function which helps gives the grob from the GrobblR::grob_layout()
-function its shape. Works hand in hand with the GrobblR::grob_row() function.}
+\title{The grob column function which helps gives the grob from the grobblR::grob_layout()
+function its shape. Works hand in hand with the grobblR::grob_row() function.}
 \usage{
 grob_col(..., p = 1, more_args = list(), border = F,
-  border_args = gpar())
+  border_args = grid::gpar())
 }
 \arguments{
 \item{...}{Either the object to be converted to a grob, or a combination of
@@ -29,6 +29,6 @@ An R6 class which contains all the information needed to create the sub-grob.
 The sub-grob is obtained with grob_col$grob.
 }
 \description{
-The grob column function which helps gives the grob from the GrobblR::grob_layout()
-function its shape. Works hand in hand with the GrobblR::grob_row() function.
+The grob column function which helps gives the grob from the grobblR::grob_layout()
+function its shape. Works hand in hand with the grobblR::grob_row() function.
 }

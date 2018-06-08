@@ -36,17 +36,19 @@ data(iris)
 summary_df <- iris %>%
   group_by(Species) %>%
   summarise(
-    mean_petal_length = mean(Petal.Length),
-    mean_petal_width = mean(Petal.Width)) %>%
+    mpl = mean(Petal.Length),
+    mpw = mean(Petal.Width)) %>%
   as.matrix()
+rownames(summary_df) <- c('first', 'second', 'third')
 
 txt_col_df <- matrix('blue', nrow = nrow(summary_df), ncol = ncol(summary_df))
 txt_col_df[rep(c(T,F), length = nrow(summary_df)),] <- 'red'
 
 g <- convert_to_grob(
-  summary_df,
-  more_args = list(bg_color = txt_col_df, bg_alpha = 0.5, rowname_txt_color = 'red'),
-  height = 50, width = 100)
+  summary_df
+  # ,more_args = list(bg_color = txt_col_df)
+  ,height = 100
+  ,width = 200)
 
 grid.arrange(g)
 

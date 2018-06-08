@@ -1,19 +1,27 @@
-#' Converts a data.frame/matrix to a grob, with flexible aesthetics. Used within
-#' the GrobblR::convert_to_grob() function.
+#' Converts a data.frame/matrix to a grob, with flexible aesthetics. Used within the grobblR::convert_to_grob() function.
 #'
 #' @param df The data.frame/matrix to be converted to a grob.
 #' @param gm_list A list which contains aesthetic parameters for the matrix grob.
+#' @param m_type A integer value which indicates what the default aesthetics of the table will be. The possible options:
+#' \enumerate{
+#' \item 1 - Plain theme.
+#' \item 2 - Table theme.
+#' \item 3 - Column name theme.
+#' \item 4 - Row name theme.
+#' }
 #' @param tot_height A numeric value designating the total height of the matrix grob in mm.
 #' @param tot_width A numeric value designating the total width of the matrix grob in mm.
+#' @param txt_cex_adj A numeric value used to adjust the automatic text cex sizing.
 #' @return A grob of df, with the corresponding aesthetics.
 #' @export
 
-grob_matrix <- function(df, gm_list, tot_height = numeric(), tot_width = numeric()){
+grob_matrix <- function(df, gm_list, m_type = 1, tot_height = numeric(), tot_width = numeric(), txt_cex_adj = 0.25){
 
   in_to_mm <- function(x) x*25.4
 
   stopifnot(!is.null(nrow(df)), !is.null(ncol(df)))
   stopifnot(!length(tot_height) == 0, !length(tot_width) == 0)
+  stopifnot(m_type %in% c(1, 2, 3, 4))
 
   nr <- nrow(df)
   nc <- ncol(df)
@@ -49,39 +57,46 @@ grob_matrix <- function(df, gm_list, tot_height = numeric(), tot_width = numeric
 
     poss_str_widths <- sapply(cex_vals, function(c) in_to_mm(graphics::strwidth(widest_element, cex = c, units = 'inches')))
     poss_str_heights <- sapply(cex_vals, function(c) in_to_mm(graphics::strheight(tallest_element, cex = c, units = 'inches')))
-    def_txt_cex <- min(c(cex_vals[max(which(poss_str_widths <= cw))], cex_vals[max(which(poss_str_heights <= rh))]))
+    def_txt_cex <- min(c(cex_vals[max(which(poss_str_widths <= cw))],cex_vals[max(which(poss_str_heights <= rh))]))
+    def_txt_cex <- def_txt_cex - txt_cex_adj*def_txt_cex
 
   }
   # ----
 
   # Adding in default values (matrices) if they are missing ----
   def_vals_matrices <- list(
-    fnt_face = 1,
-    bg_color = 'white',
-    bg_alpha = 1,
-    borders = '',
-    txt_color = 'black',
-    txt_align = 0.5,
-    txt_v_align = 0.5,
-    txt_just = 0.5,
-    txt_v_just = 0.5,
-    txt_cex = def_txt_cex,
-    txt_font = 'sans',
-    border_color = 'gray40',
-    txt_angle = 0,
-    border_width = 1)
+    fnt_face = c(1, 1, 4, 3),
+    bg_color = c('white', 'white', 'white', 'white'),
+    bg_alpha = c(1, 1, 1, 1),
+    borders = c('', '', '', ''),
+    txt_color = c('black', 'black', '#3A70A6', 'black'),
+    txt_align = c(0.5, 0.5, 0.5, 0.5),
+    txt_v_align = c(0.5, 0.5, 0.5, 0.5),
+    txt_just = c(0.5, 0.5, 0.5, 0.5),
+    txt_v_just = c(0.5, 0.5, 0.5, 0.5),
+    txt_cex = rep(def_txt_cex, 4),
+    txt_font = rep('sans', 4),
+    border_color = c('gray40', 'gray40', '#3A70A6', 'gray40'),
+    txt_angle = rep(0, 4),
+    border_width = rep(4, 4))
 
   bg_color_not_inputted <- all(dim(gm_list$bg_color) == 0)
 
   for(val_name in names(def_vals_matrices)){
-    def_vals_matrices[[val_name]] <- ifelse(
+    def_vals_matrices[[val_name]][m_type] <- ifelse(
       all(is.null(gm_list[[val_name]])) | all(dim(gm_list[[val_name]]) == 1),
       gm_list[[val_name]][1,1],
-      def_vals_matrices[[val_name]])
+      def_vals_matrices[[val_name]][m_type])
+
     if(all(dim(gm_list[[val_name]]) <= 1)){
-      gm_list[[val_name]] <- matrix(def_vals_matrices[[val_name]], nrow = nr, ncol = nc)
+      gm_list[[val_name]] <- matrix(def_vals_matrices[[val_name]][m_type], nrow = nr, ncol = nc)
+    } else {
+      stopifnot(nrow(gm_list[[val_name]]) == nr, ncol(gm_list[[val_name]]) == nc)
     }
   }
+
+  if(bg_color_not_inputted & m_type %in% c(2,4)) gm_list[['bg_color']][rep(c(F,T), length = nr),] <- 'gray90'
+
   # ----
 
   raw_grobs <- grid::gList()

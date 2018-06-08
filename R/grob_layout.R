@@ -1,5 +1,4 @@
-#' The main GrobblR function which contains and organizes the GrobblR::grob_col()
-#' and GrobblR::grob_row() functions, giving the combined grob its shape.
+#' The main grobblR function which contains and organizes the GrobblR::grob_col() and grobblR::grob_row() functions, giving the combined grob its shape.
 #'
 #' @param ... The combination of grob_row's and grob_col's which will help give
 #' the main grob outputted its shape and look.
