@@ -6,7 +6,6 @@
 #' ggplot, NA (for an empty grob), or already a grob.
 #' @param height The numeric height in mm of the desired grob.
 #' @param width The numeric width in mm of the desired grob.
-#' @param more_args A list with any extra aesthetic preferences for the desired grobs.
 #' @return A grob of x with aesthetics based on the more_args param.
 #' @export
 
@@ -115,23 +114,22 @@ convert_to_grob <- function(x, height, width, more_args = list()){
       ,tot_width = width - width*width_adj/(ncol(x) + 1))
 
     if(cn_pres & !rn_pres){
-      g <- arrangeGrob(
+      g <- grid::arrangeGrob(
         grobs = grid::gList(cn_grob, data_grob)
         ,nrow = 2
         ,ncol = 1
         ,widths = grid::unit(width, 'mm')
         ,heights = grid::unit(c(height/(nrow(x) + 1), height - height/(nrow(x) + 1)), 'mm'))
     } else if(!cn_pres & rn_pres){
-      g <- arrangeGrob(
+      g <- grid::arrangeGrob(
         grobs = grid::gList(rn_grob, data_grob)
-        ,nrow = 1
-        ,ncol = 2
+        ,layout_matrix =
         ,widths = grid::unit(c(width/(ncol(x) + 1), width - width/(ncol(x) + 1)), 'mm')
         ,heights = grid::unit(height, 'mm'))
     } else if(cn_pres & rn_pres){
-      g <- arrangeGrob(
-        grobs = grid::gList(cn_grob, rn_grob, data_grob)
-        ,layout_matrix = rbind(c(NA, 1), c(2, 3))
+      g <- grid::arrangeGrob(
+        grobs = grid::gList(data_grob, cn_grob, rn_grob)
+        ,layout_matrix = rbind(c(NA, 2), c(3, 1))
         ,widths = grid::unit(c(width/(ncol(x) + 1), width - width/(ncol(x) + 1)), 'mm')
         ,heights = grid::unit(c(height/(nrow(x) + 1), height - height/(nrow(x) + 1)), 'mm'))
     } else {

@@ -122,7 +122,7 @@ grob_matrix <- function(df, gm_list, m_type = 1, tot_height = numeric(), tot_wid
           cex = gm_list$txt_cex[i,j],
           col = gm_list$txt_color[i,j]))
 
-      cell_border_gs <- gList()
+      cell_border_gs <- grid::gList()
       borders_split <- unlist(strsplit(gm_list$borders[i,j], split = ', ', fixed = TRUE))
 
       if(length(borders_split) > 0){
