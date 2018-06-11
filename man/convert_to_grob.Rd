@@ -15,8 +15,6 @@ ggplot, NA (for an empty grob), or already a grob.}
 \item{height}{The numeric height in mm of the desired grob.}
 
 \item{width}{The numeric width in mm of the desired grob.}
-
-\item{more_args}{A list with any extra aesthetic preferences for the desired grobs.}
 }
 \value{
 A grob of x with aesthetics based on the more_args param.

@@ -114,20 +114,20 @@ convert_to_grob <- function(x, height, width, more_args = list()){
       ,tot_width = width - width*width_adj/(ncol(x) + 1))
 
     if(cn_pres & !rn_pres){
-      g <- grid::arrangeGrob(
+      g <- gridExtra::arrangeGrob(
         grobs = grid::gList(cn_grob, data_grob)
         ,nrow = 2
         ,ncol = 1
         ,widths = grid::unit(width, 'mm')
         ,heights = grid::unit(c(height/(nrow(x) + 1), height - height/(nrow(x) + 1)), 'mm'))
     } else if(!cn_pres & rn_pres){
-      g <- grid::arrangeGrob(
+      g <- gridExtra::arrangeGrob(
         grobs = grid::gList(rn_grob, data_grob)
         ,layout_matrix =
         ,widths = grid::unit(c(width/(ncol(x) + 1), width - width/(ncol(x) + 1)), 'mm')
         ,heights = grid::unit(height, 'mm'))
     } else if(cn_pres & rn_pres){
-      g <- grid::arrangeGrob(
+      g <- gridExtra::arrangeGrob(
         grobs = grid::gList(data_grob, cn_grob, rn_grob)
         ,layout_matrix = rbind(c(NA, 2), c(3, 1))
         ,widths = grid::unit(c(width/(ncol(x) + 1), width - width/(ncol(x) + 1)), 'mm')

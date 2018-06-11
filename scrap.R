@@ -54,7 +54,7 @@ grid.arrange(g)
 
 gg <- ggplot(iris) + geom_point(aes(x = Sepal.Length, y = Sepal.Width, color = Species))
 
-g <- grob_layout(
+g1 <- grob_layout(
   grob_row(p = 1,
     border = T,
     border_args = gpar(col = 'red', alpha = 0.5),
@@ -82,6 +82,9 @@ g <- grob_layout(
     border_args = gpar(lwd = 10, col = 'blue', alpha = 0.75),
     grob_col(p = 1, first_paragraph, more_args = list(txt_just = 0, txt_align = 0)))
 )
+
+g2 <- grob_layout(grob_row(grob_col(summary_df)))
+grid.arrange(g2$grob)
 
 ggsave('g1.pdf', g$grob, height = as.numeric(g$total_height), width = as.numeric(g$total_width), units = 'mm')
 
