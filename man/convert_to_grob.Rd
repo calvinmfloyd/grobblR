@@ -2,24 +2,22 @@
 % Please edit documentation in R/convert_to_grob.R
 \name{convert_to_grob}
 \alias{convert_to_grob}
-\title{The function used within grob_col which takes in the object the
-user wants to grob, and converts it to a grob.}
+\title{The function used within grob_col which takes in the object the user wants to grob, and converts it to a grob.}
 \usage{
-convert_to_grob(x, height, width, more_args = list())
+convert_to_grob(x, height, width, aes_list = list())
 }
 \arguments{
-\item{x}{The object which needs to be converted to a grob. Must be either:
-A data.frame/martrix, the name of a .png image, a character string, a
-ggplot, NA (for an empty grob), or already a grob.}
+\item{x}{The object which needs to be converted to a grob. Must be either: A data.frame/martrix, the name of a .png image, a character string, a ggplot, NA (for an empty grob), or already a grob.}
 
 \item{height}{The numeric height in mm of the desired grob.}
 
 \item{width}{The numeric width in mm of the desired grob.}
+
+\item{aes_list}{The list which contains elements to adjust aesthetics to the grob of x.}
 }
 \value{
-A grob of x with aesthetics based on the more_args param.
+A grob of x with aesthetics based on the aes_list param.
 }
 \description{
-The function used within grob_col which takes in the object the
-user wants to grob, and converts it to a grob.
+The function used within grob_col which takes in the object the user wants to grob, and converts it to a grob.
 }

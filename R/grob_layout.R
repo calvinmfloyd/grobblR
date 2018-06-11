@@ -1,34 +1,24 @@
 #' The main grobblR function which contains and organizes the GrobblR::grob_col() and grobblR::grob_row() functions, giving the combined grob its shape.
 #'
-#' @param ... The combination of grob_row's and grob_col's which will help give
-#' the main grob outputted its shape and look.
-#' @param page_height The numeric height of the grob in mm. Default is 280 mm -
-#' which is the height of an upright 8.5 x 11 in piece of copy paper.
-#' @param page_width The numeric width of the grob in mm. Default is 216 mm -
-#' which is the width of an upright 8.5 x 11 in piece of copy paper.
-#' @param page_padding The numeric amount of padding around the edge of the grob
-#' in mm. Default is 5 mm.
-#' @param grob_padding The numeric amount of padding for each individual grob
-#' within their designated grid of area in mm. Default is 2 mm.
-#' @param row_heights If the user wants to designate specific row heights
-#' instead relying on the proportions within the grob_row functions,
-#' set this parameter equal to a vector of numeric values corresponding
-#' to the individual row heights in mm. Length must be equal to the number
-#' of grob_row function's on the upper most level of the grob.
-#' @return A list containing the total grob, and other values related to its
-#' formation - including total height/width of the grob, row heights and the paddings.
+#' @param ... The combination of grob_row's and grob_col's which will help give the main grob outputted its shape and look.
+#' @param height The numeric height of the grob in mm. Default is 280 mm - which is the height of an upright 8.5 x 11 in piece of copy paper.
+#' @param width The numeric width of the grob in mm. Default is 216 mm - which is the width of an upright 8.5 x 11 in piece of copy paper.
+#' @param padding The numeric amount of padding around the edge of the grob  in mm. Default is 5 mm.
+#' @param grob_padding The numeric amount of padding for each individual grob within their designated grid of area in mm. Default is 2 mm.
+#' @param row_heights If the user wants to designate specific row heights instead relying on the proportions within the grob_row functions, set this parameter equal to a vector of numeric values corresponding to the individual row heights in mm. Length must be equal to the number of grob_row function's on the upper most level of the grob.
+#' @return A list containing the total grob, and other values related to its formation - including total height/width of the grob, row heights and the paddings.
 #' @export
 
 grob_layout <- function(...,
-                        page_height = 280,
-                        page_width = 216,
-                        page_padding = 5,
+                        height = 280,
+                        width = 216,
+                        padding = 5,
                         grob_padding = 2,
                         row_heights = c()){
 
   # Initializing Variables ----
-  ph <- page_height - 2*page_padding
-  pw <- page_width - 2*page_padding
+  ph <- height - 2*padding
+  pw <- width - 2*padding
   g_info <- list(...)
   # ----
 
@@ -67,8 +57,8 @@ grob_layout <- function(...,
     'grob' = grob,
     'row_heights' = grid::unit(row_heights, 'mm'),
     'column_widths' = grid::unit(pw, 'mm'),
-    'total_height' = grid::unit(page_height, 'mm'),
-    'total_width' = grid::unit(page_width, 'mm'),
-    'page_padding' = grid::unit(page_padding, 'mm'),
+    'total_height' = grid::unit(height, 'mm'),
+    'total_width' = grid::unit(width, 'mm'),
+    'padding' = grid::unit(padding, 'mm'),
     'grob_padding' = grid::unit(grob_padding, 'mm'))
 }

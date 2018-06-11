@@ -45,12 +45,13 @@ txt_col_df <- matrix('blue', nrow = nrow(summary_df), ncol = ncol(summary_df))
 txt_col_df[rep(c(T,F), length = nrow(summary_df)),] <- 'red'
 
 g <- convert_to_grob(
-  summary_df
-  # ,more_args = list(bg_color = txt_col_df)
+  as.matrix(head(iris,20))
+  ,aes_list = list(color_gradient_cols = c(1), color_gradient_binary = T, color_binary_cut_off = 4.5)
   ,height = 100
   ,width = 200)
 
 grid.arrange(g)
+ggsave('g.pdf', g, height = 100, width = 200, units = 'mm')
 
 gg <- ggplot(iris) + geom_point(aes(x = Sepal.Length, y = Sepal.Width, color = Species))
 

@@ -1,7 +1,7 @@
 #' Converts a data.frame/matrix to a grob, with flexible aesthetics. Used within the grobblR::convert_to_grob() function.
 #'
 #' @param df The data.frame/matrix to be converted to a grob.
-#' @param gm_list A list which contains aesthetic parameters for the matrix grob.
+#' @param aes_list A list which contains aesthetic parameters for the matrix grob.
 #' @param m_type A integer value which indicates what the default aesthetics of the table will be. The possible options:
 #' \enumerate{
 #' \item 1 - Plain theme.
@@ -9,18 +9,26 @@
 #' \item 3 - Column name theme.
 #' \item 4 - Row name theme.
 #' }
-#' @param tot_height A numeric value designating the total height of the matrix grob in mm.
-#' @param tot_width A numeric value designating the total width of the matrix grob in mm.
+#' @param height A numeric value designating the total height of the matrix grob in mm.
+#' @param width A numeric value designating the total width of the matrix grob in mm.
 #' @param txt_cex_adj A numeric value used to adjust the automatic text cex sizing.
 #' @return A grob of df, with the corresponding aesthetics.
 #' @export
 
-grob_matrix <- function(df, gm_list, m_type = 1, tot_height = numeric(), tot_width = numeric(), txt_cex_adj = 0.25){
+grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = numeric(), txt_cex_adj = 0.25){
 
   in_to_mm <- function(x) x*25.4
 
+  decimal_places <- function(x) {
+    if((x %% 1) != 0){
+      nchar(strsplit(sub('0+$', '', as.character(x)), ".", fixed=TRUE)[[1]][[2]])
+    } else {
+      return(0)
+    }
+  }
+
   stopifnot(!is.null(nrow(df)), !is.null(ncol(df)))
-  stopifnot(!length(tot_height) == 0, !length(tot_width) == 0)
+  stopifnot(!length(height) == 0, !length(width) == 0)
   stopifnot(m_type %in% c(1, 2, 3, 4))
 
   nr <- nrow(df)
@@ -29,19 +37,28 @@ grob_matrix <- function(df, gm_list, m_type = 1, tot_height = numeric(), tot_wid
   # Adding in default values (non-matrices) if they are missing ----
   def_vals_non_matrices <- list(
     group_elements = FALSE,
-    cell_sep = 1)
+    cell_sep = 1,
+    color_gradient_cols = numeric(),
+    color_gradient_binary = FALSE,
+    color_binary_cut_off = 0,
+    color_binary_high = '#63BE7B',
+    color_binary_low = '#F8696B',
+    color_binary_equal = 'gray90',
+    color_gradient_max = '#63BE7B',
+    color_gradient_mid = '#FFEB84',
+    color_gradient_min = '#F8696B')
 
   for(val_name in names(def_vals_non_matrices)){
-    if(length(gm_list[[val_name]]) == 0){
-      gm_list[[val_name]] <- def_vals_non_matrices[[val_name]]
+    if(length(aes_list[[val_name]]) == 0){
+      aes_list[[val_name]] <- def_vals_non_matrices[[val_name]]
     }
   }
   # ----
 
   # Making adjustments to txt_cex, if need be ----
-  adjust_cex <- length(gm_list$txt_cex) == 0 &
-    (length(tot_height) == 1 & length(gm_list$row_heights) == 0) &
-    (length(tot_width) == 1 & length(gm_list$col_widths) == 0)
+  adjust_cex <- length(aes_list$txt_cex) == 0 &
+    (length(height) == 1 & length(aes_list$row_heights) == 0) &
+    (length(width) == 1 & length(aes_list$col_widths) == 0)
 
   if(!adjust_cex){
 
@@ -50,8 +67,8 @@ grob_matrix <- function(df, gm_list, m_type = 1, tot_height = numeric(), tot_wid
   } else {
 
     cex_vals <- seq(0.01, 20, 0.01)
-    rh <- tot_height/nr - 2*gm_list$cell_sep
-    cw <- tot_width/nc - 2*gm_list$cell_sep
+    rh <- height/nr - 2*aes_list$cell_sep
+    cw <- width/nc - 2*aes_list$cell_sep
     widest_element <- c(df)[which(graphics::strwidth(c(df), units = 'in') == max(graphics::strwidth(c(df), units = 'in')))[1]]
     tallest_element <- c(df)[which(graphics::strheight(c(df), units = 'in') == max(graphics::strheight(c(df), units = 'in')))[1]]
 
@@ -74,28 +91,59 @@ grob_matrix <- function(df, gm_list, m_type = 1, tot_height = numeric(), tot_wid
     txt_v_align = c(0.5, 0.5, 0.5, 0.5),
     txt_just = c(0.5, 0.5, 0.5, 0.5),
     txt_v_just = c(0.5, 0.5, 0.5, 0.5),
-    txt_cex = rep(def_txt_cex, 4),
-    txt_font = rep('sans', 4),
+    txt_cex = c(def_txt_cex, def_txt_cex, def_txt_cex, def_txt_cex),
+    txt_font = c('sans', 'sans', 'sans', 'sans'),
     border_color = c('gray40', 'gray40', '#3A70A6', 'gray40'),
-    txt_angle = rep(0, 4),
-    border_width = rep(4, 4))
+    txt_angle = c(0, 0, 0, 0),
+    border_width = c(4, 4, 4, 4))
 
-  bg_color_not_inputted <- all(dim(gm_list$bg_color) == 0)
+  bg_color_not_inputted <- all(dim(aes_list$bg_color) == 0)
 
   for(val_name in names(def_vals_matrices)){
     def_vals_matrices[[val_name]][m_type] <- ifelse(
-      all(is.null(gm_list[[val_name]])) | all(dim(gm_list[[val_name]]) == 1),
-      gm_list[[val_name]][1,1],
+      all(is.null(aes_list[[val_name]])) | all(dim(aes_list[[val_name]]) == 1),
+      aes_list[[val_name]][1,1],
       def_vals_matrices[[val_name]][m_type])
 
-    if(all(dim(gm_list[[val_name]]) <= 1)){
-      gm_list[[val_name]] <- matrix(def_vals_matrices[[val_name]][m_type], nrow = nr, ncol = nc)
+    if(all(dim(aes_list[[val_name]]) <= 1)){
+      aes_list[[val_name]] <- matrix(def_vals_matrices[[val_name]][m_type], nrow = nr, ncol = nc)
     } else {
-      stopifnot(nrow(gm_list[[val_name]]) == nr, ncol(gm_list[[val_name]]) == nc)
+      stopifnot(nrow(aes_list[[val_name]]) == nr, ncol(aes_list[[val_name]]) == nc)
     }
   }
 
-  if(bg_color_not_inputted & m_type %in% c(2,4)) gm_list[['bg_color']][rep(c(F,T), length = nr),] <- 'gray90'
+  if(bg_color_not_inputted & m_type %in% c(2,4)) aes_list[['bg_color']][rep(c(F,T), length = nr),] <- 'gray90'
+
+  if(length(aes_list[['color_gradient_cols']]) > 0 &
+     aes_list[['color_gradient_binary']] %in% FALSE &
+     m_type %in% c(1,2)){
+
+    crp.f <- grDevices::colorRampPalette(
+      c(aes_list[['color_gradient_min']],
+        aes_list[['color_gradient_mid']],
+        aes_list[['color_gradient_max']]))
+
+    for(cc in aes_list[['color_gradient_cols']]){
+
+      num_vals <- as.numeric(df[,cc])
+      range <- (max(num_vals) - min(num_vals))
+      dp <- decimal_places(range)
+      range <- range*10^dp
+      crp <- crp.f(range + 1)
+      val_vec <- (num_vals - min(num_vals))*10^dp + 1
+      aes_list[['bg_color']][,cc] <- crp[val_vec]
+      }
+
+    } else if (aes_list[['color_gradient_binary']] %in% TRUE &
+               m_type %in% c(1,2)){
+
+      for(cc in aes_list[['color_gradient_cols']]){
+        num_vals <- as.numeric(df[,cc])
+        aes_list[['bg_color']][,cc][num_vals < aes_list[['color_binary_cut_off']]] <- aes_list[['color_binary_low']]
+        aes_list[['bg_color']][,cc][num_vals > aes_list[['color_binary_cut_off']]] <- aes_list[['color_binary_high']]
+        aes_list[['bg_color']][,cc][num_vals == aes_list[['color_binary_cut_off']]] <- aes_list[['color_binary_equal']]
+        }
+    }
 
   # ----
 
@@ -105,25 +153,25 @@ grob_matrix <- function(df, gm_list, m_type = 1, tot_height = numeric(), tot_wid
 
       rect_grob <- grid::rectGrob(
         gp = grid::gpar(
-          fill = gm_list$bg_color[i,j],
-          col = gm_list$bg_color[i,j],
-          alpha = gm_list$bg_alpha[i,j]))
+          fill = aes_list$bg_color[i,j],
+          col = aes_list$bg_color[i,j],
+          alpha = aes_list$bg_alpha[i,j]))
 
       text_grob <- grid::textGrob(
         df[i,j],
-        x = grid::unit(gm_list$txt_align[i,j], "npc"),
-        y = grid::unit(gm_list$txt_v_align[i,j], "npc"),
-        hjust = gm_list$txt_just[i,j],
-        vjust = gm_list$txt_v_just[i,j],
-        rot = gm_list$txt_angle[i,j],
+        x = grid::unit(aes_list$txt_align[i,j], "npc"),
+        y = grid::unit(aes_list$txt_v_align[i,j], "npc"),
+        hjust = aes_list$txt_just[i,j],
+        vjust = aes_list$txt_v_just[i,j],
+        rot = aes_list$txt_angle[i,j],
         gp = grid::gpar(
-          fontface = gm_list$fnt_face[i,j],
-          fontfamily = gm_list$txt_font[i,j],
-          cex = gm_list$txt_cex[i,j],
-          col = gm_list$txt_color[i,j]))
+          fontface = aes_list$fnt_face[i,j],
+          fontfamily = aes_list$txt_font[i,j],
+          cex = aes_list$txt_cex[i,j],
+          col = aes_list$txt_color[i,j]))
 
       cell_border_gs <- grid::gList()
-      borders_split <- unlist(strsplit(gm_list$borders[i,j], split = ', ', fixed = TRUE))
+      borders_split <- unlist(strsplit(aes_list$borders[i,j], split = ', ', fixed = TRUE))
 
       if(length(borders_split) > 0){
         for(side in 1:length(borders_split)){
@@ -135,7 +183,7 @@ grob_matrix <- function(df, gm_list, m_type = 1, tot_height = numeric(), tot_wid
               y0 = grid::unit(ifelse(borders_split[side] %in% c("top"), 1, 0), "npc"),
               x1 = grid::unit(ifelse(borders_split[side] %in% c("top", "bottom", "right"), 1, 0), "npc"),
               y1 = grid::unit(ifelse(borders_split[side] %in% c("left", "right", "top"), 1, 0), "npc"),
-              gp = grid::gpar(col = gm_list$border_color[i,j], lwd = gm_list$border_width[i,j])))
+              gp = grid::gpar(col = aes_list$border_color[i,j], lwd = aes_list$border_width[i,j])))
         }
 
         raw_grobs <- grid::gList(raw_grobs, grid::grobTree(rect_grob, cell_border_gs, text_grob))
@@ -148,7 +196,7 @@ grob_matrix <- function(df, gm_list, m_type = 1, tot_height = numeric(), tot_wid
     }}
 
   # ----
-  if(gm_list$group_elements){
+  if(aes_list$group_elements){
     ue <- unique(c(as.matrix(df)))
     level_df <- data.frame(element = ue, level = 1:length(ue), stringsAsFactors = F)
     matched_df <- matrix(level_df$level[match(df, level_df$element)], nrow = nr)
@@ -185,7 +233,7 @@ grob_matrix <- function(df, gm_list, m_type = 1, tot_height = numeric(), tot_wid
   }
   # ----
 
-  if(length(gm_list$row_heights) == 0 & length(tot_height) == 0){
+  if(length(aes_list$row_heights) == 0 & length(height) == 0){
 
     tmp_row_heights <- c()
     for(i in 1:nr){
@@ -194,20 +242,20 @@ grob_matrix <- function(df, gm_list, m_type = 1, tot_height = numeric(), tot_wid
           in_to_mm(graphics::strheight(txt, units = 'inches', cex = cex, family = fam, font = face))
         },
         df[i,],
-        gm_list$txt_cex[i,],
-        gm_list$fnt_face[i,],
-        gm_list$txt_font[i,])
-      tmp_row_heights <- c(tmp_row_heights, max(ind_row_heights) + 2*gm_list$cell_sep)
+        aes_list$txt_cex[i,],
+        aes_list$fnt_face[i,],
+        aes_list$txt_font[i,])
+      tmp_row_heights <- c(tmp_row_heights, max(ind_row_heights) + 2*aes_list$cell_sep)
     }
-    gm_list$row_heights <- rep(max(tmp_row_heights), nr)
+    aes_list$row_heights <- rep(max(tmp_row_heights), nr)
 
-  } else if(length(tot_height) == 1 & length(gm_list$row_heights) != nr){
+  } else if(length(height) == 1 & length(aes_list$row_heights) != nr){
 
-    gm_list$row_heights <- rep(tot_height/nr, nr)
+    aes_list$row_heights <- rep(height/nr, nr)
 
   }
 
-  if(length(gm_list$col_widths) == 0 & length(tot_width) == 0){
+  if(length(aes_list$col_widths) == 0 & length(width) == 0){
 
     tmp_col_widths <- c()
     for(i in 1:nc){
@@ -216,16 +264,16 @@ grob_matrix <- function(df, gm_list, m_type = 1, tot_height = numeric(), tot_wid
           in_to_mm(graphics::strwidth(txt, units = 'inches', cex = cex, family = fam, font = face))
         },
         df[,i],
-        gm_list$txt_cex[,i],
-        gm_list$fnt_face[,i],
-        gm_list$txt_font[,i])
-      tmp_col_widths <- c(tmp_col_widths, max(ind_col_widths) + 2*gm_list$cell_sep)
+        aes_list$txt_cex[,i],
+        aes_list$fnt_face[,i],
+        aes_list$txt_font[,i])
+      tmp_col_widths <- c(tmp_col_widths, max(ind_col_widths) + 2*aes_list$cell_sep)
     }
-    gm_list$col_widths <- tmp_col_widths
+    aes_list$col_widths <- tmp_col_widths
 
-  } else if(length(tot_width) == 1 & length(gm_list$col_widths) != nc){
+  } else if(length(width) == 1 & length(aes_list$col_widths) != nc){
 
-    gm_list$col_widths <- rep(tot_width/nc, nc)
+    aes_list$col_widths <- rep(width/nc, nc)
 
   }
   # ----
@@ -233,8 +281,8 @@ grob_matrix <- function(df, gm_list, m_type = 1, tot_height = numeric(), tot_wid
 
   gridExtra::arrangeGrob(
     grobs = raw_grobs[first_element_indices],
-    heights = grid::unit(gm_list$row_heights, 'mm'),
-    widths = grid::unit(gm_list$col_widths, 'mm'),
+    heights = grid::unit(aes_list$row_heights, 'mm'),
+    widths = grid::unit(aes_list$col_widths, 'mm'),
     layout_matrix = layout_matrix)
 
 }

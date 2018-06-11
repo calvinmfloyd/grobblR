@@ -20,7 +20,9 @@ grob_to_pdf <- function(..., file_name = character()){
     height = mm_to_in(as.numeric(grob_layout_lists[[1]]$total_height)),
     width = mm_to_in(as.numeric(grob_layout_lists[[1]]$total_width)))
 
-  for(gll in grob_layout_lists) grid.arrange(gll$grob)
+  for(gll in grob_layout_lists){
+    grid.arrange(gll$grob)
+  }
 
   closed <- grDevices::dev.off()
 

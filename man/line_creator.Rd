@@ -2,11 +2,10 @@
 % Please edit documentation in R/line_creator.R
 \name{line_creator}
 \alias{line_creator}
-\title{Based on the given text cex value and given width breaks down the given string
-into a series of lines. Checks to see if the lines would fit within the given
-height, as well. Utilized when creating character string grobs.}
+\title{Based on the given text cex value and given width breaks down the given string into a series of lines. Checks to see if the lines would fit within the given height, as well. Utilized when creating character string grobs.}
 \usage{
-line_creator(cex_val, string, height, width, one_line = FALSE)
+line_creator(cex_val, string, height = numeric(), width = numeric(),
+  one_line = FALSE)
 }
 \arguments{
 \item{cex_val}{The text cex multiplier applied to the string.}
@@ -17,14 +16,11 @@ line_creator(cex_val, string, height, width, one_line = FALSE)
 
 \item{width}{A numeric value designating the total width of the matrix grob in mm.}
 
-\item{one_line}{Whether or not only one line is desired, instead of a series of lines.
-Utilized with headers, for example.}
+\item{one_line}{Whether or not only one line is desired, instead of a series of lines. Utilized with headers, for example.}
 }
 \value{
 A vector with each index equal to a line of the broken-down string.
 }
 \description{
-Based on the given text cex value and given width breaks down the given string
-into a series of lines. Checks to see if the lines would fit within the given
-height, as well. Utilized when creating character string grobs.
+Based on the given text cex value and given width breaks down the given string into a series of lines. Checks to see if the lines would fit within the given height, as well. Utilized when creating character string grobs.
 }

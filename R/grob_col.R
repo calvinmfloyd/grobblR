@@ -5,7 +5,7 @@
 #' grob_row's which need to be converted to sub-grob's.
 #' @param p The numeric proportion of the width given to the outer grob_row which
 #' should be given to the sub-grob outputted by this function. Defaults to 1.
-#' @param more_args A list of arguments corresponding to the desired sub-grob which
+#' @param aes_list A list of arguments corresponding to the desired sub-grob which
 #' affect its appearance. Default is an empty list.
 #' @param border A TRUE/FALSE argument corresponding to whether or not a border
 #' around the outputted sub-grob is desired. Defaults to FALSE.
@@ -15,7 +15,7 @@
 #' The sub-grob is obtained with grob_col$grob.
 #' @export
 
-grob_col <- function(..., p = 1, more_args = list(), border = F, border_args = grid::gpar()){
+grob_col <- function(..., p = 1, aes_list = list(), border = F, border_args = grid::gpar()){
 
   grob_col_class <- R6::R6Class(
     "grob_col",
@@ -25,21 +25,21 @@ grob_col <- function(..., p = 1, more_args = list(), border = F, border_args = g
       height = 0,
       width = 0,
       padding = 0,
-      more_args = list(),
+      aes_list = list(),
       border = F,
       border_args = grid::gpar(),
-      initialize = function(contents, more_args, proportion, border, border_args){
-        stopifnot(is.list(contents), is.list(more_args), is.numeric(proportion))
+      initialize = function(contents, aes_list, proportion, border, border_args){
+        stopifnot(is.list(contents), is.list(aes_list), is.numeric(proportion))
         self$contents <- contents
         self$proportion <- proportion
-        self$more_args <- more_args
+        self$aes_list <- aes_list
         self$border <- border
         self$border_args <- border_args
       }
     ),
     active = list(
       grob = function(contents = self$contents,
-                      m_a = self$more_args,
+                      m_a = self$aes_list,
                       ht = self$height,
                       wth = self$width,
                       pad = self$padding,
@@ -59,7 +59,7 @@ grob_col <- function(..., p = 1, more_args = list(), border = F, border_args = g
             contents[[i]]$padding <- pad
             raw_grobs <- grid::gList(raw_grobs, contents[[i]]$grob)
           } else {
-            g <- convert_to_grob(x = contents[[i]], height = hts_w_padding[i], width = wth_w_padding, more_args = m_a)
+            g <- convert_to_grob(x = contents[[i]], height = hts_w_padding[i], width = wth_w_padding, aes_list = m_a)
             if(bor) g <- grid::grobTree(g, rectGrob(height = grid::unit(hts[i], 'mm'), width = grid::unit(wth, 'mm'), gp = bor_args))
             raw_grobs <- grid::gList(raw_grobs, g)
           }
@@ -76,7 +76,7 @@ grob_col <- function(..., p = 1, more_args = list(), border = F, border_args = g
   grob_col_contents <- list(...)
   grob_col_class$new(
     contents = grob_col_contents,
-    more_args = more_args,
+    aes_list = aes_list,
     proportion = p,
     border = border,
     border_args = border_args)

@@ -4,16 +4,16 @@
 \alias{grob_image}
 \title{Converts a raw .png file to a grob, with flexible aesthetics. Used within the grobblR::convert_to_grob() function.}
 \usage{
-grob_image(img_path, gi_list, tot_height = numeric(), tot_width = numeric())
+grob_image(img_path, aes_list, height = numeric(), width = numeric())
 }
 \arguments{
 \item{img_path}{The local path to the raw .png file.}
 
-\item{gi_list}{An list which contains aesthetic parameters for the image grob.}
+\item{aes_list}{An list which contains aesthetic parameters for the image grob.}
 
-\item{tot_height}{A numeric value designating the total height of the matrix grob in mm.}
+\item{height}{A numeric value designating the total height of the matrix grob in mm.}
 
-\item{tot_width}{A numeric value designating the total width of the matrix grob in mm.}
+\item{width}{A numeric value designating the total width of the matrix grob in mm.}
 }
 \value{
 A grob of the raw .png file.

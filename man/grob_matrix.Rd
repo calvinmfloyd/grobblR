@@ -4,13 +4,13 @@
 \alias{grob_matrix}
 \title{Converts a data.frame/matrix to a grob, with flexible aesthetics. Used within the grobblR::convert_to_grob() function.}
 \usage{
-grob_matrix(df, gm_list, m_type = 1, tot_height = numeric(),
-  tot_width = numeric(), txt_cex_adj = 0.25)
+grob_matrix(df, aes_list, m_type = 1, height = numeric(),
+  width = numeric(), txt_cex_adj = 0.25)
 }
 \arguments{
 \item{df}{The data.frame/matrix to be converted to a grob.}
 
-\item{gm_list}{A list which contains aesthetic parameters for the matrix grob.}
+\item{aes_list}{A list which contains aesthetic parameters for the matrix grob.}
 
 \item{m_type}{A integer value which indicates what the default aesthetics of the table will be. The possible options:
 \enumerate{
@@ -20,9 +20,9 @@ grob_matrix(df, gm_list, m_type = 1, tot_height = numeric(),
 \item 4 - Row name theme.
 }}
 
-\item{tot_height}{A numeric value designating the total height of the matrix grob in mm.}
+\item{height}{A numeric value designating the total height of the matrix grob in mm.}
 
-\item{tot_width}{A numeric value designating the total width of the matrix grob in mm.}
+\item{width}{A numeric value designating the total width of the matrix grob in mm.}
 
 \item{txt_cex_adj}{A numeric value used to adjust the automatic text cex sizing.}
 }
