@@ -24,7 +24,11 @@ grob_to_pdf <- function(..., file_name = character()){
     width = mm_to_in(sum(as.numeric(grob_list[[1]]$widths))))
 
   for(gll in grob_list){
-    grid.arrange(gll)
+    if(!is.grob(gll)){
+      closed <- grDevices::dev.off()
+      stop('All inputs must be grobs.')
+    }
+    gridExtra::grid.arrange(gll)
   }
 
   closed <- grDevices::dev.off()
