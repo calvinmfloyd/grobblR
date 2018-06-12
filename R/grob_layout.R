@@ -49,16 +49,10 @@ grob_layout <- function(...,
 
   grob <- gridExtra::arrangeGrob(
     grobs = raw_grobs,
-    heights = grid::unit(row_heights, 'mm'),
-    widths = grid::unit(pw, 'mm'),
-    layout_matrix = layout_matrix)
+    heights = grid::unit(c(padding, row_heights, padding), 'mm'),
+    widths = grid::unit(c(padding, pw, padding), 'mm'),
+    layout_matrix = cbind(NA, rbind(NA, layout_matrix, NA), NA))
 
-  list(
-    'grob' = grob,
-    'row_heights' = grid::unit(row_heights, 'mm'),
-    'column_widths' = grid::unit(pw, 'mm'),
-    'total_height' = grid::unit(height, 'mm'),
-    'total_width' = grid::unit(width, 'mm'),
-    'padding' = grid::unit(padding, 'mm'),
-    'grob_padding' = grid::unit(grob_padding, 'mm'))
+  grob
+
 }

@@ -41,12 +41,9 @@ summary_df <- iris %>%
   as.matrix()
 rownames(summary_df) <- c('first', 'second', 'third')
 
-txt_col_df <- matrix('blue', nrow = nrow(summary_df), ncol = ncol(summary_df))
-txt_col_df[rep(c(T,F), length = nrow(summary_df)),] <- 'red'
-
 g <- convert_to_grob(
-  as.matrix(head(iris,20))
-  ,aes_list = list(color_gradient_cols = c(1), color_gradient_binary = T, color_binary_cut_off = 4.5)
+  x = summary_df
+  ,aes_list = list(color_gradient_cols = c(1,2))
   ,height = 100
   ,width = 200)
 
@@ -62,7 +59,7 @@ g1 <- grob_layout(
     grob_col(
       'Iris Dataset Grob',
       p = 1,
-      more_args = list(
+      aes_list = list(
         one_line = T,
         txt_color = 'gray40',
         border_color = 'gray40',
@@ -77,15 +74,17 @@ g1 <- grob_layout(
        grob_row(p = 1,
          grob_col(p = 1, head(as.matrix(iris), 5), border = T)))),
   grob_row(p = 2,
-    grob_col(p = 1, '../iris.png', more_args = list(maintain_aspect_ratio = T))),
+    grob_col(p = 1, '../iris.png', aes_list = list(maintain_aspect_ratio = T))),
   grob_row(p = 1,
     border = T,
     border_args = gpar(lwd = 10, col = 'blue', alpha = 0.75),
-    grob_col(p = 1, first_paragraph, more_args = list(txt_just = 0, txt_align = 0)))
+    grob_col(p = 1, first_paragraph, aes_list = list(txt_just = 0, txt_align = 0)))
 )
 
 g2 <- grob_layout(grob_row(grob_col(summary_df)))
 grid.arrange(g2$grob)
+
+grob_to_pdf(g1, g2, file_name = 'g.pdf')
 
 ggsave('g1.pdf', g$grob, height = as.numeric(g$total_height), width = as.numeric(g$total_width), units = 'mm')
 

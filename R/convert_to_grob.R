@@ -126,7 +126,7 @@ convert_to_grob <- function(x, height, width, aes_list = list()){
 
     if(cn_pres & !rn_pres){
       g <- gridExtra::arrangeGrob(
-        grobs = grid::gList(cn_grob, data_grob)
+        grobs = grid::gList(data_grob, cn_grob)
         ,layout_matrix = rbind(c(2), c(1))
         ,widths = grid::unit(width, 'mm')
         ,heights = grid::unit(c(height/(nrow(x) + 1), height - height/(nrow(x) + 1)), 'mm'))
