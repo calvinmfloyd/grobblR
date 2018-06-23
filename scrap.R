@@ -6,6 +6,7 @@ source('grob_layout.R')
 source('grob_matrix.R')
 source('grob_image.R')
 source('line_creator.R')
+source('grob_to_pdf.R')
 
 library(UsingR)
 library(dplyr)
@@ -26,7 +27,7 @@ install_github('calvinmfloyd/grobblR')
 library(grobblR)
 
 create('grobblR')
-document()
+devtools::document()
 
 # ----
 
@@ -48,17 +49,18 @@ g <- convert_to_grob(
   ,width = 200)
 
 grid.arrange(g)
-ggsave('g.pdf', g, height = 100, width = 200, units = 'mm')
 
 gg <- ggplot(iris) + geom_point(aes(x = Sepal.Length, y = Sepal.Width, color = Species))
 
-g1 <- grob_layout(
+g <- grob_layout(
   grob_row(p = 1,
     border = T,
     border_args = gpar(col = 'red', alpha = 0.5),
     grob_col(
       'Iris Dataset Grob',
       p = 1,
+      hjust = 0.5,
+      vjust = 0.5,
       aes_list = list(
         one_line = T,
         txt_color = 'gray40',
@@ -82,11 +84,9 @@ g1 <- grob_layout(
 )
 
 g2 <- grob_layout(grob_row(grob_col(summary_df)))
-grid.arrange(g2$grob)
+grid.arrange(g)
 
-grob_to_pdf(g1, g2, file_name = 'g.pdf')
-
-ggsave('g1.pdf', g$grob, height = as.numeric(g$total_height), width = as.numeric(g$total_width), units = 'mm')
+grob_to_pdf(g, file_name = 'g5.pdf')
 
 grob_row(
   grob_col(prop = 1, summary_df, more_args = list(txt_color = 'red')),
