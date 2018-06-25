@@ -6,7 +6,7 @@
 #' @param padding The numeric amount of padding around the edge of the grob  in mm. Default is 5 mm.
 #' @param grob_padding The numeric amount of padding for each individual grob within their designated grid of area in mm. Default is 2 mm.
 #' @param row_heights If the user wants to designate specific row heights instead relying on the proportions within the grob_row functions, set this parameter equal to a vector of numeric values corresponding to the individual row heights in mm. Length must be equal to the number of grob_row function's on the upper most level of the grob.
-#' @return A list containing the total grob, and other values related to its formation - including total height/width of the grob, row heights and the paddings.
+#' @return The final grob with the designated layout and format.
 #' @export
 
 grob_layout <- function(...,
