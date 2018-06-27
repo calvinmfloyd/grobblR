@@ -1,6 +1,6 @@
 #' The function used within grob_col which takes in the object the user wants to grob, and converts it to a grob.
 #'
-#' @param x The object which needs to be converted to a grob. Must be either: A data.frame/martrix, the name of a .png image, a character string, a ggplot, NA (for an empty grob), or already a grob.
+#' @param x The object which needs to be converted to a grob. Must be either: A data.frame/martrix, the file name of a .png image, a character string, a ggplot, NA (for an empty grob), or already a grob.
 #' @param height The numeric height in mm of the desired grob.
 #' @param width The numeric width in mm of the desired grob.
 #' @param aes_list The list which contains elements to adjust aesthetics to the grob of x. Different type of grobs have different types of elements of this list which will affect its aesthetics. \\
@@ -34,7 +34,12 @@
 #' \item \code{txt_v_align} - Controls where the text in each grid cell will be centered around, vertically. A numeric value between 0 and 1, with 0 being all the way to the bottom of the grid cell, and 1 being all the way to the top of the grid cell. Default is 0.5.
 #' \item \code{txt_v_just} - Controls the vertical justification of the text in the matrix. A numeric value between 0 and 1, with 0 being bottom justification and 1 being top justification. Default is 0.5, or center justification.
 #' }
-#'
+#' Possible aesthetic elements for .png image files, or ggplot plots are :
+#' \itemize{
+#' \item \code{maintain_aspect_ratio} - A TRUE/FALSE value which indicates whether the aspect ratio of the image should be maintained. Default is FALSE - meaning the image will be stretched to fit the designated grid area.
+#' \item \code{hjust} - A numeric value between 0 and 1 which determines the horizontal justification of the image within the designated grid area. A value of 0 indicates shifting the image all the way to the left, and a value of 1 indicates shifting the image all the way to the right. Default is 0.5.
+#' \item \code{vjust} - A numeric value between 0 and 1 which determines the vertical justification of the image within the designated grid area. A value of 0 indicates shifting the image all the way to the bottom, and a value of 1 indicates shifting the image all the way to the top. Default is 0.5.
+#' }
 #' @return A grob of x with aesthetics based on the aes_list param.
 #' @export
 
