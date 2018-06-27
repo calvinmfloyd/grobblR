@@ -14,10 +14,10 @@ grob_matrix(df, aes_list, m_type = 1, height = numeric(),
 
 \item{m_type}{A integer value which indicates what the default aesthetics of the table will be. The possible options:
 \enumerate{
-\item 1 - Plain theme.
-\item 2 - Table theme.
-\item 3 - Column name theme.
-\item 4 - Row name theme.
+\item Plain theme.
+\item Table theme.
+\item Column name theme.
+\item Row name theme.
 }}
 
 \item{height}{A numeric value designating the total height of the matrix grob in mm.}

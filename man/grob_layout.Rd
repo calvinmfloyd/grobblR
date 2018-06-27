@@ -21,7 +21,7 @@ grob_layout(..., height = 280, width = 216, padding = 5,
 \item{row_heights}{If the user wants to designate specific row heights instead relying on the proportions within the grob_row functions, set this parameter equal to a vector of numeric values corresponding to the individual row heights in mm. Length must be equal to the number of grob_row function's on the upper most level of the grob.}
 }
 \value{
-A list containing the total grob, and other values related to its formation - including total height/width of the grob, row heights and the paddings.
+The final grob with the designated layout and format.
 }
 \description{
 The main grobblR function which contains and organizes the GrobblR::grob_col() and grobblR::grob_row() functions, giving the combined grob its shape.
