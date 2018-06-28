@@ -1,4 +1,4 @@
-#' The function used within grob_col which takes in the object the user wants to grob, and converts it to a grob.
+#' Takes in an object, and converts it to a grob based on inputted aesthetics arguments.
 #'
 #' @param x The object which needs to be converted to a grob. Must be either: A data.frame/martrix, the file name of a .png image, a character string, a ggplot, NA (for an empty grob), or already a grob.
 #' @param height The numeric height in mm of the desired grob.

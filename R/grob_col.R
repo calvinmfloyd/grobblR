@@ -1,4 +1,4 @@
-#' The grob column function which helps gives the grob from the grobblR::grob_layout() function its shape. Works hand in hand with the grobblR::grob_row() function.
+#' The grob column function which helps gives the grob from the grob_layout() function its shape. Works hand in hand with the grob_row() function.
 #'
 #' @param ... Either the object to be converted to a grob, or a combination of grob_row's which need to be converted to sub-grob's.
 #' @param p The numeric proportion of the width given to the outer grob_row which should be given to the sub-grob outputted by this function. Defaults to 1.
@@ -6,11 +6,11 @@
 #' @param border A TRUE/FALSE argument corresponding to whether or not a border around the outputted sub-grob is desired. Defaults to FALSE.
 #' @param hjust A numeric value between 0 and 1 which will determine the alignment of the grob horizontally within its designated area. A value of 0 means moving the grob all the way to the left, a value of 1 means moving the grob all the way to the right and a value of 0.5 means keeping the grob in the middle. Defaults to 0.5.
 #' @param vjust A numeric value between 0 and 1 which will determine the alignment of the grob vertically within its designated area. A value of 0 means moving the grob all the way to the bottom, a value of 1 means moving the grob all the way to the top and a value of 0.5 means keeping the grob in the middle. Defaults to 0.5.
-#' @param border_args A gpar() list which contain desired aesthetics for the border around the outputted the sub-grob. Ignored if the border param is set to FALSE.
+#' @param border_args A named vector which contain desired aesthetics for the border around the outputted the sub-grob. Ignored if the border param is set to FALSE. Elements used within grid::gpar().
 #' @return An R6 class which contains all the information needed to create the sub-grob. The sub-grob is obtained with grob_col$grob.
 #' @export
 
-grob_col <- function(..., p = 1, aes_list = list(), border = F, hjust = 0.5, vjust = 0.5, border_args = grid::gpar()){
+grob_col <- function(..., p = 1, aes_list = list(), border = F, hjust = 0.5, vjust = 0.5, border_args = c()){
 
   grob_col_class <- R6::R6Class(
     "grob_col",
@@ -67,7 +67,7 @@ grob_col <- function(..., p = 1, aes_list = list(), border = F, hjust = 0.5, vju
               ,heights = grid::unit(c(2*pad*(1-vjust), hts_w_padding[i], 2*pad*vjust), 'mm')
               ,widths = grid::unit(c(2*pad*hjust, wth_w_padding[i], 2*pad*(1-hjust)), 'mm'))
 
-            if(bor) g <- grid::grobTree(g, rectGrob(height = grid::unit(hts[i], 'mm'), width = grid::unit(wth, 'mm'), gp = bor_args))
+            if(bor) g <- grid::grobTree(g, rectGrob(height = grid::unit(hts[i], 'mm'), width = grid::unit(wth, 'mm'), gp = grid::gpar(bor_args)))
             raw_grobs <- grid::gList(raw_grobs, g)
           }
         }

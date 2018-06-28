@@ -3,11 +3,11 @@
 #' @param ... A series of grob_col's.
 #' @param p The numeric proportion of the given height which should be given to sub_grob's outputted in this grob row. Defaults to 1.
 #' @param border A TRUE/FALSE argument corresponding to whether or not a border around the outputted sub-grob (or sub_grob's) is desired. Defaults to FALSE.
-#' @param border_args A grid::gpar() list which contain desired aesthetics for the border around the outputted the sub-grob. Ignored if the border param is set to FALSE.
+#' @param border_args A named vector which contain desired aesthetics for the border around the outputted the sub-grob. Ignored if the border param is set to FALSE. Elements used within grid::gpar().
 #' @return An R6 class which contains all the information needed to carry on to the grob_col's to create their sub-grob's.
 #' @export
 
-grob_row <- function(..., p = 1, border = F, border_args = grid::gpar()){
+grob_row <- function(..., p = 1, border = F, border_args = c()){
 
   grob_row_class <- R6::R6Class(
     "grob_row",
@@ -53,7 +53,7 @@ grob_row <- function(..., p = 1, border = F, border_args = grid::gpar()){
           width = grid::unit(widths, 'mm'))
 
         if(bor){
-          g <- grid::grobTree(g, grid::rectGrob(height = grid::unit(ht, 'mm'), width = grid::unit(wth, 'mm'), gp = bor_args))
+          g <- grid::grobTree(g, grid::rectGrob(height = grid::unit(ht, 'mm'), width = grid::unit(wth, 'mm'), gp = grid::gpar(bor_args)))
         }
         g
       }

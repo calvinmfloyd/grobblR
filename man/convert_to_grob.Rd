@@ -2,7 +2,7 @@
 % Please edit documentation in R/convert_to_grob.R
 \name{convert_to_grob}
 \alias{convert_to_grob}
-\title{The function used within grob_col which takes in the object the user wants to grob, and converts it to a grob.}
+\title{Takes in an object, and converts it to a grob based on inputted aesthetics arguments.}
 \usage{
 convert_to_grob(x, height, width, aes_list = list())
 }
@@ -55,5 +55,5 @@ Possible aesthetic elements for .png image files, or ggplot plots are :
 A grob of x with aesthetics based on the aes_list param.
 }
 \description{
-The function used within grob_col which takes in the object the user wants to grob, and converts it to a grob.
+Takes in an object, and converts it to a grob based on inputted aesthetics arguments.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/grob_layout.R
 \name{grob_layout}
 \alias{grob_layout}
-\title{The main grobblR function which contains and organizes the GrobblR::grob_col() and grobblR::grob_row() functions, giving the combined grob its shape.}
+\title{The main grobblR function which contains and organizes grob_col's and grob_row's, giving the combined grob its shape.}
 \usage{
 grob_layout(..., height = 280, width = 216, padding = 5,
   grob_padding = 2, row_heights = c())
@@ -24,5 +24,5 @@ grob_layout(..., height = 280, width = 216, padding = 5,
 The final grob with the designated layout and format.
 }
 \description{
-The main grobblR function which contains and organizes the GrobblR::grob_col() and grobblR::grob_row() functions, giving the combined grob its shape.
+The main grobblR function which contains and organizes grob_col's and grob_row's, giving the combined grob its shape.
 }

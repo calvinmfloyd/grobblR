@@ -16,10 +16,10 @@ line_creator(cex_val, string, height = numeric(), width = numeric(),
 
 \item{width}{A numeric value designating the total width of the matrix grob in mm.}
 
-\item{one_line}{Whether or not only one line is desired, instead of a series of lines. Utilized with headers, for example.}
+\item{one_line}{A TRUE/FALSE value indicating whether or not only one line is desired, instead of a series of lines. Utilized with headers, for example.}
 }
 \value{
-A vector with each index equal to a line of the broken-down string.
+A list containing a vector with each index equal to a line of the broken-down string, a TRUE/FALSE value indicating whether the lines will fit within equal sized rows and the widths in mm of each of the lines.
 }
 \description{
 Based on the given text cex value and given width breaks down the given string into a series of lines. Checks to see if the lines would fit within the given height, as well. Utilized when creating character string grobs.

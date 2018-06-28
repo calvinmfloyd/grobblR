@@ -1,4 +1,4 @@
-#' The main grobblR function which contains and organizes the GrobblR::grob_col() and grobblR::grob_row() functions, giving the combined grob its shape.
+#' The main grobblR function which contains and organizes grob_col's and grob_row's, giving the combined grob its shape.
 #'
 #' @param ... The combination of grob_row's and grob_col's which will help give the main grob outputted its shape and look.
 #' @param height The numeric height of the grob in mm. Default is 280 mm - which is the height of an upright 8.5 x 11 in piece of copy paper.

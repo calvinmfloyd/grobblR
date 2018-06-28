@@ -4,8 +4,8 @@
 #' @param string The character string needed to be broken down into several lines.
 #' @param height A numeric value designating the total height of the matrix grob in mm.
 #' @param width A numeric value designating the total width of the matrix grob in mm.
-#' @param one_line Whether or not only one line is desired, instead of a series of lines. Utilized with headers, for example.
-#' @return A vector with each index equal to a line of the broken-down string.
+#' @param one_line A TRUE/FALSE value indicating whether or not only one line is desired, instead of a series of lines. Utilized with headers, for example.
+#' @return A list containing a vector with each index equal to a line of the broken-down string, a TRUE/FALSE value indicating whether the lines will fit within equal sized rows and the widths in mm of each of the lines.
 #' @export
 
 line_creator <- function(cex_val, string, height = numeric(), width = numeric(), one_line = FALSE){

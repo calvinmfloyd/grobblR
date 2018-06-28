@@ -2,14 +2,19 @@
 % Please edit documentation in R/grob_image.R
 \name{grob_image}
 \alias{grob_image}
-\title{Converts a raw .png file to a grob, with flexible aesthetics. Used within the grobblR::convert_to_grob() function.}
+\title{Converts a raw .png file to a grob, with flexible aesthetics.}
 \usage{
 grob_image(img_path, aes_list, height = numeric(), width = numeric())
 }
 \arguments{
 \item{img_path}{The local path to the raw .png file.}
 
-\item{aes_list}{An list which contains aesthetic parameters for the image grob.}
+\item{aes_list}{An list which contains aesthetic parameters for the image grob. Possible aesthetic elements for .png image files are :
+\itemize{
+\item \code{maintain_aspect_ratio} - A TRUE/FALSE value which indicates whether the aspect ratio of the image should be maintained. Default is FALSE - meaning the image will be stretched to fit the designated grid area.
+\item \code{hjust} - A numeric value between 0 and 1 which determines the horizontal justification of the image within the designated grid area. A value of 0 indicates shifting the image all the way to the left, and a value of 1 indicates shifting the image all the way to the right. Default is 0.5.
+\item \code{vjust} - A numeric value between 0 and 1 which determines the vertical justification of the image within the designated grid area. A value of 0 indicates shifting the image all the way to the bottom, and a value of 1 indicates shifting the image all the way to the top. Default is 0.5.
+}}
 
 \item{height}{A numeric value designating the total height of the matrix grob in mm.}
 
@@ -19,5 +24,5 @@ grob_image(img_path, aes_list, height = numeric(), width = numeric())
 A grob of the raw .png file.
 }
 \description{
-Converts a raw .png file to a grob, with flexible aesthetics. Used within the grobblR::convert_to_grob() function.
+Converts a raw .png file to a grob, with flexible aesthetics.
 }
