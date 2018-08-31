@@ -20,7 +20,14 @@ grob_row <- function(..., p = 1, border = F, border_args = c()){
       border = F,
       border_args = grid::gpar(),
       initialize = function(grob_classes, proportion, border, border_args){
-        stopifnot(is.list(grob_classes), is.numeric(proportion), is.logical(border), is.list(border_args))
+
+        stopifnot(
+          is.list(grob_classes)
+          ,is.numeric(proportion)
+          ,is.logical(border)
+          # ,(is.null(border_args) | is.double(border_args))
+        )
+
         self$grob_classes <- grob_classes
         self$proportion <- proportion
         self$border <- border

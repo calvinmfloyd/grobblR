@@ -26,7 +26,14 @@ grob_col <- function(..., p = 1, aes_list = list(), border = F, hjust = 0.5, vju
       border = F,
       border_args = grid::gpar(),
       initialize = function(contents, aes_list, proportion, border, border_args, hjust, vjust){
-        stopifnot(is.list(contents), is.list(aes_list), is.numeric(proportion))
+
+        stopifnot(
+          is.list(contents)
+          ,is.list(aes_list)
+          ,is.numeric(proportion)
+          # ,(is.null(border_args) | is.double(border_args) | is.character(border_args))
+          )
+
         self$contents <- contents
         self$proportion <- proportion
         self$aes_list <- aes_list

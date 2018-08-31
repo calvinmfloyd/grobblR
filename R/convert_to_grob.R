@@ -108,6 +108,9 @@ convert_to_grob <- function(x, height, width, aes_list = list()){
   # ----
 
   if(is.data.frame(x) | is.matrix(x)){
+
+    x <- as.matrix(x)
+
     # converting to matrix grob if x is a dataframe or matrix
     for(arg_name in names(aes_list)[!names(aes_list) %in% non_matrix_slots]){
       aes_list[[arg_name]] <- convert_to_matrix(aes_list[[arg_name]])

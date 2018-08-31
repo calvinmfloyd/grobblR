@@ -17,13 +17,22 @@ library(gridExtra)
 library(png)
 library(R6)
 
+gridExtra::grid.arrange(
+grob_layout(
+  grob_row(grob_col("Hello World")),
+  grob_row(grob_col("Go Kings"))
+)
+)
+
+
+
 # Making the package ----
 install.packages('roxygen2')
 library("devtools")
 library(roxygen2)
 
 library(devtools)
-install_github('calvinmfloyd/grobblR')
+devtools::install_github('calvinmfloyd/grobblR')
 library(grobblR)
 
 create('grobblR')
@@ -42,20 +51,12 @@ summary_df <- iris %>%
   as.matrix()
 rownames(summary_df) <- c('first', 'second', 'third')
 
-g <- convert_to_grob(
-  x = summary_df
-  ,aes_list = list(color_gradient_cols = c(1,2))
-  ,height = 100
-  ,width = 200)
-
-grid.arrange(g)
-
 gg <- ggplot(iris) + geom_point(aes(x = Sepal.Length, y = Sepal.Width, color = Species))
 
 g <- grob_layout(
   grob_row(p = 1,
     border = T,
-    border_args = gpar(col = 'red', alpha = 0.5),
+    border_args = c(col = 'red', alpha = 0.5),
     grob_col(
       'Iris Dataset Grob',
       p = 1,
@@ -68,15 +69,13 @@ g <- grob_layout(
         border_width = 10))),
   grob_row(p = 2,
      border = T,
-     border_args = gpar(col = 'blue', alpha = 0.75),
+     border_args = c(col = 'blue', alpha = 0.75),
     grob_col(p = 3, head(as.matrix(iris), 20)),
     grob_col(p = 3,
        grob_row(p = 1,
          grob_col(p = 1, gg, border = T)),
        grob_row(p = 1,
-         grob_col(p = 1, head(as.matrix(iris), 5), border = T)))),
-  grob_row(p = 2,
-    grob_col(p = 1, '../iris.png', aes_list = list(maintain_aspect_ratio = T))),
+         grob_col(p = 1, summary_df, border = T)))),
   grob_row(p = 1,
     border = T,
     border_args = gpar(lwd = 10, col = 'blue', alpha = 0.75),
