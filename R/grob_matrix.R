@@ -18,10 +18,10 @@
 #' \item \code{color_gradient_max} - The high color for the gradual color gradient. Default is green.
 #' \item \code{color_gradient_mid} - The middle color for the gradual color gradient. Default is yellow.
 #' \item \code{color_gradient_min} - The low color for the gradual color gradient. Default is red.
-#' \item \code{col_widths} - If equal column widths are not desired, the user can provide a vector of widths of each column in the matrix in mm.
-#' \item \code{fnt_face} - Controls the font face of the elements of the matrix (i.e. bold, italic, etc.). Values are used in grid::gpar(). Default for table elements is normal, or 1. Default for row name elements is italic, or 3. Default for column name elements is bold and italic, or 4.
+#' \item \code{col_widths} - If automatic column widths are not desired, the user can provide a vector of widths for each column in the matrix in mm.
+#' \item \code{fnt_face} - Controls the font face of the elements of the matrix (i.e. bold, italic, etc.). Values are used in grid::gpar(). Default for table elements is normal, or 1. Default for column name elements is bold and italic, or 4.
 #' \item \code{group_elements} - Controls whether same, adjacent elements with the row names, column names or table elements should be grouped together into one single grid. A TRUE/FALSE value, with the default being FALSE.
-#' \item \code{row_heights} - If equal row heights are not desired, the user can provide a vector of heights of each row in the matrix in mm.
+#' \item \code{row_heights} - If equal row heights are not desired, the user can provide a vector of heights for each row in the matrix in mm.
 #' \item \code{txt_align} - Controls where the text in each grid cell will be centered around, horizontally. A numeric value between 0 and 1, with 0 being all the way to the left of the grid cell, and 1 being all the way to the right of the grid cell. Default is 0.5.
 #' \item \code{txt_angle} - Controls the text angle of the text within the matrix. A numeric value in degrees, with the default being 0.
 #' \item \code{txt_cex} - Controls the size of the text within the matrix. Default is automatic text sizing based on the length of the elements within the matrix, the row heights and the column widths.
@@ -31,7 +31,7 @@
 #' \item \code{txt_v_align} - Controls where the text in each grid cell will be centered around, vertically. A numeric value between 0 and 1, with 0 being all the way to the bottom of the grid cell, and 1 being all the way to the top of the grid cell. Default is 0.5.
 #' \item \code{txt_v_just} - Controls the vertical justification of the text in the matrix. A numeric value between 0 and 1, with 0 being bottom justification and 1 being top justification. Default is 0.5, or center justification.
 #' }
-#' @param m_type A integer value which indicates what the default aesthetics of the table will be. The possible options:
+#' @param m_type A integer value which indicates what the default aesthetics of the table will be. Default is 1. The possible options:
 #' \enumerate{
 #' \item Plain theme.
 #' \item Table theme.
@@ -44,7 +44,7 @@
 #' @return A grob of df, with the corresponding aesthetics.
 #' @export
 
-grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = numeric(), txt_cex_adj = 0.25){
+grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = numeric(), txt_cex_adj = 0.2){
 
   in_to_mm <- function(x) x*25.4
 
@@ -59,6 +59,9 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
   stopifnot(!is.null(nrow(df)), !is.null(ncol(df)))
   stopifnot(!length(height) == 0, !length(width) == 0)
   stopifnot(m_type %in% c(1, 2, 3, 4))
+
+  df_fit <- df
+  if(m_type == 3) df <- matrix(colnames(df), nrow = 1)
 
   nr <- nrow(df)
   nc <- ncol(df)
@@ -95,15 +98,35 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
 
   } else {
 
-    cex_vals <- seq(0.01, 20, 0.01)
+    cex_vals <- seq(0.01, 20, 0.02)
     rh <- height/nr - 2*aes_list$cell_sep
-    cw <- width/nc - 2*aes_list$cell_sep
-    widest_element <- c(df)[which(graphics::strwidth(c(df), units = 'in') == max(graphics::strwidth(c(df), units = 'in')))[1]]
-    tallest_element <- c(df)[which(graphics::strheight(c(df), units = 'in') == max(graphics::strheight(c(df), units = 'in')))[1]]
 
-    poss_str_widths <- sapply(cex_vals, function(c) in_to_mm(graphics::strwidth(widest_element, cex = c, units = 'inches')))
-    poss_str_heights <- sapply(cex_vals, function(c) in_to_mm(graphics::strheight(tallest_element, cex = c, units = 'inches')))
-    def_txt_cex <- min(c(cex_vals[max(which(poss_str_widths <= cw))],cex_vals[max(which(poss_str_heights <= rh))]))
+    col_props <- apply(
+      rbind(colnames(df_fit), df_fit), 2,
+      function(x) max(graphics::strwidth(c(x), units = 'in')))
+    col_props <- col_props/sum(col_props)
+
+    cw <- width*col_props - 2*aes_list$cell_sep
+
+    widest_elements <- apply(
+      rbind(colnames(df_fit), df_fit), 2,
+      function(x) x[graphics::strwidth(x, units = 'in') == max(graphics::strwidth(c(x), units = 'in'))]
+    )
+
+    tallest_element <- c(df_fit)[
+      which(graphics::strheight(c(df_fit), units = 'in') == max(graphics::strheight(c(df_fit), units = 'in')))[1]]
+
+    poss_width_cex_vals <- sapply(
+      1:nc,
+      function(i){
+        x <- sapply(cex_vals, function(c) in_to_mm(graphics::strwidth(widest_elements[i], cex = c, units = 'in')))
+        cex_vals[max(which(x <= cw[i]))]})
+
+    poss_str_heights <- sapply(
+      cex_vals,
+      function(c) in_to_mm(graphics::strheight(tallest_element, cex = c, units = 'in')))
+
+    def_txt_cex <- min(c(max(poss_width_cex_vals), cex_vals[max(which(poss_str_heights <= rh))]))
     def_txt_cex <- def_txt_cex - txt_cex_adj*def_txt_cex
 
   }
@@ -268,7 +291,7 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
     for(i in 1:nr){
       ind_row_heights <- mapply(
         function(txt, cex, face, fam){
-          in_to_mm(graphics::strheight(txt, units = 'inches', cex = cex, family = fam, font = face))
+          in_to_mm(graphics::strheight(txt, units = 'in', cex = cex, family = fam, font = face))
         },
         df[i,],
         aes_list$txt_cex[i,],
@@ -290,7 +313,7 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
     for(i in 1:nc){
       ind_col_widths <- mapply(
         function(txt, cex, face, fam){
-          in_to_mm(graphics::strwidth(txt, units = 'inches', cex = cex, family = fam, font = face))
+          in_to_mm(graphics::strwidth(txt, units = 'in', cex = cex, family = fam, font = face))
         },
         df[,i],
         aes_list$txt_cex[,i],
@@ -299,6 +322,10 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
       tmp_col_widths <- c(tmp_col_widths, max(ind_col_widths) + 2*aes_list$cell_sep)
     }
     aes_list$col_widths <- tmp_col_widths
+
+  } else if(adjust_cex){
+
+    aes_list$col_widths <- cw
 
   } else if(length(width) == 1 & length(aes_list$col_widths) != nc){
 

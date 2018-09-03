@@ -4,16 +4,16 @@
 \alias{grob_row}
 \title{The grob row function which helps gives the grob from the GrobblR::grob_layout() function its shape. Works hand in hand with the GrobblR::grob_col() function.}
 \usage{
-grob_row(..., p = 1, border = F, border_args = c())
+grob_row(..., p = 1, border = F, border_aes_list = list())
 }
 \arguments{
 \item{...}{A series of grob_col's.}
 
-\item{p}{The numeric proportion of the given height which should be given to sub_grob's outputted in this grob row. Defaults to 1.}
+\item{p}{The numeric proportion of the given height which should be given to sub-grob's outputted in this grob row. Defaults to 1.}
 
-\item{border}{A TRUE/FALSE argument corresponding to whether or not a border around the outputted sub-grob (or sub_grob's) is desired. Defaults to FALSE.}
+\item{border}{A TRUE/FALSE argument corresponding to whether or not a border around the outputted sub-grob (or sub-grob's) is desired. Defaults to FALSE.}
 
-\item{border_args}{A named vector which contain desired aesthetics for the border around the outputted the sub-grob. Ignored if the border param is set to FALSE. Elements used within grid::gpar().}
+\item{border_aes_list}{A list which contains desired aesthetics for the border around the outputted the sub-grob. Ignored if the border param is set to FALSE. Elements used within grid::gpar().}
 }
 \value{
 An R6 class which contains all the information needed to carry on to the grob_col's to create their sub-grob's.

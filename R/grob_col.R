@@ -6,11 +6,11 @@
 #' @param border A TRUE/FALSE argument corresponding to whether or not a border around the outputted sub-grob is desired. Defaults to FALSE.
 #' @param hjust A numeric value between 0 and 1 which will determine the alignment of the grob horizontally within its designated area. A value of 0 means moving the grob all the way to the left, a value of 1 means moving the grob all the way to the right and a value of 0.5 means keeping the grob in the middle. Defaults to 0.5.
 #' @param vjust A numeric value between 0 and 1 which will determine the alignment of the grob vertically within its designated area. A value of 0 means moving the grob all the way to the bottom, a value of 1 means moving the grob all the way to the top and a value of 0.5 means keeping the grob in the middle. Defaults to 0.5.
-#' @param border_args A named vector which contain desired aesthetics for the border around the outputted the sub-grob. Ignored if the border param is set to FALSE. Elements used within grid::gpar().
+#' @param border_aes_list A list which contains desired aesthetics for the border around the outputted the sub-grob. Ignored if the border param is set to FALSE. Elements used within grid::gpar().
 #' @return An R6 class which contains all the information needed to create the sub-grob. The sub-grob is obtained with grob_col$grob.
 #' @export
 
-grob_col <- function(..., p = 1, aes_list = list(), border = F, hjust = 0.5, vjust = 0.5, border_args = c()){
+grob_col <- function(..., p = 1, aes_list = list(), border = F, hjust = 0.5, vjust = 0.5, border_aes_list = list()){
 
   grob_col_class <- R6::R6Class(
     "grob_col",
@@ -24,21 +24,21 @@ grob_col <- function(..., p = 1, aes_list = list(), border = F, hjust = 0.5, vju
       padding = 0,
       aes_list = list(),
       border = F,
-      border_args = grid::gpar(),
-      initialize = function(contents, aes_list, proportion, border, border_args, hjust, vjust){
+      border_aes_list = list(),
+      initialize = function(contents, aes_list, proportion, border, border_aes_list, hjust, vjust){
 
         stopifnot(
           is.list(contents)
           ,is.list(aes_list)
           ,is.numeric(proportion)
-          # ,(is.null(border_args) | is.double(border_args) | is.character(border_args))
+          ,is.list(border_aes_list)
           )
 
         self$contents <- contents
         self$proportion <- proportion
         self$aes_list <- aes_list
         self$border <- border
-        self$border_args <- border_args
+        self$border_aes_list <- border_aes_list
         self$hjust <- hjust
         self$vjust <- vjust
       }
@@ -50,7 +50,7 @@ grob_col <- function(..., p = 1, aes_list = list(), border = F, hjust = 0.5, vju
                       wth = self$width,
                       pad = self$padding,
                       bor = self$border,
-                      bor_args = self$border_args,
+                      bor_aes_list = self$border_aes_list,
                       hjust = self$hjust,
                       vjust = self$vjust){
 
@@ -74,7 +74,13 @@ grob_col <- function(..., p = 1, aes_list = list(), border = F, hjust = 0.5, vju
               ,heights = grid::unit(c(2*pad*(1-vjust), hts_w_padding[i], 2*pad*vjust), 'mm')
               ,widths = grid::unit(c(2*pad*hjust, wth_w_padding[i], 2*pad*(1-hjust)), 'mm'))
 
-            if(bor) g <- grid::grobTree(g, rectGrob(height = grid::unit(hts[i], 'mm'), width = grid::unit(wth, 'mm'), gp = grid::gpar(bor_args)))
+            if(bor){
+              class(bor_aes_list) <- 'gpar'
+              g <- grid::grobTree(
+                g,
+                rectGrob(height = grid::unit(hts[i], 'mm'), width = grid::unit(wth, 'mm'), gp = bor_aes_list)
+              )
+            }
             raw_grobs <- grid::gList(raw_grobs, g)
           }
         }
@@ -96,7 +102,7 @@ grob_col <- function(..., p = 1, aes_list = list(), border = F, hjust = 0.5, vju
     aes_list = aes_list,
     proportion = p,
     border = border,
-    border_args = border_args,
+    border_aes_list = border_aes_list,
     hjust = hjust,
     vjust = vjust)
 }

@@ -17,15 +17,6 @@ library(gridExtra)
 library(png)
 library(R6)
 
-gridExtra::grid.arrange(
-grob_layout(
-  grob_row(grob_col("Hello World")),
-  grob_row(grob_col("Go Kings"))
-)
-)
-
-
-
 # Making the package ----
 install.packages('roxygen2')
 library("devtools")
@@ -40,9 +31,23 @@ devtools::document()
 
 # ----
 
+# library(graphics)
+# library(grid)
+# library(gridExtra)
+# library(png)
+# library(R6)
+
+devtools::install_github('calvinmfloyd/grobblR')
+library(grobblR)
+
+library(UsingR)
+library(dplyr)
+library(ggplot2)
+
 pars <- unlist(strsplit(lorem, "\n\n"))
 first_paragraph <- pars[1]
 data(iris)
+
 summary_df <- iris %>%
   group_by(Species) %>%
   summarise(
@@ -51,15 +56,12 @@ summary_df <- iris %>%
   as.matrix()
 rownames(summary_df) <- c('first', 'second', 'third')
 
-gg <- ggplot(iris) + geom_point(aes(x = Sepal.Length, y = Sepal.Width, color = Species))
+gg <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point()
 
 g <- grob_layout(
-  grob_row(p = 1,
-    border = T,
-    border_args = c(col = 'red', alpha = 0.5),
-    grob_col(
+  grob_row(p = 1, border = T,
+    grob_col(p = 1,
       'Iris Dataset Grob',
-      p = 1,
       hjust = 0.5,
       vjust = 0.5,
       aes_list = list(
@@ -67,25 +69,38 @@ g <- grob_layout(
         txt_color = 'gray40',
         border_color = 'gray40',
         border_width = 10))),
-  grob_row(p = 2,
-     border = T,
-     border_args = c(col = 'blue', alpha = 0.75),
-    grob_col(p = 3, head(as.matrix(iris), 20)),
+  grob_row(p = 2, border = T,
     grob_col(p = 3,
+      head(iris, 20),
+      aes_list = list(color_gradient_cols = 3)),
+    grob_col(p = 3.5,
+      grob_row(p = 1,
+        grob_col(p = 1,
+          gg)),
        grob_row(p = 1,
-         grob_col(p = 1, gg, border = T)),
-       grob_row(p = 1,
-         grob_col(p = 1, summary_df, border = T)))),
-  grob_row(p = 1,
-    border = T,
-    border_args = gpar(lwd = 10, col = 'blue', alpha = 0.75),
-    grob_col(p = 1, first_paragraph, aes_list = list(txt_just = 0, txt_align = 0)))
+         grob_col(p = 1, border = T,
+           summary_df)))),
+  grob_row(p = 1, border = T,
+    grob_col(p = 1,
+      first_paragraph,
+      aes_list = list(txt_just = 0, txt_align = 0)))
 )
 
-g2 <- grob_layout(grob_row(grob_col(summary_df)))
-grid.arrange(g)
+grob_to_pdf(g, file_name = 'g.pdf')
 
-grob_to_pdf(g, file_name = 'g5.pdf')
+
+
+
+
+
+
+gridExtra::grid.arrange(
+  grob_layout(
+    grob_row(grob_col("Hello World")),
+    grob_row(grob_col("Go Kings"))
+  )
+)
+
 
 grob_row(
   grob_col(prop = 1, summary_df, more_args = list(txt_color = 'red')),

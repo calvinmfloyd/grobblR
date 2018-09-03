@@ -5,7 +5,7 @@
 \title{Converts a data.frame/matrix to a grob, with flexible aesthetics.}
 \usage{
 grob_matrix(df, aes_list, m_type = 1, height = numeric(),
-  width = numeric(), txt_cex_adj = 0.25)
+  width = numeric(), txt_cex_adj = 0.2)
 }
 \arguments{
 \item{df}{The data.frame/matrix to be converted to a grob.}
@@ -27,10 +27,10 @@ grob_matrix(df, aes_list, m_type = 1, height = numeric(),
 \item \code{color_gradient_max} - The high color for the gradual color gradient. Default is green.
 \item \code{color_gradient_mid} - The middle color for the gradual color gradient. Default is yellow.
 \item \code{color_gradient_min} - The low color for the gradual color gradient. Default is red.
-\item \code{col_widths} - If equal column widths are not desired, the user can provide a vector of widths of each column in the matrix in mm.
-\item \code{fnt_face} - Controls the font face of the elements of the matrix (i.e. bold, italic, etc.). Values are used in grid::gpar(). Default for table elements is normal, or 1. Default for row name elements is italic, or 3. Default for column name elements is bold and italic, or 4.
+\item \code{col_widths} - If automatic column widths are not desired, the user can provide a vector of widths for each column in the matrix in mm.
+\item \code{fnt_face} - Controls the font face of the elements of the matrix (i.e. bold, italic, etc.). Values are used in grid::gpar(). Default for table elements is normal, or 1. Default for column name elements is bold and italic, or 4.
 \item \code{group_elements} - Controls whether same, adjacent elements with the row names, column names or table elements should be grouped together into one single grid. A TRUE/FALSE value, with the default being FALSE.
-\item \code{row_heights} - If equal row heights are not desired, the user can provide a vector of heights of each row in the matrix in mm.
+\item \code{row_heights} - If equal row heights are not desired, the user can provide a vector of heights for each row in the matrix in mm.
 \item \code{txt_align} - Controls where the text in each grid cell will be centered around, horizontally. A numeric value between 0 and 1, with 0 being all the way to the left of the grid cell, and 1 being all the way to the right of the grid cell. Default is 0.5.
 \item \code{txt_angle} - Controls the text angle of the text within the matrix. A numeric value in degrees, with the default being 0.
 \item \code{txt_cex} - Controls the size of the text within the matrix. Default is automatic text sizing based on the length of the elements within the matrix, the row heights and the column widths.
@@ -41,7 +41,7 @@ grob_matrix(df, aes_list, m_type = 1, height = numeric(),
 \item \code{txt_v_just} - Controls the vertical justification of the text in the matrix. A numeric value between 0 and 1, with 0 being bottom justification and 1 being top justification. Default is 0.5, or center justification.
 }}
 
-\item{m_type}{A integer value which indicates what the default aesthetics of the table will be. The possible options:
+\item{m_type}{A integer value which indicates what the default aesthetics of the table will be. Default is 1. The possible options:
 \enumerate{
 \item Plain theme.
 \item Table theme.

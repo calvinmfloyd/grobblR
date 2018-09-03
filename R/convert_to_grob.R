@@ -4,7 +4,7 @@
 #' @param height The numeric height in mm of the desired grob.
 #' @param width The numeric width in mm of the desired grob.
 #' @param aes_list The list which contains elements to adjust aesthetics to the grob of x. Different type of grobs have different types of elements of this list which will affect its aesthetics. \\
-#' For character strings or matrices of dimensions n x p, the aesthetic elements can either be a single value which will be applied to the entire matrix, or a matrix of dimension n x p, which specifies how each element of the matrix will be adjusted. Note that row names, column names and acual matrix elements are treated differently. The below listed elements by themselves will correspond to the matrix elements. The listed elements with "colname_" in front of them will correspond to column name aesthetics. The listed elements with "rowname_" in front of them will correspond to row name aesthetics. Possible aesthetic elements for matrices are :
+#' For character strings or matrices of dimensions n x p, the aesthetic elements can either be a single value which will be applied to the entire matrix, or a matrix of dimension n x p, which specifies how each element of the matrix will be adjusted. Note that row names, column names and acual matrix elements are treated differently. The below listed elements by themselves will correspond to the matrix elements. The listed elements with "colname_" in front of them will correspond to column name aesthetics. For example, "colname_bg_color" will refer to the background color of the column names. Possible aesthetic elements for character strings or matrices are:
 #' \itemize{
 #' \item \code{bg_alpha} - Controls the background alpha/opacity of the elements of the matrix. Values are used in grid::gpar(). Default is 1.0.
 #' \item \code{bg_color} - Controls the background color of the elements of the matrix. If the matrix has no rownames or colnames, the default is white. If the matrix has rownames or colnames, the default is white-gray90 on every odd-even row.
@@ -21,10 +21,10 @@
 #' \item \code{color_gradient_max} - The high color for the gradual color gradient. Default is green.
 #' \item \code{color_gradient_mid} - The middle color for the gradual color gradient. Default is yellow.
 #' \item \code{color_gradient_min} - The low color for the gradual color gradient. Default is red.
-#' \item \code{col_widths} - If equal column widths are not desired, the user can provide a vector of widths of each column in the matrix in mm.
-#' \item \code{fnt_face} - Controls the font face of the elements of the matrix (i.e. bold, italic, etc.). Values are used in grid::gpar(). Default for table elements is normal, or 1. Default for row name elements is italic, or 3. Default for column name elements is bold and italic, or 4.
+#' \item \code{col_widths} - If fitted column widths are not desired, the user can provide a vector of widths for each column of the matrix in mm.
+#' \item \code{fnt_face} - Controls the font face of the elements of the matrix (i.e. bold, italic, etc.). Values are used in grid::gpar(). Default for table elements is normal, or 1. Default for column name elements is bold and italic, or 4.
 #' \item \code{group_elements} - Controls whether same, adjacent elements with the row names, column names or table elements should be grouped together into one single grid. A TRUE/FALSE value, with the default being FALSE.
-#' \item \code{row_heights} - If equal row heights are not desired, the user can provide a vector of heights of each row in the matrix in mm.
+#' \item \code{row_heights} - If equal row heights are not desired, the user can provide a vector of heights for each row of the matrix in mm.
 #' \item \code{txt_align} - Controls where the text in each grid cell will be centered around, horizontally. A numeric value between 0 and 1, with 0 being all the way to the left of the grid cell, and 1 being all the way to the right of the grid cell. Default is 0.5.
 #' \item \code{txt_angle} - Controls the text angle of the text within the matrix. A numeric value in degrees, with the default being 0.
 #' \item \code{txt_cex} - Controls the size of the text within the matrix. Default is automatic text sizing based on the length of the elements within the matrix, the row heights and the column widths.
@@ -107,11 +107,11 @@ convert_to_grob <- function(x, height, width, aes_list = list()){
 
   # ----
 
+  # converting to matrix grob if x is a dataframe or matrix
   if(is.data.frame(x) | is.matrix(x)){
 
     x <- as.matrix(x)
 
-    # converting to matrix grob if x is a dataframe or matrix
     for(arg_name in names(aes_list)[!names(aes_list) %in% non_matrix_slots]){
       aes_list[[arg_name]] <- convert_to_matrix(aes_list[[arg_name]])
     }
@@ -119,25 +119,26 @@ convert_to_grob <- function(x, height, width, aes_list = list()){
     gm_list <- sub_list_elements(gm_list, aes_list)
     cn_pres <- !is.null(colnames(x))
     rn_pres <- !is.null(rownames(x))
-    width_adj <- ifelse(rn_pres, 1, 0)
+    # width_adj <- ifelse(rn_pres, 1, 0)
+    width_adj <- 0
     height_adj <- ifelse(cn_pres, 1, 0)
 
-    if(rn_pres){
-
-      if(any(grepl('rowname_', names(aes_list)))){
-        for(name in names(aes_list)[grepl('rowname', names(aes_list))]){
-          rn_gm_list[[gsub('rowname_', '', name)]] <- aes_list[[name]]
-        }
-      }
-
-      rn_df <- matrix(rownames(x), ncol = 1)
-      rn_grob <- grob_matrix(
-        rn_df
-        ,m_type = 4
-        ,height = height - height_adj*height/(nrow(x) + 1)
-        ,width = width/(ncol(x) + 1)
-        ,aes_list = rn_gm_list)
-    }
+    # if(rn_pres){
+    #
+    #   if(any(grepl('rowname_', names(aes_list)))){
+    #     for(name in names(aes_list)[grepl('rowname', names(aes_list))]){
+    #       rn_gm_list[[gsub('rowname_', '', name)]] <- aes_list[[name]]
+    #     }
+    #   }
+    #
+    #   rn_df <- matrix(rownames(x), ncol = 1)
+    #   rn_grob <- grob_matrix(
+    #     rn_df
+    #     ,m_type = 4
+    #     ,height = height - height_adj*height/(nrow(x) + 1)
+    #     ,width = width/(ncol(x) + 1)
+    #     ,aes_list = rn_gm_list)
+    # }
 
     if(cn_pres){
 
@@ -147,9 +148,8 @@ convert_to_grob <- function(x, height, width, aes_list = list()){
         }
       }
 
-      cn_df <- matrix(colnames(x), nrow = 1)
       cn_grob <- grob_matrix(
-        cn_df
+        x
         ,m_type = 3
         ,height = height/(nrow(x) + 1)
         ,width = width - width_adj*width/(ncol(x) + 1)
@@ -163,33 +163,43 @@ convert_to_grob <- function(x, height, width, aes_list = list()){
       ,height = height - height*height_adj/(nrow(x) + 1)
       ,width = width - width*width_adj/(ncol(x) + 1))
 
-    if(cn_pres & !rn_pres){
+    if(cn_pres){
       g <- gridExtra::arrangeGrob(
         grobs = grid::gList(data_grob, cn_grob)
         ,layout_matrix = rbind(c(2), c(1))
         ,widths = grid::unit(width, 'mm')
         ,heights = grid::unit(c(height/(nrow(x) + 1), height - height/(nrow(x) + 1)), 'mm'))
-    } else if(!cn_pres & rn_pres){
-      g <- gridExtra::arrangeGrob(
-        grobs = grid::gList(data_grob, rn_grob)
-        ,layout_matrix = cbind(c(2), c(1))
-        ,widths = grid::unit(c(width/(ncol(x) + 1), width - width/(ncol(x) + 1)), 'mm')
-        ,heights = grid::unit(height, 'mm'))
-    } else if(cn_pres & rn_pres){
-      g <- gridExtra::arrangeGrob(
-        grobs = grid::gList(data_grob, cn_grob, rn_grob)
-        ,layout_matrix = rbind(c(NA, 2), c(3, 1))
-        ,widths = grid::unit(c(width/(ncol(x) + 1), width - width/(ncol(x) + 1)), 'mm')
-        ,heights = grid::unit(c(height/(nrow(x) + 1), height - height/(nrow(x) + 1)), 'mm'))
     } else {
-
       g <- data_grob
-
     }
 
+    # if(cn_pres & !rn_pres){
+    #   g <- gridExtra::arrangeGrob(
+    #     grobs = grid::gList(data_grob, cn_grob)
+    #     ,layout_matrix = rbind(c(2), c(1))
+    #     ,widths = grid::unit(width, 'mm')
+    #     ,heights = grid::unit(c(height/(nrow(x) + 1), height - height/(nrow(x) + 1)), 'mm'))
+    # } else if(!cn_pres & rn_pres){
+    #   g <- gridExtra::arrangeGrob(
+    #     grobs = grid::gList(data_grob, rn_grob)
+    #     ,layout_matrix = cbind(c(2), c(1))
+    #     ,widths = grid::unit(c(width/(ncol(x) + 1), width - width/(ncol(x) + 1)), 'mm')
+    #     ,heights = grid::unit(height, 'mm'))
+    # } else if(cn_pres & rn_pres){
+    #   g <- gridExtra::arrangeGrob(
+    #     grobs = grid::gList(data_grob, cn_grob, rn_grob)
+    #     ,layout_matrix = rbind(c(NA, 2), c(3, 1))
+    #     ,widths = grid::unit(c(width/(ncol(x) + 1), width - width/(ncol(x) + 1)), 'mm')
+    #     ,heights = grid::unit(c(height/(nrow(x) + 1), height - height/(nrow(x) + 1)), 'mm'))
+    # } else {
+    #
+    #   g <- data_grob
+    #
+    # }
+
   }
+  # converting to image grob if x is a string with '.png' in it
   else if(ifelse(is.character(x), grepl('.png', x), F)){
-    # converting to image grob if x is a string with '.png' in it
     stopifnot(file.exists(x))
     gi_list <- sub_list_elements(gi_list, aes_list)
     g <- grob_image(x, aes_list = gi_list, height = height, width = width)

@@ -5,7 +5,7 @@
 \title{The grob column function which helps gives the grob from the grob_layout() function its shape. Works hand in hand with the grob_row() function.}
 \usage{
 grob_col(..., p = 1, aes_list = list(), border = F, hjust = 0.5,
-  vjust = 0.5, border_args = c())
+  vjust = 0.5, border_aes_list = list())
 }
 \arguments{
 \item{...}{Either the object to be converted to a grob, or a combination of grob_row's which need to be converted to sub-grob's.}
@@ -20,7 +20,7 @@ grob_col(..., p = 1, aes_list = list(), border = F, hjust = 0.5,
 
 \item{vjust}{A numeric value between 0 and 1 which will determine the alignment of the grob vertically within its designated area. A value of 0 means moving the grob all the way to the bottom, a value of 1 means moving the grob all the way to the top and a value of 0.5 means keeping the grob in the middle. Defaults to 0.5.}
 
-\item{border_args}{A named vector which contain desired aesthetics for the border around the outputted the sub-grob. Ignored if the border param is set to FALSE. Elements used within grid::gpar().}
+\item{border_aes_list}{A list which contains desired aesthetics for the border around the outputted the sub-grob. Ignored if the border param is set to FALSE. Elements used within grid::gpar().}
 }
 \value{
 An R6 class which contains all the information needed to create the sub-grob. The sub-grob is obtained with grob_col$grob.
