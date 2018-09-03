@@ -238,14 +238,14 @@ convert_to_grob <- function(x, height, width, aes_list = list()){
     file.remove(png_name)
 
   }
-  else if(is.na(x)){
-
-    g <- grid::nullGrob()
-
-  }
   else if(grid::is.grob(x)){
 
     g <- x
+
+  }
+  else if(is.na(x)){
+
+    g <- grid::nullGrob()
 
   }
 

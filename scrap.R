@@ -51,10 +51,10 @@ data(iris)
 summary_df <- iris %>%
   group_by(Species) %>%
   summarise(
-    mpl = mean(Petal.Length),
-    mpw = mean(Petal.Width)) %>%
+    m = mean(Petal.Length) %>% round(1),
+    n = mean(Petal.Width) %>% round(1)
+  ) %>%
   as.matrix()
-rownames(summary_df) <- c('first', 'second', 'third')
 
 gg <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point()
 
@@ -64,6 +64,7 @@ g <- grob_layout(
       'Iris Dataset Grob',
       hjust = 0.5,
       vjust = 0.5,
+      border = T,
       aes_list = list(
         one_line = T,
         txt_color = 'gray40',
@@ -75,18 +76,16 @@ g <- grob_layout(
       aes_list = list(color_gradient_cols = 3)),
     grob_col(p = 3.5,
       grob_row(p = 1,
-        grob_col(p = 1,
-          gg)),
+        grob_col(p = 1, gg)),
        grob_row(p = 1,
-         grob_col(p = 1, border = T,
-           summary_df)))),
-  grob_row(p = 1, border = T,
+         grob_col(p = 1, border = T, summary_df, aes_list = list(colname_txt_color = 'red', colname_bg_color = 'gray80'))))),
+  grob_row(p = 1, border = T, border_aes_list = list(col = 'red', lwd = 5),
     grob_col(p = 1,
       first_paragraph,
       aes_list = list(txt_just = 0, txt_align = 0)))
 )
 
-grob_to_pdf(g, file_name = 'g.pdf')
+grob_to_pdf(g, file_name = 'g1.pdf')
 
 
 
