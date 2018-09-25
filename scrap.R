@@ -52,40 +52,91 @@ summary_df <- iris %>%
   group_by(Species) %>%
   summarise(
     m = mean(Petal.Length) %>% round(1),
-    n = mean(Petal.Width) %>% round(1)
-  ) %>%
-  as.matrix()
+    n = mean(Petal.Width) %>% round(1))
 
 gg <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point()
 
+
+pw <- 100
+
 g <- grob_layout(
-  grob_row(p = 1, border = T,
-    grob_col(p = 1,
-      'Iris Dataset Grob',
-      hjust = 0.5,
-      vjust = 0.5,
-      border = T,
-      aes_list = list(
-        one_line = T,
-        txt_color = 'gray40',
-        border_color = 'gray40',
-        border_width = 10))),
+  grob_row(
+    border = T
+    ,grob_col(p = 15/pw, '1', border = T, aes_list = list(bg_color = 'red'))
+    ,grob_col('2', border = T, aes_list = list(bg_color = 'gray40'))
+    ,grob_col('3', border = T, aes_list = list(bg_color = 'navy'))
+  ),
+  width = pw,
+  height = 30)
+
+g <- grob_layout(
+  grob_row(
+    border = T
+    ,grob_col(
+      'txt_just, no txt_align'
+      ,border = T
+      ,aes_list = list(
+        bg_color = 'gray90'
+        ,txt_color = 'navy'
+        ,txt_just = 1))
+    ,grob_col(
+      'txt_align, no txt_just'
+      ,border = T
+      ,aes_list = list(
+        bg_color = 'gray90'
+        ,txt_color = 'navy'
+        ,txt_align = 1))
+    ,grob_col(
+      'txt_align & txt_just'
+      ,border = T
+      ,aes_list = list(
+        bg_color = 'gray90'
+        ,txt_color = 'navy'
+        ,txt_align = 1
+        ,txt_just = 1))
+  ),
+  width = pw,
+  height = 30)
+
+grid.arrange(g)
+
+
+grob_to_pdf(g, file_name = 'test')
+
+
+
+
+
+
+
+g <- grob_layout(
+  grob_row(border = T,
+    grob_col('Iris Dataset Grob', aes_list = list(txt_color = 'gray40'))),
   grob_row(p = 2, border = T,
     grob_col(p = 3,
       head(iris, 20),
       aes_list = list(color_gradient_cols = 3)),
     grob_col(p = 3.5,
-      grob_row(p = 1,
-        grob_col(p = 1, gg)),
-       grob_row(p = 1,
-         grob_col(p = 1, border = T, summary_df, aes_list = list(colname_txt_color = 'red', colname_bg_color = 'gray80'))))),
-  grob_row(p = 1, border = T, border_aes_list = list(col = 'red', lwd = 5),
-    grob_col(p = 1,
-      first_paragraph,
-      aes_list = list(txt_just = 0, txt_align = 0)))
+      grob_row(
+        grob_col(p = 2, gg)
+        ,grob_col('NBA is the best', aes_list = list(bg_color = 'gray40', txt_color = 'white'))),
+       grob_row(
+         grob_col(
+            summary_df,
+            aes_list = list(
+              txt_color = matrix(
+                rep(c('red', 'blue'), length = nrow(summary_df)*ncol(summary_df))
+                ,nrow = nrow(summary_df))
+              ,colname_txt_color = 'black'
+              ,colname_bg_color = 'gray80'))))),
+  grob_row(
+    grob_col('../iris.png', aes_list = list(maintain_aspect_ratio = T))
+    ,grob_col('grobblR package', aes_list = list(txt_color = 'navy'))),
+  grob_row(border = T, border_aes_list = list(col = 'red', lwd = 5),
+    grob_col(first_paragraph, aes_list = list(txt_just = 0, txt_align = 0)))
 )
 
-grob_to_pdf(g, file_name = 'g1.pdf')
+grob_to_pdf(g, file_name = 'g.pdf')
 
 
 
@@ -93,12 +144,13 @@ grob_to_pdf(g, file_name = 'g1.pdf')
 
 
 
-gridExtra::grid.arrange(
-  grob_layout(
+
+  grobb <- grob_layout(
     grob_row(grob_col("Hello World")),
     grob_row(grob_col("Go Kings"))
+    ,height = 50
+    ,width = 50
   )
-)
 
 
 grob_row(

@@ -27,12 +27,10 @@ grob_col <- function(..., p = 1, aes_list = list(), border = F, hjust = 0.5, vju
       border_aes_list = list(),
       initialize = function(contents, aes_list, proportion, border, border_aes_list, hjust, vjust){
 
-        stopifnot(
-          is.list(contents)
-          ,is.list(aes_list)
-          ,is.numeric(proportion)
-          ,is.list(border_aes_list)
-          )
+        stopifnot(is.list(contents))
+        stopifnot(is.list(aes_list))
+        stopifnot(is.numeric(proportion))
+        stopifnot(is.list(border_aes_list))
 
         self$contents <- contents
         self$proportion <- proportion
@@ -60,14 +58,23 @@ grob_col <- function(..., p = 1, aes_list = list(), border = F, hjust = 0.5, vju
         raw_grobs <- grid::gList()
 
         for(i in 1:length(contents)){
+
           if(R6::is.R6(contents[[i]])){
+
             height_props <- sapply(1:length(contents), function(i) contents[[i]]$proportion)
             contents[[i]]$height <- ht*(height_props/sum(height_props))[i]
-            contents[[i]]$width <- wth
+            contents[[i]]$width <- wth_w_padding
             contents[[i]]$padding <- pad
             raw_grobs <- grid::gList(raw_grobs, contents[[i]]$grob)
+
           } else {
-            ctg <- convert_to_grob(x = contents[[i]], height = hts_w_padding[i], width = wth_w_padding, aes_list = m_a)
+
+            ctg <- convert_to_grob(
+              x = contents[[i]],
+              height = hts_w_padding[i],
+              width = wth_w_padding,
+              aes_list = m_a)
+
             g <- gridExtra::arrangeGrob(
               grobs = grid::gList(grid::nullGrob(), grid::nullGrob(), grid::nullGrob(), grid::nullGrob(), ctg)
               ,layout_matrix = cbind(3,rbind(1, 5, 2), 4)
@@ -75,11 +82,16 @@ grob_col <- function(..., p = 1, aes_list = list(), border = F, hjust = 0.5, vju
               ,widths = grid::unit(c(2*pad*hjust, wth_w_padding[i], 2*pad*(1-hjust)), 'mm'))
 
             if(bor){
+
               class(bor_aes_list) <- 'gpar'
+              bor_aes_list$fill <- NA
               g <- grid::grobTree(
                 g,
-                rectGrob(height = grid::unit(hts[i], 'mm'), width = grid::unit(wth, 'mm'), gp = bor_aes_list)
-              )
+                rectGrob(
+                  height = grid::unit(hts[i], 'mm')
+                  ,width = grid::unit(wth, 'mm')
+                  ,gp = bor_aes_list)
+                )
             }
             raw_grobs <- grid::gList(raw_grobs, g)
           }
@@ -88,8 +100,8 @@ grob_col <- function(..., p = 1, aes_list = list(), border = F, hjust = 0.5, vju
         gridExtra::arrangeGrob(
           grobs = raw_grobs,
           layout_matrix = matrix(1:length(raw_grobs), ncol = 1),
-          height = grid::unit(hts, 'mm'),
-          width = grid::unit(wth, 'mm'))
+          heights = grid::unit(hts, 'mm'),
+          widths = grid::unit(wth, 'mm'))
       }
     ))
 

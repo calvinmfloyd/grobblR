@@ -56,17 +56,20 @@ grob_row <- function(..., p = 1, border = F, border_aes_list = list()){
         g <- gridExtra::arrangeGrob(
           grobs = raw_grobs,
           layout_matrix = matrix(1:length(raw_grobs), nrow = 1),
-          height = grid::unit(height, 'mm'),
-          width = grid::unit(widths, 'mm'))
+          heights = grid::unit(height, 'mm'),
+          widths = grid::unit(widths, 'mm'))
 
         if(bor){
           class(bor_aes_list) <- 'gpar'
+          bor_aes_list$fill <- NA
           g <- grid::grobTree(
             g,
             grid::rectGrob(height = grid::unit(ht, 'mm'), width = grid::unit(wth, 'mm'), gp = bor_aes_list)
           )
         }
+
         g
+
       }
     ))
 
