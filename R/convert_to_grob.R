@@ -4,7 +4,7 @@
 #' @param height The numeric height in mm of the desired grob.
 #' @param width The numeric width in mm of the desired grob.
 #' @param aes_list The list which contains elements to adjust aesthetics to the grob of x. Different type of grobs have different types of elements of this list which will affect its aesthetics. \\
-#' For character strings or matrices of dimensions n x p, the aesthetic elements can either be a single value which will be applied to the entire matrix, or a matrix of dimension n x p, which specifies how each element of the matrix will be adjusted. Note that row names, column names and acual matrix elements are treated differently. The below listed elements by themselves will correspond to the matrix elements. The listed elements with "colname_" in front of them will correspond to column name aesthetics. For example, "colname_bg_color" will refer to the background color of the column names. Possible aesthetic elements for character strings or matrices are:
+#' For character strings or matrices of dimensions n x p, the aesthetic elements can either be a single value which will be applied to the entire matrix, or a matrix of dimension n x p, which specifies how each element of the matrix will be adjusted. Note that column names and acual matrix elements are treated differently. The below listed elements by themselves will correspond to the matrix elements. The listed elements with "colname_" in front of them will correspond to column name aesthetics. For example, "colname_bg_color" will refer to the background color of the column names. Possible aesthetic elements for character strings or matrices are:
 #' \itemize{
 #' \item \code{bg_alpha} - Controls the background alpha/opacity of the elements of the matrix. Values are used in grid::gpar(). Default is 1.0.
 #' \item \code{bg_color} - Controls the background color of the elements of the matrix. If the matrix has no rownames or colnames, the default is white. If the matrix has rownames or colnames, the default is white-gray90 on every odd-even row.
@@ -90,7 +90,6 @@ convert_to_grob <- function(x, height, width, aes_list = list()){
     color_gradient_mid = character(),
     color_gradient_min = character())
 
-  rn_gm_list <- gm_list
   cn_gm_list <- gm_list
 
   gi_list <- list(
@@ -107,6 +106,20 @@ convert_to_grob <- function(x, height, width, aes_list = list()){
 
   # ----
 
+  # Checking that all the elements names in aes_list are valid/accepted ----
+
+  invalid_names <- names(aes_list)[
+    !names(aes_list) %in% c(names(gm_list), names(gi_list), paste0('colname_', names(gm_list)), 'n_lines')]
+  if(length(invalid_names) > 0){
+    warning(
+      sprintf(
+        "The following elements in aes_list are not accepted and are not affecting any aesthetics: %s"
+        ,paste(invalid_names, collapse = ', '))
+      ,call. = FALSE
+    )
+  }
+  # ----
+
   # converting to matrix grob if x is a dataframe or matrix
   if(is.data.frame(x) | is.matrix(x)){
 
@@ -118,27 +131,9 @@ convert_to_grob <- function(x, height, width, aes_list = list()){
 
     gm_list <- sub_list_elements(gm_list, aes_list)
     cn_pres <- !is.null(colnames(x))
-    rn_pres <- !is.null(rownames(x))
-    # width_adj <- ifelse(rn_pres, 1, 0)
+
     width_adj <- 0
     height_adj <- ifelse(cn_pres, 1, 0)
-
-    # if(rn_pres){
-    #
-    #   if(any(grepl('rowname_', names(aes_list)))){
-    #     for(name in names(aes_list)[grepl('rowname', names(aes_list))]){
-    #       rn_gm_list[[gsub('rowname_', '', name)]] <- aes_list[[name]]
-    #     }
-    #   }
-    #
-    #   rn_df <- matrix(rownames(x), ncol = 1)
-    #   rn_grob <- grob_matrix(
-    #     rn_df
-    #     ,m_type = 4
-    #     ,height = height - height_adj*height/(nrow(x) + 1)
-    #     ,width = width/(ncol(x) + 1)
-    #     ,aes_list = rn_gm_list)
-    # }
 
     if(cn_pres){
 
@@ -164,38 +159,18 @@ convert_to_grob <- function(x, height, width, aes_list = list()){
       ,width = width - width*width_adj/(ncol(x) + 1))
 
     if(cn_pres){
+
       g <- gridExtra::arrangeGrob(
         grobs = grid::gList(data_grob, cn_grob)
         ,layout_matrix = rbind(c(2), c(1))
         ,widths = grid::unit(width, 'mm')
         ,heights = grid::unit(c(height/(nrow(x) + 1), height - height/(nrow(x) + 1)), 'mm'))
-    } else {
-      g <- data_grob
-    }
 
-    # if(cn_pres & !rn_pres){
-    #   g <- gridExtra::arrangeGrob(
-    #     grobs = grid::gList(data_grob, cn_grob)
-    #     ,layout_matrix = rbind(c(2), c(1))
-    #     ,widths = grid::unit(width, 'mm')
-    #     ,heights = grid::unit(c(height/(nrow(x) + 1), height - height/(nrow(x) + 1)), 'mm'))
-    # } else if(!cn_pres & rn_pres){
-    #   g <- gridExtra::arrangeGrob(
-    #     grobs = grid::gList(data_grob, rn_grob)
-    #     ,layout_matrix = cbind(c(2), c(1))
-    #     ,widths = grid::unit(c(width/(ncol(x) + 1), width - width/(ncol(x) + 1)), 'mm')
-    #     ,heights = grid::unit(height, 'mm'))
-    # } else if(cn_pres & rn_pres){
-    #   g <- gridExtra::arrangeGrob(
-    #     grobs = grid::gList(data_grob, cn_grob, rn_grob)
-    #     ,layout_matrix = rbind(c(NA, 2), c(3, 1))
-    #     ,widths = grid::unit(c(width/(ncol(x) + 1), width - width/(ncol(x) + 1)), 'mm')
-    #     ,heights = grid::unit(c(height/(nrow(x) + 1), height - height/(nrow(x) + 1)), 'mm'))
-    # } else {
-    #
-    #   g <- data_grob
-    #
-    # }
+    } else {
+
+      g <- data_grob
+
+    }
 
   }
   # converting to image grob if x is a string with '.png' in it
@@ -207,16 +182,18 @@ convert_to_grob <- function(x, height, width, aes_list = list()){
   }
   else if(ifelse(is.character(x), !grepl('.png', x), F)){
 
-    one_line_tf <- ifelse('one_line' %in% names(aes_list), aes_list$one_line, F)
     if(!'txt_cex' %in% names(aes_list)){
+      n_lines <- ifelse('n_lines' %in% names(aes_list), aes_list$n_lines, 10000)
       for(cv in cex_vals){
-        validity <- line_creator(cv, x, height, width, one_line = one_line_tf)$valid
-        if(validity) optimal_cv <- cv else break
+        lc <- line_creator(cv, x, height, width)
+        validity <- lc$valid
+        lc_n_lines <- length(lc$lines)
+        if(validity & lc_n_lines <= n_lines) optimal_cv <- cv else break
       }
-      lines <- line_creator(optimal_cv, x, height = height, width = width, one_line = one_line_tf)
+      lines <- line_creator(optimal_cv, x, height = height, width = width)
       aes_list$txt_cex <- optimal_cv
     } else {
-      lines <- line_creator(aes_list$txt_cex, x, height = height, width = width, one_line = one_line_tf)
+      lines <- line_creator(aes_list$txt_cex, x, height = height, width = width)
     }
 
     txt_matrix <- matrix(lines$lines, ncol = 1)

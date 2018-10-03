@@ -87,6 +87,21 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
   }
   # ----
 
+  def_vals_matrices <- list(
+    fnt_face = c(1, 1, 4, 3),
+    bg_color = c('white', 'white', 'white', 'white'),
+    bg_alpha = c(1, 1, 1, 1),
+    borders = c('', '', '', ''),
+    txt_color = c('black', 'black', '#3A70A6', 'black'),
+    txt_align = c(0.5, 0.5, 0.5, 0.5),
+    txt_v_align = c(0.5, 0.5, 0.5, 0.5),
+    txt_just = c(0.5, 0.5, 0.5, 0.5),
+    txt_v_just = c(0.5, 0.5, 0.5, 0.5),
+    txt_font = c('sans', 'sans', 'sans', 'sans'),
+    border_color = c('gray40', 'gray40', '#3A70A6', 'gray40'),
+    txt_angle = c(0, 0, 0, 0),
+    border_width = c(4, 4, 4, 4))
+
   # Making adjustments to txt_cex, if need be ----
   adjust_cex <- length(aes_list$txt_cex) == 0 &
     (length(height) == 1 & length(aes_list$row_heights) == 0) &
@@ -133,21 +148,8 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
   # ----
 
   # Adding in default values (matrices) if they are missing ----
-  def_vals_matrices <- list(
-    fnt_face = c(1, 1, 4, 3),
-    bg_color = c('white', 'white', 'white', 'white'),
-    bg_alpha = c(1, 1, 1, 1),
-    borders = c('', '', '', ''),
-    txt_color = c('black', 'black', '#3A70A6', 'black'),
-    txt_align = c(0.5, 0.5, 0.5, 0.5),
-    txt_v_align = c(0.5, 0.5, 0.5, 0.5),
-    txt_just = c(0.5, 0.5, 0.5, 0.5),
-    txt_v_just = c(0.5, 0.5, 0.5, 0.5),
-    txt_cex = c(def_txt_cex, def_txt_cex, def_txt_cex, def_txt_cex),
-    txt_font = c('sans', 'sans', 'sans', 'sans'),
-    border_color = c('gray40', 'gray40', '#3A70A6', 'gray40'),
-    txt_angle = c(0, 0, 0, 0),
-    border_width = c(4, 4, 4, 4))
+
+  def_vals_matrices$txt_cex <- rep(def_txt_cex, 4)
 
   bg_color_not_inputted <- all(dim(aes_list$bg_color) == 0)
 
@@ -199,6 +201,10 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
 
   # ----
 
+  # Adjustments to txt_just
+
+
+  # Creating each of our mini grobs that will compose the grob_matrix ----
   raw_grobs <- grid::gList()
   for(j in 1:nc){
     for(i in 1:nr){
