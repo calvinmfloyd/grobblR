@@ -19,7 +19,7 @@ grob_layout <- function(...,
   # Initializing Variables ----
   ph <- height - 2*padding
   pw <- width - 2*padding
-  g_info <- list(...)
+  g_info <- unlist(list(...))
   # ----
 
   # Creating the Layout Matrix, using LCM ----
