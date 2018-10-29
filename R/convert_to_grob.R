@@ -153,7 +153,7 @@ convert_to_grob <- function(x, height, width, aes_list = list()){
 
     data_grob <- grob_matrix(
       x
-      ,m_type = ifelse(cn_pres | rn_pres, 2, 1)
+      ,m_type = ifelse(cn_pres, 2, 1)
       ,aes_list = gm_list
       ,height = height - height*height_adj/(nrow(x) + 1)
       ,width = width - width*width_adj/(ncol(x) + 1))
