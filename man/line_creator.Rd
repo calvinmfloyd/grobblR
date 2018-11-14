@@ -4,8 +4,7 @@
 \alias{line_creator}
 \title{Based on the given text cex value and given width breaks down the given string into a series of lines. Checks to see if the lines would fit within the given height, as well. Utilized when creating character string grobs.}
 \usage{
-line_creator(cex_val, string, height = numeric(), width = numeric(),
-  one_line = FALSE)
+line_creator(cex_val, string, height = numeric(), width = numeric())
 }
 \arguments{
 \item{cex_val}{The text cex multiplier applied to the string.}
