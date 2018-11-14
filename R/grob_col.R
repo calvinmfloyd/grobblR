@@ -87,7 +87,7 @@ grob_col <- function(..., p = 1, aes_list = list(), border = F, hjust = 0.5, vju
               bor_aes_list$fill <- NA
               g <- grid::grobTree(
                 g,
-                rectGrob(
+                grid::rectGrob(
                   height = grid::unit(hts[i], 'mm')
                   ,width = grid::unit(wth, 'mm')
                   ,gp = bor_aes_list)

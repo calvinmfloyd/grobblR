@@ -56,18 +56,32 @@ summary_df <- iris %>%
 
 gg <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point()
 
+aes_list <- list(txt_just = matrix(c('right', 'right', 'right', 'left'), nrow = 2))
+aes_list <- list(txt_just = matrix(c(0.5, 0.5, 0.5, 0.5), nrow = 2))
+l <- list(txt_just = data.frame(matrix(c('right', 'right', 'right', 'left'), nrow = 2)))
 
 pw <- 100
+
+if(2 == 3)
+  print(1)
+
+
 
 g <- grob_layout(
   grob_row(
     border = T
-    ,grob_col(p = 15/pw, '1', border = T, aes_list = list(bg_color = 'red'))
-    ,grob_col('2', border = T, aes_list = list(bg_color = 'gray40'))
-    ,grob_col('3', border = T, aes_list = list(bg_color = 'navy'))
+    ,grob_col(matrix(c('1', '2', '3', '4'), nrow = 2), border = T,
+              aes_list = list(bg_color = 'red', txt_just = 'left', txt_v_just = 'top'))
+    ,grob_col(matrix(c('1', '2', '3', '4'), nrow = 2), border = T,
+              aes_list = list(txt_color = 'navy', txt_just = 'center', txt_v_just = 'bottom'))
+    ,grob_col(NA, p = 5, border = T)
+    # ,grob_col('2', border = T, aes_list = list(bg_color = 'gray40'), hjust = 1, vjust = 1)
+    # ,grob_col('3', border = T, aes_list = list(bg_color = 'navy'), hjust = 0, vjust = 0)
   ),
-  width = pw,
-  height = 30)
+  width = 100,
+  height = 100)
+
+gridExtra::grid.arrange(g)
 
 g <- grob_layout(
   grob_row(

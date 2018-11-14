@@ -107,27 +107,27 @@ convert_to_grob <- function(x, height, width, aes_list = list()){
   # ----
 
   # Checking that all the elements names in aes_list are valid/accepted ----
-
   invalid_names <- names(aes_list)[
     !names(aes_list) %in% c(names(gm_list), names(gi_list), paste0('colname_', names(gm_list)), 'n_lines')]
   if(length(invalid_names) > 0){
     warning(
       sprintf(
-        "The following elements in aes_list are not accepted and are not affecting any aesthetics: %s"
-        ,paste(invalid_names, collapse = ', '))
-      ,call. = FALSE
+        "The following elements in aes_list are not accepted and are not affecting any aesthetics: %s",
+        paste(invalid_names, collapse = ', ')),
+      call. = FALSE
     )
   }
   # ----
+
+  ctm_names <- names(aes_list)[(names(aes_list) %in% names(gm_list)) & (!names(aes_list) %in% non_matrix_slots)]
+  for(arg_name in ctm_names){
+    aes_list[[arg_name]] <- convert_to_matrix(aes_list[[arg_name]])
+  }
 
   # converting to matrix grob if x is a dataframe or matrix
   if(is.data.frame(x) | is.matrix(x)){
 
     x <- as.matrix(x)
-
-    for(arg_name in names(aes_list)[!names(aes_list) %in% non_matrix_slots]){
-      aes_list[[arg_name]] <- convert_to_matrix(aes_list[[arg_name]])
-    }
 
     gm_list <- sub_list_elements(gm_list, aes_list)
     cn_pres <- !is.null(colnames(x))
@@ -208,7 +208,7 @@ convert_to_grob <- function(x, height, width, aes_list = list()){
   }
   else if(ggplot2::is.ggplot(x)){
 
-    png_name <- sprintf("ggplot_grob_%s_%s.png", format(Sys.time(), '%m_%d_%Y'), format(Sys.time(), "%H_%M_%S"))
+    png_name <- sprintf("ggplot_grob_%s.png", format(Sys.time(), '%m_%d_%Y_%H_%M_%S'))
     ggplot2::ggsave(png_name, x, height = height, width = width, unit = 'mm')
     gi_list <- sub_list_elements(gi_list, aes_list)
     g <- grob_image(png_name, aes_list = gi_list, height = height, width = width)
@@ -222,7 +222,10 @@ convert_to_grob <- function(x, height, width, aes_list = list()){
   }
   else if(is.na(x)){
 
-    g <- grid::nullGrob()
+    g <- grid::rectGrob(
+      gp = grid::gpar(col = NA, fill = NA),
+      height = grid::unit(height, 'mm'),
+      width = grid::unit(width, 'mm'))
 
   }
 

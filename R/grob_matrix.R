@@ -50,7 +50,7 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
 
   decimal_places <- function(x) {
     if((x %% 1) != 0){
-      nchar(strsplit(sub('0+$', '', as.character(x)), ".", fixed=TRUE)[[1]][[2]])
+      return(nchar(strsplit(sub('0+$', '', as.character(x)), ".", fixed=TRUE)[[1]][[2]]))
     } else {
       return(0)
     }
@@ -81,6 +81,15 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
     color_gradient_min = '#F8696B')
 
   for(val_name in names(def_vals_non_matrices)){
+
+    if(length(aes_list[[val_name]]) > 1){
+      stop(sprintf(
+        "The %s in aes_list has a length of %d, but must be a single value.",
+          val_name,
+          length(aes_list[[val_name]])),
+        call. = FALSE)
+    }
+
     if(length(aes_list[[val_name]]) == 0){
       aes_list[[val_name]] <- def_vals_non_matrices[[val_name]]
     }
@@ -101,6 +110,8 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
     border_color = c('gray40', 'gray40', '#3A70A6', 'gray40'),
     txt_angle = c(0, 0, 0, 0),
     border_width = c(4, 4, 4, 4))
+
+  def_orig_vals_list <- c(def_vals_matrices, def_vals_non_matrices)
 
   # Making adjustments to txt_cex, if need be ----
   adjust_cex <- length(aes_list$txt_cex) == 0 &
@@ -162,7 +173,11 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
     if(all(dim(aes_list[[val_name]]) <= 1)){
       aes_list[[val_name]] <- matrix(def_vals_matrices[[val_name]][m_type], nrow = nr, ncol = nc)
     } else {
-      stopifnot(nrow(aes_list[[val_name]]) == nr, ncol(aes_list[[val_name]]) == nc)
+      if(nrow(aes_list[[val_name]]) != nr | ncol(aes_list[[val_name]]) != nc){
+          stop(sprintf(
+            "The dimensions of %s in aes_list do not match the dimension of the matrix its linked to.", val_name),
+            .call = FALSE)
+      }
     }
   }
 
@@ -188,10 +203,10 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
       aes_list[['bg_color']][,cc] <- crp[val_vec]
       }
 
-    } else if (aes_list[['color_gradient_binary']] %in% TRUE &
-               m_type %in% c(1,2)){
+    } else if (aes_list[['color_gradient_binary']] %in% TRUE & m_type %in% c(1,2)){
 
       for(cc in aes_list[['color_gradient_cols']]){
+
         num_vals <- as.numeric(df[,cc])
         aes_list[['bg_color']][,cc][num_vals < aes_list[['color_binary_cut_off']]] <- aes_list[['color_binary_low']]
         aes_list[['bg_color']][,cc][num_vals > aes_list[['color_binary_cut_off']]] <- aes_list[['color_binary_high']]
@@ -201,8 +216,69 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
 
   # ----
 
-  # Adjustments to txt_just
+  # Adjustments to txt_just, txt_align, txt_v_just, txt_v_align ----
 
+  for(val_name in c('txt_just', 'txt_align')){
+    if(!any(is.numeric(aes_list[[val_name]]), all(aes_list[[val_name]] %in% c('left', 'right', 'center')))){
+      stop(paste0(
+        sprintf("The %s in aes_list must either be a numeric value (usually between 0 and 1), ", val_name),
+        "or a character value in ('left', 'right', 'center'). Also, do not mix character values and ",
+        "numeric values."),
+        call. = FALSE)
+    }
+  }
+
+  al_txt_just <- aes_list[['txt_just']]
+  al_txt_align <- aes_list[['txt_align']]
+
+  aes_list[['txt_just']][al_txt_just %in% 'left' | al_txt_align %in% 'left'] <- 0
+  aes_list[['txt_align']][al_txt_just %in% 'left' | al_txt_align %in% 'left'] <- 0
+  aes_list[['txt_just']][al_txt_just %in% 'right' | al_txt_align %in% 'right'] <- 1
+  aes_list[['txt_align']][al_txt_just %in% 'right' | al_txt_align %in% 'right'] <- 1
+  aes_list[['txt_just']][al_txt_just %in% 'center' | al_txt_align %in% 'center'] <- 0.5
+  aes_list[['txt_align']][al_txt_just %in% 'center' | al_txt_align %in% 'center'] <- 0.5
+
+  aes_list[['txt_just']] <- matrix(as.numeric(aes_list[['txt_just']]), nrow = nr)
+  aes_list[['txt_align']] <- matrix(as.numeric(aes_list[['txt_align']]), nrow = nr)
+
+  ####
+
+  al_txt_v_just <- aes_list[['txt_v_just']]
+  al_txt_v_align <- aes_list[['txt_v_align']]
+
+  for(val_name in c('txt_v_just', 'txt_v_align')){
+    if(!any(is.numeric(aes_list[[val_name]]), all(aes_list[[val_name]] %in% c('top', 'bottom', 'center')))){
+      stop(paste0(
+        sprintf("The %s in aes_list must either be a numeric value (usually between 0 and 1), ", val_name),
+        "or a character value in ('top', 'bottom', 'center'). Also, do not mix character values and ",
+        "numeric values."),
+        call. = FALSE)
+    }
+  }
+
+  aes_list[['txt_v_just']][al_txt_v_just %in% 'bottom' | al_txt_v_align %in% 'bottom'] <- 0
+  aes_list[['txt_v_align']][al_txt_v_just %in% 'bottom' | al_txt_v_align %in% 'bottom'] <- 0
+  aes_list[['txt_v_just']][al_txt_v_just %in% 'top' | al_txt_v_align %in% 'top'] <- 1
+  aes_list[['txt_v_align']][al_txt_v_just %in% 'top' | al_txt_v_align %in% 'top'] <- 1
+  aes_list[['txt_v_just']][al_txt_v_just %in% 'center' | al_txt_v_align %in% 'center'] <- 0.5
+  aes_list[['txt_v_align']][al_txt_v_just %in% 'center' | al_txt_v_align %in% 'center'] <- 0.5
+
+  aes_list[['txt_v_just']] <- matrix(as.numeric(aes_list[['txt_v_just']]), nrow = nr)
+  aes_list[['txt_v_align']] <- matrix(as.numeric(aes_list[['txt_v_align']]), nrow = nr)
+
+  # ----
+
+  # Aesthetic value type checks before we start creating the grobs themselves ----
+
+  for(val_name in names(def_orig_vals_list)){
+    if(!class(c(aes_list[[val_name]])) %in% class(def_orig_vals_list[[val_name]])){
+      stop(sprintf(
+        "The class of %s in aes_list must be %s.", val_name, class(def_orig_vals_list[[val_name]])),
+        call. = FALSE)
+    }
+  }
+
+  # ----
 
   # Creating each of our mini grobs that will compose the grob_matrix ----
   raw_grobs <- grid::gList()
@@ -254,6 +330,8 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
     }}
 
   # ----
+
+  # Creating the layout matrix, dependent on if we're grouping elements ----
   if(aes_list$group_elements){
     ue <- unique(c(as.matrix(df)))
     level_df <- data.frame(element = ue, level = 1:length(ue), stringsAsFactors = F)

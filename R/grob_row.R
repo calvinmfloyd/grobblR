@@ -41,6 +41,9 @@ grob_row <- function(..., p = 1, border = F, border_aes_list = list()){
                       bor = self$border,
                       bor_aes_list = self$border_aes_list){
 
+        if(!all(unlist(lapply(gc, class)) %in% c('R6', 'grob_col'))){
+          stop("Did you remember to wrap all of your objects within grob_row() with grob_col()?", call. = FALSE)
+        }
         props <- unlist(lapply(1:length(gc), function(i) gc[[i]]$proportion))
         widths <- (props/sum(props))*(wth - 2*pad)
         height <- ht - 2*pad
