@@ -59,7 +59,7 @@ convert_to_grob <- function(x, height, width, aes_list = list()){
     base_list
   }
 
-  cex_vals <- seq(0.05, 50, 0.05)
+  cex_vals <- seq(0.01, 20, 0.01)
 
   gm_list <- list(
     fnt_face = matrix(ncol = 0, nrow = 0),

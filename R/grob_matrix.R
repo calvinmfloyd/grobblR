@@ -124,7 +124,7 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
 
   } else {
 
-    cex_vals <- seq(0.01, 20, 0.02)
+    cex_vals <- seq(0.01, 15, 0.02)
     rh <- height/nr - 2*aes_list$cell_sep
 
     col_props <- apply(
