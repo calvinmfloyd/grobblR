@@ -21,6 +21,7 @@
 #' \item \code{col_widths} - If automatic column widths are not desired, the user can provide a vector of widths for each column in the matrix in mm.
 #' \item \code{fnt_face} - Controls the font face of the elements of the matrix (i.e. bold, italic, etc.). Values are used in grid::gpar(). Default for table elements is normal, or 1. Default for column name elements is bold and italic, or 4.
 #' \item \code{group_elements} - Controls whether same, adjacent elements with the row names, column names or table elements should be grouped together into one single grid. A TRUE/FALSE value, with the default being FALSE.
+#' \item \code{round_rect_radius} - Controls the radius of the corners of the rectangles matrix text is laid on top of.
 #' \item \code{row_heights} - If equal row heights are not desired, the user can provide a vector of heights for each row in the matrix in mm.
 #' \item \code{txt_align} - Controls where the text in each grid cell will be centered around, horizontally. A numeric value between 0 and 1, with 0 being all the way to the left of the grid cell, and 1 being all the way to the right of the grid cell. Default is 0.5. Can also input 'left', 'right' or 'center', which will also make edits to \code{txt_just} to make the text completely left-justified, right-justified or centered, respectively.
 #' \item \code{txt_angle} - Controls the text angle of the text within the matrix. A numeric value in degrees, with the default being 0.
@@ -37,6 +38,7 @@
 #' \item Table theme.
 #' \item Column name theme.
 #' \item Row name theme.
+#' \item Title theme.
 #' }
 #' @param height A numeric value designating the total height of the matrix grob in mm.
 #' @param width A numeric value designating the total width of the matrix grob in mm.
@@ -56,9 +58,15 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
     }
   }
 
+  convert_to_matrix <- function(x){
+    if(length(x) > 0 & is.null(nrow(x))) x <- t(as.matrix(x))
+    if(is.data.frame(x)) x <- as.matrix(x)
+    x
+  }
+
   stopifnot(!is.null(nrow(df)), !is.null(ncol(df)))
   stopifnot(!length(height) == 0, !length(width) == 0)
-  stopifnot(m_type %in% c(1, 2, 3, 4))
+  stopifnot(m_type %in% c(1, 2, 3, 4, 5))
 
   df_fit <- df
   if(m_type == 3) df <- matrix(colnames(df), nrow = 1)
@@ -97,19 +105,20 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
   # ----
 
   def_vals_matrices <- list(
-    fnt_face = c(1, 1, 4, 3),
-    bg_color = c('white', 'white', 'white', 'white'),
-    bg_alpha = c(1, 1, 1, 1),
-    borders = c('', '', '', ''),
-    txt_color = c('black', 'black', '#3A70A6', 'black'),
-    txt_align = c(0.5, 0.5, 0.5, 0.5),
-    txt_v_align = c(0.5, 0.5, 0.5, 0.5),
-    txt_just = c(0.5, 0.5, 0.5, 0.5),
-    txt_v_just = c(0.5, 0.5, 0.5, 0.5),
-    txt_font = c('sans', 'sans', 'sans', 'sans'),
-    border_color = c('gray40', 'gray40', '#3A70A6', 'gray40'),
-    txt_angle = c(0, 0, 0, 0),
-    border_width = c(4, 4, 4, 4))
+    fnt_face = c(1, 1, 4, 3, 2),
+    bg_color = c('white', 'white', 'white', 'white', 'gray50'),
+    bg_alpha = c(1, 1, 1, 1, 1),
+    borders = c('', '', '', '', ''),
+    txt_color = c('black', 'black', '#3A70A6', 'black', 'white'),
+    txt_align = c(0.5, 0.5, 0.5, 0.5, 0.5),
+    txt_v_align = c(0.5, 0.5, 0.5, 0.5, 0.5),
+    txt_just = c(0.5, 0.5, 0.5, 0.5, 0.5),
+    txt_v_just = c(0.5, 0.5, 0.5, 0.5, 0.5),
+    txt_font = c('sans', 'sans', 'sans', 'sans', 'sans', 'sans'),
+    border_color = c('gray40', 'gray40', '#3A70A6', 'gray40', 'gray40'),
+    txt_angle = c(0, 0, 0, 0, 0),
+    border_width = c(4, 4, 4, 4, 4),
+    round_rect_radius = c(0.0, 0.0, 0.0, 0.0, 0.2))
 
   def_orig_vals_list <- c(def_vals_matrices, def_vals_non_matrices)
 
@@ -160,14 +169,20 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
 
   # Adding in default values (matrices) if they are missing ----
 
-  def_vals_matrices$txt_cex <- rep(def_txt_cex, 4)
+  def_vals_matrices$txt_cex <- rep(def_txt_cex, length(def_vals_matrices[[1]]))
+
+  ctm_names <- names(def_vals_matrices)
+  for(arg_name in names(aes_list)[names(aes_list) %in% ctm_names]){
+    aes_list[[arg_name]] <- convert_to_matrix(aes_list[[arg_name]])
+  }
 
   bg_color_not_inputted <- all(dim(aes_list$bg_color) == 0)
 
   for(val_name in names(def_vals_matrices)){
+
     def_vals_matrices[[val_name]][m_type] <- ifelse(
-      all(is.null(aes_list[[val_name]])) | all(dim(aes_list[[val_name]]) == 1),
-      aes_list[[val_name]][1,1],
+      !is.null(aes_list[[val_name]]),
+        ifelse(all(dim(aes_list[[val_name]]) %in% 1), aes_list[[val_name]][1,1], def_vals_matrices[[val_name]][m_type]),
       def_vals_matrices[[val_name]][m_type])
 
     if(all(dim(aes_list[[val_name]]) <= 1)){
@@ -285,8 +300,9 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
   for(j in 1:nc){
     for(i in 1:nr){
 
-      rect_grob <- grid::rectGrob(
-        gp = grid::gpar(
+      rect_grob <- grid::roundrectGrob(
+        r = unit(aes_list$round_rect_radius, 'snpc')
+        ,gp = grid::gpar(
           fill = aes_list$bg_color[i,j],
           col = aes_list$bg_color[i,j],
           alpha = aes_list$bg_alpha[i,j]))

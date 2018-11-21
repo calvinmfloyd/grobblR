@@ -22,7 +22,7 @@ grob_layout <- function(...,
   g_info <- unlist(list(...))
   # ----
 
-  # Creating the Layout Matrix, using LCM ----
+  # Creating the Layout Matrix ----
   nr <- length(g_info)
   layout_matrix <- matrix(1:nr, ncol = 1)
   # ----

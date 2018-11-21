@@ -69,12 +69,17 @@ if(2 == 3)
 
 g <- grob_layout(
   grob_row(
-    border = T
-    ,grob_col(matrix(c('1', '2', '3', '4'), nrow = 2), border = T,
-              aes_list = list(bg_color = 'red', txt_just = 'left', txt_v_just = 'top'))
-    ,grob_col(matrix(c('1', '2', '3', '4'), nrow = 2), border = T,
-              aes_list = list(txt_color = 'navy', txt_just = 'center', txt_v_just = 'bottom'))
-    ,grob_col(NA, p = 5, border = T)
+    title = 'grob_row Title'
+    ,border = T
+    ,grob_col(
+      matrix(c('1', '2', '3', '4'), nrow = 2),
+      # title = 'Title 1',
+      aes_list = list(txt_color = 'white', bg_color = 'red', txt_just = 'center'))
+    ,grob_col(
+      matrix(c('1', '2', '3', '4'), nrow = 2),
+      # title = 'Title Baby',
+      aes_list = list(txt_color = 'navy'))
+    # ,grob_col(NA, p = 5)
     # ,grob_col('2', border = T, aes_list = list(bg_color = 'gray40'), hjust = 1, vjust = 1)
     # ,grob_col('3', border = T, aes_list = list(bg_color = 'navy'), hjust = 0, vjust = 0)
   ),
