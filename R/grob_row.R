@@ -137,9 +137,14 @@ grob_row <- function(...,
       }
     ))
 
-  if(!is.numeric(p)) stop('p in grob_row() must be a numeric value.', call. = F)
+  if(title_p < 0 | title_p > 0.5 | !is.numeric(title_p)) stop(
+    "title_p in grob_row() must be a numeric value between 0 and 0.5.",
+    call. = F)
+  if(!is.character(title) | length(title) > 1) stop('title in grob_row() must be a single character string.', call. = F)
+  if(!is.numeric(p)) if(p < 0) stop('p in grob_row() must be a positive numeric value.', call. = F)
   if(!is.logical(border)) stop('border in grob_row() must be a TRUE/FALSE value.', call. = F)
   if(!is.list(border_aes_list)) stop('border_aes_list in grob_row() must be a list.', call. = F)
+  if(!is.list(title_aes_list)) stop('title_aes_list in grob_row() must be a list.', call. = F)
   if(!is.character(border_sides)) stop(
     "border_sides in grob_row() must be a character string with 'top', 'bottom', 'left' or 'right' separated with ', '.",
     call. = F)

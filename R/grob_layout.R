@@ -14,12 +14,16 @@ grob_layout <- function(...,
                         width = 216,
                         padding = 5,
                         grob_padding = 2,
+                        title = '',
+                        title_aes_list = list(),
+                        title_p = 0.2,
                         row_heights = c()){
 
   # Initializing Variables ----
   ph <- height - 2*padding
   pw <- width - 2*padding
   g_info <- unlist(list(...))
+  gl_title_present <- nchar(title) > 0
   # ----
 
   # Creating the Layout Matrix ----
@@ -33,7 +37,7 @@ grob_layout <- function(...,
   if(rh_inputted & rh_wrong_length) warning(sprintf("row_heights param must have length of %d.", nr))
   if(rh_wrong_length){
     row_props <- sapply(1:nr, function(i) g_info[[i]]$proportion)
-    row_heights <- ph*(row_props/sum(row_props))
+    row_heights <- (ph - ph*gl_title_present*title_p)*(row_props/sum(row_props))
   }
   # ----
 
@@ -49,9 +53,37 @@ grob_layout <- function(...,
 
   grob <- gridExtra::arrangeGrob(
     grobs = raw_grobs,
-    heights = grid::unit(c(padding, row_heights, padding), 'mm'),
+    heights = grid::unit(row_heights, 'mm'),
+    widths = grid::unit(pw, 'mm'),
+    layout_matrix = layout_matrix)
+
+  if(gl_title_present){
+
+    white_space_p <- 0.15
+
+    title_grob <- grob_matrix(
+      df = matrix(title, ncol = 1, nrow = 1),
+      height = ph*title_p - ph*title_p*white_space_p,
+      width = pw,
+      aes_list = title_aes_list,
+      m_type = 5)
+
+    grob <- gridExtra::arrangeGrob(
+      grobs = grid::gList(title_grob, grid::nullGrob(), grob),
+      heights = grid::unit(c(
+        ph*title_p - ph*title_p*white_space_p,
+        ph*title_p*white_space_p,
+        ph - ph*title_p), 'mm'),
+      widths = grid::unit(pw, 'mm'),
+      layout_matrix = matrix(1:3, ncol = 1))
+
+  }
+
+  grob <- gridExtra::arrangeGrob(
+    grobs = grid::gList(grob),
+    heights = grid::unit(c(padding, ph, padding), 'mm'),
     widths = grid::unit(c(padding, pw, padding), 'mm'),
-    layout_matrix = cbind(NA, rbind(NA, layout_matrix, NA), NA))
+    layout_matrix = cbind(NA, rbind(NA, 1, NA), NA))
 
   grob
 

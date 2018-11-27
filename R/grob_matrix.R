@@ -68,6 +68,10 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
   stopifnot(!length(height) == 0, !length(width) == 0)
   stopifnot(m_type %in% c(1, 2, 3, 4, 5))
 
+  m_type_desc <- data.frame(
+    m_type = c(1, 2, 3, 4, 5)
+    ,desc = c('matrix', 'table', 'column names', 'row names', 'title'))
+
   df_fit <- df
   if(m_type == 3) df <- matrix(colnames(df), nrow = 1)
 
@@ -133,7 +137,7 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
 
   } else {
 
-    cex_vals <- seq(0.01, 15, 0.02)
+    cex_vals <- seq(0.5, 15, 0.1)
     rh <- height/nr - 2*aes_list$cell_sep
 
     col_props <- apply(
@@ -155,13 +159,32 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
       1:nc,
       function(i){
         x <- sapply(cex_vals, function(c) in_to_mm(graphics::strwidth(widest_elements[i], cex = c, units = 'in')))
-        cex_vals[max(which(x <= cw[i]))]})
+        if(sum(x <= cw[i]) == 0){
+          warning(sprintf(
+            "Text in %s is too wide for allotted width. Using minimum text cex value.",
+            m_type_desc$desc[m_type_desc$m_type == m_type]),
+            call. = F)
+          return(min(cex_vals))
+        } else {
+          cex_vals[max(which(x <= cw[i]))]
+        }
+        })
 
     poss_str_heights <- sapply(
       cex_vals,
       function(c) in_to_mm(graphics::strheight(tallest_element, cex = c, units = 'in')))
 
-    def_txt_cex <- min(c(max(poss_width_cex_vals), cex_vals[max(which(poss_str_heights <= rh))]))
+    if(sum(poss_str_heights <= rh) == 0){
+      warning(sprintf(
+        "Text in %s is too tall for allotted height. Using minimum text cex value.",
+        m_type_desc$desc[m_type_desc$m_type == m_type]),
+        call. = F)
+      max_str_height <- min(cex_vals)
+    } else {
+      max_str_height <- cex_vals[max(which(poss_str_heights <= rh))]
+    }
+
+    def_txt_cex <- min(c(max(poss_width_cex_vals), max_str_height))
     def_txt_cex <- def_txt_cex - txt_cex_adj*def_txt_cex
 
   }

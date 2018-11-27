@@ -66,23 +66,32 @@ if(2 == 3)
   print(1)
 
 
+line_creator(2, 'dgfdgdfefg \n sadf sdfdas \n sd yh wk nw \n hello', height = 50, width = 50)
+
+df <- data.frame(x = 0.2, y = 0.5)
 
 g <- grob_layout(
   grob_row(
-    title = 'grob_row Title'
-    ,border = T
+    border = T
     ,grob_col(
-      matrix(c('1', '2', '3', '4'), nrow = 2),
-      # title = 'Title 1',
-      aes_list = list(txt_color = 'white', bg_color = 'red', txt_just = 'center'))
-    ,grob_col(
-      matrix(c('1', '2', '3', '4'), nrow = 2),
-      # title = 'Title Baby',
+      # '- Hello My name is Calvin\n- I like long walks on the beach\n- Kobes overrated',
+      grob_row(grob_col(df))
+      ,grob_row(p = 4, grob_col(NA))
+      ,title = 'Title 1'
+      # ,aes_list = list(txt_color = 'gray40', txt_just = 'left', bg_color = 'red', round_rect_radius = 0.2)
+      )
+    ,grob_col(p = 2,
+      grob_row(p = 2, grob_col(matrix(c('1', '2', '3', '4'), nrow = 2), aes_list = list(bg_color = 'red'))),
+      grob_row(grob_col(matrix(c('1', '2', '3', '4'), nrow = 1), aes_list = list(bg_color = 'blue'))),
+      title = 'Title 2',
+      title_aes_list = list(fnt_face = 3, bg_color = 'white', txt_color = 'navy'),
+      border = T,
       aes_list = list(txt_color = 'navy'))
     # ,grob_col(NA, p = 5)
     # ,grob_col('2', border = T, aes_list = list(bg_color = 'gray40'), hjust = 1, vjust = 1)
     # ,grob_col('3', border = T, aes_list = list(bg_color = 'navy'), hjust = 0, vjust = 0)
   ),
+  title = 'grob_layout Title',
   width = 100,
   height = 100)
 
@@ -131,7 +140,7 @@ grob_to_pdf(g, file_name = 'test')
 g <- grob_layout(
   grob_row(border = T,
     grob_col('Iris Dataset Grob', aes_list = list(txt_color = 'gray40'))),
-  grob_row(p = 2, border = T,
+  grob_row(p = 2, border = T, title = 'Section 1',
     grob_col(p = 3,
       head(iris, 20),
       aes_list = list(color_gradient_cols = 3)),
@@ -155,6 +164,7 @@ g <- grob_layout(
     grob_col(first_paragraph, aes_list = list(txt_just = 0, txt_align = 0)))
 )
 
+gridExtra::grid.arrange(g)
 grob_to_pdf(g, file_name = 'g.pdf')
 
 
