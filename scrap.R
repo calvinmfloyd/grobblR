@@ -8,25 +8,21 @@ source('grob_image.R')
 source('line_creator.R')
 source('grob_to_pdf.R')
 
-library(UsingR)
-library(dplyr)
-library(ggplot2)
-library(graphics)
-library(grid)
-library(gridExtra)
-library(png)
-library(R6)
+# library(UsingR)
+# library(dplyr)
+# library(ggplot2)
+# library(graphics)
+# library(grid)
+# library(gridExtra)
+# library(png)
+# library(R6)
 
 # Making the package ----
 install.packages('roxygen2')
 library("devtools")
 library(roxygen2)
 
-library(devtools)
-devtools::install_github('calvinmfloyd/grobblR')
-library(grobblR)
-
-create('grobblR')
+# create('grobblR')
 devtools::document()
 
 # ----
