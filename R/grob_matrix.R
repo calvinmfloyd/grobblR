@@ -324,7 +324,7 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
     for(i in 1:nr){
 
       rect_grob <- grid::roundrectGrob(
-        r = unit(aes_list$round_rect_radius, 'snpc')
+        r = grid::unit(aes_list$round_rect_radius, 'snpc')
         ,gp = grid::gpar(
           fill = aes_list$bg_color[i,j],
           col = aes_list$bg_color[i,j],
