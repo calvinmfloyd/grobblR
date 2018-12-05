@@ -94,14 +94,41 @@ gl <- grob_layout(
   height = 100)
 
 
-gl <- grob_layout(
+gl1 <- grob_layout(
   grob_row(grob_col('1'), grob_col('2')),
   grob_row(grob_col('3'), grob_col('4')),
   height = 100,
-  width = 100,
-  page_number = 4)
+  width = 100)
 
+gl2 <- grob_layout(
+  grob_row(grob_col('1'), grob_col('2')),
+  grob_row(grob_col('3')),
+  height = 100,
+  width = 100)
+
+
+gl <- grob_layout(
+  grob_row(
+    grob_col('1', border = T),
+    grob_col('2', border = T),
+    border = T),
+  grob_row(
+    grob_col('3', border = T),
+    grob_col(
+      grob_row(grob_col('4', border = T), border = T),
+      grob_row(grob_col('5', border = T), border = T),
+      border = T),
+    border = T),
+  height = 100,
+  width = 100)
+
+gl$grob
+
+grob_to_pdf(list(gl, gl2), file_name = 'test1')
+
+gridExtra::grid.arrange(gl1$grob)
 gridExtra::grid.arrange(gl$grob)
+gl$page_number <- 5
 
 g <- grob_layout(
   grob_row(
