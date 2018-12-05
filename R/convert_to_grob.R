@@ -28,6 +28,10 @@ convert_to_grob <- function(x, height, width, aes_list = list()){
     base_list
   }
 
+  if(is.numeric(x) & length(x) > 0 & is.null(dim(x))){
+    x <- convert_to_matrix(x)
+  }
+
   cex_vals <- seq(0.01, 20, 0.01)
 
   gm_list <- list(
@@ -74,8 +78,6 @@ convert_to_grob <- function(x, height, width, aes_list = list()){
     numeric_slots,
     names(gm_list)[grepl('color_g|color_b', names(gm_list))])
 
-  # ----
-
   # Checking that all the elements names in aes_list are valid/accepted ----
   invalid_names <- names(aes_list)[
     !names(aes_list) %in% c(names(gm_list), names(gi_list), paste0('colname_', names(gm_list)), 'n_lines', 'sep')]
@@ -83,8 +85,6 @@ convert_to_grob <- function(x, height, width, aes_list = list()){
       "The following elements in aes_list are not accepted and are not affecting any aesthetics: %s",
       paste(invalid_names, collapse = ', ')),
     call. = FALSE)
-
-  # ----
 
   ctm_names <- names(aes_list)[(names(aes_list) %in% names(gm_list)) & (!names(aes_list) %in% non_matrix_slots)]
   for(arg_name in ctm_names){

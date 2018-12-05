@@ -106,7 +106,6 @@ gl2 <- grob_layout(
   height = 100,
   width = 100)
 
-
 gl <- grob_layout(
   grob_row(
     grob_col('1', border = T),

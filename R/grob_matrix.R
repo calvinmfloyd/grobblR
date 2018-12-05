@@ -10,17 +10,17 @@
 #' \item \code{border_width} - Controls the line width density/thickness of the selected borders. Values are used in grid::gpar(). Default is 4.
 #' \item \code{cell_sep} - Controls the amount of padding around each cell in mm. Default is 1 mm.
 #' \item \code{color_binary_cut_off} - A cut-off value which the binary color gradient will be applied to. Default is 0.
-#' \item \code{color_binary_high} - The color of the binary color gradient if the numeric element is greater than the color_binary_cut_off. Default is green.
-#' \item \code{color_binary_low} - The color of the binary color gradient if the numeric element is less than the color_binary_cut_off. Default is red.
-#' \item \code{color_binary_equal} - The color of the binary color gradient if the numeric element is equal to the color_binary_cut_off. Default is gray.
-#' \item \code{color_gradient_binary} - A TRUE/FALSE value which signifies if a binary color gradient should be applied to the color_gradient_cols.
+#' \item \code{color_binary_high} - The color of the binary color gradient if the numeric element is greater than the \code{color_binary_cut_off}. Default is green.
+#' \item \code{color_binary_low} - The color of the binary color gradient if the numeric element is less than the \code{color_binary_cut_off}. Default is red.
+#' \item \code{color_binary_equal} - The color of the binary color gradient if the numeric element is equal to the \code{color_binary_cut_off}. Default is gray.
+#' \item \code{color_gradient_binary} - A TRUE/FALSE value which signifies if a binary color gradient should be applied to the \code{color_gradient_cols}.
 #' \item \code{color_gradient_cols} - Controls the columns which a color gradient scale will be applied to. Integer values denoting the column numbers. Can only be applied to columns with all numeric values.
 #' \item \code{color_gradient_max} - The high color for the gradual color gradient. Default is green.
 #' \item \code{color_gradient_mid} - The middle color for the gradual color gradient. Default is yellow.
 #' \item \code{color_gradient_min} - The low color for the gradual color gradient. Default is red.
 #' \item \code{col_widths} - If automatic column widths are not desired, the user can provide a vector of widths for each column in the matrix in mm.
 #' \item \code{fnt_face} - Controls the font face of the elements of the matrix (i.e. bold, italic, etc.). Values are used in grid::gpar(). Default for table elements is normal, or 1. Default for column name elements is bold and italic, or 4.
-#' \item \code{group_elements} - Controls whether same, adjacent elements with the row names, column names or table elements should be grouped together into one single grid. A TRUE/FALSE value, with the default being FALSE.
+#' \item \code{group_elements} - Controls whether same, adjacent elements within the matrix should be grouped together into one single grid. A TRUE/FALSE value, with the default being FALSE.
 #' \item \code{round_rect_radius} - Controls the radius of the corners of the rectangles matrix text is laid on top of.
 #' \item \code{row_heights} - If equal row heights are not desired, the user can provide a vector of heights for each row in the matrix in mm.
 #' \item \code{txt_align} - Controls where the text in each grid cell will be centered around, horizontally. A numeric value between 0 and 1, with 0 being all the way to the left of the grid cell, and 1 being all the way to the right of the grid cell. Default is 0.5. Can also input 'left', 'right' or 'center', which will also make edits to \code{txt_just} to make the text completely left-justified, right-justified or centered, respectively.
@@ -92,7 +92,7 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
     color_gradient_mid = '#FFEB84',
     color_gradient_min = '#F8696B')
 
-  for(val_name in names(def_vals_non_matrices)){
+  for(val_name in names(def_vals_non_matrices)[!names(def_vals_non_matrices) %in% 'color_gradient_cols']){
 
     if(length(aes_list[[val_name]]) > 1) stop(sprintf(
         "The %s in aes_list has a length of %d, but must be a single value.",
