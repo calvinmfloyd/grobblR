@@ -107,17 +107,17 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
   # ----
 
   def_vals_matrices <- list(
-    fnt_face = c(1, 1, 4, 3, 2),
-    bg_color = c('white', 'white', 'white', 'white', 'gray50'),
+    fnt_face = c(1, 1, 1, 3, 2),
+    bg_color = c('white', 'white', '#3B5694', 'white', 'gray50'),
     bg_alpha = c(1, 1, 1, 1, 1),
     borders = c('', '', '', '', ''),
-    txt_color = c('black', 'black', '#3A70A6', 'black', 'white'),
+    txt_color = c('black', 'black', 'white', 'black', 'white'),
     txt_align = c(0.5, 0.5, 0.5, 0.5, 0.5),
     txt_v_align = c(0.5, 0.5, 0.5, 0.5, 0.5),
     txt_just = c(0.5, 0.5, 0.5, 0.5, 0.5),
     txt_v_just = c(0.5, 0.5, 0.5, 0.5, 0.5),
     txt_font = c('sans', 'sans', 'sans', 'sans', 'sans', 'sans'),
-    border_color = c('gray40', 'gray40', '#3A70A6', 'gray40', 'gray40'),
+    border_color = c('gray40', 'gray40', 'gray40', 'gray40', 'gray40'),
     txt_angle = c(0, 0, 0, 0, 0),
     border_width = c(4, 4, 4, 4, 4),
     round_rect_radius = c(0.0, 0.0, 0.0, 0.0, 0.2))
