@@ -192,6 +192,10 @@ convert_to_grob <- function(x, height, width, aes_list = list()){
       height = grid::unit(height, 'mm'),
       width = grid::unit(width, 'mm'))
 
+  } else {
+
+    stop(sprintf("Object of class %s not accepted.", class(x)), call. = F)
+
   }
 
   return(g)

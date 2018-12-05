@@ -387,6 +387,39 @@ gridExtra::grid.arrange(gl$grob)
 
 ```
 
+Notice that the default look of the matrix/data frame changes once column names are added. When column names are detected on a matrix or data frame, the default look changes to make it look more like a table, rather than just individual elements of a matrix. When column names are included, it should be noted that the column names and the elements of the table itself are treated separately. If the user wants to edit elements of the column names instead of the table, then the user must insert a `colname_` in front of whatever aesthetic the user wants to change. For example, if the user wanted to change the text color of the column names to red, he/she would insert `colname_txt_color = 'red'` into the `aes_list` list. This goes for any of the other aesthetics the user wants to change. The column header portion is treated as a 1x`m` matrix, where `m` is the number of columns of the matrix/data frame. Also, it should be noted that, at this moment in time, row names are ignored in `grobblR`.
+
+```{r Column name edits}
+
+gl <- grob_layout(
+  grob_row(
+    grob_col(df),
+    grob_col(
+      df,
+      aes_list = list(
+        colname_txt_color = 'red',
+        txt_color = 'blue'))),
+  grob_row(
+    grob_col(
+      df,
+      aes_list = list(
+        colname_fnt_face = 3,
+        fnt_face = 2)),
+    grob_col(
+      df,
+      aes_list = list(
+        colname_txt_color = c('red','purple','blue'),
+        colname_bg_color = 'gray90',
+        bg_color = 'white'))),
+  height = 100,
+  width = 100)
+
+gridExtra::grid.arrange(gl$grob)
+
+```
+
+## Grob ggplots
+
 
 
 

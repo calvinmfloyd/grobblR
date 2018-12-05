@@ -107,11 +107,11 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
   # ----
 
   def_vals_matrices <- list(
-    fnt_face = c(1, 1, 1, 3, 2),
-    bg_color = c('white', 'white', '#3B5694', 'white', 'gray50'),
+    fnt_face = c(1, 1, 2, 3, 2),
+    bg_color = c('white', 'white', 'white', 'white', 'gray50'),
     bg_alpha = c(1, 1, 1, 1, 1),
-    borders = c('', '', '', '', ''),
-    txt_color = c('black', 'black', 'white', 'black', 'white'),
+    borders = c('', '', 'bottom', '', ''),
+    txt_color = c('black', 'black', 'gray40', 'black', 'white'),
     txt_align = c(0.5, 0.5, 0.5, 0.5, 0.5),
     txt_v_align = c(0.5, 0.5, 0.5, 0.5, 0.5),
     txt_just = c(0.5, 0.5, 0.5, 0.5, 0.5),
@@ -119,7 +119,7 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
     txt_font = c('sans', 'sans', 'sans', 'sans', 'sans', 'sans'),
     border_color = c('gray40', 'gray40', 'gray40', 'gray40', 'gray40'),
     txt_angle = c(0, 0, 0, 0, 0),
-    border_width = c(4, 4, 4, 4, 4),
+    border_width = c(4, 4, 1, 4, 4),
     round_rect_radius = c(0.0, 0.0, 0.0, 0.0, 0.2))
 
   def_orig_vals_list <- c(def_vals_matrices, def_vals_non_matrices)
