@@ -4,7 +4,7 @@
 \alias{grob_to_pdf}
 \title{Converts a single grob to a pdf, or combines multiple grobs into a multiple page PDF document. Saves to the working directory. Only takes grobs with heights and widths in units of mm.}
 \usage{
-grob_to_pdf(..., file_name = character())
+grob_to_pdf(..., file_name = character(), add_page_numbers = T)
 }
 \arguments{
 \item{...}{The single grob or series of grobs which will be converted to a PDF document.}

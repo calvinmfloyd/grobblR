@@ -94,13 +94,11 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
 
   for(val_name in names(def_vals_non_matrices)){
 
-    if(length(aes_list[[val_name]]) > 1){
-      stop(sprintf(
+    if(length(aes_list[[val_name]]) > 1) stop(sprintf(
         "The %s in aes_list has a length of %d, but must be a single value.",
-          val_name,
-          length(aes_list[[val_name]])),
-        call. = FALSE)
-    }
+        val_name,
+        length(aes_list[[val_name]])),
+      call. = FALSE)
 
     if(length(aes_list[[val_name]]) == 0){
       aes_list[[val_name]] <- def_vals_non_matrices[[val_name]]
@@ -205,17 +203,18 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
 
     def_vals_matrices[[val_name]][m_type] <- ifelse(
       !is.null(aes_list[[val_name]]),
-        ifelse(all(dim(aes_list[[val_name]]) %in% 1), aes_list[[val_name]][1,1], def_vals_matrices[[val_name]][m_type]),
+        ifelse(
+          all(dim(aes_list[[val_name]]) %in% 1),
+          aes_list[[val_name]][1,1],
+          def_vals_matrices[[val_name]][m_type]),
       def_vals_matrices[[val_name]][m_type])
 
     if(all(dim(aes_list[[val_name]]) <= 1)){
       aes_list[[val_name]] <- matrix(def_vals_matrices[[val_name]][m_type], nrow = nr, ncol = nc)
     } else {
-      if(nrow(aes_list[[val_name]]) != nr | ncol(aes_list[[val_name]]) != nc){
-          stop(sprintf(
-            "The dimensions of %s in aes_list do not match the dimension of the matrix its linked to.", val_name),
-            .call = FALSE)
-      }
+      if(nrow(aes_list[[val_name]]) != nr | ncol(aes_list[[val_name]]) != nc) stop(sprintf(
+        "The dimensions of %s in aes_list do not match the dimension of the matrix its linked to.", val_name),
+        .call = FALSE)
     }
   }
 
@@ -456,6 +455,7 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
 
   }
   # ----
+
   first_element_indices <- unlist(lapply(unique(c(layout_matrix)), function(x) min(which(c(layout_matrix) == x))))
 
   gridExtra::arrangeGrob(

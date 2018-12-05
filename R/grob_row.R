@@ -32,7 +32,7 @@ grob_row <- function(...,
       border_aes_list = list(),
       border_sides = 'top, bottom, left, right',
       title = character(),
-      title_proportion = 0.1,
+      title_proportion = 0.2,
       title_aes_list = list(),
       initialize = function(grob_classes,
                             proportion,
@@ -65,9 +65,9 @@ grob_row <- function(...,
                       title_proportion = self$title_proportion,
                       title_aes_list = self$title_aes_list){
 
-        if(!all(unlist(lapply(gc, class)) %in% c('R6', 'grob_col'))){
-          stop("Did you remember to wrap all of your objects within grob_row() with grob_col()?", call. = FALSE)
-        }
+        if(!all(unlist(lapply(gc, class)) %in% c('R6', 'grob_col'))) stop(
+          "Did you remember to wrap all of your objects within grob_row() with grob_col()?",
+          call. = F)
 
         title_present <- nchar(title) > 0
 
@@ -114,7 +114,7 @@ grob_row <- function(...,
           class(bor_aes_list) <- 'gpar'
 
           cell_border_gs <- grid::gList()
-          borders_split <- unlist(strsplit(bor_sides, split = ', ', fixed = TRUE))
+          borders_split <- unlist(strsplit(bor_sides, split = ', ', fixed = T))
 
           if(length(borders_split) > 0){
             for(side in 1:length(borders_split)){
@@ -140,11 +140,21 @@ grob_row <- function(...,
   if(title_p < 0 | title_p > 0.5 | !is.numeric(title_p)) stop(
     "title_p in grob_row() must be a numeric value between 0 and 0.5.",
     call. = F)
-  if(!is.character(title) | length(title) > 1) stop('title in grob_row() must be a single character string.', call. = F)
-  if(!is.numeric(p)) if(p < 0) stop('p in grob_row() must be a positive numeric value.', call. = F)
-  if(!is.logical(border)) stop('border in grob_row() must be a TRUE/FALSE value.', call. = F)
-  if(!is.list(border_aes_list)) stop('border_aes_list in grob_row() must be a list.', call. = F)
-  if(!is.list(title_aes_list)) stop('title_aes_list in grob_row() must be a list.', call. = F)
+  if(!is.character(title) | length(title) > 1) stop(
+    'title in grob_row() must be a single character string.',
+    call. = F)
+  if(!is.numeric(p)) if(p < 0) stop(
+    'p in grob_row() must be a positive numeric value.',
+    call. = F)
+  if(!is.logical(border)) stop(
+    'border in grob_row() must be a TRUE/FALSE value.',
+    call. = F)
+  if(!is.list(border_aes_list)) stop(
+    'border_aes_list in grob_row() must be a list.',
+    call. = F)
+  if(!is.list(title_aes_list)) stop(
+    'title_aes_list in grob_row() must be a list.',
+    call. = F)
   if(!is.character(border_sides)) stop(
     "border_sides in grob_row() must be a character string with 'top', 'bottom', 'left' or 'right' separated with ', '.",
     call. = F)

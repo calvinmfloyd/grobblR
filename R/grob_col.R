@@ -41,7 +41,7 @@ grob_col <- function(...,
       border_sides = 'top, bottom, left, right',
       border_aes_list = list(),
       title = character(),
-      title_proportion = 0.1,
+      title_proportion = 0.2,
       title_aes_list = list(),
       initialize = function(contents,
                             aes_list,
@@ -192,15 +192,33 @@ grob_col <- function(...,
       }
     ))
 
-  if(hjust < 0 | hjust > 1) stop("hjust in grob_col() must be a numeric value between 0 and 1.", call. = F)
-  if(vjust < 0 | vjust > 1) stop("vjust in grob_col() must be a numeric value between 0 and 1.", call. = F)
-  if(title_p < 0 | title_p > 0.5) stop("title_p in grob_col() must be a numeric value between 0 and 0.5.", call. = F)
-  if(!is.character(title)) stop('title in grob_col() must be a character string.', call. = F)
-  if(!is.numeric(p)) if(p < 0) stop('p in grob_col() must be a positive numeric value.', call. = F)
-  if(!is.logical(border)) stop('border in grob_col() must be a TRUE/FALSE value.', call. = F)
-  if(!is.list(aes_list)) stop('aes_list in grob_col() must be a list.', call. = F)
-  if(!is.list(border_aes_list)) stop('border_aes_list in grob_col() must be a list.', call. = F)
-  if(!is.list(title_aes_list)) stop('title_aes_list in grob_col() must be a list.', call. = F)
+  if(hjust < 0 | hjust > 1) stop(
+    "hjust in grob_col() must be a numeric value between 0 and 1.",
+    call. = F)
+  if(vjust < 0 | vjust > 1) stop(
+    "vjust in grob_col() must be a numeric value between 0 and 1.",
+    call. = F)
+  if(title_p < 0 | title_p > 0.5) stop(
+    "title_p in grob_col() must be a numeric value between 0 and 0.5.",
+    call. = F)
+  if(!is.character(title)) stop(
+    "title in grob_col() must be a character string.",
+    call. = F)
+  if(!is.numeric(p)) if(p < 0) stop(
+    "p in grob_col() must be a positive numeric value.",
+    call. = F)
+  if(!is.logical(border)) stop(
+    "border in grob_col() must be a TRUE/FALSE value.",
+    call. = F)
+  if(!is.list(aes_list)) stop(
+    "aes_list in grob_col() must be a list.",
+    call. = F)
+  if(!is.list(border_aes_list)) stop(
+    "border_aes_list in grob_col() must be a list.",
+    call. = F)
+  if(!is.list(title_aes_list)) stop(
+    "title_aes_list in grob_col() must be a list.",
+    call. = F)
   if(!is.character(border_sides)) stop(
     "border_sides in grob_col() must be a character string with 'top', 'bottom', 'left' or 'right' separated with ', '.",
     call. = F)

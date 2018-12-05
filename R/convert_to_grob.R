@@ -79,14 +79,11 @@ convert_to_grob <- function(x, height, width, aes_list = list()){
   # Checking that all the elements names in aes_list are valid/accepted ----
   invalid_names <- names(aes_list)[
     !names(aes_list) %in% c(names(gm_list), names(gi_list), paste0('colname_', names(gm_list)), 'n_lines', 'sep')]
-  if(length(invalid_names) > 0){
-    warning(
-      sprintf(
-        "The following elements in aes_list are not accepted and are not affecting any aesthetics: %s",
-        paste(invalid_names, collapse = ', ')),
-      call. = FALSE
-    )
-  }
+  if(length(invalid_names) > 0) warning(sprintf(
+      "The following elements in aes_list are not accepted and are not affecting any aesthetics: %s",
+      paste(invalid_names, collapse = ', ')),
+    call. = FALSE)
+
   # ----
 
   ctm_names <- names(aes_list)[(names(aes_list) %in% names(gm_list)) & (!names(aes_list) %in% non_matrix_slots)]
@@ -155,6 +152,7 @@ convert_to_grob <- function(x, height, width, aes_list = list()){
     if(!'txt_cex' %in% names(aes_list)){
       n_lines <- ifelse('n_lines' %in% names(aes_list), aes_list$n_lines, 10000)
       sep <- ifelse('sep' %in% names(aes_list), aes_list$sep, '\n')
+      optimal_cv <- min(cex_vals)
       for(cv in cex_vals){
         lc <- line_creator(cex_val = cv, string = x, height = height, width = width, sep = sep)
         validity <- lc$valid

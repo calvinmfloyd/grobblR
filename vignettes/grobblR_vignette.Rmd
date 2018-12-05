@@ -31,22 +31,25 @@ Within `grobblR`, the main grob's allowed are:
 * ggplots
 * `.png` files
 * character strings
+* empty space
 
 It was our goal with this package to create flexible functionality that would allow the user to combine these grob's in any way they wanted to.
 
 ## Grob Layout
 
-When coming up with what the `grobblR` package would look like, we first had to decide on the most intuitive way to layout your grob's on the page. We decided on a Shiny-like bootstrap method, which would combine grob-row's (a row combining one or several grobs) and grob-column's (a column combining one or several grobs) within an overall grob-layout. What the `grob_layout()` function does is evaluate the overall dimensions of the page you desire, and then distributes heights and widths to the grobs that will make up the page, based on proportions and the amount of grob-rows (`grob_row()`) and grob-columns (`grob_col()`) within the overall `grob_layout()`. For example, if we wanted to do a simple 2x2 grid system on a 100 mm x 100 mm page, we would simply write:
+When coming up with what the `grobblR` package would look like, we first had to decide on the most intuitive way to layout the user's grobs on the page. We decided on a Shiny-like bootstrap method, which would incorporate nested grob-rows (a row combining one or several grobs) and grob-columns (a column combining one or several grobs) within an overall grob-layout. What the `grob_layout()` function does is evaluate the overall dimensions of the page you desire, and then distributes heights and widths to the grobs that will make up the page, based on proportions and the amount of grob-rows (`grob_row()`) and grob-columns (`grob_col()`) within the overall `grob_layout()`. For example, if we wanted to do a simple 2x2 grid system on a 100 mm x 100 mm page, we would simply write:
 
 ```{r 2x2 system}
 
-grob <- grob_layout(
+gl <- grob_layout(
   grob_row(grob_col('1'), grob_col('2')),
   grob_row(grob_col('3'), grob_col('4')),
   height = 100,
-  width = 100)
+  width = 100,
+  padding = 5,
+  grob_padding = 2)
 
-gridExtra::grid.arrange(grob)
+gridExtra::grid.arrange(gl$grob)
 
 ```
 
@@ -54,39 +57,92 @@ The `grob_row()`'s tell the `grob_layout()` that we want two rows on the outer-m
 
 ```{r 2 row, 3 element system}
 
-grob <- grob_layout(
+gl <- grob_layout(
   grob_row(grob_col('1'), grob_col('2')),
   grob_row(grob_col('3')),
   height = 100,
-  width = 100)
+  width = 100,
+  padding = 5,
+  grob_padding = 2)
 
-gridExtra::grid.arrange(grob)
+gridExtra::grid.arrange(gl$grob)
 
 ```
 
-
-In order to see exactly how the grobs are laid out, let's add borders to each of the grob-rows and grob-cols:
+One of the way that makes `grobblR` truly flexible is the ability to create "nested" rows and columns - where we can insert grob-rows into grob-columns, and vice-versa. Say we wanted to edit the above grob and add a second grob-column in the second grob-row which contains two grob-rows within it, we would write (setting `border = T` for each of the grob-rows and grob-columns to see how space is allocated):
 
 ```{r 2x2 system w/ borders}
 
-grob <- grob_layout(
-  grob_row(border = T, grob_col('1', border = T), grob_col('2', border = T)),
-  grob_row(border = T, grob_col('3', border = T), grob_col('4', border = T)),
+gl <- grob_layout(
+  grob_row(
+    grob_col('1', border = T),
+    grob_col('2', border = T),
+    border = T),
+  grob_row(
+    grob_col('3', border = T),
+    grob_col(
+      grob_row(grob_col('4', border = T), border = T),
+      grob_row(grob_col('5', border = T), border = T),
+      border = T),
+    border = T),
   height = 100,
-  width = 100)
+  width = 100,
+  padding = 5,
+  grob_padding = 2)
 
-gridExtra::grid.arrange(grob)
+gridExtra::grid.arrange(gl$grob)
 
 ```
 
+Note that `grob_col()` is where the object of the user's choosing is actually converted to a grob, and each `grob_col()` needs to be wrapped in a `grob_row()`, in order for the flow of information to work correctly. Thus, the outermost layer in a grob-layout must consist of grob-rows, each of with have one or several grob-columns inside. The `padding` parameter within `grob_layout()` controls the very outside padding on the page, and the `grob_padding` controls the amount of room between the grob itself and the outer grob-row - helping separate the grobs and giving them air to breathe. 
 
+In order to control the height and the width of the size of these grids is to tweak the `p` parameter within both `grob_row()` and `grob_col()`. Default for `p` is 1, but let's see what happens when we tweak it for a grid-system with two grob-rows:
 
+```{r 2x1 system - p parameter}
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
+gl <- grob_layout(
+  grob_row(grob_col('p=2'), p = 2, border = T),
+  grob_row(grob_col('p=1'), p = 1, border = T),
+  height = 100,
+  width = 100,
+  padding = 5,
+  grob_padding = 2)
 
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
+gridExtra::grid.arrange(gl$grob)
+
+```
+
+There are two grob-rows on the same, outermost layer of the grob-layout, so the height of the page, 90 mm (removing 10 mm for padding), will be distributed between those two grob-rows. The `p` parameter (standing for "proportion"), controls how the height is proportionally distributed. Since the first grob-row has a `p` of 2, and the second has a `p` of 1, the first grob-row gets `2/(2+1) = 2/3` of the height (60 mm), and the second grob-row gets `1/(2+1) = 1/3` of the height (30 mm). The same logic applies to grob-columns:
+
+```{r 1x2 system - p parameter}
+
+gl <- grob_layout(
+  grob_row(
+    grob_col('p=2', p = 2, border = T),
+    grob_col('p=1', p = 1, border = T)),
+  height = 100,
+  width = 100,
+  padding = 5,
+  grob_padding = 2)
+
+gridExtra::grid.arrange(gl$grob)
+
+```
+
+Since these are grob-columns and not grob-rows, the width, and not the height, of the allotted space is distributed among the two grob-columns. The same logic applies as the user goes deeper and deeper into the nested grob-rows and grob-columns - allotted space is equally distributed among grob-rows or grob-columns on the same level/layer unless the user specifies differently with `p`.
+
+## Grob Matrices
+
+Data frames/matrices are probably the most complex of all the grobbable (yep, that's a word now) objects in the `grobblR` package. With matrices, each element is essentially its own tiny grob. So if the user has a 2x2 matrix which he/she wants to convert to a grob, our method is to create 4 distinct tiny grobs and combine them all together to create the appearance of the matrix which was inputted. This allows for very customizable looks for matrices - which we needed to do a lot in Sacramento. If we needed to color specific elements of the matrix, or change their font face, or change their font size, we could do that using this methodology.
+
+The following are aesthetics that can be tweaked for any given cell in the grob matrix:
+* `bg_alpha` - The transparency of the background color. Ranges from 0.0 (totally translucent) to 1.0 (completely solid). Default is 1.0.
+* `bg_color` - The color of the background. Default is white.
+* `borders` - Which borders will show up around the cell. Input a string with the possible words "top", "bottom", "left", "right" separated by commas. For example, "top, left, right" will put borders on the top, left and right side of the grid cell, but not the bottom. Default is "", or no borders.
+* `border_color` - The color of the borders around the cell. Default is "gray40".
+* `border_width` - The width of the borders around the cell. Default is a `lwd` (line width density) of 4. 
+* `cell_sep` - How much padding is around each cell in mm. Default is 1 mm.
+* `color_binary_cut_off` - If the user wants
 
 ## Vignette Info
 

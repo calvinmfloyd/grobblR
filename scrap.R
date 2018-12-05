@@ -22,6 +22,8 @@ install.packages('roxygen2')
 library("devtools")
 library(roxygen2)
 
+devtools::use_vignette('grobblR_vignette')
+
 # create('grobblR')
 devtools::document()
 
@@ -66,7 +68,7 @@ line_creator(2, 'dgfdgdfefg \n sadf sdfdas \n sd yh wk nw \n hello', height = 50
 
 df <- data.frame(x = 0.2, y = 0.5)
 
-g <- grob_layout(
+gl <- grob_layout(
   grob_row(
     border = T
     ,grob_col(
@@ -91,7 +93,15 @@ g <- grob_layout(
   width = 100,
   height = 100)
 
-gridExtra::grid.arrange(g)
+
+gl <- grob_layout(
+  grob_row(grob_col('1'), grob_col('2')),
+  grob_row(grob_col('3'), grob_col('4')),
+  height = 100,
+  width = 100,
+  page_number = 4)
+
+gridExtra::grid.arrange(gl$grob)
 
 g <- grob_layout(
   grob_row(
