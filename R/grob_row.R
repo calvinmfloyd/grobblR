@@ -18,7 +18,7 @@ grob_row <- function(...,
                      border_aes_list = list(),
                      title = '',
                      title_aes_list = list(),
-                     title_p = 0.2){
+                     title_p = 0.1){
 
   grob_row_class <- R6::R6Class(
     "grob_row",

@@ -92,9 +92,9 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
     color_gradient_mid = '#FFEB84',
     color_gradient_min = '#F8696B')
 
-  for(val_name in names(def_vals_non_matrices)[!names(def_vals_non_matrices) %in% 'color_gradient_cols']){
+  for(val_name in names(def_vals_non_matrices)){
 
-    if(length(aes_list[[val_name]]) > 1) stop(sprintf(
+    if(length(aes_list[[val_name]]) > 1 & val_name != 'color_gradient_cols') stop(sprintf(
         "The %s in aes_list has a length of %d, but must be a single value.",
         val_name,
         length(aes_list[[val_name]])),
@@ -218,7 +218,7 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
     }
   }
 
-  if(bg_color_not_inputted & m_type %in% c(2,4)) aes_list[['bg_color']][rep(c(F,T), length = nr),] <- 'gray90'
+  if(bg_color_not_inputted & m_type %in% c(2,4)) aes_list[['bg_color']][rep(c(F,T), length = nr),] <- 'gray95'
 
   if(length(aes_list[['color_gradient_cols']]) > 0 &
      aes_list[['color_gradient_binary']] %in% FALSE &

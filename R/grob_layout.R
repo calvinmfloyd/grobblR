@@ -19,7 +19,7 @@ grob_layout <- function(...,
                         grob_padding = 2,
                         title = '',
                         title_aes_list = list(),
-                        title_p = 0.2,
+                        title_p = 0.1,
                         page_number = '',
                         row_heights = c()){
 

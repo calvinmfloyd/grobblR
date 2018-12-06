@@ -22,7 +22,7 @@ grob_col <- function(...,
                      border_aes_list = list(),
                      title = '',
                      title_aes_list = list(),
-                     title_p = 0.2,
+                     title_p = 0.1,
                      hjust = 0.5,
                      vjust = 0.5){
 
