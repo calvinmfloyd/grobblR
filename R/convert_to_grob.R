@@ -151,7 +151,7 @@ convert_to_grob <- function(x, height, width, aes_list = list()){
 
     if(!'txt_cex' %in% names(aes_list)){
       n_lines <- ifelse('n_lines' %in% names(aes_list), aes_list$n_lines, 10000)
-      sep <- ifelse('sep' %in% names(aes_list), aes_list$sep, '\n')
+      sep <- ifelse('sep' %in% names(aes_list), aes_list$sep, '/')
       optimal_cv <- min(cex_vals)
       for(cv in cex_vals){
         lc <- line_creator(cex_val = cv, string = x, height = height, width = width, sep = sep)
