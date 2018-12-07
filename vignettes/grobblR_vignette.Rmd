@@ -267,13 +267,13 @@ gl <- grob_layout(
     grob_col('C'),
     grob_col('D'),
     title = 'grob-row Title',
+    title_p = 0.2,
     title_aes_list = list(
       bg_color = 'gray95',
       txt_color = 'navy',
       fnt_face = 3)),
   title = 'grob-layout Title',
   title_aes_list = list(bg_color = 'red'),
-  title_p = 0.1,
   height = 100,
   width = 100,
   padding = 5,
@@ -283,7 +283,7 @@ gridExtra::grid.arrange(gl$grob)
 
 ```
 
-If a `title` is inputted into any of `grob_col()`, `grob_row()` or `grob_layout()`, a title will appear at the top of the respective allotted space. The default is the title taking up 20% (`title_p = 0.1`) of the allotted space (the title can take up a maximum of 50% of the allotted space), and a `gray40` color background with white font. The `title_aes_list` parameter controls the aesthetics of the title grob. The title grob is treated as a single value 1x1 matrix, so the aesthetic parameters in `title_aes_list` are treated the same as described in the Grob Matrices section below. 
+If a `title` is inputted into any of `grob_col()`, `grob_row()` or `grob_layout()`, a title will appear at the top of the respective allotted space. The default is the title taking up 10% (`title_p = 0.1`) of the allotted space (the title can take up a maximum of 50% of the allotted space), and a `gray40` color background with white font. The `title_aes_list` parameter controls the aesthetics of the title grob. The title grob is treated as a single value 1x1 matrix, so the aesthetic parameters in `title_aes_list` are treated the same as described in the Grob Matrices section below. 
 
 ### Page Number
 
@@ -668,6 +668,7 @@ Us here at the `grobblR` HQ understand that sometimes the user will need to bump
 
 gl <- grob_layout(
   grob_row(
+    border = T,
     grob_col(df),
     grob_col(
       grob_row(grob_col(df)),
@@ -720,14 +721,12 @@ first_page_gl <- grob_layout(
     grob_col('deaaron.png', title = "PG - De'Aaron Fox"),
     grob_col('buddy.png', title = 'SG - Buddy Hield'),
     grob_col(NA, p = 1/2),
-    title = 'BACK COURT',
-    title_p = 0.075),
+    title = 'BACK COURT'),
   grob_row(
     grob_col('bogdan.png', title = 'SF - Bogdan Bogdanovic'),
     grob_col('marvin.png', title = 'PF - Marvin Bagley III'),
     grob_col('willie.png', title = 'C - Willie Cauley-Stein'),
-    title = 'FRONT COURT',
-    title_p = 0.075),
+    title = 'FRONT COURT'),
   grob_row(
     p = 2/3,
     grob_col(
@@ -744,7 +743,7 @@ second_page_gl <- grob_layout(
       aes_list = list(
         round_rect_radius = 0.2,
         bg_color = 'gray40')),
-    grob_col('kings_logo.png'),
+    grob_col('kings_lion_logo.png'),
     grob_col(gg1)),
   grob_row(
     grob_col(head(iris)),
@@ -778,7 +777,7 @@ second_page_gl <- grob_layout(
 
 Now that we have two grob-layout pages established, let's put them together into a single PDF document with `grob_to_pdf()`! With the `grob_to_pdf()` function, the user has to provide a `file_name` for the PDF output, and whether to add a page number to each of the grob-layouts in their bottom-right corners. Only the objects outputted by `grob_layout()` can be inserted into `grob_to_pdf()`, either loose or contained in a single list:
 
-```{r Grob to PDF}
+```{r Grob to PDF, eval=F}
 
 # grob_to_pdf(
 #   first_page_gl,

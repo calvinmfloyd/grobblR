@@ -9,7 +9,7 @@
 #' @param hjust A numeric value between 0 and 1 which will determine the alignment of the grob horizontally within its designated area. A value of 0 means moving the grob all the way to the left, a value of 1 means moving the grob all the way to the right and a value of 0.5 means keeping the grob in the middle. Defaults to 0.5.
 #' @param title A character string which will be displayed as the title of the grob column.
 #' @param title_aes_list A list which contains desired aesthetics for the title of the grob column. Elements of this list are treated the same way as \code{aes_list} - see \code{\link{grob_matrix}} for more details on its possible elements.
-#' @param title_p The numeric proportion of height within the grob column and its allotted space which will be used by the title grob. A numeric value between 0 and 1. Defaults to 0.1.
+#' @param title_p The numeric proportion of height within the grob column and its allotted space which will be used by the title grob. A numeric value between 0 and 1.
 #' @param vjust A numeric value between 0 and 1 which will determine the alignment of the grob vertically within its designated area. A value of 0 means moving the grob all the way to the bottom, a value of 1 means moving the grob all the way to the top and a value of 0.5 means keeping the grob in the middle. Defaults to 0.5.
 #' @return An R6 class which contains all the information needed to create the grob column. The grob column is obtained with grob_col$grob.
 #' @export
@@ -22,7 +22,7 @@ grob_col <- function(...,
                      border_aes_list = list(),
                      title = '',
                      title_aes_list = list(),
-                     title_p = 0.1,
+                     title_p = 0.2,
                      hjust = 0.5,
                      vjust = 0.5){
 
