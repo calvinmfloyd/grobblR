@@ -12,7 +12,9 @@ vignette: >
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width = 5,
+  fig.height = 5
 )
 ```
 
@@ -22,7 +24,7 @@ Being an avid user of R, I attempt to avoid using Microsoft Excel at any cost. W
 
 ```{r Install grobblR}
 
-devtools::install_github('calvinmfloyd/grobblR')
+# devtools::install_github('calvinmfloyd/grobblR')
 library(grobblR)
 
 ```
@@ -83,7 +85,7 @@ gridExtra::grid.arrange(gl$grob)
 
 Another nifty feature of `grobblR` is that the outermost `grob_row()` objects can either be loose within `grob_layout()` or they can be contained within a list:
 
-```{r 2 row, 3 element system}
+```{r list, loose demonstration}
 
 # gl <- grob_layout(
 #   grob_row(grob_col(1), grob_col(2)),
@@ -313,34 +315,34 @@ Data frames/matrices are probably the most complex of all the grobbable (yep, th
 
 ### Matrix Aesthetic Control
 
-The following are aesthetics that can be tweaked for any given cell in the grob matrix, using the `aes_list` parameter within `grob_col()`:
-* `bg_alpha` - The transparency of the background color. Ranges from 0.0 (totally translucent) to 1.0 (completely solid). Default is 1.0.
-* `bg_color` - The color of the background. Default is white.
-* `borders` - Which borders will show up around the cell. Input a string with the possible words "top", "bottom", "left", "right" separated by commas. For example, "top, left, right" will put borders on the top, left and right side of the grid cell, but not the bottom. Default is "", or no borders.
-* `border_color` - The color of the borders around the cell. Default is "gray40".
-* `border_width` - The width of the borders around the cell. Default is a `lwd` (line width density) of 4. 
-* `cell_sep` - How much padding is around each cell in mm. Default is 1 mm.
-* `color_binary_cut_off`- A cut-off value which the binary color gradient will be applied to. Default is 0.
-* `color_binary_high`- The color of the binary color gradient if the numeric element is greater than the `color_binary_cut_off`. Default is green.
-* `color_binary_low`- The color of the binary color gradient if the numeric element is less than the `color_binary_cut_off`. Default is red.
-* `color_binary_equal`- The color of the binary color gradient if the numeric element is equal to the `color_binary_cut_off`. Default is gray.
-* `color_gradient_binary`- A `TRUE`/`FALSE` value which signifies if a binary color gradient should be applied to the `color_gradient_cols`.
-* `color_gradient_cols`- Controls the columns which a color gradient scale will be applied to. Integer values denoting the column numbers. Can only be applied to columns with all numeric values.
-* `color_gradient_max`- The high color for the gradual color gradient. Default is green.
-* `color_gradient_mid`- The middle color for the gradual color gradient. Default is yellow.
-* `color_gradient_min`- The low color for the gradual color gradient. Default is red.
-* `col_widths`- If automatic column widths are not desired, the user can provide a vector of widths for each column in the matrix in mm.
-* `fnt_face`- Controls the font face of the elements of the matrix (i.e. 1 = normal, 2 = bold, 3 = italic, 4 = bold and italic, etc.). Values are used in `grid::gpar()`. Default for table elements is normal, or 1. Default for column name elements is bold and italic, or 4.
-* `group_elements`- Controls whether same, adjacent elements within the matrix should be grouped together into one single grid. A `TRUE`/`FALSE` value, with the default being `FALSE`.
-* `round_rect_radius`- Controls the radius of the corners of the rectangles matrix text is laid on top of.
-* `row_heights`- If equal row heights are not desired, the user can provide a vector of heights for each row in the matrix in mm.
-* `txt_align`- Controls where the text in each grid cell will be centered around, horizontally. A numeric value between 0 and 1, with 0 being all the way to the left of the grid cell, and 1 being all the way to the right of the grid cell. Default is 0.5. Can also input "left", "right" or "center", which will also make edits to `txt_just` to make the text completely left-justified, right-justified or centered, respectively.
-* `txt_cex`- Controls the size of the text within the matrix. Default is automatic text sizing based on the length of the elements within the matrix, the row heights and the column widths.
-* `txt_color`- Controls the text color of the elements of the matrix.
-* `txt_font`- Controls the font family of the text within the matrix. Default is sans.
-* `txt_just`- Controls the horizontal justification of the text in the matrix. A numeric value between 0 and 1, with 0 being left justification and 1 being right justification. Default is 0.5, or center justification. Can also input "left", "right" or "center", which will also make edits to `txt_align`to make the text completely left-justified, right-justified or centered, respectively.
-* `txt_v_align`- Controls where the text in each grid cell will be centered around, vertically. A numeric value between 0 and 1, with 0 being all the way to the bottom of the grid cell, and 1 being all the way to the top of the grid cell. Default is 0.5. Can also input "top", "bottom" or "center", which will also make edits to `txt_v_just` to make the text completely top-justified, bottom-justified or centered, respectively.
-* `txt_v_just`- Controls the vertical justification of the text in the matrix. A numeric value between 0 and 1, with 0 being bottom justification and 1 being top justification. Default is 0.5, or center justification. Can also input "top", "bottom" or "center", which will also make edits to `txt_v_align` to make the text completely top-justified, bottom-justified or centered, respectively.
+The following are aesthetics that can be tweaked for any given cell in the grob matrix, using the `aes_list` parameter within `grob_col()`:  
+* `bg_alpha` - The transparency of the background color. Ranges from 0.0 (totally translucent) to 1.0 (completely solid). Default is 1.0.  
+* `bg_color` - The color of the background. Default is white.  
+* `borders` - Which borders will show up around the cell. Input a string with the possible words "top", "bottom", "left", "right" separated by commas. For example, "top, left, right" will put borders on the top, left and right side of the grid cell, but not the bottom. Default is "", or no borders.  
+* `border_color` - The color of the borders around the cell. Default is "gray40".  
+* `border_width` - The width of the borders around the cell. Default is a `lwd` (line width density) of 4.  
+* `cell_sep` - How much padding is around each cell in mm. Default is 1 mm.  
+* `color_binary_cut_off`- A cut-off value which the binary color gradient will be applied to. Default is 0.  
+* `color_binary_high`- The color of the binary color gradient if the numeric element is greater than the `color_binary_cut_off`. Default is green.  
+* `color_binary_low`- The color of the binary color gradient if the numeric element is less than the `color_binary_cut_off`. Default is red.  
+* `color_binary_equal`- The color of the binary color gradient if the numeric element is equal to the `color_binary_cut_off`. Default is gray.  
+* `color_gradient_binary`- A `TRUE`/`FALSE` value which signifies if a binary color gradient should be applied to the `color_gradient_cols`.  
+* `color_gradient_cols`- Controls the columns which a color gradient scale will be applied to. Integer values denoting the column numbers. Can only be applied to columns with all numeric values.  
+* `color_gradient_max`- The high color for the gradual color gradient. Default is green.  
+* `color_gradient_mid`- The middle color for the gradual color gradient. Default is yellow.  
+* `color_gradient_min`- The low color for the gradual color gradient. Default is red.  
+* `col_widths`- If automatic column widths are not desired, the user can provide a vector of widths for each column in the matrix in mm.  
+* `fnt_face`- Controls the font face of the elements of the matrix (i.e. 1 = normal, 2 = bold, 3 = italic, 4 = bold and italic, etc.). Values are used in `grid::gpar()`. Default for table elements is normal, or 1. Default for column name elements is bold and italic, or 4.  
+* `group_elements`- Controls whether same, adjacent elements within the matrix should be grouped together into one single grid. A `TRUE`/`FALSE` value, with the default being `FALSE`.  
+* `round_rect_radius`- Controls the radius of the corners of the rectangles matrix text is laid on top of.  
+* `row_heights`- If equal row heights are not desired, the user can provide a vector of heights for each row in the matrix in mm.  
+* `txt_align`- Controls where the text in each grid cell will be centered around, horizontally. A numeric value between 0 and 1, with 0 being all the way to the left of the grid cell, and 1 being all the way to the right of the grid cell. Default is 0.5. Can also input "left", "right" or "center", which will also make edits to `txt_just` to make the text completely left-justified, right-justified or centered, respectively.  
+* `txt_cex`- Controls the size of the text within the matrix. Default is automatic text sizing based on the length of the elements within the matrix, the row heights and the column widths.  
+* `txt_color`- Controls the text color of the elements of the matrix.  
+* `txt_font`- Controls the font family of the text within the matrix. Default is sans.  
+* `txt_just`- Controls the horizontal justification of the text in the matrix. A numeric value between 0 and 1, with 0 being left justification and 1 being right justification. Default is 0.5, or center justification. Can also input "left", "right" or "center", which will also make edits to `txt_align`to make the text completely left-justified, right-justified or centered, respectively.  
+* `txt_v_align`- Controls where the text in each grid cell will be centered around, vertically. A numeric value between 0 and 1, with 0 being all the way to the bottom of the grid cell, and 1 being all the way to the top of the grid cell. Default is 0.5. Can also input "top", "bottom" or "center", which will also make edits to `txt_v_just` to make the text completely top-justified, bottom-justified or centered, respectively.  
+* `txt_v_just`- Controls the vertical justification of the text in the matrix. A numeric value between 0 and 1, with 0 being bottom justification and 1 being top justification. Default is 0.5, or center justification. Can also input "top", "bottom" or "center", which will also make edits to `txt_v_align` to make the text completely top-justified, bottom-justified or centered, respectively.  
 
 ### Cell-by-Cell Aesthetic Control
 
@@ -373,7 +375,7 @@ color_mat
 
 ```
 
-```{r First matrix, cell-by-cell customization}
+```{r First matrix, cell-by-cell customization, 1}
 
 gl <- grob_layout(
   grob_row(grob_col(mat, aes_list = list(bg_color = color_mat))),
@@ -386,7 +388,7 @@ gridExtra::grid.arrange(gl$grob)
 
 The same can be said for most of the other aesthetic elements listed above. For example, the `txt_color` can be changed for individual elements of a matrix, but `color_gradient_binary` is a `TRUE`/`FALSE` value, and cannot be changed for individual elements. Below is a grob-layout with 4 grob matrices with various aesthetic elements tweaked.
 
-```{r First matrix, cell-by-cell customization}
+```{r First matrix, cell-by-cell customization, 2}
 
 mat_char <- matrix(c('Kings','Are','The','Best'), nrow = 2, byrow = T)
 
@@ -513,7 +515,7 @@ gridExtra::grid.arrange(gl$grob)
 
 Vectors of values in `grobblR` are treated as 1x`n` matrices (where `n` is the length of the vector). If the elements of the vector are named then those names are converted to column names, and treated as they usually are:
 
-```{r Column name edits}
+```{r Column name edits - Vector}
 
 plain_vector <- c(1, 2, 3)
 named_vector <- c('a' = 4, 'b' = 5, 'c' = 6)
@@ -538,10 +540,20 @@ The next objects accepted by `grobblR` are `ggplot` plots. The `ggplot` is stret
 ```{r ggplot Grobs}
 
 data(iris)
-gg1 <- ggplot2::ggplot(iris, ggplot2::aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+gg1 <- ggplot2::ggplot(
+  iris,
+  ggplot2::aes(
+    x = Sepal.Length,
+    y = Sepal.Width,
+    color = Species)) +
   ggplot2::geom_point() +
   ggplot2::guides(color = F)
-gg2 <- ggplot2::ggplot(iris, ggplot2::aes(x = Sepal.Length, y = Petal.Length, color = Species)) +
+gg2 <- ggplot2::ggplot(
+  iris,
+  ggplot2::aes(
+    x = Sepal.Length,
+    y = Petal.Length,
+    color = Species)) +
   ggplot2::geom_point() +
   ggplot2::guides(color = F)
 
