@@ -361,7 +361,7 @@ gridExtra::grid.arrange(gl$grob)
 The same can be said for most of the other aesthetic elements listed above. For example, the `txt_color` can be changed for individual elements of a matrix, but `color_gradient_binary` is a `TRUE`/`FALSE` value, and cannot be changed for individual elements. Below is a grob-layout with 4 matrix grobs with various aesthetic elements tweaked.
 
 ```{r First matrix, cell-by-cell customization, 2}
-mat_char <- matrix(c('Kings','Are','The','Best'), nrow = 2, byrow = T)
+mat_char <- matrix(c('Apple','Pear','Grape','Cherry'), nrow = 2, byrow = T)
 
 gl <- grob_layout(
   grob_row(
@@ -510,6 +510,7 @@ gg1 <- ggplot2::ggplot(
     color = Species)) +
   ggplot2::geom_point() +
   ggplot2::guides(color = F)
+
 gg2 <- ggplot2::ggplot(
   iris,
   ggplot2::aes(
@@ -578,7 +579,6 @@ In action:
 
 ```{r multi text grob layout}
 bulleted_list <- paste0(
-  "2001-02 Starting Lineup:\n",
   "PG - Mike Bibby\n",
   "SG - Doug Christie\n",
   "SF - Peja Stojakovic\n",
@@ -607,7 +607,7 @@ gl <- grob_layout(
         sep = '\n',
         txt_just = 'left',
         txt_color = 'purple',
-        fnt_face = matrix(c(2,1,1,1,1,1), ncol = 1)),
+        fnt_face = matrix(c(1,1,1,1,1), ncol = 1)),
       border = T),
     border = T),
   height = 100,
@@ -652,7 +652,16 @@ It should be noted that the default values for the `height` and `width` paramete
 
 ```{r season summary, include=F}
 
-season_summary_02 <- "The 2001 - 02 NBA season was the Kings' 53rd season in the National Basketball Association, and 17th season in Sacramento. During the offseason, the Kings acquired Mike Bibby from the Vancouver Grizzlies, and second-year guard Mateen Cleaves from the Detroit Pistons. Despite Chris Webber missing the first 20 games due to an ankle injury, the Kings posted a 12-game winning streak between December and January, as they held a 37 – 12 record before the All-Star break. The team won eleven straight games near the end of the season, finishing with a 61 – 21 record (.744 winning percentage), the best record in the league, while winning their division for the first time since 1979, when the team was in Kansas City. The Kings also made the Western Conference finals for the first time since 1981 (also as the Kansas City Kings). Webber and Peja Stojakovic were both selected for the 2002 NBA All-Star Game."
+season_summary_02_pt1 <- "The 2001-02 NBA season was the Kings' 53rd season in the National Basketball Association, and 17th season in Sacramento. During the offseason, the Kings acquired Mike Bibby from the Vancouver Grizzlies, and second-year guard Mateen Cleaves from the Detroit Pistons. Despite Chris Webber missing the first 20 games due to an ankle injury, the Kings posted a 12-game winning streak between December and January, as they held a 37-12 record before the All-Star break." 
+
+season_summary_02_pt2 <- "The team won eleven straight games near the end of the season, finishing with a 61-21 record (.744 winning percentage), the best record in the league, while winning their division for the first time since 1979, when the team was in Kansas City. The Kings also made the Western Conference finals for the first time since 1981 (also as the Kansas City Kings). Webber and Peja Stojakovic were both selected for the 2002 NBA All-Star Game."
+
+bench_bulleted_list <- paste0(
+  'BE - Bobby Jackson\n',
+  'BE - Hedo Turkoglu\n',
+  'BE - Scott Pollard\n',
+  'BE - Lawrence Funderburke\n',
+  'BE - Gerald Wallace')
 
 ```
 
@@ -688,7 +697,7 @@ first_page_gl <- grob_layout(
   grob_row(
     p = 2/3,
     grob_col(
-      season_summary_02,
+      season_summary_02_pt1,
       aes_list = list(txt_just = 'left'))),
   title = '2001-02 Sacramento Kings',
   title_aes_list = list(bg_color = sac_purple))
@@ -701,17 +710,22 @@ second_page_gl <- grob_layout(
       aes_list = list(
         round_rect_radius = 0.2,
         bg_color = 'gray40')),
-    grob_col('kings_lion_logo.png'),
-    grob_col(gg1)),
+    grob_col('hedo.png', title = "BE - Hedo Turkoglu"),
+    grob_col('kings_lion_logo.png')),
   grob_row(
-    grob_col(head(iris)),
     grob_col(
       bulleted_list,
       aes_list = list(
-        txt_color = sac_purple,
         n_lines = 5,
-        fnt_face = matrix(c(2,1,1,1,1,1), ncol = 1)))
-    ,grob_col(
+        txt_color = sac_purple,
+        txt_just = 'left')),
+    grob_col(
+      bench_bulleted_list,
+      aes_list = list(
+        n_lines = 5,
+        txt_color = sac_purple,
+        txt_just = 'left')),
+    grob_col(
       "",
       p = 1/4,
       aes_list = list(
@@ -720,16 +734,31 @@ second_page_gl <- grob_layout(
   grob_row(
     p = 2/3,
     grob_col(
-      second_paragraph,
+      season_summary_02_pt2,
       aes_list = list(txt_just = 'left'))),
   grob_row(
     grob_col(
-      'deaaron.png',
-      title = "De'Aaron Fox",
-      border = T,
-      border_aes_list = list(lwd = 4, col = sac_purple))),
-  title = 'Grob to PDF Demonstration',
-  title_aes_list = list(bg_color = sac_purple))
+      grob_row(p = 2, grob_col('webber.png')),
+      grob_row(grob_col(
+        'All-NBA, 2nd Team',
+        aes_list = list(
+          n_lines = 1,
+          round_rect_radius = 0.2,
+          bg_color = sac_purple,
+          txt_color = 'white')))),
+    grob_col(
+      grob_row(p = 2, grob_col('christie.png')),
+      grob_row(grob_col(
+        'All-Defense, 2nd Team',
+        aes_list = list(
+          n_lines = 1,
+          round_rect_radius = 0.2,
+          bg_color = sac_purple,
+          txt_color = 'white')))),
+    title = "Season Accolades",
+    border = T,
+    border_aes_list = list(lwd = 4, col = sac_purple))
+)
 ```
 
 Now that we have two grob-layout pages established, let's put them together into a single PDF document with `grob_to_pdf()`! With the `grob_to_pdf()` function, the user has to provide a `file_name` for the PDF output, and whether to add a page number to each of the grob-layouts in their bottom-right corners. Only the objects outputted by `grob_layout()` can be inserted into `grob_to_pdf()`, either loose or contained in a single list:
