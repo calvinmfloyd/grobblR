@@ -1,6 +1,6 @@
 #' Takes in an object, and converts it to a grob based on inputted aesthetics arguments.
 #'
-#' @param x The object which needs to be converted to a grob. Must be either: A data.frame/martrix, the file name of a .png image, a character string, a ggplot, NA (for an empty grob), or already a grob.
+#' @param x The object which needs to be converted to a grob. Must be either: A data.frame/martrix, the file name of a .png image, a character string, a vector, a ggplot, NA (for an empty grob), or already a grob.
 #' @param height The numeric height in mm of the desired grob.
 #' @param width The numeric width in mm of the desired grob.
 #' @param aes_list The list which contains elements to adjust aesthetics to the grob of x. Different type of grobs have different types of elements of this list which will affect its aesthetics.\\
@@ -151,7 +151,7 @@ convert_to_grob <- function(x, height, width, aes_list = list()){
 
     if(!'txt_cex' %in% names(aes_list)){
       n_lines <- ifelse('n_lines' %in% names(aes_list), aes_list$n_lines, 10000)
-      sep <- ifelse('sep' %in% names(aes_list), aes_list$sep, '/')
+      sep <- ifelse('sep' %in% names(aes_list), aes_list$sep, '\n')
       optimal_cv <- min(cex_vals)
       for(cv in cex_vals){
         lc <- line_creator(cex_val = cv, string = x, height = height, width = width, sep = sep)

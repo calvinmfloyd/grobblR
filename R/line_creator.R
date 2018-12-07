@@ -1,4 +1,4 @@
-#' Based on the given text cex value and given width breaks down the given string into a series of lines. Checks to see if the lines would fit within the given height, as well. Utilized when creating character string grobs.
+#' Breaks down character strings into one or several lines, and determines if it would fit into a specific height and width.
 #'
 #' @param cex_val The text cex multiplier applied to the string.
 #' @param string The character string needed to be broken down into several lines.
@@ -8,7 +8,7 @@
 #' @return A list containing a vector with each index equal to a line of the broken-down string, a TRUE/FALSE value indicating whether the lines will fit within equal sized rows and the widths in mm of each of the lines.
 #' @export
 
-line_creator <- function(cex_val, string, height = numeric(), width = numeric(), sep = '/'){
+line_creator <- function(cex_val, string, height = numeric(), width = numeric(), sep = '\n'){
 
   in_to_mm <- function(x) x*25.4
 

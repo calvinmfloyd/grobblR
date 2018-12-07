@@ -2,10 +2,10 @@
 % Please edit documentation in R/grob_layout.R
 \name{grob_layout}
 \alias{grob_layout}
-\title{The main grobblR function which contains and organizes grob_col's and grob_row's, giving the combined grob its shape.}
+\title{The main \code{grobblR} function which contains and organizes \code{\link{grob_col}}'s and \code{\link{grob_row}}'s, giving the overall grob-layout its shape.}
 \usage{
-grob_layout(..., height = 280, width = 216, padding = 5,
-  grob_padding = 2, title = "", title_aes_list = list(), title_p = 0.2,
+grob_layout(..., height = 280, width = 216, padding = 10,
+  grob_padding = 2, title = "", title_aes_list = list(), title_p = 0.1,
   page_number = "", row_heights = c())
 }
 \arguments{
@@ -15,7 +15,7 @@ grob_layout(..., height = 280, width = 216, padding = 5,
 
 \item{width}{The numeric width of the grob in mm. Default is 216 mm - which is the width of an upright 8.5 x 11 in piece of copy paper.}
 
-\item{padding}{The numeric amount of padding around the edge of the grob  in mm. Default is 5 mm.}
+\item{padding}{The numeric amount of padding around the edge of the grob  in mm. Default is 10 mm.}
 
 \item{grob_padding}{The numeric amount of padding for each individual grob within their designated grid of area in mm. Default is 2 mm.}
 
@@ -23,13 +23,13 @@ grob_layout(..., height = 280, width = 216, padding = 5,
 
 \item{title_aes_list}{A list which contains desired aesthetics for the title of the grob layout. Elements of this list are treated the same way as \code{aes_list} - see \code{\link{grob_matrix}} for more details on its possible elements.}
 
-\item{title_p}{The numeric proportion of height within the grob layout and its allotted space which will be used by the title grob. A numeric value between 0 and 1. Defaults to 0.2.}
+\item{title_p}{The numeric proportion of height within the grob layout and its allotted space which will be used by the title grob. A numeric value between 0 and 1. Defaults to 0.1.}
 
 \item{row_heights}{If the user wants to designate specific row heights instead relying on the proportions within the outermost grob_row functions, set this parameter equal to a vector of numeric values corresponding to the individual row heights in mm. Length must be equal to the number of grob_row function's on the upper most level of the grob.}
 }
 \value{
-The final grob with the designated layout and format.
+An R6 class containing all information necessary to create the overall grob-layout. The grob itself is called with \code{grob_layout()$grob}.
 }
 \description{
-The main grobblR function which contains and organizes grob_col's and grob_row's, giving the combined grob its shape.
+The main \code{grobblR} function which contains and organizes \code{\link{grob_col}}'s and \code{\link{grob_row}}'s, giving the overall grob-layout its shape.
 }

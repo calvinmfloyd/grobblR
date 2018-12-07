@@ -7,7 +7,7 @@
 #' @param border_aes_list A list which contains desired aesthetics for the border around the outputted the grob row. Ignored if \code{border} is set to FALSE. Elements of list inputted directly into \code{grid::gpar()}.
 #' @param title A character string which will be displayed as the title of the grob row.
 #' @param title_aes_list A list which contains desired aesthetics for the title of the grob row. Elements of this list are treated the same way as \code{aes_list} - see \code{\link{grob_matrix}} for more details on its possible elements.
-#' @param title_p The numeric proportion of height within the grob row and its allotted space which will be used by the title grob. A numeric value between 0 and 1. Defaults to 0.2.
+#' @param title_p The numeric proportion of height within the grob row and its allotted space which will be used by the title grob. A numeric value between 0 and 1. Defaults to 0.1.
 #' @return An R6 class which contains all the information needed to carry on to its grob columns and create the grob row.
 #' @export
 

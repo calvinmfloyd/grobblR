@@ -2,11 +2,11 @@
 % Please edit documentation in R/grob_col.R
 \name{grob_col}
 \alias{grob_col}
-\title{The grob column function which helps gives the grob from the \code{grob_layout()} function its shape. Works hand in hand with the \code{grob_row()} function.}
+\title{The grob-column function where an object is converted a grob. Works within \code{\link{grob_row}} and \code{\link{grob_layout}}.}
 \usage{
 grob_col(..., p = 1, aes_list = list(), border = F,
   border_sides = "top, bottom, left, right", border_aes_list = list(),
-  title = "", title_aes_list = list(), title_p = 0.2, hjust = 0.5,
+  title = "", title_aes_list = list(), title_p = 0.1, hjust = 0.5,
   vjust = 0.5)
 }
 \arguments{
@@ -26,7 +26,7 @@ grob_col(..., p = 1, aes_list = list(), border = F,
 
 \item{title_aes_list}{A list which contains desired aesthetics for the title of the grob column. Elements of this list are treated the same way as \code{aes_list} - see \code{\link{grob_matrix}} for more details on its possible elements.}
 
-\item{title_p}{The numeric proportion of height within the grob column and its allotted space which will be used by the title grob. A numeric value between 0 and 1. Defaults to 0.2.}
+\item{title_p}{The numeric proportion of height within the grob column and its allotted space which will be used by the title grob. A numeric value between 0 and 1. Defaults to 0.1.}
 
 \item{hjust}{A numeric value between 0 and 1 which will determine the alignment of the grob horizontally within its designated area. A value of 0 means moving the grob all the way to the left, a value of 1 means moving the grob all the way to the right and a value of 0.5 means keeping the grob in the middle. Defaults to 0.5.}
 
@@ -36,5 +36,5 @@ grob_col(..., p = 1, aes_list = list(), border = F,
 An R6 class which contains all the information needed to create the grob column. The grob column is obtained with grob_col$grob.
 }
 \description{
-The grob column function which helps gives the grob from the \code{grob_layout()} function its shape. Works hand in hand with the \code{grob_row()} function.
+The grob-column function where an object is converted a grob. Works within \code{\link{grob_row}} and \code{\link{grob_layout}}.
 }

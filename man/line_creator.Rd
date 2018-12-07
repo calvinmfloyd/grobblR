@@ -2,7 +2,7 @@
 % Please edit documentation in R/line_creator.R
 \name{line_creator}
 \alias{line_creator}
-\title{Based on the given text cex value and given width breaks down the given string into a series of lines. Checks to see if the lines would fit within the given height, as well. Utilized when creating character string grobs.}
+\title{Breaks down character strings into one or several lines, and determines if it would fit into a specific height and width.}
 \usage{
 line_creator(cex_val, string, height = numeric(), width = numeric(),
   sep = "\\n")
@@ -16,11 +16,11 @@ line_creator(cex_val, string, height = numeric(), width = numeric(),
 
 \item{width}{A numeric value designating the total width of the matrix grob in mm.}
 
-\item{sep}{The separator within the character string which designates where a new line should start. Default is "\n".}
+\item{sep}{The separator within the character string which designates where a new line should start. Default is "/".}
 }
 \value{
 A list containing a vector with each index equal to a line of the broken-down string, a TRUE/FALSE value indicating whether the lines will fit within equal sized rows and the widths in mm of each of the lines.
 }
 \description{
-Based on the given text cex value and given width breaks down the given string into a series of lines. Checks to see if the lines would fit within the given height, as well. Utilized when creating character string grobs.
+Breaks down character strings into one or several lines, and determines if it would fit into a specific height and width.
 }
