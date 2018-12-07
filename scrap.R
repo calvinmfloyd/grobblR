@@ -22,6 +22,7 @@ install.packages('roxygen2')
 library("devtools")
 library(roxygen2)
 
+devtools::build()
 devtools::use_vignette('grobblR_vignette')
 
 # create('grobblR')
@@ -35,6 +36,7 @@ devtools::document()
 # library(png)
 # library(R6)
 
+remove.packages('grobblR')
 devtools::install_github('calvinmfloyd/grobblR')
 library(grobblR)
 
