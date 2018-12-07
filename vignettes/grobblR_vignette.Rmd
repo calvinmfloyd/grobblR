@@ -13,8 +13,8 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.width = 5,
-  fig.height = 5
+  fig.width = 4,
+  fig.height = 4
 )
 ```
 
@@ -557,7 +557,7 @@ gridExtra::grid.arrange(gl$grob)
 Also in Sacramento, we would need to include paragraphs of scouting reports for individual players on our PDF reports, so we needed to figure out a way to include long text into our grobbing (that's also a word now, too). `grobblR` handles long character strings by making the text as big as possible, while still being able to fit the text inside its allotted space. This results in automatically putting different words on different lines:
 
 ```{r simple text grob}
-txt <- "The Sacramento Kings are the greatest franchise in all of sports. Don't @ me."
+txt <- "The quick brown fox jumps over the lazy dog."
 
 gl <- grob_layout(
   grob_row(grob_col(txt, border = T), border = T),
@@ -578,11 +578,12 @@ In action:
 
 ```{r multi text grob layout}
 bulleted_list <- paste0(
-  "Greatest NBA players of all time list:\n",
-  "1. Vlade Divac\n",
-  "2. Peja Stojakovic\n",
-  "3. Buddy Hield\n",
-  "4. Jack Cooley")
+  "2001-02 Starting Lineup:\n",
+  "PG - Mike Bibby\n",
+  "SG - Doug Christie\n",
+  "SF - Peja Stojakovic\n",
+  "PF - Chris Webber\n",
+  "C - Vlade Divac")
 
 gl <- grob_layout(
   grob_row(
@@ -595,7 +596,7 @@ gl <- grob_layout(
     grob_col(
       txt,
       aes_list = list(
-        n_lines = 2,
+        n_lines = 1,
         txt_just = 'right'),
       border = T),
     border = T),
@@ -606,7 +607,7 @@ gl <- grob_layout(
         sep = '\n',
         txt_just = 'left',
         txt_color = 'purple',
-        fnt_face = matrix(c(2,1,1,1,1), ncol = 1)),
+        fnt_face = matrix(c(2,1,1,1,1,1), ncol = 1)),
       border = T),
     border = T),
   height = 100,
@@ -649,6 +650,12 @@ The table on the left may appeared somewhat stretched because it's filling its a
 
 It should be noted that the default values for the `height` and `width` parameters within `grob_layout()` are `280` and `216`, as these are the values needed to properly fit the grob-layout onto a piece of `11 x 8.5` inch computer paper, portrait orientation. Thus, the defaults in `grob_layout()` are meant for printing and fitting the PDF of the grob-layout onto a piece of paper. Obviously there are other uses for PDF files, but this is the one we found most useful. Before demonstrating how to convert these grob-layouts to actual PDF files, let's create a couple:
 
+```{r season summary, include=F}
+
+season_summary_02 <- "The 2001 - 02 NBA season was the Kings' 53rd season in the National Basketball Association, and 17th season in Sacramento. During the offseason, the Kings acquired Mike Bibby from the Vancouver Grizzlies, and second-year guard Mateen Cleaves from the Detroit Pistons. Despite Chris Webber missing the first 20 games due to an ankle injury, the Kings posted a 12-game winning streak between December and January, as they held a 37 – 12 record before the All-Star break. The team won eleven straight games near the end of the season, finishing with a 61 – 21 record (.744 winning percentage), the best record in the league, while winning their division for the first time since 1979, when the team was in Kansas City. The Kings also made the Western Conference finals for the first time since 1981 (also as the Kansas City Kings). Webber and Peja Stojakovic were both selected for the 2002 NBA All-Star Game."
+
+```
+
 ```{r two page grob-layout}
 # dummy text
 pars <- unlist(strsplit(UsingR::lorem, "\n\n"))
@@ -658,37 +665,32 @@ sac_purple <- '#5A2D81'
 
 first_page_gl <- grob_layout(
   grob_row(
-    grob_col('kings_logo.png', p = 1/2),
-    grob_col('vlade.png', title = 'GM - Vlade Divac'),
+    grob_col('kings_logo_old.png', p = 1/2),
+    grob_col('adelman.png', title = 'COACH - Rick Adelman'),
     grob_col(
       p = 1/2,
-      grob_row(grob_col(NA)),
-      grob_row(
-        grob_col(
-         '2018 Record\n27-55',
-          aes_list = list(
-            n_lines = 2,
-            fnt_face = 2,
-            txt_color = 'white',
-            bg_color = sac_purple))),
-        grob_row(grob_col(NA)))),
+      'Record : 61-21',
+      aes_list = list(
+        n_lines = 1,
+        fnt_face = 2,
+        txt_color = 'gray40'))),
   grob_row(
     grob_col(NA, p = 1/2),
-    grob_col('deaaron.png', title = "PG - De'Aaron Fox"),
-    grob_col('buddy.png', title = 'SG - Buddy Hield'),
+    grob_col('bibby.png', title = "PG - Mike Bibby"),
+    grob_col('christie.png', title = 'SG - Doug Christie'),
     grob_col(NA, p = 1/2),
     title = 'BACK COURT'),
   grob_row(
-    grob_col('bogdan.png', title = 'SF - Bogdan Bogdanovic'),
-    grob_col('marvin.png', title = 'PF - Marvin Bagley III'),
-    grob_col('willie.png', title = 'C - Willie Cauley-Stein'),
+    grob_col('stojakovic.png', title = 'SF - Peja Stojakovic'),
+    grob_col('divac.png', title = 'C - Vlade Divac'),
+    grob_col('webber.png', title = 'PF - Chris Webber'),
     title = 'FRONT COURT'),
   grob_row(
     p = 2/3,
     grob_col(
-      first_paragraph,
+      season_summary_02,
       aes_list = list(txt_just = 'left'))),
-  title = 'Sacramento Kings Overview',
+  title = '2001-02 Sacramento Kings',
   title_aes_list = list(bg_color = sac_purple))
 
 second_page_gl <- grob_layout(
@@ -708,7 +710,7 @@ second_page_gl <- grob_layout(
       aes_list = list(
         txt_color = sac_purple,
         n_lines = 5,
-        fnt_face = matrix(c(2,1,1,1,1), ncol = 1)))
+        fnt_face = matrix(c(2,1,1,1,1,1), ncol = 1)))
     ,grob_col(
       "",
       p = 1/4,
@@ -722,8 +724,8 @@ second_page_gl <- grob_layout(
       aes_list = list(txt_just = 'left'))),
   grob_row(
     grob_col(
-      'jacked_mike_bibby.png',
-      title = 'Jacked Mike Bibby',
+      'deaaron.png',
+      title = "De'Aaron Fox",
       border = T,
       border_aes_list = list(lwd = 4, col = sac_purple))),
   title = 'Grob to PDF Demonstration',
