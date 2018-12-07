@@ -33,3 +33,10 @@ An R6 class containing all information necessary to create the overall grob-layo
 \description{
 The main \code{grobblR} function which contains and organizes \code{\link{grob_col}}'s and \code{\link{grob_row}}'s, giving the overall grob-layout its shape.
 }
+\examples{
+gl <- grob_layout(
+  grob_row(grob_col(1), grob_col(2)),
+  grob_row(grob_col(3)))
+# to retrieve the grob-layout
+gl$grob
+}

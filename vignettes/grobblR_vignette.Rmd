@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Introduction
+# Introduction
 
 Being an avid user of R, I attempt to avoid using Microsoft Excel at any cost. When I first started using R however, I found Excel to be much better at one thing in particular: Creating extremely customizable PDF reports. In Excel you can shade specific cells, adjust font sizes, pick borders and many other things to create unique-looking reports, which are able to be fitted onto a single sheet of paper. While Excel is very good at being flexible and letting the user customize the look of the report, the process is very manual and it definitely is not as well-equipped at data analysis as R. Working for the Sacramento Kings, we needed to create various reports on a daily basis and we were not about to do our data analysis in R, transfer the data into Excel, and then format the report to how we wanted it to look. We needed to come up with a way to create automated, flexible PDF reports within the R environment for our front office and coaching staff. The `grobblR` package is an extenstion of the methodology we implemented to create those reports - using grid graphical objects, AKA *grobs*, seen in the `grid` and `gridExtra` packages. We believe that the `grobblR` package is one of the better options to create unique, flexible reports within R - and helps users stay away from Excel!
 
@@ -31,7 +31,7 @@ library(grobblR)
 
 ***
 
-## What is a grob?
+# What is a grob?
 
 Taken from the `grid::grob()` [documentation](https://stat.ethz.ch/R-manual/R-devel/library/grid/html/grid.grob.html):
 
@@ -49,7 +49,7 @@ It was our goal with this package to create flexible functionality that would al
 
 ***
 
-## Grob Layout
+# Grob Layout
 
 When coming up with what the `grobblR` package would look like, we first had to decide on the most intuitive way to layout the user's grobs on the page. We decided on a Shiny-like bootstrap method, which would incorporate nested grob-rows (a row combining one or several grobs) and grob-columns (a column combining one or several grobs) within an overall grob-layout. What the `grob_layout()` function does is evaluate the overall dimensions of the page you desire, and then distributes heights and widths to the grobs that will make up the page, based on proportions and the amount of grob-rows (`grob_row()`) and grob-columns (`grob_col()`) within the overall `grob_layout()`. For example, if we wanted to do a simple 2x2 grid system on a 100 mm x 100 mm page, we would simply write:
 
@@ -112,10 +112,9 @@ gridExtra::grid.arrange(gl$grob)
 ```
 
 
-
 ### Nested Rows and Columns
 
-One of the way that makes `grobblR` truly flexible is the ability to create "nested" rows and columns - where we can insert grob-rows into grob-columns, and vice-versa. Say we wanted to edit the above grob and add a second grob-column in the second grob-row which contains two grob-rows within it, we would write (setting `border = T` for each of the grob-rows and grob-columns to see how space is allocated):
+One of the way that makes `grobblR` truly flexible is the ability to create "nested" rows and columns - where we can insert grob-rows into grob-columns, and vice-versa. This is made possible by incorporating the `R6` package's active classes. Say we wanted to edit the above grob and add a second grob-column in the second grob-row which contains two grob-rows within it, we would write (setting `border = T` for each of the grob-rows and grob-columns to see how space is allocated):
 
 ```{r 2x2 system w/ borders}
 
@@ -207,7 +206,7 @@ Since these are grob-columns and not grob-rows, the width, and not the height, o
 
 ***
 
-## General Aesthetics
+# General Aesthetics
 
 ### Borders
 
@@ -309,7 +308,7 @@ This will also come into play when we discuss the `grob_to_pdf()` function, and 
 
 ***
 
-## Matrix Grobs
+# Matrix Grobs
 
 Data frames/matrices are probably the most complex of all the grobbable (yep, that's a word now) objects in the `grobblR` package. With matrices, each element is essentially its own tiny grob. So if the user has a 2x2 matrix which he/she wants to convert to a grob, our method is to create 4 distinct tiny grobs and combine them all together to create the appearance of the matrix which was inputted. This allows for very customizable looks for matrices - which we needed to do a lot in Sacramento. If we needed to color specific elements of the matrix, or change their font face, or change their font size, we could do that using this methodology. 
 
@@ -530,10 +529,9 @@ gridExtra::grid.arrange(gl$grob)
 
 ```
 
-
 ***
 
-## ggplot Grobs
+# ggplot Grobs
 
 The next objects accepted by `grobblR` are `ggplot` plots. The `ggplot` is stretched or squished depending on what the dimensions of the allotted space is:
 
@@ -570,7 +568,7 @@ gridExtra::grid.arrange(gl$grob)
 
 ***
 
-## Image Grobs
+# Image Grobs
 
 At this moment in time, only `.png` files are allowed to be included. In order for `grobblR` to detect the user wants to include an image, `.png` must be in the file name. If the user does not want to maintain the aspect ratio of the image and allow it to be stretched within its allotted space, `maintain_aspect_ratio = F` must be inserted within the `aes_list` list.
 
@@ -593,7 +591,7 @@ gridExtra::grid.arrange(gl$grob)
 
 ***
 
-## Character String Grobs
+# Character String Grobs
 
 Also in Sacramento, we would need to include paragraphs of scouting reports for individual players on our PDF reports, so we needed to figure out a way to include long text into our grobbing (that's also a word now, too). `grobblR` handles long character strings by making the text as big as possible, while still being able to fit the text inside its allotted space. This results in automatically putting different words on different lines:
 
@@ -662,7 +660,7 @@ At the very end of the character string being processed, if the string is conver
 
 ***
 
-## Empty Space Grobs
+# Empty Space Grobs
 
 Us here at the `grobblR` HQ understand that sometimes the user will need to bump some things to the top, to the bottom, to the left or to the right. Sometimes the user might even need to compact some grobs - the automatic sizing occurring in `grobblR` only knows to fill allotted space with whatever object its given, so the grobs may appear stretched at times. After much deliberation, we decided on adding in the option to add *empty space grobs* with `NA` which is simply that: empty space. We saw this briefly in the secition discussing borders, but here is another example:
 
@@ -689,7 +687,7 @@ The table on the left may appeared somewhat stretched because it's filling its a
 
 ***
 
-## Grob Layout to PDF
+# Grob Layout to PDF
 
 It should be noted that the default values for the `height` and `width` parameters within `grob_layout()` are `280` and `216`, as these are the values needed to properly fit the grob-layout onto a piece of 11in x 8.5in computer paper, portrait orientation. Thus, the defaults in `grob_layout()` are meant for printing and fitting the PDF of the grob-layout onto a piece of paper. Obviously there are other uses for PDF files, but this is the use we found most useful. Before demonstrating how to convert these grob-layouts to actual PDF files, let's create a couple:
 
