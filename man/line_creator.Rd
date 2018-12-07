@@ -16,7 +16,7 @@ line_creator(cex_val, string, height = numeric(), width = numeric(),
 
 \item{width}{A numeric value designating the total width of the matrix grob in mm.}
 
-\item{sep}{The separator within the character string which designates where a new line should start. Default is "/".}
+\item{sep}{The separator within the character string which designates where a new line should start.}
 }
 \value{
 A list containing a vector with each index equal to a line of the broken-down string, a TRUE/FALSE value indicating whether the lines will fit within equal sized rows and the widths in mm of each of the lines.

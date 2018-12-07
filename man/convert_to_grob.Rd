@@ -17,7 +17,7 @@ convert_to_grob(x, height, width, aes_list = list())
 For character strings or matrices of dimensions n x p, the aesthetic elements can either be a single value which will be applied to the entire matrix, or a matrix of dimension n x p, which specifies how each element of the matrix will be adjusted. Note that column names and acual matrix elements are treated differently. The below listed elements by themselves will correspond to the matrix elements. The listed elements with "colname_" in front of them will correspond to column name aesthetics. For example, "colname_bg_color" will refer to the background color of the column names. Possible aesthetic elements for character strings or matrices can be found in \code{\link{grob_matrix}}. Possible aesthetic elements for .png image files, or ggplot plots can be found in \code{\link{grob_image}}. Possible aesthetic elements for character strings are:
 \itemize{
 \item \code{n_lines} The maximum number of lines is desired for the character string to be broken up into.
-\item \code{sep} The separator within the character string which designates where a new line should start. Default is "\n".
+\item \code{sep} The separator within the character string which designates where a new line should start.
 }}
 }
 \value{
