@@ -5,7 +5,7 @@
 #' @return A PDF document of the grob(s) which will be saved to the working directory.
 #' @export
 
-grob_to_pdf <- function(..., file_name = character(), add_page_numbers = T){
+grob_to_pdf <- function(..., file_name = character(), add_page_numbers = F){
 
   mm_to_in <- function(x) x/25.4
 

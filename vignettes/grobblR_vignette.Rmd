@@ -30,10 +30,10 @@ Taken from the `grid::grob()` [documentation](https://stat.ethz.ch/R-manual/R-de
 
 Within `grobblR`, the main objects allowed are:
 * Data frames / matrices
+  + A Vector of values
 * ggplots
 * `.png` files
 * Character strings
-* A vector of values
 * Empty space (represented with `NA`)
 
 It was our goal with this package to create flexible functionality that would allow the user to combine these grob's in any way they wanted to.
@@ -105,7 +105,7 @@ Note that `grob_col()` is where the object of the user's choosing is actually co
 
 ### Padding
 
-The `padding` parameter within `grob_layout()` controls the very outside padding on the page, and the `grob_padding` controls the amount of room between the grob itself and the outer grob-row - helping separate the grobs and giving them air to breathe. The `grob_padding` allows grob-columns to be shifted around its allotted space, making use of the `hjust` and `vjust` parameters within `grob_col()`. The defaults for both are `0.5` (having the grob centered in its allotted space). Setting `hjust` to `1.0` pushes the grob as far right as it can go (opposite for setting it to `0.0`), and setting `vjust` to `1.0` pushes the grob as far to the top as it can go (again, opposite for setting it to `0.0`):
+The `padding` parameter within `grob_layout()` controls the very outside padding on the page (default of 10 mm), and the `grob_padding` controls the amount of room between the grob itself and the outer grob-row (default of 2 mm) - helping separate the grobs and giving them air to breathe. The `grob_padding` allows grob-columns to be shifted around its allotted space, making use of the `hjust` and `vjust` parameters within `grob_col()`. The defaults for both are `0.5` (having the grob centered in its allotted space). Setting `hjust` to `1.0` pushes the grob as far right as it can go (opposite for setting it to `0.0`), and setting `vjust` to `1.0` pushes the grob as far to the top as it can go (again, opposite for setting it to `0.0`):
 
 ```{r hjust and vjust}
 
@@ -270,7 +270,7 @@ This will also come into play when we discuss the `grob_to_pdf()` function, and 
 
 ***
 
-## Grob Matrices
+## Matrix Grobs
 
 Data frames/matrices are probably the most complex of all the grobbable (yep, that's a word now) objects in the `grobblR` package. With matrices, each element is essentially its own tiny grob. So if the user has a 2x2 matrix which he/she wants to convert to a grob, our method is to create 4 distinct tiny grobs and combine them all together to create the appearance of the matrix which was inputted. This allows for very customizable looks for matrices - which we needed to do a lot in Sacramento. If we needed to color specific elements of the matrix, or change their font face, or change their font size, we could do that using this methodology. 
 
@@ -472,9 +472,29 @@ gridExtra::grid.arrange(gl$grob)
 
 ```
 
+### Vector of Values
+
+Vectors of values in `grobblR` are treated as 1x`n` matrices (where `n` is the length of the vector). If the elements of the vector are named then those names are converted to column names, and treated as they usually are:
+
+```{r Column name edits}
+
+plain_vector <- c(1, 2, 3)
+named_vector <- c('a' = 4, 'b' = 5, 'c' = 6)
+
+gl <- grob_layout(
+  grob_row(grob_col(plain_vector), border = T),
+  grob_row(grob_col(named_vector), border = T),
+  height = 100,
+  width = 100)
+
+gridExtra::grid.arrange(gl$grob)
+
+```
+
+
 ***
 
-## Grob ggplots
+## ggplot Grobs
 
 The next objects accepted by `grobblR` are `ggplot` plots. The `ggplot` is stretched or squished depending on what the dimensions of the allotted space is:
 
@@ -501,7 +521,7 @@ gridExtra::grid.arrange(gl$grob)
 
 ***
 
-## Grob Images
+## Image Grobs
 
 At this moment in time, only `.png` files are allowed to be included. In order for `grobblR` to detect the user wants to include an image, `.png` must be in the file name. If the user wants to maintain the aspect ratio of the image rather than allowing to be stretched within its allotted space, `maintain_aspect_ratio = T` must be inserted within the `aes_list` list.
 
@@ -524,49 +544,222 @@ gridExtra::grid.arrange(gl$grob)
 
 ***
 
-## Grob Character Strings
+## Character String Grobs
 
+Also in Sacramento, we would need to include paragraphs of scouting reports for individual players on our PDF reports, so we needed to figure out a way to include long text into our grobbing (that's also a word now, too). `grobblR` handles long character strings by making the text as big as possible, while still being able to fit the text inside its allotted space. This results in automatically putting different words on different lines:
 
+```{r simple text grob}
 
+txt <- "The Sacramento Kings are the greatest franchise in all of sports. Don't @ me."
 
-## Vignette Info
+gl <- grob_layout(
+  grob_row(grob_col(txt, border = T), border = T),
+  height = 100,
+  width = 100)
 
-Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
+gridExtra::grid.arrange(gl$grob)
 
-## Styles
-
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
-
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+There are a couple things unique to character strings that the user can tweak in `aes_list`:
+* `n_lines` - The maximum number of lines desired for the character string to be broken up into.
+* `sep` - The separator within the character string which designates where a new line should start. Default is "\n".
+  + Useful for breaking up character strings meant to be bulleted lists.
+  
+In action:
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
+```{r multi text grob layout}
 
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+bulleted_list <- paste0(
+  "Greatest NBA players of all time list:\n",
+  "1. Vlade Divac\n",
+  "2. Peja Stojakovic\n",
+  "3. Buddy Hield\n",
+  "4. Jack Cooley")
 
-## More Examples
+gl <- grob_layout(
+  grob_row(
+    grob_col(
+      txt,
+      border = T),
+    border = T),
+  grob_row(
+    p = 2/3,
+    grob_col(
+      txt,
+      aes_list = list(
+        n_lines = 2,
+        txt_just = 'right'),
+      border = T),
+    border = T),
+  grob_row(
+    grob_col(
+      bulleted_list,
+      aes_list = list(
+        sep = '\n',
+        txt_just = 'left',
+        txt_color = 'purple',
+        fnt_face = matrix(c(2,1,1,1,1), ncol = 1)),
+      border = T),
+    border = T),
+  height = 100,
+  width = 100)
 
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+gridExtra::grid.arrange(gl$grob)
 
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
 ```
 
-Also a quote using `>`:
+At the very end of the character string being processed, if the string is converted to `n` lines, the character string is converted into a `n`x1 matrix, so any aesthetic that can be changed with a matrix can also be applied here. Thus, you can edit separate lines' aesthetics with an `n`x1 aesthetic matrix (such as the matrix used in the `fnt_face` aesthetic for the bottom grob above), but the *user must make sure he/she is certain how many lines the character string is going to be converted to, or else the aesthetic change will not take*. Above `txt_just` was used to right-align and left-align separate text grobs, as was `txt_color`. 
 
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
+***
+
+## Empty Space Grobs
+
+Us here at the `grobblR` HQ understand that sometimes the user will need to bump some things to the top, to the bottom, to the left or to the right. Sometimes the user might even need to compact some grobs - the automatic sizing occurring in `grobblR` only knows to fill allotted space with whatever object its given, so the grobs may appear stretched at times. After much deliberation, we decided on adding in the option to add *empty space grobs* with `NA` which is simply that: empty space. We saw this briefly in the secition discussing borders, but here is another example:
+
+```{r empty space grob}
+
+gl <- grob_layout(
+  grob_row(
+    grob_col(df),
+    grob_col(
+      grob_row(grob_col(df)),
+      grob_row(grob_col(NA))),
+    grob_col(
+      grob_row(grob_col(NA, p = 1/3)),
+      grob_row(grob_col(df)))),
+  height = 100,
+  width = 100,
+  grob_padding = 0)
+
+gridExtra::grid.arrange(gl$grob)
+
+```
+
+The table on the left may appeared somewhat stretched because it's filling its allotted space, but the other two tables appear more properly sized thanks to the empty space grobs.
+
+***
+
+## Grob Layout to PDF
+
+It should be noted that the default values for the `height` and `width` parameters within `grob_layout()` are `280` and `216`, as these are the values needed to properly fit the grob-layout onto a piece of 11in x 8.5in computer paper, portrait orientation. Thus, the defaults in `grob_layout()` are meant for printing and fitting the PDF of the grob-layout onto a piece of paper. Obviously there are other uses for PDF files, but this is the use we found most useful. Before demonstrating how to convert these grob-layouts to actual PDF files, let's create a couple:
+
+```{r two page grob-layout}
+
+# dummy text
+pars <- unlist(strsplit(UsingR::lorem, "\n\n"))
+first_paragraph <- pars[1]
+second_paragraph <- pars[2]
+sac_purple <- '#5A2D81'
+
+first_page_gl <- grob_layout(
+  grob_row(
+    grob_col('kings_logo.png', p = 1/2),
+    grob_col(
+      'vlade.png',
+      title = 'GM - Vlade Divac'),
+    grob_col(
+      p = 1/2,
+      grob_row(grob_col(NA)),
+      grob_row(
+        grob_col(
+         '2018 Record\n27-55',
+          aes_list = list(
+            n_lines = 2,
+            fnt_face = 2,
+            txt_color = 'white',
+            bg_color = sac_purple))),
+        grob_row(grob_col(NA)))),
+  grob_row(
+    grob_col(NA, p = 1/2),
+    grob_col(
+      'deaaron.png',
+      title = "PG - De'Aaron Fox"),
+    grob_col(
+      'buddy.png',
+      title = 'SG - Buddy Hield'),
+    grob_col(NA, p = 1/2),
+    title = 'BACK COURT',
+    title_p = 0.075),
+  grob_row(
+    grob_col(
+      'bogdan.png',
+      title = 'SF - Bogdan Bogdanovic'),
+    grob_col(
+      'marvin.png',
+      title = 'PF - Marvin Bagley III'),
+    grob_col(
+      'willie.png',
+      title = 'C - Willie Cauley-Stein'),
+    title = 'FRONT COURT',
+    title_p = 0.075),
+  grob_row(
+    p = 2/3,
+    grob_col(
+      first_paragraph,
+      aes_list = list(txt_just = 'left'))),
+  title = 'Sacramento Kings Overview',
+  title_aes_list = list(bg_color = sac_purple))
+
+second_page_gl <- grob_layout(
+  grob_row(
+    grob_col(
+      "",
+      p = 1/4,
+      aes_list = list(
+        round_rect_radius = 0.2,
+        bg_color = 'gray40')),
+    grob_col(
+      'kings_logo.png',
+      aes_list = list(maintain_aspect_ratio = T)),
+    grob_col(
+      gg1)),
+  grob_row(
+    grob_col(
+      head(iris)),
+    grob_col(
+      bulleted_list,
+      aes_list = list(
+        txt_color = sac_purple,
+        n_lines = 5,
+        fnt_face = matrix(c(2,1,1,1,1), ncol = 1)))
+    ,grob_col(
+      "",
+      p = 1/4,
+      aes_list = list(
+        round_rect_radius = 0.2,
+        bg_color = 'gray40'))),
+  grob_row(
+    p = 2/3,
+    grob_col(
+      second_paragraph,
+      aes_list = list(txt_just = 'left'))),
+  grob_row(
+    grob_col(
+      'jacked_mike_bibby.png',
+      aes_list = list(maintain_aspect_ratio = T),
+      title = 'Jacked Mike Bibby',
+      border = T,
+      border_aes_list = list(lwd = 4, col = sac_purple))),
+  title = 'Grob to PDF Demonstration',
+  title_aes_list = list(bg_color = sac_purple))
+
+```
+
+Now that we have two grob-layout pages established, let's put them together into a single PDF document with `grob_to_pdf()`! With the `grob_to_pdf()` function, the user has to provide a `file_name` for the PDF output, and whether to add a page number to each of the grob-layouts in their bottom-right corners. Only the objects outputted by `grob_layout()` can be inserted into `grob_to_pdf()`, either loose or contained in a single list:
+
+```{r Grob to PDF}
+
+# grob_to_pdf(
+#   first_page_gl,
+#   second_page_gl,
+#   file_name = 'grobblR_vignette',
+#   add_page_numbers = T)
+# OR
+grob_to_pdf(
+  list(first_page_gl, second_page_gl),
+  file_name = 'grobblR_vignette',
+  add_page_numbers = T)
+
+```
+

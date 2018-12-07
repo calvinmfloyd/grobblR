@@ -31,7 +31,10 @@ grob_image <- function(img_path, aes_list, height = numeric(), width = numeric()
   # }
 
   raw_png <- png::readPNG(normalizePath(file.path(img_path)))
-  edit_dims <- ifelse(length(aes_list$maintain_aspect_ratio) == 0, FALSE, aes_list$maintain_aspect_ratio)
+  edit_dims <- ifelse(
+    length(aes_list$maintain_aspect_ratio) == 0,
+    TRUE,
+    aes_list$maintain_aspect_ratio)
 
   if(edit_dims){
 

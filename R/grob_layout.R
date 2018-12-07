@@ -15,7 +15,7 @@
 grob_layout <- function(...,
                         height = 280,
                         width = 216,
-                        padding = 5,
+                        padding = 10,
                         grob_padding = 2,
                         title = '',
                         title_aes_list = list(),
@@ -177,24 +177,26 @@ grob_layout <- function(...,
 
         }
 
-        pn_pad_pct <- 0.75
+        pn_pad_pct <- 0.9
         page_number_grob <- convert_to_grob(
           x = page_number,
           height = pad*pn_pad_pct,
           width = pad*pn_pad_pct,
-          aes_list = list(txt_color = 'gray40'))
+          aes_list = list(
+            txt_color = 'gray40',
+            bg_color = NA))
 
-        layout_matrix_w_pn <- matrix(NA, nrow = 5, ncol = 5)
+        layout_matrix_w_pn <- matrix(NA, nrow = 4, ncol = 4)
         layout_matrix_w_pn[2,2] <- 1
-        layout_matrix_w_pn[4,4] <- 2
+        layout_matrix_w_pn[3,3] <- 2
 
         grob <- gridExtra::arrangeGrob(
           grobs = grid::gList(grob, page_number_grob),
           heights = grid::unit(
-            c(pad, ph, (pad - pad*pn_pad_pct)/2, pad*pn_pad_pct, (pad - pad*pn_pad_pct)/2),
+            c(pad, ph, pad*pn_pad_pct, (pad - pad*pn_pad_pct)),
             'mm'),
           widths = grid::unit(
-            c(pad, pw, (pad - pad*pn_pad_pct)/2, pad*pn_pad_pct, (pad - pad*pn_pad_pct)/2),
+            c(pad, pw, pad*pn_pad_pct, (pad - pad*pn_pad_pct)),
             'mm'),
           layout_matrix = layout_matrix_w_pn)
 

@@ -11,6 +11,9 @@
 line_creator <- function(cex_val, string, height = numeric(), width = numeric(), sep = '\n'){
 
   in_to_mm <- function(x) x*25.4
+
+  if(sep == '|') stop("Cannot use '|' as a separator.", call. = F)
+
   paragraphs <- unlist(strsplit(string, split = sep))
 
   if(length(paragraphs) == 0){
