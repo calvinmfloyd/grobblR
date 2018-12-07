@@ -95,7 +95,7 @@ gl <- grob_layout(
 
 
 gl1 <- grob_layout(
-  grob_row(grob_col('1'), grob_col('2')),
+  grob_row(grob_col(c(1, 2)), grob_col('2')),
   grob_row(grob_col('3'), grob_col('4')),
   height = 100,
   width = 100)
