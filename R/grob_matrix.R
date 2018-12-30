@@ -3,8 +3,8 @@
 #' @param df The data.frame/matrix to be converted to a grob.
 #' @param aes_list A list which contains aesthetic parameters for the matrix grob. Possible aesthetic elements for matrices are:
 #' \itemize{
-#' \item \code{bg_alpha} - Controls the background alpha/opacity of the elements of the matrix. Values are used in grid::gpar(). Default is 1.0.
-#' \item \code{bg_color} - Controls the background color of the elements of the matrix. If the matrix has no rownames or colnames, the default is white. If the matrix has rownames or colnames, the default is white-gray90 on every odd-even row.
+#' \item \code{background_alpha} - Controls the background alpha/opacity of the elements of the matrix. Values are used in grid::gpar(). Default is 1.0.
+#' \item \code{background_color} - Controls the background color of the elements of the matrix. If the matrix has no rownames or colnames, the default is white. If the matrix has rownames or colnames, the default is white-gray90 on every odd-even row.
 #' \item \code{borders} - Controls the borders of the elements of the matrix. The input is a string with the possible words "top", "bottom", "left", "right" separated by commas. For example, "top, left, right" will put borders on the top, left and right side of the grid cell, but not the bottom. Default is "", or no borders.
 #' \item \code{border_color} - Controls the color of the selected borders. Default is gray40.
 #' \item \code{border_width} - Controls the line width density/thickness of the selected borders. Values are used in grid::gpar(). Default is 4.
@@ -13,24 +13,24 @@
 #' \item \code{color_binary_high} - The color of the binary color gradient if the numeric element is greater than the \code{color_binary_cut_off}. Default is green.
 #' \item \code{color_binary_low} - The color of the binary color gradient if the numeric element is less than the \code{color_binary_cut_off}. Default is red.
 #' \item \code{color_binary_equal} - The color of the binary color gradient if the numeric element is equal to the \code{color_binary_cut_off}. Default is gray.
-#' \item \code{color_gradient_binary} - A TRUE/FALSE value which signifies if a binary color gradient should be applied to the \code{color_gradient_cols}.
-#' \item \code{color_gradient_cols} - Controls the columns which a color gradient scale will be applied to. Integer values denoting the column numbers. Can only be applied to columns with all numeric values.
+#' \item \code{color_gradient_binary} - A TRUE/FALSE value which signifies if a binary color gradient should be applied to the \code{color_gradient_columns}.
+#' \item \code{color_gradient_columns} - Controls the columns which a color gradient scale will be applied to. Integer values denoting the column numbers. Can only be applied to columns with all numeric values.
 #' \item \code{color_gradient_max} - The high color for the gradual color gradient. Default is green.
 #' \item \code{color_gradient_mid} - The middle color for the gradual color gradient. Default is yellow.
 #' \item \code{color_gradient_min} - The low color for the gradual color gradient. Default is red.
-#' \item \code{col_widths} - If automatic column widths are not desired, the user can provide a vector of widths for each column in the matrix in mm.
-#' \item \code{fnt_face} - Controls the font face of the elements of the matrix (i.e. bold, italic, etc.). Values are used in grid::gpar(). Default for table elements is normal, or 1. Default for column name elements is bold and italic, or 4.
+#' \item \code{column_widths} - If automatic column widths are not desired, the user can provide a vector of widths for each column in the matrix in mm.
+#' \item \code{font_face} - Controls the font face of the elements of the matrix (i.e. bold, italic, etc.). Values are used in grid::gpar(). Default for table elements is normal, or 1. Default for column name elements is bold and italic, or 4.
 #' \item \code{group_elements} - Controls whether same, adjacent elements within the matrix should be grouped together into one single grid. A TRUE/FALSE value, with the default being FALSE.
 #' \item \code{round_rect_radius} - Controls the radius of the corners of the rectangles matrix text is laid on top of.
 #' \item \code{row_heights} - If equal row heights are not desired, the user can provide a vector of heights for each row in the matrix in mm.
-#' \item \code{txt_align} - Controls where the text in each grid cell will be centered around, horizontally. A numeric value between 0 and 1, with 0 being all the way to the left of the grid cell, and 1 being all the way to the right of the grid cell. Default is 0.5. Can also input 'left', 'right' or 'center', which will also make edits to \code{txt_just} to make the text completely left-justified, right-justified or centered, respectively.
-#' \item \code{txt_angle} - Controls the text angle of the text within the matrix. A numeric value in degrees, with the default being 0.
-#' \item \code{txt_cex} - Controls the size of the text within the matrix. Default is automatic text sizing based on the length of the elements within the matrix, the row heights and the column widths.
-#' \item \code{txt_color} - Controls the text color of the elements of the matrix. Default for table elements and row names is black, and a gray-blue color for column names.
-#' \item \code{txt_font} - Controls the font family of the text within the matrix. Default is sans.
-#' \item \code{txt_just} - Controls the horizontal justification of the text in the matrix. A numeric value between 0 and 1, with 0 being left justification and 1 being right justification. Default is 0.5, or center justification. Can also input 'left', 'right' or 'center', which will also make edits to \code{txt_align} to make the text completely left-justified, right-justified or centered, respectively.
-#' \item \code{txt_v_align} - Controls where the text in each grid cell will be centered around, vertically. A numeric value between 0 and 1, with 0 being all the way to the bottom of the grid cell, and 1 being all the way to the top of the grid cell. Default is 0.5. Can also input 'top', 'bottom' or 'center', which will also make edits to \code{txt_v_just} to make the text completely top-justified, bottom-justified or centered, respectively.
-#' \item \code{txt_v_just} - Controls the vertical justification of the text in the matrix. A numeric value between 0 and 1, with 0 being bottom justification and 1 being top justification. Default is 0.5, or center justification. Can also input 'top', 'bottom' or 'center', which will also make edits to \code{txt_v_align} to make the text completely top-justified, bottom-justified or centered, respectively.
+#' \item \code{text_align} - Controls where the text in each grid cell will be centered around, horizontally. A numeric value between 0 and 1, with 0 being all the way to the left of the grid cell, and 1 being all the way to the right of the grid cell. Default is 0.5. Can also input 'left', 'right' or 'center', which will also make edits to \code{text_just} to make the text completely left-justified, right-justified or centered, respectively.
+#' \item \code{text_angle} - Controls the text angle of the text within the matrix. A numeric value in degrees, with the default being 0.
+#' \item \code{text_cex} - Controls the size of the text within the matrix. Default is automatic text sizing based on the length of the elements within the matrix, the row heights and the column widths.
+#' \item \code{text_color} - Controls the text color of the elements of the matrix. Default for table elements and row names is black, and a gray-blue color for column names.
+#' \item \code{text_font} - Controls the font family of the text within the matrix. Default is sans.
+#' \item \code{text_just} - Controls the horizontal justification of the text in the matrix. A numeric value between 0 and 1, with 0 being left justification and 1 being right justification. Default is 0.5, or center justification. Can also input 'left', 'right' or 'center', which will also make edits to \code{text_align} to make the text completely left-justified, right-justified or centered, respectively.
+#' \item \code{text_v_align} - Controls where the text in each grid cell will be centered around, vertically. A numeric value between 0 and 1, with 0 being all the way to the bottom of the grid cell, and 1 being all the way to the top of the grid cell. Default is 0.5. Can also input 'top', 'bottom' or 'center', which will also make edits to \code{text_v_just} to make the text completely top-justified, bottom-justified or centered, respectively.
+#' \item \code{text_v_just} - Controls the vertical justification of the text in the matrix. A numeric value between 0 and 1, with 0 being bottom justification and 1 being top justification. Default is 0.5, or center justification. Can also input 'top', 'bottom' or 'center', which will also make edits to \code{text_v_align} to make the text completely top-justified, bottom-justified or centered, respectively.
 #' }
 #' @param m_type A integer value which indicates what the default aesthetics of the table will be. Default is 1. The possible options:
 #' \enumerate{
@@ -42,11 +42,11 @@
 #' }
 #' @param height A numeric value designating the total height of the matrix grob in mm.
 #' @param width A numeric value designating the total width of the matrix grob in mm.
-#' @param txt_cex_adj A numeric value used to adjust the automatic text cex sizing.
+#' @param text_cex_adj A numeric value used to adjust the automatic text cex sizing.
 #' @return A grob of df, with the corresponding aesthetics.
 #' @export
 
-grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = numeric(), txt_cex_adj = 0.2){
+grob_matrix <- function(df, aes_list = ga_list(), m_type = 1, height = numeric(), width = numeric(), text_cex_adj = 0.2){
 
   in_to_mm <- function(x) x*25.4
 
@@ -56,12 +56,6 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
     } else {
       return(0)
     }
-  }
-
-  convert_to_matrix <- function(x){
-    if(length(x) > 0 & is.null(nrow(x))) x <- t(as.matrix(x))
-    if(is.data.frame(x)) x <- as.matrix(x)
-    x
   }
 
   stopifnot(!is.null(nrow(df)), !is.null(ncol(df)))
@@ -82,7 +76,7 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
   def_vals_non_matrices <- list(
     group_elements = FALSE,
     cell_sep = 1,
-    color_gradient_cols = numeric(),
+    color_gradient_columns = numeric(),
     color_gradient_binary = FALSE,
     color_binary_cut_off = 0,
     color_binary_high = '#63BE7B',
@@ -94,7 +88,7 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
 
   for(val_name in names(def_vals_non_matrices)){
 
-    if(length(aes_list[[val_name]]) > 1 & val_name != 'color_gradient_cols') stop(sprintf(
+    if(length(aes_list[[val_name]]) > 1 & val_name != 'color_gradient_columns') stop(sprintf(
         "The %s in aes_list has a length of %d, but must be a single value.",
         val_name,
         length(aes_list[[val_name]])),
@@ -107,43 +101,43 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
   # ----
 
   def_vals_matrices <- list(
-    fnt_face = c(1, 1, 2, 3, 2),
-    bg_color = c('white', 'white', 'white', 'white', 'gray50'),
-    bg_alpha = c(1, 1, 1, 1, 1),
+    font_face = c(1, 1, 2, 3, 2),
+    background_color = c('white', 'white', 'white', 'white', 'gray50'),
+    background_alpha = c(1, 1, 1, 1, 1),
     borders = c('', '', 'bottom', '', ''),
-    txt_color = c('black', 'black', 'gray40', 'black', 'white'),
-    txt_align = c(0.5, 0.5, 0.5, 0.5, 0.5),
-    txt_v_align = c(0.5, 0.5, 0.5, 0.5, 0.5),
-    txt_just = c(0.5, 0.5, 0.5, 0.5, 0.5),
-    txt_v_just = c(0.5, 0.5, 0.5, 0.5, 0.5),
-    txt_font = c('sans', 'sans', 'sans', 'sans', 'sans', 'sans'),
+    text_color = c('black', 'black', 'gray40', 'black', 'white'),
+    text_align = c(0.5, 0.5, 0.5, 0.5, 0.5),
+    text_v_align = c(0.5, 0.5, 0.5, 0.5, 0.5),
+    text_just = c(0.5, 0.5, 0.5, 0.5, 0.5),
+    text_v_just = c(0.5, 0.5, 0.5, 0.5, 0.5),
+    text_font = c('sans', 'sans', 'sans', 'sans', 'sans', 'sans'),
     border_color = c('gray40', 'gray40', 'gray40', 'gray40', 'gray40'),
-    txt_angle = c(0, 0, 0, 0, 0),
+    # text_angle = c(0, 0, 0, 0, 0),
     border_width = c(4, 4, 1, 4, 4),
     round_rect_radius = c(0.0, 0.0, 0.0, 0.0, 0.2))
 
   def_orig_vals_list <- c(def_vals_matrices, def_vals_non_matrices)
 
-  # Making adjustments to txt_cex, if need be ----
-  adjust_cex <- length(aes_list$txt_cex) == 0 &
+  # Making adjustments to text_cex, if need be ----
+  adjust_cex <- length(aes_list$text_cex) == 0 &
     (length(height) == 1 & length(aes_list$row_heights) == 0) &
-    (length(width) == 1 & length(aes_list$col_widths) == 0)
+    (length(width) == 1 & length(aes_list$column_widths) == 0)
 
   if(!adjust_cex){
 
-    def_txt_cex <- 2
+    def_text_cex <- 2
 
   } else {
 
     cex_vals <- seq(0.5, 15, 0.1)
     rh <- height/nr - 2*aes_list$cell_sep
 
-    col_props <- apply(
+    column_props <- apply(
       rbind(colnames(df_fit), df_fit), 2,
       function(x) max(graphics::strwidth(c(x), units = 'in')))
-    col_props <- col_props/sum(col_props)
+    column_props <- column_props/sum(column_props)
 
-    cw <- width*col_props - 2*aes_list$cell_sep
+    cw <- width*column_props - 2*aes_list$cell_sep
 
     widest_elements <- apply(
       rbind(colnames(df_fit), df_fit), 2,
@@ -182,22 +176,16 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
       max_str_height <- cex_vals[max(which(poss_str_heights <= rh))]
     }
 
-    def_txt_cex <- min(c(max(poss_width_cex_vals), max_str_height))
-    def_txt_cex <- def_txt_cex - txt_cex_adj*def_txt_cex
+    def_text_cex <- min(c(max(poss_width_cex_vals), max_str_height))
+    def_text_cex <- def_text_cex - text_cex_adj*def_text_cex
 
   }
   # ----
 
   # Adding in default values (matrices) if they are missing ----
 
-  def_vals_matrices$txt_cex <- rep(def_txt_cex, length(def_vals_matrices[[1]]))
-
-  ctm_names <- names(def_vals_matrices)
-  for(arg_name in names(aes_list)[names(aes_list) %in% ctm_names]){
-    aes_list[[arg_name]] <- convert_to_matrix(aes_list[[arg_name]])
-  }
-
-  bg_color_not_inputted <- all(dim(aes_list$bg_color) == 0)
+  def_vals_matrices$text_cex <- rep(def_text_cex, length(def_vals_matrices[[1]]))
+  background_color_not_inputted <- all(dim(aes_list$background_color) == 0)
 
   for(val_name in names(def_vals_matrices)){
 
@@ -218,9 +206,9 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
     }
   }
 
-  if(bg_color_not_inputted & m_type %in% c(2,4)) aes_list[['bg_color']][rep(c(F,T), length = nr),] <- 'gray95'
+  if(background_color_not_inputted & m_type %in% c(2,4)) aes_list[['background_color']][rep(c(F,T), length = nr),] <- 'gray95'
 
-  if(length(aes_list[['color_gradient_cols']]) > 0 &
+  if(length(aes_list[['color_gradient_columns']]) > 0 &
      aes_list[['color_gradient_binary']] %in% FALSE &
      m_type %in% c(1,2)){
 
@@ -229,7 +217,7 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
         aes_list[['color_gradient_mid']],
         aes_list[['color_gradient_max']]))
 
-    for(cc in aes_list[['color_gradient_cols']]){
+    for(cc in aes_list[['color_gradient_columns']]){
 
       num_vals <- as.numeric(df[,cc])
       range <- (max(num_vals) - min(num_vals))
@@ -237,25 +225,25 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
       range <- range*10^dp
       crp <- crp.f(range + 1)
       val_vec <- (num_vals - min(num_vals))*10^dp + 1
-      aes_list[['bg_color']][,cc] <- crp[val_vec]
+      aes_list[['background_color']][,cc] <- crp[val_vec]
       }
 
     } else if (aes_list[['color_gradient_binary']] %in% TRUE & m_type %in% c(1,2)){
 
-      for(cc in aes_list[['color_gradient_cols']]){
+      for(cc in aes_list[['color_gradient_columns']]){
 
         num_vals <- as.numeric(df[,cc])
-        aes_list[['bg_color']][,cc][num_vals < aes_list[['color_binary_cut_off']]] <- aes_list[['color_binary_low']]
-        aes_list[['bg_color']][,cc][num_vals > aes_list[['color_binary_cut_off']]] <- aes_list[['color_binary_high']]
-        aes_list[['bg_color']][,cc][num_vals == aes_list[['color_binary_cut_off']]] <- aes_list[['color_binary_equal']]
+        aes_list[['background_color']][,cc][num_vals < aes_list[['color_binary_cut_off']]] <- aes_list[['color_binary_low']]
+        aes_list[['background_color']][,cc][num_vals > aes_list[['color_binary_cut_off']]] <- aes_list[['color_binary_high']]
+        aes_list[['background_color']][,cc][num_vals == aes_list[['color_binary_cut_off']]] <- aes_list[['color_binary_equal']]
         }
     }
 
   # ----
 
-  # Adjustments to txt_just, txt_align, txt_v_just, txt_v_align ----
+  # Adjustments to text_just, text_align, text_v_just, text_v_align ----
 
-  for(val_name in c('txt_just', 'txt_align')){
+  for(val_name in c('text_just', 'text_align')){
     if(!any(is.numeric(aes_list[[val_name]]), all(aes_list[[val_name]] %in% c('left', 'right', 'center')))){
       stop(paste0(
         sprintf("The %s in aes_list must either be a numeric value (usually between 0 and 1), ", val_name),
@@ -265,25 +253,25 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
     }
   }
 
-  al_txt_just <- aes_list[['txt_just']]
-  al_txt_align <- aes_list[['txt_align']]
+  al_text_just <- aes_list[['text_just']]
+  al_text_align <- aes_list[['text_align']]
 
-  aes_list[['txt_just']][al_txt_just %in% 'left' | al_txt_align %in% 'left'] <- 0
-  aes_list[['txt_align']][al_txt_just %in% 'left' | al_txt_align %in% 'left'] <- 0
-  aes_list[['txt_just']][al_txt_just %in% 'right' | al_txt_align %in% 'right'] <- 1
-  aes_list[['txt_align']][al_txt_just %in% 'right' | al_txt_align %in% 'right'] <- 1
-  aes_list[['txt_just']][al_txt_just %in% 'center' | al_txt_align %in% 'center'] <- 0.5
-  aes_list[['txt_align']][al_txt_just %in% 'center' | al_txt_align %in% 'center'] <- 0.5
+  aes_list[['text_just']][al_text_just %in% 'left' | al_text_align %in% 'left'] <- 0
+  aes_list[['text_align']][al_text_just %in% 'left' | al_text_align %in% 'left'] <- 0
+  aes_list[['text_just']][al_text_just %in% 'right' | al_text_align %in% 'right'] <- 1
+  aes_list[['text_align']][al_text_just %in% 'right' | al_text_align %in% 'right'] <- 1
+  aes_list[['text_just']][al_text_just %in% 'center' | al_text_align %in% 'center'] <- 0.5
+  aes_list[['text_align']][al_text_just %in% 'center' | al_text_align %in% 'center'] <- 0.5
 
-  aes_list[['txt_just']] <- matrix(as.numeric(aes_list[['txt_just']]), nrow = nr)
-  aes_list[['txt_align']] <- matrix(as.numeric(aes_list[['txt_align']]), nrow = nr)
+  aes_list[['text_just']] <- matrix(as.numeric(aes_list[['text_just']]), nrow = nr)
+  aes_list[['text_align']] <- matrix(as.numeric(aes_list[['text_align']]), nrow = nr)
 
   ####
 
-  al_txt_v_just <- aes_list[['txt_v_just']]
-  al_txt_v_align <- aes_list[['txt_v_align']]
+  al_text_v_just <- aes_list[['text_v_just']]
+  al_text_v_align <- aes_list[['text_v_align']]
 
-  for(val_name in c('txt_v_just', 'txt_v_align')){
+  for(val_name in c('text_v_just', 'text_v_align')){
     if(!any(is.numeric(aes_list[[val_name]]), all(aes_list[[val_name]] %in% c('top', 'bottom', 'center')))){
       stop(paste0(
         sprintf("The %s in aes_list must either be a numeric value (usually between 0 and 1), ", val_name),
@@ -293,15 +281,15 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
     }
   }
 
-  aes_list[['txt_v_just']][al_txt_v_just %in% 'bottom' | al_txt_v_align %in% 'bottom'] <- 0
-  aes_list[['txt_v_align']][al_txt_v_just %in% 'bottom' | al_txt_v_align %in% 'bottom'] <- 0
-  aes_list[['txt_v_just']][al_txt_v_just %in% 'top' | al_txt_v_align %in% 'top'] <- 1
-  aes_list[['txt_v_align']][al_txt_v_just %in% 'top' | al_txt_v_align %in% 'top'] <- 1
-  aes_list[['txt_v_just']][al_txt_v_just %in% 'center' | al_txt_v_align %in% 'center'] <- 0.5
-  aes_list[['txt_v_align']][al_txt_v_just %in% 'center' | al_txt_v_align %in% 'center'] <- 0.5
+  aes_list[['text_v_just']][al_text_v_just %in% 'bottom' | al_text_v_align %in% 'bottom'] <- 0
+  aes_list[['text_v_align']][al_text_v_just %in% 'bottom' | al_text_v_align %in% 'bottom'] <- 0
+  aes_list[['text_v_just']][al_text_v_just %in% 'top' | al_text_v_align %in% 'top'] <- 1
+  aes_list[['text_v_align']][al_text_v_just %in% 'top' | al_text_v_align %in% 'top'] <- 1
+  aes_list[['text_v_just']][al_text_v_just %in% 'center' | al_text_v_align %in% 'center'] <- 0.5
+  aes_list[['text_v_align']][al_text_v_just %in% 'center' | al_text_v_align %in% 'center'] <- 0.5
 
-  aes_list[['txt_v_just']] <- matrix(as.numeric(aes_list[['txt_v_just']]), nrow = nr)
-  aes_list[['txt_v_align']] <- matrix(as.numeric(aes_list[['txt_v_align']]), nrow = nr)
+  aes_list[['text_v_just']] <- matrix(as.numeric(aes_list[['text_v_just']]), nrow = nr)
+  aes_list[['text_v_align']] <- matrix(as.numeric(aes_list[['text_v_align']]), nrow = nr)
 
   # ----
 
@@ -325,38 +313,30 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
       rect_grob <- grid::roundrectGrob(
         r = grid::unit(aes_list$round_rect_radius, 'snpc')
         ,gp = grid::gpar(
-          fill = aes_list$bg_color[i,j],
-          col = aes_list$bg_color[i,j],
-          alpha = aes_list$bg_alpha[i,j]))
+          fill = aes_list$background_color[i,j],
+          col = aes_list$background_color[i,j],
+          alpha = aes_list$background_alpha[i,j]))
 
       text_grob <- grid::textGrob(
         df[i,j],
-        x = grid::unit(aes_list$txt_align[i,j], "npc"),
-        y = grid::unit(aes_list$txt_v_align[i,j], "npc"),
-        hjust = aes_list$txt_just[i,j],
-        vjust = aes_list$txt_v_just[i,j],
-        rot = aes_list$txt_angle[i,j],
+        x = grid::unit(aes_list$text_align[i,j], "npc"),
+        y = grid::unit(aes_list$text_v_align[i,j], "npc"),
+        hjust = aes_list$text_just[i,j],
+        vjust = aes_list$text_v_just[i,j],
+        # rot = aes_list$text_angle[i,j],
         gp = grid::gpar(
-          fontface = aes_list$fnt_face[i,j],
-          fontfamily = aes_list$txt_font[i,j],
-          cex = aes_list$txt_cex[i,j],
-          col = aes_list$txt_color[i,j]))
+          fontface = aes_list$font_face[i,j],
+          fontfamily = aes_list$text_font[i,j],
+          cex = aes_list$text_cex[i,j],
+          col = aes_list$text_color[i,j]))
 
-      cell_border_gs <- grid::gList()
-      borders_split <- unlist(strsplit(aes_list$borders[i,j], split = ', ', fixed = TRUE))
-
+      borders_split <- unlist(strsplit(aes_list$borders[i,j], split = ', ', fixed = T))
       if(length(borders_split) > 0){
-        for(side in 1:length(borders_split)){
 
-          cell_border_gs <- grid::gList(
-            cell_border_gs,
-            grid::segmentsGrob(
-              x0 = grid::unit(ifelse(borders_split[side] %in% c("right"), 1, 0), "npc"),
-              y0 = grid::unit(ifelse(borders_split[side] %in% c("top"), 1, 0), "npc"),
-              x1 = grid::unit(ifelse(borders_split[side] %in% c("top", "bottom", "right"), 1, 0), "npc"),
-              y1 = grid::unit(ifelse(borders_split[side] %in% c("left", "right", "top"), 1, 0), "npc"),
-              gp = grid::gpar(col = aes_list$border_color[i,j], lwd = aes_list$border_width[i,j])))
-        }
+        cell_border_gs <- create_border_grob(
+          border_color = aes_list$border_color[i,j],
+          border_width = aes_list$border_width[i,j],
+          border_sides = aes_list$borders[i,j])
 
         raw_grobs <- grid::gList(raw_grobs, grid::grobTree(rect_grob, cell_border_gs, text_grob))
 
@@ -412,13 +392,13 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
     tmp_row_heights <- c()
     for(i in 1:nr){
       ind_row_heights <- mapply(
-        function(txt, cex, face, fam){
-          in_to_mm(graphics::strheight(txt, units = 'in', cex = cex, family = fam, font = face))
+        function(text, cex, face, fam){
+          in_to_mm(graphics::strheight(text, units = 'in', cex = cex, family = fam, font = face))
         },
         df[i,],
-        aes_list$txt_cex[i,],
-        aes_list$fnt_face[i,],
-        aes_list$txt_font[i,])
+        aes_list$text_cex[i,],
+        aes_list$font_face[i,],
+        aes_list$text_font[i,])
       tmp_row_heights <- c(tmp_row_heights, max(ind_row_heights) + 2*aes_list$cell_sep)
     }
     aes_list$row_heights <- rep(max(tmp_row_heights), nr)
@@ -429,29 +409,28 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
 
   }
 
-  if(length(aes_list$col_widths) == 0 & length(width) == 0){
+  if(length(aes_list$column_widths) == 0 & length(width) == 0){
 
-    tmp_col_widths <- c()
+    tmp_column_widths <- c()
     for(i in 1:nc){
-      ind_col_widths <- mapply(
-        function(txt, cex, face, fam){
-          in_to_mm(graphics::strwidth(txt, units = 'in', cex = cex, family = fam, font = face))
-        },
+      ind_column_widths <- mapply(
+        function(text, cex, face, fam){
+          in_to_mm(graphics::strwidth(text, units = 'in', cex = cex, family = fam, font = face))},
         df[,i],
-        aes_list$txt_cex[,i],
-        aes_list$fnt_face[,i],
-        aes_list$txt_font[,i])
-      tmp_col_widths <- c(tmp_col_widths, max(ind_col_widths) + 2*aes_list$cell_sep)
+        aes_list$text_cex[,i],
+        aes_list$font_face[,i],
+        aes_list$text_font[,i])
+      tmp_column_widths <- c(tmp_column_widths, max(ind_column_widths) + 2*aes_list$cell_sep)
     }
-    aes_list$col_widths <- tmp_col_widths
+    aes_list$column_widths <- tmp_column_widths
 
   } else if(adjust_cex){
 
-    aes_list$col_widths <- cw
+    aes_list$column_widths <- cw
 
-  } else if(length(width) == 1 & length(aes_list$col_widths) != nc){
+  } else if(length(width) == 1 & length(aes_list$column_widths) != nc){
 
-    aes_list$col_widths <- rep(width/nc, nc)
+    aes_list$column_widths <- rep(width/nc, nc)
 
   }
   # ----
@@ -461,7 +440,7 @@ grob_matrix <- function(df, aes_list, m_type = 1, height = numeric(), width = nu
   gridExtra::arrangeGrob(
     grobs = raw_grobs[first_element_indices],
     heights = grid::unit(aes_list$row_heights, 'mm'),
-    widths = grid::unit(aes_list$col_widths, 'mm'),
+    widths = grid::unit(aes_list$column_widths, 'mm'),
     layout_matrix = layout_matrix)
 
 }

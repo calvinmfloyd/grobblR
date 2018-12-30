@@ -1,4 +1,6 @@
 
+source('ga_list.R')
+source('convert_to_matrix.R')
 source('convert_to_grob.R')
 source('grob_col.R')
 source('grob_row.R')
@@ -7,6 +9,13 @@ source('grob_matrix.R')
 source('grob_image.R')
 source('line_creator.R')
 source('grob_to_pdf.R')
+source('add_title_grob.R')
+source('add_page_number.R')
+source('grob_layout_class.R')
+source('grob_row_class.R')
+source('grob_col_class.R')
+source('create_border_grob.R')
+
 
 # library(UsingR)
 # library(dplyr)

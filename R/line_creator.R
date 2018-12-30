@@ -6,7 +6,6 @@
 #' @param height A numeric value designating the total height of the matrix grob in mm.
 #' @param width A numeric value designating the total width of the matrix grob in mm.
 #' @return A list containing a vector with each index equal to a line of the broken-down string, a TRUE/FALSE value indicating whether the lines will fit within equal sized rows and the widths in mm of each of the lines.
-#' @export
 
 line_creator <- function(cex_val, string, height = numeric(), width = numeric(), sep = '\n'){
 
