@@ -13,6 +13,7 @@
 
 grob_row <- function(...,
                      p = 1,
+                     padding = 2,
                      border = F,
                      border_sides = 'top, bottom, left, right',
                      border_aes_list = ga_list(),
@@ -27,6 +28,7 @@ grob_row <- function(...,
   grob_row_class$new(
     contents = list(...),
     proportion = p,
+    padding = padding,
     border = border,
     border_sides = border_sides,
     border_aes_list = border_aes_list,

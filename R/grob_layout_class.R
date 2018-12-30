@@ -5,7 +5,6 @@ grob_layout_class <- R6::R6Class(
     height = 100,
     width = 100,
     padding = 0,
-    grob_padding = 0,
     contents = list(),
     title = character(),
     title_p = 0.2,
@@ -16,7 +15,6 @@ grob_layout_class <- R6::R6Class(
                           height,
                           width,
                           padding,
-                          grob_padding,
                           page_number,
                           row_heights,
                           title,
@@ -26,7 +24,6 @@ grob_layout_class <- R6::R6Class(
       self$height <- height
       self$width <- width
       self$padding <- padding
-      self$grob_padding <- grob_padding
       self$row_heights <- row_heights
       self$page_number <- page_number
       self$title <- title
@@ -38,7 +35,6 @@ grob_layout_class <- R6::R6Class(
                     height = self$height,
                     width = self$width,
                     padding = self$padding,
-                    grob_padding = self$grob_padding,
                     row_number = self$row_number,
                     row_heights = self$row_heights,
                     page_number = self$page_number,
@@ -73,9 +69,6 @@ grob_layout_class <- R6::R6Class(
         call. = F)
       if(any(!is.numeric(padding)) | length(padding) != 1) stop(
         'padding in grob_layout() must be a single numeric value in millimeters.',
-        call. = F)
-      if(any(!is.numeric(grob_padding)) | length(grob_padding) != 1) stop(
-        'grob_padding in grob_layout() must be a single numeric value in millimeters.',
         call. = F)
       if(class(title_aes_list) != 'grob_aes_list') stop(
         'Did you use ga_list() for the title_aes_list in grob_layout()?',
@@ -115,7 +108,6 @@ grob_layout_class <- R6::R6Class(
       for(i in 1:nr){
         contents[[i]]$height <- row_heights[i]
         contents[[i]]$width <- width_w_padding
-        contents[[i]]$padding <- grob_padding
         raw_grobs <- grid::gList(raw_grobs, contents[[i]]$grob)
       }
 

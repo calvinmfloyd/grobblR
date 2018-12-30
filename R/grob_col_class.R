@@ -22,6 +22,7 @@ grob_col_class <- R6::R6Class(
                           border,
                           border_sides,
                           border_aes_list,
+                          padding,
                           title,
                           title_p,
                           title_aes_list,
@@ -33,6 +34,7 @@ grob_col_class <- R6::R6Class(
       self$border <- border
       self$border_aes_list <- border_aes_list
       self$border_sides <- border_sides
+      self$padding <- padding
       self$title <- title
       self$title_p <- title_p
       self$title_aes_list <- title_aes_list
@@ -104,6 +106,9 @@ grob_col_class <- R6::R6Class(
         call. = F)
       if(class(title_aes_list) != 'grob_aes_list') stop(
         'Did you use ga_list() for the title_aes_list in grob_col()?',
+        call. = F)
+      if(!is.numeric(padding) | length(padding) != 1) stop(
+        'padding in grob_row() must be a single numeric value in millimeters.',
         call. = F)
 
       title_present <- nchar(title) > 0
