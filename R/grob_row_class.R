@@ -89,7 +89,6 @@ grob_row_class <- R6::R6Class(
       for(i in 1:length(contents)){
         contents[[i]]$height <- grob_height_w_padding
         contents[[i]]$width <- widths[i]
-        contents[[i]]$padding <- padding
         raw_grobs <- grid::gList(raw_grobs, contents[[i]]$grob)
       }
 

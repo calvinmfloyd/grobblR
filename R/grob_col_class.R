@@ -126,7 +126,6 @@ grob_col_class <- R6::R6Class(
           height_proportions <- sapply(1:length(contents), function(i) contents[[i]]$proportion)
           contents[[i]]$height <- grob_height*(height_proportions/sum(height_proportions))[i]
           contents[[i]]$width <- width
-          contents[[i]]$padding <- padding
           raw_grobs <- grid::gList(raw_grobs, contents[[i]]$grob)
 
         } else {
