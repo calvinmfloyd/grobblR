@@ -1,10 +1,7 @@
 #' Converts a raw .png file to a grob, with flexible aesthetics.
 #'
 #' @param img_path The local path to the raw .png file.
-#' @param aes_list An list which contains aesthetic parameters for the image grob. Possible aesthetic elements for .png image files are :
-#' \itemize{
-#' \item \code{maintain_aspect_ratio} - A TRUE/FALSE value which indicates whether the aspect ratio of the image should be maintained. Default is FALSE - meaning the image will be stretched to fit the designated grid area.
-#' }
+#' @param aes_list The list outputted by \code{\link{ga_list}} which gives the image grob its aesthetics.
 #' @param height A numeric value designating the total height of the matrix grob in mm.
 #' @param width A numeric value designating the total width of the matrix grob in mm.
 #' @return A grob of the raw .png file.

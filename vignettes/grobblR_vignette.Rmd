@@ -60,8 +60,7 @@ gl <- grob_layout(
   grob_row(grob_col(3), grob_col(4)),
   height = 100,
   width = 100,
-  padding = 5,
-  grob_padding = 2)
+  padding = 5)
 
 gridExtra::grid.arrange(gl$grob)
 ```
@@ -74,8 +73,7 @@ gl <- grob_layout(
   grob_row(grob_col(3)),
   height = 100,
   width = 100,
-  padding = 5,
-  grob_padding = 2)
+  padding = 5)
 
 gridExtra::grid.arrange(gl$grob)
 ```
@@ -100,8 +98,7 @@ gl <- grob_layout(
   ),
   height = 100,
   width = 100,
-  padding = 5,
-  grob_padding = 2)
+  padding = 5)
 
 gridExtra::grid.arrange(gl$grob)
 ```
@@ -125,8 +122,7 @@ gl <- grob_layout(
     border = T),
   height = 100,
   width = 100,
-  padding = 5,
-  grob_padding = 2)
+  padding = 5)
 
 gridExtra::grid.arrange(gl$grob)
 ```
@@ -135,24 +131,23 @@ Note that `grob_col()` is where the object of the user's choosing is actually co
 
 ### Padding
 
-The `padding` parameter within `grob_layout()` controls the very outside padding on the page (default of 10 mm), and the `grob_padding` controls the amount of room between the grob itself and the outer grob-row (default of 2 mm) - helping separate the grobs and giving them air to breathe. The `grob_padding` allows grob-columns to be shifted around its allotted space, making use of the `hjust` and `vjust` parameters within `grob_col()`. The defaults for both are `0.5` (having the grob centered in its allotted space). Setting `hjust` to `1.0` pushes the grob as far right as it can go (opposite for setting it to `0.0`), and setting `vjust` to `1.0` pushes the grob as far to the top as it can go (again, opposite for setting it to `0.0`):
+The `padding` parameter within `grob_layout()` controls the very outside padding on the page (default of 10 mm), and the `padding` parameter within `grob_col()` controls the amount of room between the grob itself and the outer grob-row (default of 2 mm) - helping separate the grobs and giving them air to breathe. The `padding` parameter within `grob_col()` allows grob-columns to be shifted around its allotted space, making use of the `hjust` and `vjust` parameters within `grob_col()`. The defaults for both are `0.5` (having the grob centered in its allotted space). Setting `hjust` to `1.0` pushes the grob as far right as it can go (opposite for setting it to `0.0`), and setting `vjust` to `1.0` pushes the grob as far to the top as it can go (again, opposite for setting it to `0.0`):
 
 ```{r hjust and vjust}
 gl <- grob_layout(
   grob_row(
     # center
-    grob_col(1, border = T),
+    grob_col(1, border = T, padding = 5),
     # middle - top
-    grob_col(2, border = T, vjust = 1)),
+    grob_col(2, border = T, padding = 5, vjust = 1)),
   grob_row(
     # top right
-    grob_col(3, border = T, hjust = 1, vjust = 1),
+    grob_col(3, border = T, padding = 5, hjust = 1, vjust = 1),
     # bottom left
-    grob_col(4, border = T, hjust = 0, vjust = 0)),
+    grob_col(4, border = T, padding = 5, hjust = 0, vjust = 0)),
   height = 100,
   width = 100,
-  padding = 5,
-  grob_padding = 5)
+  padding = 5)
 
 gridExtra::grid.arrange(gl$grob)
 ```
@@ -167,8 +162,7 @@ gl <- grob_layout(
   grob_row(grob_col('p=1'), p = 1, border = T),
   height = 100,
   width = 100,
-  padding = 5,
-  grob_padding = 2)
+  padding = 5)
 
 gridExtra::grid.arrange(gl$grob)
 ```
@@ -182,8 +176,7 @@ gl <- grob_layout(
     grob_col('p=1', p = 1, border = T)),
   height = 100,
   width = 100,
-  padding = 5,
-  grob_padding = 2)
+  padding = 5)
 
 gridExtra::grid.arrange(gl$grob)
 ```

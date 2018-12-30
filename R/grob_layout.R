@@ -6,8 +6,8 @@
 #' @param padding The numeric amount of padding around the edge of the grob  in mm. Default is 10 mm.
 #' @param grob_padding The numeric amount of padding for each individual grob within their designated grid of area in mm. Default is 2 mm.
 #' @param title A character string which will be displayed as the title of the grob layout.
-#' @param title_aes_list A list which contains desired aesthetics for the title of the grob layout. Elements of this list are treated the same way as \code{aes_list} - see \code{\link{grob_matrix}} for more details on its possible elements.
-#' @param title_p The numeric proportion of height within the grob layout and its allotted space which will be used by the title grob. A numeric value between 0 and 1. Defaults to 0.1.
+#' @param title_aes_list The list outputted by \code{\link{ga_list}}, which controls aesthetics of the title of the grob layout.
+#' @param title_p The numeric proportion of height within the grob layout and its allotted space which will be used by the title grob. A numeric value between 0 and 0.5.
 #' @param row_heights If the user wants to designate specific row heights instead relying on the proportions within the outermost grob_row functions, set this parameter equal to a vector of numeric values corresponding to the individual row heights in mm. Length must be equal to the number of grob_row function's on the upper most level of the grob.
 #' @return An R6 class containing all information necessary to create the overall grob-layout. The grob itself is called with \code{grob_layout()$grob}.
 #' @examples

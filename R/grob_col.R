@@ -2,16 +2,16 @@
 #'
 #' @param ... Either the object to be converted to a grob, or a combination of grob row's which need to be converted to sub-grob's.
 #' @param p The numeric proportion of the width given to the outer grob_row which should be given to the grob column outputted by this function. Defaults to 1.
-#' @param aes_list A list which contains desired aesthetics of the grob column and its object. Default is an empty list.
+#' @param aes_list The list outputted by \code{\link{ga_list}}, which controls aesthetics object within the grob column.
 #' @param border A TRUE/FALSE argument corresponding to whether or not a border around the outputted grob column is desired. Defaults to FALSE.
 #' @param border_sides Controls the borders around the total grob column. The input is a string with the possible words "top", "bottom", "left", "right" separated by ", ". For example, "top, left, right" will put borders on the top, left and right side of the grid cell, but not the bottom. Default is "top, bottom, left, right", or all borders.
-#' @param border_aes_list A list which contains desired aesthetics for the border around the outputted the grob column. Ignored if \code{border} is set to FALSE. Elements of list inputted directly into \code{grid::gpar()}.
+#' @param border_aes_list The list outputted by \code{\link{ga_list}}, which controls aesthetics of the borders. Only two aesthetics that can be tweaked for borders are \code{border_color} and \code{border_width}. Ignored if \code{border} is set to FALSE.
 #' @param hjust A numeric value between 0 and 1 which will determine the alignment of the grob horizontally within its designated area. A value of 0 means moving the grob all the way to the left, a value of 1 means moving the grob all the way to the right and a value of 0.5 means keeping the grob in the middle. Defaults to 0.5.
 #' @param title A character string which will be displayed as the title of the grob column.
-#' @param title_aes_list A list which contains desired aesthetics for the title of the grob column. Elements of this list are treated the same way as \code{aes_list} - see \code{\link{grob_matrix}} for more details on its possible elements.
-#' @param title_p The numeric proportion of height within the grob column and its allotted space which will be used by the title grob. A numeric value between 0 and 1.
+#' @param title_aes_list The list outputted by \code{\link{ga_list}}, which controls aesthetics of the title of the grob column.
+#' @param title_p The numeric proportion of height within the grob column and its allotted space which will be used by the title grob. A numeric value between 0 and 0.5.
 #' @param vjust A numeric value between 0 and 1 which will determine the alignment of the grob vertically within its designated area. A value of 0 means moving the grob all the way to the bottom, a value of 1 means moving the grob all the way to the top and a value of 0.5 means keeping the grob in the middle. Defaults to 0.5.
-#' @return An R6 class which contains all the information needed to create the grob column. The grob column is obtained with grob_col$grob.
+#' @return An R6 class which contains all the information needed to create the grob column. The grob column is obtained with \code{grob_col$grob}.
 #' @export
 
 grob_col <- function(...,

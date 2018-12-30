@@ -9,10 +9,7 @@ grob_image(img_path, aes_list, height = numeric(), width = numeric())
 \arguments{
 \item{img_path}{The local path to the raw .png file.}
 
-\item{aes_list}{An list which contains aesthetic parameters for the image grob. Possible aesthetic elements for .png image files are :
-\itemize{
-\item \code{maintain_aspect_ratio} - A TRUE/FALSE value which indicates whether the aspect ratio of the image should be maintained. Default is FALSE - meaning the image will be stretched to fit the designated grid area.
-}}
+\item{aes_list}{The list outputted by \code{\link{ga_list}} which gives the image grob its aesthetics.}
 
 \item{height}{A numeric value designating the total height of the matrix grob in mm.}
 

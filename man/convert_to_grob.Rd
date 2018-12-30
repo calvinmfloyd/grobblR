@@ -4,7 +4,7 @@
 \alias{convert_to_grob}
 \title{Takes in an object, and converts it to a grob based on inputted aesthetics arguments.}
 \usage{
-convert_to_grob(x, height, width, aes_list = list())
+convert_to_grob(x, height, width, aes_list = ga_list())
 }
 \arguments{
 \item{x}{The object which needs to be converted to a grob. Must be either: A data.frame/martrix, the file name of a .png image, a character string, a vector, a ggplot, NA (for an empty grob), or already a grob.}
@@ -13,8 +13,9 @@ convert_to_grob(x, height, width, aes_list = list())
 
 \item{width}{The numeric width in mm of the desired grob.}
 
-\item{aes_list}{The list which contains elements to adjust aesthetics to the grob of x. Different type of grobs have different types of elements of this list which will affect its aesthetics.\\
-For character strings or matrices of dimensions n x p, the aesthetic elements can either be a single value which will be applied to the entire matrix, or a matrix of dimension n x p, which specifies how each element of the matrix will be adjusted. Note that column names and acual matrix elements are treated differently. The below listed elements by themselves will correspond to the matrix elements. The listed elements with "colname_" in front of them will correspond to column name aesthetics. For example, "colname_bg_color" will refer to the background color of the column names. Possible aesthetic elements for character strings or matrices can be found in \code{\link{grob_matrix}}. Possible aesthetic elements for .png image files, or ggplot plots can be found in \code{\link{grob_image}}. Possible aesthetic elements for character strings are:
+\item{aes_list}{The list outputted by \code{ga_list()} which contains elements to adjust aesthetics to the grob of \code{x}. Different type of grobs have different types of elements of this list which will affect its aesthetics.\\
+For character strings or matrices of dimensions n x p, the aesthetic elements can either be a single value which will be applied to the entire matrix, or a matrix of dimension n x p, which specifies how each element of the matrix will be adjusted. Note that column names and acual matrix elements are treated differently.\\
+Possible elements for character strings, matrices and images can be found in \code{\link{ga_list}}.
 \itemize{
 \item \code{n_lines} The maximum number of lines is desired for the character string to be broken up into.
 \item \code{sep} The separator within the character string which designates where a new line should start.

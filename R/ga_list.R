@@ -1,5 +1,35 @@
 #' Grob aesthetic list used to give the grobs their aesthetics.
 #'
+#' @param background_alpha Controls the background alpha/opacity of the elements of the matrix. Values are used in grid::gpar(). Default is 1.0. Used with matrices.
+#' @param background_color Controls the background color of the elements of the matrix. If the matrix has no rownames or colnames, the default is white. If the matrix has column names, the default is white-gray90 on every odd-even row. Used with matrices.
+#' @param borders Controls the borders of the elements of the matrix. The input is a string with the possible words "top", "bottom", "left", "right" separated by commas. For example, "top, left, right" will put borders on the top, left and right side of the grid cell, but not the bottom. Default is "", or no borders. Used with matrices.
+#' @param border_color Controls the color of the selected borders. Default is gray40. Used with matrices.
+#' @param border_width Controls the line width density/thickness of the selected borders. Values are used in grid::gpar(). Default is 4. Used with matrices.
+#' @param cell_sep Controls the amount of padding around each cell in mm. Default is 1 mm. Used with matrices.
+#' @param color_binary_cut_off A cut-off value which the binary color gradient will be applied to. Default is 0. Used with matrices.
+#' @param color_binary_high The color of the binary color gradient if the numeric element is greater than the \code{color_binary_cut_off}. Default is green. Used with matrices.
+#' @param color_binary_low The color of the binary color gradient if the numeric element is less than the \code{color_binary_cut_off}. Default is red. Used with matrices.
+#' @param color_binary_equal The color of the binary color gradient if the numeric element is equal to the \code{color_binary_cut_off}. Default is gray. Used with matrices.
+#' @param color_gradient_binary A TRUE/FALSE value which signifies if a binary color gradient should be applied to the \code{color_gradient_columns}. Used with matrices.
+#' @param color_gradient_columns Controls the columns which a color gradient scale will be applied to. Integer values denoting the column numbers. Can only be applied to columns with all numeric values. Used with matrices.
+#' @param color_gradient_max The high color for the gradual color gradient. Default is green. Used with matrices.
+#' @param color_gradient_mid The middle color for the gradual color gradient. Default is yellow. Used with matrices.
+#' @param color_gradient_min The low color for the gradual color gradient. Default is red. Used with matrices.
+#' @param column_widths If automatic column widths are not desired, the user can provide a vector of widths for each column in the matrix in mm. Used with matrices.
+#' @param font_face Controls the font face of the elements of the matrix (i.e. bold, italic, etc.). Values are used in grid::gpar(). Default for table elements is normal, or 1. Default for column name elements is bold and italic, or 4. Used with matrices or character strings.
+#' @param group_elements Controls whether same, adjacent elements within the matrix should be grouped together into one single grid. A TRUE/FALSE value, with the default being FALSE. Used with matrices.
+#' @param round_rect_radius Controls the radius of the corners of the rectangles matrix text is laid on top of. Used with matrices.
+#' @param maintain_aspect_ratio A TRUE/FALSE value which indicates whether the aspect ratio of the image should be maintained. Default is FALSE - meaning the image will be stretched to fit the designated grid area. Used with images.
+#' @param row_heights If equal row heights are not desired, the user can provide a vector of heights for each row in the matrix in mm. Used with matrices.
+#' @param text_align Controls where the text in each grid cell will be centered around, horizontally. A numeric value between 0 and 1, with 0 being all the way to the left of the grid cell, and 1 being all the way to the right of the grid cell. Default is 0.5. Can also input 'left', 'right' or 'center', which will also make edits to \code{text_just} to make the text completely left-justified, right-justified or centered, respectively. Used with matrices or character strings.
+#' @param text_cex Controls the size of the text within the matrix. Default is automatic text sizing based on the length of the elements within the matrix, the row heights and the column widths. Used with matrices or character strings.
+#' @param text_color Controls the text color of the elements of the matrix. Default for table elements and row names is black, and a gray-blue color for column names. Used with matrices or character strings.
+#' @param text_font Controls the font family of the text within the matrix. Default is sans. Used with matrices or character strings.
+#' @param text_just Controls the horizontal justification of the text in the matrix. A numeric value between 0 and 1, with 0 being left justification and 1 being right justification. Default is 0.5, or center justification. Can also input 'left', 'right' or 'center', which will also make edits to \code{text_align} to make the text completely left-justified, right-justified or centered, respectively. Used with matrices or character strings.
+#' @param text_v_align Controls where the text in each grid cell will be centered around, vertically. A numeric value between 0 and 1, with 0 being all the way to the bottom of the grid cell, and 1 being all the way to the top of the grid cell. Default is 0.5. Can also input 'top', 'bottom' or 'center', which will also make edits to \code{text_v_just} to make the text completely top-justified, bottom-justified or centered, respectively. Used with matrices or character strings.
+#' @param text_v_just Controls the vertical justification of the text in the matrix. A numeric value between 0 and 1, with 0 being bottom justification and 1 being top justification. Default is 0.5, or center justification. Can also input 'top', 'bottom' or 'center', which will also make edits to \code{text_v_align} to make the text completely top-justified, bottom-justified or centered, respectively. Used with matrices or character strings.
+#' @param n_lines The maximum number of lines is desired for the character string to be broken up into. Used with character strings.
+#' @param sep The separator within the character string which designates where a new line should start. Used with character strings.
 #' @return A list with all possible aesthetic elements that can be adjusted, with the class of "grob_aes_list".
 #' @export
 

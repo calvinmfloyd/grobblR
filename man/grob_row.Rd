@@ -2,11 +2,11 @@
 % Please edit documentation in R/grob_row.R
 \name{grob_row}
 \alias{grob_row}
-\title{The grob row function which helps gives the grob from the \code{grobblR::grob_layout()} function its shape. Works hand in hand with the \code{grobblR::grob_col()} function.}
+\title{The grob row function which helps gives the grob from the \code{grobblR::grob_layout()} function its shape. Works hand in hand with the \code{grob_col()} function.}
 \usage{
-grob_row(..., p = 1, border = F,
-  border_sides = "top, bottom, left, right", border_aes_list = list(),
-  title = "", title_aes_list = list(), title_p = 0.1)
+grob_row(..., p = 1, padding = 2, border = F,
+  border_sides = "top, bottom, left, right", border_aes_list = ga_list(),
+  title = "", title_aes_list = ga_list(), title_p = 0.1)
 }
 \arguments{
 \item{...}{A series of \code{grob_col}'s.}
@@ -17,17 +17,17 @@ grob_row(..., p = 1, border = F,
 
 \item{border_sides}{Controls the borders around the total grob row. The input is a string with the possible words "top", "bottom", "left", "right" separated by ", ". For example, "top, left, right" will put borders on the top, left and right side of the grid cell, but not the bottom. Default is "top, bottom, left, right", or all borders.}
 
-\item{border_aes_list}{A list which contains desired aesthetics for the border around the outputted the grob row. Ignored if \code{border} is set to FALSE. Elements of list inputted directly into \code{grid::gpar()}.}
+\item{border_aes_list}{The list outputted by \code{\link{ga_list}}, which controls aesthetics of the borders. Only two aesthetics that can be tweaked for borders are \code{border_color} and \code{border_width}. Ignored if \code{border} is set to FALSE.}
 
 \item{title}{A character string which will be displayed as the title of the grob row.}
 
-\item{title_aes_list}{A list which contains desired aesthetics for the title of the grob row. Elements of this list are treated the same way as \code{aes_list} - see \code{\link{grob_matrix}} for more details on its possible elements.}
+\item{title_aes_list}{The list outputted by \code{\link{ga_list}}, which controls aesthetics of the title of the grob row.}
 
-\item{title_p}{The numeric proportion of height within the grob row and its allotted space which will be used by the title grob. A numeric value between 0 and 1. Defaults to 0.1.}
+\item{title_p}{The numeric proportion of height within the grob row and its allotted space which will be used by the title grob. A numeric value between 0 and 0.5.}
 }
 \value{
 An R6 class which contains all the information needed to carry on to its grob columns and create the grob row.
 }
 \description{
-The grob row function which helps gives the grob from the \code{grobblR::grob_layout()} function its shape. Works hand in hand with the \code{grobblR::grob_col()} function.
+The grob row function which helps gives the grob from the \code{grobblR::grob_layout()} function its shape. Works hand in hand with the \code{grob_col()} function.
 }

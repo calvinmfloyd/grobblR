@@ -1,37 +1,7 @@
 #' Converts a data.frame/matrix to a grob, with flexible aesthetics.
 #'
 #' @param df The data.frame/matrix to be converted to a grob.
-#' @param aes_list A list which contains aesthetic parameters for the matrix grob. Possible aesthetic elements for matrices are:
-#' \itemize{
-#' \item \code{background_alpha} - Controls the background alpha/opacity of the elements of the matrix. Values are used in grid::gpar(). Default is 1.0.
-#' \item \code{background_color} - Controls the background color of the elements of the matrix. If the matrix has no rownames or colnames, the default is white. If the matrix has rownames or colnames, the default is white-gray90 on every odd-even row.
-#' \item \code{borders} - Controls the borders of the elements of the matrix. The input is a string with the possible words "top", "bottom", "left", "right" separated by commas. For example, "top, left, right" will put borders on the top, left and right side of the grid cell, but not the bottom. Default is "", or no borders.
-#' \item \code{border_color} - Controls the color of the selected borders. Default is gray40.
-#' \item \code{border_width} - Controls the line width density/thickness of the selected borders. Values are used in grid::gpar(). Default is 4.
-#' \item \code{cell_sep} - Controls the amount of padding around each cell in mm. Default is 1 mm.
-#' \item \code{color_binary_cut_off} - A cut-off value which the binary color gradient will be applied to. Default is 0.
-#' \item \code{color_binary_high} - The color of the binary color gradient if the numeric element is greater than the \code{color_binary_cut_off}. Default is green.
-#' \item \code{color_binary_low} - The color of the binary color gradient if the numeric element is less than the \code{color_binary_cut_off}. Default is red.
-#' \item \code{color_binary_equal} - The color of the binary color gradient if the numeric element is equal to the \code{color_binary_cut_off}. Default is gray.
-#' \item \code{color_gradient_binary} - A TRUE/FALSE value which signifies if a binary color gradient should be applied to the \code{color_gradient_columns}.
-#' \item \code{color_gradient_columns} - Controls the columns which a color gradient scale will be applied to. Integer values denoting the column numbers. Can only be applied to columns with all numeric values.
-#' \item \code{color_gradient_max} - The high color for the gradual color gradient. Default is green.
-#' \item \code{color_gradient_mid} - The middle color for the gradual color gradient. Default is yellow.
-#' \item \code{color_gradient_min} - The low color for the gradual color gradient. Default is red.
-#' \item \code{column_widths} - If automatic column widths are not desired, the user can provide a vector of widths for each column in the matrix in mm.
-#' \item \code{font_face} - Controls the font face of the elements of the matrix (i.e. bold, italic, etc.). Values are used in grid::gpar(). Default for table elements is normal, or 1. Default for column name elements is bold and italic, or 4.
-#' \item \code{group_elements} - Controls whether same, adjacent elements within the matrix should be grouped together into one single grid. A TRUE/FALSE value, with the default being FALSE.
-#' \item \code{round_rect_radius} - Controls the radius of the corners of the rectangles matrix text is laid on top of.
-#' \item \code{row_heights} - If equal row heights are not desired, the user can provide a vector of heights for each row in the matrix in mm.
-#' \item \code{text_align} - Controls where the text in each grid cell will be centered around, horizontally. A numeric value between 0 and 1, with 0 being all the way to the left of the grid cell, and 1 being all the way to the right of the grid cell. Default is 0.5. Can also input 'left', 'right' or 'center', which will also make edits to \code{text_just} to make the text completely left-justified, right-justified or centered, respectively.
-#' \item \code{text_angle} - Controls the text angle of the text within the matrix. A numeric value in degrees, with the default being 0.
-#' \item \code{text_cex} - Controls the size of the text within the matrix. Default is automatic text sizing based on the length of the elements within the matrix, the row heights and the column widths.
-#' \item \code{text_color} - Controls the text color of the elements of the matrix. Default for table elements and row names is black, and a gray-blue color for column names.
-#' \item \code{text_font} - Controls the font family of the text within the matrix. Default is sans.
-#' \item \code{text_just} - Controls the horizontal justification of the text in the matrix. A numeric value between 0 and 1, with 0 being left justification and 1 being right justification. Default is 0.5, or center justification. Can also input 'left', 'right' or 'center', which will also make edits to \code{text_align} to make the text completely left-justified, right-justified or centered, respectively.
-#' \item \code{text_v_align} - Controls where the text in each grid cell will be centered around, vertically. A numeric value between 0 and 1, with 0 being all the way to the bottom of the grid cell, and 1 being all the way to the top of the grid cell. Default is 0.5. Can also input 'top', 'bottom' or 'center', which will also make edits to \code{text_v_just} to make the text completely top-justified, bottom-justified or centered, respectively.
-#' \item \code{text_v_just} - Controls the vertical justification of the text in the matrix. A numeric value between 0 and 1, with 0 being bottom justification and 1 being top justification. Default is 0.5, or center justification. Can also input 'top', 'bottom' or 'center', which will also make edits to \code{text_v_align} to make the text completely top-justified, bottom-justified or centered, respectively.
-#' }
+#' @param aes_list The list outputted by \code{\link{ga_list}} which gives the data.frame/matrix grob its aesthetics.
 #' @param m_type A integer value which indicates what the default aesthetics of the table will be. Default is 1. The possible options:
 #' \enumerate{
 #' \item Plain theme.
@@ -52,7 +22,7 @@ grob_matrix <- function(df, aes_list = ga_list(), m_type = 1, height = numeric()
 
   decimal_places <- function(x) {
     if((x %% 1) != 0){
-      return(nchar(strsplit(sub('0+$', '', as.character(x)), ".", fixed=TRUE)[[1]][[2]]))
+      return(nchar(strsplit(sub('0+$', '', as.character(x)), ".", fixed = T)[[1]][[2]]))
     } else {
       return(0)
     }
