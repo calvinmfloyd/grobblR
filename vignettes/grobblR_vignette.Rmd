@@ -198,12 +198,12 @@ gl <- grob_layout(
       'A',
       border = T,
       border_sides = 'right, bottom',
-      border_aes_list = list(col = 'red')),
+      border_aes_list = ga_list(border_color = 'red')),
     grob_col(NA, p = 0.25),
     grob_col(
       'B',
       border = T,
-      border_aes_list = list(lwd = 8))),
+      border_aes_list = ga_list(border_width = 8))),
   grob_row(
     grob_col(
       'C',
@@ -214,11 +214,10 @@ gl <- grob_layout(
       'D',
       border = T,
       border_sides = 'left, right, bottom',
-      border_aes_list = list(col = 'blue', lwd = 5))),
+      border_aes_list = ga_list(border_color = 'blue', border_width = 5))),
   height = 100,
   width = 100,
-  padding = 5,
-  grob_padding = 2)
+  padding = 5)
 
 gridExtra::grid.arrange(gl$grob)
 ```
@@ -244,16 +243,15 @@ gl <- grob_layout(
     grob_col('D'),
     title = 'grob-row Title',
     title_p = 0.2,
-    title_aes_list = list(
-      bg_color = 'gray95',
-      txt_color = 'navy',
-      fnt_face = 3)),
+    title_aes_list = ga_list(
+      background_color = 'gray95',
+      text_color = 'navy',
+      font_face = 3)),
   title = 'grob-layout Title',
-  title_aes_list = list(bg_color = 'red'),
+  title_aes_list = ga_list(background_color = 'red'),
   height = 100,
   width = 100,
-  padding = 5,
-  grob_padding = 2)
+  padding = 5)
 
 gridExtra::grid.arrange(gl$grob)
 ```
@@ -271,7 +269,6 @@ gl <- grob_layout(
   height = 100,
   width = 100,
   padding = 10,
-  grob_padding = 2,
   page_number = 1)
 
 gridExtra::grid.arrange(gl$grob)
