@@ -136,6 +136,7 @@ grob_matrix <- function(df, aes_list = ga_list(), m_type = 1, height = numeric()
       rbind(colnames(df_fit), df_fit), 2,
       function(x) max(graphics::strwidth(c(x), units = 'in')))
     column_props <- column_props/sum(column_props)
+    if(is.na(column_props)) column_props <- 1
 
     cw <- width*column_props - 2*aes_list$cell_sep
 
