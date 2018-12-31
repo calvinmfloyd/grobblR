@@ -124,7 +124,8 @@ grob_layout_class <- R6::R6Class(
         title_p = title_p,
         title_height = title_height,
         total_height = height,
-        width = width_w_padding)
+        width = width_w_padding,
+        padding = padding)
 
       grob <- add_page_number(
         grob = grob,

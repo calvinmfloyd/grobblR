@@ -162,7 +162,8 @@ grob_col_class <- R6::R6Class(
           title_p = title_p,
           title_height = title_height_w_padding,
           total_height = height,
-          width = width_w_padding)
+          width = width_w_padding,
+          padding = padding)
 
       if(border) grob <- grid::grobTree(
         grob,

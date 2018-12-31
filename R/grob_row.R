@@ -13,13 +13,13 @@
 
 grob_row <- function(...,
                      p = 1,
-                     padding = 2,
+                     padding = 1,
                      border = F,
                      border_sides = 'top, bottom, left, right',
                      border_aes_list = ga_list(),
                      title = '',
                      title_aes_list = ga_list(),
-                     title_p = 0.1){
+                     title_p = 0.2){
 
   if(!is.numeric(p)) if(p < 0) stop(
     'p in grob_row() must be a positive numeric value.',

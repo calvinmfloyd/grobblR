@@ -207,9 +207,9 @@ grob_matrix <- function(df, aes_list = ga_list(), m_type = 1, height = numeric()
       for(cc in aes_list[['color_gradient_columns']]){
 
         num_vals <- as.numeric(df[,cc])
-        aes_list[['background_color']][,cc][num_vals < aes_list[['color_binary_cut_off']]] <- aes_list[['color_binary_low']]
-        aes_list[['background_color']][,cc][num_vals > aes_list[['color_binary_cut_off']]] <- aes_list[['color_binary_high']]
-        aes_list[['background_color']][,cc][num_vals == aes_list[['color_binary_cut_off']]] <- aes_list[['color_binary_equal']]
+        aes_list[['background_color']][,cc][num_vals < aes_list[['color_binary_cut_off']][1]] <- aes_list[['color_binary_low']]
+        aes_list[['background_color']][,cc][num_vals > aes_list[['color_binary_cut_off']][1]] <- aes_list[['color_binary_high']]
+        aes_list[['background_color']][,cc][num_vals == aes_list[['color_binary_cut_off']][1]] <- aes_list[['color_binary_equal']]
         }
     }
 

@@ -284,35 +284,7 @@ Data frames/matrices are probably the most complex of all the grobbable (yep, th
 
 ### Matrix Aesthetic Control
 
-The following are aesthetics that can be tweaked for any given cell in the grob matrix, using the `aes_list` parameter within `grob_col()`:  
-
-  * `bg_alpha` - The transparency of the background color. Ranges from 0.0 (totally translucent) to 1.0 (completely solid). Default is 1.0.  
-  * `bg_color` - The color of the background. Default is white.  
-  * `borders` - Which borders will show up around the cell. Input a string with the possible words "top", "bottom", "left", "right" separated by commas. For example, "top, left, right" will put borders on the top, left and right side of the grid cell, but not the bottom. Default is "", or no borders.  
-  * `border_color` - The color of the borders around the cell. Default is "gray40".  
-  * `border_width` - The width of the borders around the cell. Default is a `lwd` (line width density) of 4.  
-  * `cell_sep` - How much padding is around each cell in mm. Default is 1 mm.  
-  * `color_binary_cut_off`- A cut-off value which the binary color gradient will be applied to. Default is 0.  
-  * `color_binary_high` - The color of the binary color gradient if the numeric element is greater than the `color_binary_cut_off`. Default is green.  
-  * `color_binary_low` - The color of the binary color gradient if the numeric element is less than the `color_binary_cut_off`. Default is red.  
-  * `color_binary_equal` - The color of the binary color gradient if the numeric element is equal to the `color_binary_cut_off`. Default is gray.  
-  * `color_gradient_binary` - A `TRUE`/`FALSE` value which signifies if a binary color gradient should be applied to the `color_gradient_cols`.  
-  * `color_gradient_cols` - Controls the columns which a color gradient scale will be applied to. Integer values denoting the column numbers. Can only be applied to columns with all numeric values.  
-  * `color_gradient_max` - The high color for the gradual color gradient. Default is green.  
-  * `color_gradient_mid` - The middle color for the gradual color gradient. Default is yellow.  
-  * `color_gradient_min` - The low color for the gradual color gradient. Default is red.  
-  * `col_widths` - If automatic column widths are not desired, the user can provide a vector of widths for each column in the matrix in mm.  
-  * `fnt_face` - Controls the font face of the elements of the matrix (i.e. 1 = normal, 2 = bold, 3 = italic, 4 = bold and italic, etc.). Default for table elements is normal, or 1. Default for column name elements is bold and italic, or 4.  
-  * `group_elements` - Controls whether same, adjacent elements within the matrix should be grouped together into one single grid. A `TRUE`/`FALSE` value, with the default being `FALSE`.  
-  * `round_rect_radius` - Controls the radius of the corners of the rectangles on which text is laid on top of.  
-  * `row_heights` - If equal row heights are not desired, the user can provide a vector of heights for each row in the matrix in mm.  
-  * `txt_align` - Controls where the text in each grid cell will be centered around, horizontally. A numeric value between 0 and 1, with 0 being all the way to the left of the grid cell, and 1 being all the way to the right of the grid cell. Default is 0.5. Can also input "left", "right" or "center", which will also make edits to `txt_just` to make the text completely left-justified, right-justified or centered, respectively.  
-  * `txt_cex` - Controls the size of the text within the matrix. Default is automatic text sizing based on the length of the elements within the matrix, the row heights and the column widths.  
-  * `txt_color` - Controls the text color of the elements of the matrix.  
-  * `txt_font` - Controls the font family of the text within the matrix. Default is "sans".  
-  * `txt_just` - Controls the horizontal justification of the text in the matrix. A numeric value between 0 and 1, with 0 being left justification and 1 being right justification. Default is 0.5, or center justification. Can also input "left", "right" or "center", which will also make edits to `txt_align`to make the text completely left-justified, right-justified or centered, respectively.  
-  * `txt_v_align` - Controls where the text in each grid cell will be centered around, vertically. A numeric value between 0 and 1, with 0 being all the way to the bottom of the grid cell, and 1 being all the way to the top of the grid cell. Default is 0.5. Can also input "top", "bottom" or "center", which will also make edits to `txt_v_just` to make the text completely top-justified, bottom-justified or centered, respectively.  
-  * `txt_v_just` - Controls the vertical justification of the text in the matrix. A numeric value between 0 and 1, with 0 being bottom justification and 1 being top justification. Default is 0.5, or center justification. Can also input "top", "bottom" or "center", which will also make edits to `txt_v_align` to make the text completely top-justified, bottom-justified or centered, respectively.  
+Using the `aes_list` parameter and the `ga_list()` function within `grob_col()`, the aesthetics of individual grobs can be adjusted to how the user intends them to appear. See `?grobblR::ga_list` for a full list and description for each of the possible aesthetic options.
 
 ### Cell-by-Cell Aesthetic Control
 
@@ -325,7 +297,7 @@ mat
 
 ```{r First matrix example}
 gl <- grob_layout(
-  grob_row(grob_col(mat, aes_list = list(bg_color = 'gray80'))),
+  grob_row(grob_col(mat, aes_list = ga_list(background_color = 'gray80'))),
   height = 100,
   width = 100)
 
@@ -341,14 +313,14 @@ color_mat
 
 ```{r First matrix, cell-by-cell customization, 1}
 gl <- grob_layout(
-  grob_row(grob_col(mat, aes_list = list(bg_color = color_mat))),
+  grob_row(grob_col(mat, aes_list = ga_list(background_color = color_mat))),
   height = 100,
   width = 100)
 
 gridExtra::grid.arrange(gl$grob)
 ```
 
-The same can be said for most of the other aesthetic elements listed above. For example, the `txt_color` can be changed for individual elements of a matrix, but `color_gradient_binary` is a `TRUE`/`FALSE` value, and cannot be changed for individual elements. Below is a grob-layout with 4 matrix grobs with various aesthetic elements tweaked.
+The same can be said for most of the other aesthetic elements listed above. For example, the `text_color` can be changed for individual elements of a matrix, but `color_gradient_binary` is a `TRUE`/`FALSE` value, and cannot be changed for individual elements. Below is a grob-layout with 4 matrix grobs with various aesthetic elements tweaked.
 
 ```{r First matrix, cell-by-cell customization, 2}
 mat_char <- matrix(c('Apple','Pear','Grape','Cherry'), nrow = 2, byrow = T)
@@ -357,34 +329,34 @@ gl <- grob_layout(
   grob_row(
     grob_col(
       mat,
-      aes_list = list(
-        txt_color = 'gray40',
-        bg_color = color_mat,
-        fnt_face = 1)),
+      aes_list = ga_list(
+        text_color = 'gray40',
+        background_color = color_mat,
+        font_face = 1)),
     grob_col(
       mat_char,
-      aes_list = list(
-        txt_color = 'purple',
-        bg_color = 'gray90',
+      aes_list = ga_list(
+        text_color = 'purple',
+        background_color = 'gray90',
         borders = 'top, bottom',
         border_width = 2,
-        txt_just = 'left'))),
+        text_just = 'left'))),
   grob_row(
     grob_col(
       mat,
-      aes_list = list(
-        txt_color = 'gray40',
-        bg_color = color_mat,
+      aes_list = ga_list(
+        text_color = 'gray40',
+        background_color = color_mat,
         borders = 'top, bottom, left, right',
-        fnt_face = 4)),
+        font_face = 4)),
     grob_col(
       mat_char,
-      aes_list = list(
-        txt_color = color_mat,
-        bg_color = 'purple',
-        txt_just = 'right',
-        txt_v_just = 'top',
-        fnt_face = 2))),
+      aes_list = ga_list(
+        text_color = color_mat,
+        background_color = 'purple',
+        text_just = 'right',
+        text_v_just = 'top',
+        font_face = 2))),
   height = 100,
   width = 100)
 
@@ -404,26 +376,26 @@ gl <- grob_layout(
   grob_row(
     grob_col(
       df,
-      aes_list = list(
-        color_gradient_cols = 3)),
+      aes_list = ga_list(
+        color_gradient_columns = 3)),
     grob_col(
       df,
-      aes_list = list(
-        color_gradient_cols = 3,
+      aes_list = ga_list(
+        color_gradient_columns = 3,
         color_gradient_binary = T,
         color_binary_cut_off = 2.5))),
   grob_row(
     grob_col(
       df,
-      aes_list = list(
-        color_gradient_cols = c(2,3),
+      aes_list = ga_list(
+        color_gradient_columns = c(2,3),
         color_gradient_max = 'blue',
         color_gradient_mid = 'purple',
         color_gradient_min = 'red')),
     grob_col(
       df,
-      aes_list = list(
-        color_gradient_cols = c(2,3),
+      aes_list = ga_list(
+        color_gradient_columns = c(2,3),
         color_gradient_binary = T,
         color_binary_cut_off = 2,
         color_binary_high = 'yellow',
@@ -438,7 +410,7 @@ gridExtra::grid.arrange(gl$grob)
 
 ### Column Name Treatment
 
-Notice that the default look of the matrix/data frame changes once column names are added. When column names are detected on a matrix or data frame, the default look changes to make it look more like a table, rather than just individual elements of a matrix. When column names are included, it should be noted that the column names and the elements of the table itself are treated separately. If the user wants to edit elements of the column names instead of the table, then the user must insert a `colname_` in front of whatever aesthetic the user wants to change. For example, if the user wanted to change the text color of the column names to red, he/she would insert `colname_txt_color = 'red'` into the `aes_list` list. This goes for any of the other aesthetics the user wants to change. The column header portion is treated as a `1 x m` matrix, where `m` is the number of columns of the matrix/data frame. Also, it should be noted that, at this moment in time, row names are ignored in `grobblR`.
+Notice that the default look of the matrix/data frame changes once column names are added. When column names are detected on a matrix or data frame, the default look changes to make it look more like a table, rather than just individual elements of a matrix. When column names are included, it should be noted that the column names and the elements of the table itself are treated separately. If the user wants to edit elements of the column names instead of the table, then the user must insert a `colname_` in front of whatever aesthetic the user wants to change. For example, if the user wanted to change the text color of the column names to red, he/she would insert `colname_text_color = 'red'` into the `aes_list` list. This goes for any of the other aesthetics the user wants to change. The column header portion is treated as a `1 x m` matrix, where `m` is the number of columns of the matrix/data frame. Also, it should be noted that, at this moment in time, row names are ignored in `grobblR`.
 
 ```{r Column name edits}
 gl <- grob_layout(
@@ -446,21 +418,21 @@ gl <- grob_layout(
     grob_col(df),
     grob_col(
       df,
-      aes_list = list(
-        colname_txt_color = 'red',
-        txt_color = 'blue'))),
+      aes_list = ga_list(
+        colname_text_color = 'red',
+        text_color = 'blue'))),
   grob_row(
     grob_col(
       df,
-      aes_list = list(
-        colname_fnt_face = 3,
-        fnt_face = 2)),
+      aes_list = ga_list(
+        colname_font_face = 3,
+        font_face = 2)),
     grob_col(
       df,
-      aes_list = list(
-        colname_txt_color = c('red','purple','blue'),
-        colname_bg_color = 'gray90',
-        bg_color = 'white'))),
+      aes_list = ga_list(
+        colname_text_color = c('red','purple','blue'),
+        colname_background_color = 'gray90',
+        background_color = 'white'))),
   height = 100,
   width = 100)
 
@@ -488,7 +460,7 @@ gridExtra::grid.arrange(gl$grob)
 
 ## ggplot Grobs
 
-The next objects accepted by `grobblR` are `ggplot` plots. The `ggplot` plot is stretched or squished depending on what the dimensions of the allotted space are:
+The next objects accepted by `grobblR` are `ggplot2` plots. The `ggplot` plot is stretched or squished depending on what the dimensions of the allotted space are:
 
 ```{r ggplot Grobs}
 data(iris)
@@ -532,7 +504,7 @@ gl <- grob_layout(
     grob_col('kings_logo.png', border = T),
     grob_col(
       'kings_logo.png',
-      aes_list = list(maintain_aspect_ratio = F),
+      aes_list = ga_list(maintain_aspect_ratio = F),
       border = T),
     border = T),
   height = 100,
@@ -548,17 +520,17 @@ gridExtra::grid.arrange(gl$grob)
 Also in Sacramento, we would need to include paragraphs of scouting reports for individual players on our PDF reports, so we needed to figure out a way to include long text into our grobbing (that's also a word now, too). `grobblR` handles long character strings by making the text as big as possible, while still being able to fit the text inside its allotted space. This results in automatically putting different words on different lines:
 
 ```{r simple text grob}
-txt <- "The quick brown fox jumps over the lazy dog."
+text <- "The quick brown fox jumps over the lazy dog."
 
 gl <- grob_layout(
-  grob_row(grob_col(txt, border = T), border = T),
+  grob_row(grob_col(text, border = T), border = T),
   height = 100,
   width = 100)
 
 gridExtra::grid.arrange(gl$grob)
 ```
 
-There are a couple things unique to character strings that the user can tweak in `aes_list`:  
+There are a couple things unique to character strings that the user can tweak in `aes_list` and `ga_list()`:  
 
   * `n_lines` - The maximum number of lines desired for the character string to be broken up into.
       + Useful for when only one line is desired (`n_lines = 1`).
@@ -578,26 +550,26 @@ bulleted_list <- paste0(
 gl <- grob_layout(
   grob_row(
     grob_col(
-      txt,
+      text,
       border = T),
     border = T),
   grob_row(
     p = 2/3,
     grob_col(
-      txt,
-      aes_list = list(
+      text,
+      aes_list = ga_list(
         n_lines = 1,
-        txt_just = 'right'),
+        text_just = 'right'),
       border = T),
     border = T),
   grob_row(
     grob_col(
       bulleted_list,
-      aes_list = list(
+      aes_list = ga_list(
         sep = '\n',
-        txt_just = 'left',
-        txt_color = 'purple',
-        fnt_face = matrix(c(1,1,1,1,1), ncol = 1)),
+        text_just = 'left',
+        text_color = 'purple',
+        font_face = matrix(c(1,1,1,1,1), ncol = 1)),
       border = T),
     border = T),
   height = 100,
@@ -606,7 +578,7 @@ gl <- grob_layout(
 gridExtra::grid.arrange(gl$grob)
 ```
 
-At the very end of the character string being processed, if the string is converted to `n` lines, the character string is converted into a `n x 1` matrix, so any aesthetic that can be changed with a matrix can also be applied here. Thus, you can edit separate lines' aesthetics with an `n x 1` aesthetic matrix (such as the matrix used in the `fnt_face` aesthetic for the bottom grob above), but the **user must make sure he/she is certain how many lines the character string is going to be converted to, or else the aesthetic change will not take**. Above `txt_just` was implemented to right-align and left-align separate text grobs, and `txt_color` was used to color the text. 
+At the very end of the character string being processed, if the string is converted to `n` lines, the character string is converted into a `n x 1` matrix, so any aesthetic that can be changed with a matrix can also be applied here. Thus, you can edit separate lines' aesthetics with an `n x 1` aesthetic matrix (such as the matrix used in the `font_face` aesthetic for the bottom grob above), but the **user must make sure he/she is certain how many lines the character string is going to be converted to, or else the aesthetic change will not take**. Above `text_just` was implemented to right-align and left-align separate text grobs, and `text_color` was used to color the text. 
 
 ***
 
@@ -618,16 +590,17 @@ Us here at the `grobblR` HQ understand that sometimes the user will need to bump
 gl <- grob_layout(
   grob_row(
     border = T,
-    grob_col(df),
+    grob_col(df, padding = 0),
     grob_col(
-      grob_row(grob_col(df)),
-      grob_row(grob_col(NA))),
+      padding = 0,
+      grob_row(grob_col(df, padding = 0), padding = 0),
+      grob_row(grob_col(NA, padding = 0), padding = 0)),
     grob_col(
-      grob_row(grob_col(NA, p = 1/3)),
-      grob_row(grob_col(df)))),
+      padding = 0,
+      grob_row(grob_col(NA, p = 1/3, padding = 0), padding = 0),
+      grob_row(grob_col(df, padding = 0), padding = 0))),
   height = 100,
-  width = 100,
-  grob_padding = 0)
+  width = 100)
 
 gridExtra::grid.arrange(gl$grob)
 ```
@@ -669,10 +642,10 @@ first_page_gl <- grob_layout(
     grob_col(
       p = 1/2,
       'Record : 61-21',
-      aes_list = list(
+      aes_list = ga_list(
         n_lines = 1,
-        fnt_face = 2,
-        txt_color = 'gray40'))),
+        font_face = 2,
+        text_color = 'gray40'))),
   grob_row(
     grob_col(NA, p = 1/2),
     grob_col('bibby.png', title = "PG - Mike Bibby"),
@@ -688,66 +661,66 @@ first_page_gl <- grob_layout(
     p = 2/3,
     grob_col(
       season_summary_02_pt1,
-      aes_list = list(txt_just = 'left'))),
+      aes_list = ga_list(text_just = 'left'))),
   title = '2001-02 Sacramento Kings',
-  title_aes_list = list(bg_color = sac_purple))
+  title_aes_list = ga_list(background_color = sac_purple))
 
 second_page_gl <- grob_layout(
   grob_row(
     grob_col(
       "",
       p = 1/4,
-      aes_list = list(
+      aes_list = ga_list(
         round_rect_radius = 0.2,
-        bg_color = 'gray40')),
+        background_color = 'gray40')),
     grob_col('hedo.png', title = "BE - Hedo Turkoglu"),
     grob_col('kings_lion_logo.png')),
   grob_row(
     grob_col(
       bulleted_list,
-      aes_list = list(
+      aes_list = ga_list(
         n_lines = 5,
-        txt_color = sac_purple,
-        txt_just = 'left')),
+        text_color = sac_purple,
+        text_just = 'left')),
     grob_col(
       bench_bulleted_list,
-      aes_list = list(
+      aes_list = ga_list(
         n_lines = 5,
-        txt_color = sac_purple,
-        txt_just = 'left')),
+        text_color = sac_purple,
+        text_just = 'left')),
     grob_col(
       "",
       p = 1/4,
-      aes_list = list(
+      aes_list = ga_list(
         round_rect_radius = 0.2,
-        bg_color = 'gray40'))),
+        background_color = 'gray40'))),
   grob_row(
     p = 2/3,
     grob_col(
       season_summary_02_pt2,
-      aes_list = list(txt_just = 'left'))),
+      aes_list = ga_list(text_just = 'left'))),
   grob_row(
     grob_col(
       grob_row(p = 2, grob_col('webber.png')),
       grob_row(grob_col(
         'All-NBA, 2nd Team',
-        aes_list = list(
+        aes_list = ga_list(
           n_lines = 1,
           round_rect_radius = 0.2,
-          bg_color = sac_purple,
-          txt_color = 'white')))),
+          background_color = sac_purple,
+          text_color = 'white')))),
     grob_col(
       grob_row(p = 2, grob_col('christie.png')),
       grob_row(grob_col(
         'All-Defense, 2nd Team',
-        aes_list = list(
+        aes_list = ga_list(
           n_lines = 1,
           round_rect_radius = 0.2,
-          bg_color = sac_purple,
-          txt_color = 'white')))),
+          background_color = sac_purple,
+          text_color = 'white')))),
     title = "Season Accolades",
     border = T,
-    border_aes_list = list(lwd = 4, col = sac_purple))
+    border_aes_list = ga_list(border_width = 4, border_color = sac_purple))
 )
 ```
 

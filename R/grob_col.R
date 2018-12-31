@@ -16,7 +16,7 @@
 
 grob_col <- function(...,
                      p = 1,
-                     padding = 2,
+                     padding = 1,
                      aes_list = ga_list(),
                      border = F,
                      border_sides = 'top, bottom, left, right',
