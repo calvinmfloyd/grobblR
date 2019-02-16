@@ -9,7 +9,7 @@
 #' @param title_aes_list The list outputted by \code{\link{ga_list}}, which controls aesthetics of the title of the grob layout.
 #' @param title_p The numeric proportion of height within the grob layout and its allotted space which will be used by the title grob. A numeric value between 0 and 0.5.
 #' @param row_heights If the user wants to designate specific row heights instead relying on the proportions within the outermost grob_row functions, set this parameter equal to a vector of numeric values corresponding to the individual row heights in mm. Length must be equal to the number of grob_row function's on the upper most level of the grob.
-#' @return An R6 class containing all information necessary to create the overall grob-layout. The grob itself is called with \code{grob_layout()$grob}.
+#' @return An R6 class object containing all information necessary to create the overall grob-layout. The grob itself is called with \code{grob_layout()$grob}.
 #' @examples
 #' gl <- grob_layout(
 #'   grob_row(grob_col(1), grob_col(2)),

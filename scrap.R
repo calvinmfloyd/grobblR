@@ -1,30 +1,4 @@
 
-source('ga_list.R')
-source('convert_to_matrix.R')
-source('convert_to_grob.R')
-source('grob_col.R')
-source('grob_row.R')
-source('grob_layout.R')
-source('grob_matrix.R')
-source('grob_image.R')
-source('line_creator.R')
-source('grob_to_pdf.R')
-source('add_title_grob.R')
-source('add_page_number.R')
-source('grob_layout_class.R')
-source('grob_row_class.R')
-source('grob_col_class.R')
-source('create_border_grob.R')
-
-
-# library(UsingR)
-# library(dplyr)
-# library(ggplot2)
-# library(graphics)
-# library(grid)
-# library(gridExtra)
-# library(png)
-# library(R6)
 
 # Making the package ----
 install.packages('roxygen2')
@@ -36,44 +10,37 @@ devtools::use_vignette('grobblR_vignette')
 
 # create('grobblR')
 devtools::document()
-
+devtools::load_all()
 # ----
-
-# library(graphics)
-# library(grid)
-# library(gridExtra)
-# library(png)
-# library(R6)
 
 remove.packages('grobblR')
 devtools::install_github('calvinmfloyd/grobblR')
 library(grobblR)
 
 library(UsingR)
-library(dplyr)
-library(ggplot2)
 
+`%>%` = dplyr::`%>%`
 pars <- unlist(strsplit(lorem, "\n\n"))
 first_paragraph <- pars[1]
 data(iris)
 
 summary_df <- iris %>%
-  group_by(Species) %>%
-  summarise(
+  dplyr::group_by(Species) %>%
+  dplyr::summarise(
     m = mean(Petal.Length) %>% round(1),
     n = mean(Petal.Width) %>% round(1))
 
-gg <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point()
+gg <- ggplot2::ggplot(
+  data = iris,
+  mapping = ggplot2::aes(x = Sepal.Length, y = Sepal.Width, color = Species)
+  ) + 
+  ggplot2::geom_point()
 
 aes_list <- list(txt_just = matrix(c('right', 'right', 'right', 'left'), nrow = 2))
 aes_list <- list(txt_just = matrix(c(0.5, 0.5, 0.5, 0.5), nrow = 2))
 l <- list(txt_just = data.frame(matrix(c('right', 'right', 'right', 'left'), nrow = 2)))
 
 pw <- 100
-
-if(2 == 3)
-  print(1)
-
 
 line_creator(2, 'dgfdgdfefg \n sadf sdfdas \n sd yh wk nw \n hello', height = 50, width = 50)
 

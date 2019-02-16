@@ -74,7 +74,7 @@ grob_matrix <- function(df, aes_list = ga_list(), m_type = 1, height = numeric()
     font_face = c(1, 1, 2, 3, 2),
     background_color = c('white', 'white', 'white', 'white', 'gray50'),
     background_alpha = c(1, 1, 1, 1, 1),
-    borders = c('', '', 'bottom', '', ''),
+    border_sides = c('', '', 'bottom', '', ''),
     text_color = c('black', 'black', 'gray40', 'black', 'white'),
     text_align = c(0.5, 0.5, 0.5, 0.5, 0.5),
     text_v_align = c(0.5, 0.5, 0.5, 0.5, 0.5),
@@ -304,13 +304,13 @@ grob_matrix <- function(df, aes_list = ga_list(), m_type = 1, height = numeric()
           cex = aes_list$text_cex[i,j],
           col = aes_list$text_color[i,j]))
 
-      borders_split <- unlist(strsplit(aes_list$borders[i,j], split = ', ', fixed = T))
+      borders_split <- unlist(strsplit(aes_list$border_sides[i,j], split = ', ', fixed = T))
       if(length(borders_split) > 0){
 
         cell_border_gs <- create_border_grob(
           border_color = aes_list$border_color[i,j],
           border_width = aes_list$border_width[i,j],
-          border_sides = aes_list$borders[i,j])
+          border_sides = aes_list$border_sides[i,j])
 
         raw_grobs <- grid::gList(raw_grobs, grid::grobTree(rect_grob, cell_border_gs, text_grob))
 

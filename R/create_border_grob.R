@@ -3,11 +3,14 @@ create_border_grob <- function(border_color, border_width, border_sides){
 
   def_vals <- list(
     border_color = 'gray40',
-    border_width = 2)
+    border_width = 2,
+    border_sides = 'top, bottom, left, right'
+    )
 
   border_color <- ifelse(is.null(border_color), def_vals$border_color, border_color)
   border_width <- ifelse(is.null(border_width), def_vals$border_width, border_width)
-
+  border_sides <- ifelse(is.null(border_sides), def_vals$border_sides, border_sides)
+  
   cell_border_gs <- grid::gList()
   borders_split <- unlist(strsplit(border_sides, split = ', ', fixed = T))
 
@@ -20,7 +23,9 @@ create_border_grob <- function(border_color, border_width, border_sides){
           y0 = grid::unit(ifelse(borders_split[side] %in% c("top"), 1, 0), "npc"),
           x1 = grid::unit(ifelse(borders_split[side] %in% c("top", "bottom", "right"), 1, 0), "npc"),
           y1 = grid::unit(ifelse(borders_split[side] %in% c("left", "right", "top"), 1, 0), "npc"),
-          gp = grid::gpar(col = border_color, lwd = border_width)))
+          gp = grid::gpar(col = border_color, lwd = border_width)
+          )
+        )
     }
   }
 

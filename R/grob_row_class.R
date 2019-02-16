@@ -10,14 +10,12 @@ grob_row_class <- R6::R6Class(
     contents = list(),
     border = F,
     border_aes_list = ga_list(),
-    border_sides = 'top, bottom, left, right',
     title = '',
     title_p = 0.2,
     title_aes_list = list(),
     initialize = function(contents,
                           proportion,
                           border,
-                          border_sides,
                           border_aes_list,
                           padding,
                           title,
@@ -26,7 +24,6 @@ grob_row_class <- R6::R6Class(
       self$contents <- contents
       self$proportion <- proportion
       self$border <- border
-      self$border_sides <- border_sides
       self$border_aes_list <- border_aes_list
       self$padding <- padding
       self$title <- title
@@ -39,7 +36,6 @@ grob_row_class <- R6::R6Class(
                     width = self$width,
                     padding = self$padding,
                     border = self$border,
-                    border_sides = self$border_sides,
                     border_aes_list = self$border_aes_list,
                     title = self$title,
                     title_p = self$title_p,
@@ -62,9 +58,6 @@ grob_row_class <- R6::R6Class(
         call. = F)
       if(!is.list(title_aes_list)) stop(
         'title_aes_list in grob_row() must be a list.',
-        call. = F)
-      if(!is.character(border_sides)) stop(
-        "border_sides in grob_row() must be a character string with 'top', 'bottom', 'left' or 'right' separated with ', '.",
         call. = F)
       if(class(border_aes_list) != 'grob_aes_list') stop(
         'Did you use ga_list() for the border_aes_list in grob_row()?',
@@ -113,7 +106,9 @@ grob_row_class <- R6::R6Class(
         create_border_grob(
           border_color = border_aes_list$border_color,
           border_width = border_aes_list$border_width,
-          border_sides = border_sides))
+          border_sides = border_aes_list$border_sides
+          )
+        )
 
       grob
 

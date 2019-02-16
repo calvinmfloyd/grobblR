@@ -11,7 +11,6 @@ grob_col_class <- R6::R6Class(
     padding = 0,
     aes_list = list(),
     border = F,
-    border_sides = 'top, bottom, left, right',
     border_aes_list = list(),
     title = character(),
     title_p = 0.2,
@@ -20,7 +19,6 @@ grob_col_class <- R6::R6Class(
                           aes_list,
                           proportion,
                           border,
-                          border_sides,
                           border_aes_list,
                           padding,
                           title,
@@ -33,7 +31,6 @@ grob_col_class <- R6::R6Class(
       self$aes_list <- aes_list
       self$border <- border
       self$border_aes_list <- border_aes_list
-      self$border_sides <- border_sides
       self$padding <- padding
       self$title <- title
       self$title_p <- title_p
@@ -48,7 +45,6 @@ grob_col_class <- R6::R6Class(
                     width = self$width,
                     padding = self$padding,
                     border = self$border,
-                    border_sides = self$border_sides,
                     border_aes_list = self$border_aes_list,
                     title = self$title,
                     title_p = self$title_p,
@@ -95,9 +91,6 @@ grob_col_class <- R6::R6Class(
       if(!is.list(title_aes_list)) stop(
         "title_aes_list in grob_col() must be a list.",
         call. = F)
-      if(!is.character(border_sides)) stop(
-        "border_sides in grob_col() must be a character string with 'top', 'bottom', 'left' or 'right' separated with ', '.",
-        call. = F)
       if(class(aes_list) != 'grob_aes_list') stop(
         'Did you use ga_list() for the aes_list in grob_col()?',
         call. = F)
@@ -142,10 +135,10 @@ grob_col_class <- R6::R6Class(
             grobs = grid::gList(grid::nullGrob(), grid::nullGrob(), grid::nullGrob(), grid::nullGrob(), ctg)
             ,layout_matrix = cbind(3,rbind(1, 5, 2), 4)
             ,heights = grid::unit(c(2*padding*(1-vjust), grob_height_w_padding, 2*padding*vjust), 'mm')
-            ,widths = grid::unit(c(2*padding*hjust, width_w_padding, 2*padding*(1-hjust)), 'mm'))
-
+            ,widths = grid::unit(c(2*padding*hjust, width_w_padding, 2*padding*(1-hjust)), 'mm')
+            )
+          
           raw_grobs <- grid::gList(raw_grobs, g)
-
         }
       }
 
@@ -153,7 +146,8 @@ grob_col_class <- R6::R6Class(
         grobs = raw_grobs,
         layout_matrix = matrix(1:length(raw_grobs), ncol = 1),
         heights = grid::unit(grob_height*(height_proportions/sum(height_proportions)), 'mm'),
-        widths = grid::unit(width, 'mm'))
+        widths = grid::unit(width, 'mm')
+        )
 
       if(title_present) grob <- add_title_grob(
           grob = grob,
@@ -163,15 +157,19 @@ grob_col_class <- R6::R6Class(
           title_height = title_height_w_padding,
           total_height = height,
           width = width_w_padding,
-          padding = padding)
+          padding = padding
+        )
 
       if(border) grob <- grid::grobTree(
         grob,
         create_border_grob(
           border_color = border_aes_list$border_color,
           border_width = border_aes_list$border_width,
-          border_sides = border_sides))
+          border_sides = border_aes_list$border_sides
+          )
+        )
 
       grob
 
-    }))
+    })
+  )
