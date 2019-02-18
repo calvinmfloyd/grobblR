@@ -1,5 +1,5 @@
 
-grob_layout_class <- R6::R6Class(
+grob_layout_class = R6::R6Class(
   "grob_layout",
   public = list(
     height = 100,
@@ -20,15 +20,15 @@ grob_layout_class <- R6::R6Class(
                           title,
                           title_p,
                           title_aes_list){
-      self$contents <- contents
-      self$height <- height
-      self$width <- width
-      self$padding <- padding
-      self$row_heights <- row_heights
-      self$page_number <- page_number
-      self$title <- title
-      self$title_p <- title_p
-      self$title_aes_list <- title_aes_list
+      self$contents = contents
+      self$height = height
+      self$width = width
+      self$padding = padding
+      self$row_heights = row_heights
+      self$page_number = page_number
+      self$title = title
+      self$title_p = title_p
+      self$title_aes_list = title_aes_list
     }),
   active = list(
     grob = function(contents = self$contents,
@@ -74,23 +74,23 @@ grob_layout_class <- R6::R6Class(
         'Did you use ga_list() for the title_aes_list in grob_layout()?',
         call. = F)
 
-      page_number <- suppressWarnings(as.integer(page_number))
-      page_number <- ifelse(is.na(page_number), '', as.character(page_number))
+      page_number = suppressWarnings(as.integer(page_number))
+      page_number = ifelse(is.na(page_number), '', as.character(page_number))
 
       # Initializing Variables ----
-      width_w_padding <- width - 2*padding
-      title_present <- nchar(title) > 0
-      title_height <- height*title_present*title_p
-      grob_height <- height - title_height
-      grob_height_w_padding <- grob_height - 2*padding
+      width_w_padding = width - 2*padding
+      height_w_padding = height - 2*padding
+      title_present = nchar(title) > 0
+      title_height = height_w_padding*title_present*title_p
+      grob_height_w_padding = height_w_padding - title_height
 
       # Creating the Layout Matrix ----
-      nr <- length(contents)
-      layout_matrix <- matrix(1:nr, ncol = 1)
+      nr = length(contents)
+      layout_matrix = matrix(1:nr, ncol = 1)
 
       # Calculating Row Heights ----
-      rh_inputted <- length(row_heights) > 0
-      rh_wrong_length <- length(row_heights) != nr
+      rh_inputted = length(row_heights) > 0
+      rh_wrong_length = length(row_heights) != nr
 
       if(rh_inputted & rh_wrong_length) warning(paste0(
         sprintf("row_heights param in grob_layout() must have length of %d, ", nr),
@@ -99,41 +99,41 @@ grob_layout_class <- R6::R6Class(
         call. = F)
 
       if(rh_wrong_length){
-        row_proportions <- sapply(1:nr, function(i) contents[[i]]$proportion)
-        row_heights <- grob_height_w_padding*(row_proportions/sum(row_proportions))
+        row_proportions = sapply(1:nr, function(i) contents[[i]]$proportion)
+        row_heights = grob_height_w_padding*(row_proportions/sum(row_proportions))
       }
 
       # Readjusting Grob Widths to fit in the given Page Height and Page Width ----
-      raw_grobs <- grid::gList()
+      raw_grobs = grid::gList()
       for(i in 1:nr){
-        contents[[i]]$height <- row_heights[i]
-        contents[[i]]$width <- width_w_padding
-        raw_grobs <- grid::gList(raw_grobs, contents[[i]]$grob)
+        contents[[i]]$height = row_heights[i]
+        contents[[i]]$width = width_w_padding
+        raw_grobs = grid::gList(raw_grobs, contents[[i]]$grob)
       }
 
-      grob <- gridExtra::arrangeGrob(
+      grob = gridExtra::arrangeGrob(
         grobs = raw_grobs,
         heights = grid::unit(row_heights, 'mm'),
         widths = grid::unit(width_w_padding, 'mm'),
-        layout_matrix = layout_matrix)
+        layout_matrix = layout_matrix
+        )
 
-      if(title_present) grob <- add_title_grob(
+      if(title_present) grob = add_title_grob(
         grob = grob,
         title = title,
         title_aes_list = title_aes_list,
         title_p = title_p,
         title_height = title_height,
-        total_height = height,
-        width = width_w_padding,
-        padding = padding)
+        padding = padding
+        )
 
-      grob <- add_page_number(
+      grob = add_page_number(
         grob = grob,
         page_number = page_number,
-        padding = padding,
-        height = grob_height_w_padding,
-        width = width_w_padding)
+        padding = padding
+        )
 
       grob
 
-    }))
+    })
+  )

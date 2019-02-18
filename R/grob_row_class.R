@@ -1,6 +1,6 @@
 
 
-grob_row_class <- R6::R6Class(
+grob_row_class = R6::R6Class(
   "grob_row",
   public = list(
     height = 100,
@@ -21,14 +21,14 @@ grob_row_class <- R6::R6Class(
                           title,
                           title_p,
                           title_aes_list){
-      self$contents <- contents
-      self$proportion <- proportion
-      self$border <- border
-      self$border_aes_list <- border_aes_list
-      self$padding <- padding
-      self$title <- title
-      self$title_p <- title_p
-      self$title_aes_list <- title_aes_list
+      self$contents = contents
+      self$proportion = proportion
+      self$border = border
+      self$border_aes_list = border_aes_list
+      self$padding = padding
+      self$title = title
+      self$title_p = title_p
+      self$title_aes_list = title_aes_list
     }),
   active = list(
     grob = function(contents = self$contents,
@@ -69,39 +69,39 @@ grob_row_class <- R6::R6Class(
         'padding in grob_row() must be a single numeric value in millimeters.',
         call. = F)
 
-      title_present <- nchar(title) > 0
+      title_present = nchar(title) > 0
 
-      proportions <- unlist(lapply(1:length(contents), function(i) contents[[i]]$proportion))
-      widths <- (proportions/sum(proportions))*(width - 2*padding)
-      title_height <- height*title_p*title_present
-      grob_height <- height - title_height
-      grob_height_w_padding <- grob_height - 2*padding
-      title_height_w_padding <- title_height - 2*padding
-      raw_grobs <- grid::gList()
+      proportions = unlist(lapply(1:length(contents), function(i) contents[[i]]$proportion))
+      widths = (proportions/sum(proportions))*(width - 2*padding)
+      title_height = height*title_p*title_present
+      grob_height = height - title_height
+      grob_height_w_padding = grob_height - 2*padding
+      title_height_w_padding = title_height - 2*padding
+      raw_grobs = grid::gList()
 
       for(i in 1:length(contents)){
-        contents[[i]]$height <- grob_height_w_padding
-        contents[[i]]$width <- widths[i]
-        raw_grobs <- grid::gList(raw_grobs, contents[[i]]$grob)
+        contents[[i]]$height = grob_height_w_padding
+        contents[[i]]$width = widths[i]
+        raw_grobs = grid::gList(raw_grobs, contents[[i]]$grob)
       }
 
-      grob <- gridExtra::arrangeGrob(
+      grob = gridExtra::arrangeGrob(
         grobs = raw_grobs,
         layout_matrix = matrix(1:length(raw_grobs), nrow = 1),
         heights = grid::unit(grob_height_w_padding, 'mm'),
-        widths = grid::unit(widths, 'mm'))
-
-      if(title_present) grob <- add_title_grob(
+        widths = grid::unit(widths, 'mm')
+        )
+      
+      if(title_present) grob = add_title_grob(
         grob = grob,
         title = title,
         title_aes_list = title_aes_list,
         title_p = title_p,
         title_height = title_height,
-        total_height = height,
-        width = sum(widths),
-        padding = padding)
+        padding = padding
+        )
 
-      if(border) grob <- grid::grobTree(
+      if(border) grob = grid::grobTree(
         grob,
         create_border_grob(
           border_color = border_aes_list$border_color,
@@ -112,4 +112,6 @@ grob_row_class <- R6::R6Class(
 
       grob
 
-    }))
+    })
+  )
+

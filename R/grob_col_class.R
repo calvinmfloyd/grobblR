@@ -129,11 +129,12 @@ grob_col_class <- R6::R6Class(
             x = contents[[i]],
             height = grob_height_w_padding,
             width = width_w_padding,
-            aes_list = aes_list)
+            aes_list = aes_list
+            )
 
           g <- gridExtra::arrangeGrob(
             grobs = grid::gList(grid::nullGrob(), grid::nullGrob(), grid::nullGrob(), grid::nullGrob(), ctg)
-            ,layout_matrix = cbind(3,rbind(1, 5, 2), 4)
+            ,layout_matrix = cbind(3, rbind(1, 5, 2), 4)
             ,heights = grid::unit(c(2*padding*(1-vjust), grob_height_w_padding, 2*padding*vjust), 'mm')
             ,widths = grid::unit(c(2*padding*hjust, width_w_padding, 2*padding*(1-hjust)), 'mm')
             )
@@ -155,8 +156,6 @@ grob_col_class <- R6::R6Class(
           title_aes_list = title_aes_list,
           title_p = title_p,
           title_height = title_height_w_padding,
-          total_height = height,
-          width = width_w_padding,
           padding = padding
         )
 

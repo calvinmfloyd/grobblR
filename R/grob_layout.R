@@ -21,7 +21,7 @@
 grob_layout <- function(...,
                         height = 280,
                         width = 216,
-                        padding = 10,
+                        padding = max(height, width)/25,
                         title = '',
                         title_aes_list = ga_list(),
                         title_p = 0.1,
@@ -37,6 +37,7 @@ grob_layout <- function(...,
     row_heights = row_heights,
     title = title,
     title_p = title_p,
-    title_aes_list = title_aes_list)
+    title_aes_list = title_aes_list
+    )
 
 }

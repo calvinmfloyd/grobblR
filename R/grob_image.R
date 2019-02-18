@@ -15,7 +15,8 @@ grob_image <- function(img_path, aes_list, height = numeric(), width = numeric()
   edit_dims <- ifelse(
     length(aes_list$maintain_aspect_ratio) == 0,
     TRUE,
-    aes_list$maintain_aspect_ratio)
+    aes_list$maintain_aspect_ratio
+    )
 
   if(edit_dims){
 
@@ -34,6 +35,7 @@ grob_image <- function(img_path, aes_list, height = numeric(), width = numeric()
   grid::rasterGrob(
     raw_png,
     height = grid::unit(height_adj, "mm"),
-    width = grid::unit(width_adj, "mm"))
+    width = grid::unit(width_adj, "mm")
+    )
 
 }

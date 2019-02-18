@@ -13,30 +13,29 @@
 #' @return A grob of x with aesthetics based on the aes_list param.
 #' @export
 
-convert_to_grob <- function(x, height, width, aes_list = ga_list()){
-
-  if(is.numeric(x) & length(x) > 0 & is.null(dim(x))){
+convert_to_grob = function(x, height, width, aes_list = ga_list()){
+  
+  if(all(is.numeric(x), length(x) > 0, is.null(dim(x)))){
     x <- convert_to_matrix(x)
   }
-
   # converting to matrix grob if x is a dataframe or matrix
   if(is.data.frame(x) | is.matrix(x)){
 
-    x <- as.matrix(x)
+    x = as.matrix(x)
 
-    cn_pres <- !is.null(colnames(x))
+    cn_pres = !is.null(colnames(x))
 
-    width_adj <- 0
-    height_adj <- ifelse(cn_pres, 1, 0)
+    width_adj = 0
+    height_adj = ifelse(cn_pres, 1, 0)
 
     if(cn_pres){
 
-      cn_gm_list <- list()
+      cn_gm_list = list()
       for(name in names(aes_list)[grepl('colname', names(aes_list))]){
-        cn_gm_list[[gsub('colname_', '', name)]] <- aes_list[[name]]
+        cn_gm_list[[gsub('colname_', '', name)]] = aes_list[[name]]
       }
 
-      cn_grob <- grob_matrix(
+      cn_grob = grob_matrix(
         x
         ,m_type = 3
         ,height = height/(nrow(x) + 1)
@@ -44,7 +43,7 @@ convert_to_grob <- function(x, height, width, aes_list = ga_list()){
         ,aes_list = cn_gm_list)
     }
 
-    data_grob <- grob_matrix(
+    data_grob = grob_matrix(
       x
       ,m_type = ifelse(cn_pres, 2, 1)
       ,aes_list = aes_list
@@ -53,7 +52,7 @@ convert_to_grob <- function(x, height, width, aes_list = ga_list()){
 
     if(cn_pres){
 
-      grob <- gridExtra::arrangeGrob(
+      grob = gridExtra::arrangeGrob(
         grobs = grid::gList(data_grob, cn_grob)
         ,layout_matrix = rbind(c(2), c(1))
         ,widths = grid::unit(width, 'mm')
@@ -61,57 +60,53 @@ convert_to_grob <- function(x, height, width, aes_list = ga_list()){
 
     } else {
 
-      grob <- data_grob
+      grob = data_grob
 
     }
 
   }
   # converting to image grob if x is a string with '.png' in it
   else if(ifelse(is.character(x), grepl('.png', x), F)){
-    stopifnot(file.exists(x))
-    grob <- grob_image(x, aes_list = aes_list, height = height, width = width)
+    if(!file.exists(x)) stop(sprintf("The file '%s' does not exist.", x), call. = F)
+    grob = grob_image(x, aes_list = aes_list, height = height, width = width)
 
   }
   else if(ifelse(is.character(x), !grepl('.png', x), F)){
 
-    cex_vals <- seq(0.01, 20, 0.01)
     if(is.null(aes_list$text_cex)){
-      n_lines <- ifelse(!is.null(aes_list$n_lines), aes_list$n_lines, 10000)
-      sep <- ifelse(!is.null(aes_list$sep), aes_list$sep, '\n')
-      optimal_cv <- min(cex_vals)
-      for(cv in cex_vals){
-        lc <- line_creator(cex_val = cv, string = x, height = height, width = width, sep = sep)
-        validity <- lc$valid
-        lc_n_lines <- length(lc$lines)
-        if(validity & lc_n_lines <= n_lines) optimal_cv <- cv else break
-      }
-      lines <- line_creator(cex_val = optimal_cv, string = x, height = height, width = width, sep = sep)
-      aes_list$txt_cex <- optimal_cv
+      n_lines = ifelse(!is.null(aes_list$n_lines), aes_list$n_lines, 10000)
+      sep = ifelse(!is.null(aes_list$sep), aes_list$sep, '\n')
+      lines = cex_val_convergence(
+        string = x,
+        n_lines = n_lines,
+        sep = sep,
+        height = height,
+        width = width
+        )
+      aes_list$text_cex = convert_to_matrix(lines$cex_val)
     } else {
-      lines <- line_creator(aes_list$txt_cex, x, height = height, width = width)
+      lines = line_creator(aes_list$text_cex, x, height = height, width = width)
     }
-
-    txt_matrix <- matrix(lines$lines, ncol = 1)
-
-    grob <- grob_matrix(txt_matrix, aes_list = aes_list, height = height, width = width)
+    text_matrix = matrix(lines$lines, ncol = 1)
+    grob = grob_matrix(text_matrix, aes_list = aes_list, height = height, width = width)
 
   }
   else if(ggplot2::is.ggplot(x)){
 
-    png_name <- sprintf("ggplot_grob_%s.png", format(Sys.time(), '%m_%d_%Y_%H_%M_%S'))
+    png_name = sprintf("ggplot_grob_%s.png", format(Sys.time(), '%m_%d_%Y_%H_%M_%S'))
     ggplot2::ggsave(png_name, x, height = height, width = width, unit = 'mm')
-    grob<- grob_image(png_name, aes_list = aes_list, height = height, width = width)
+    grob= grob_image(png_name, aes_list = aes_list, height = height, width = width)
     file.remove(png_name)
 
   }
   else if(grid::is.grob(x)){
 
-    grob <- x
+    grob = x
 
   }
   else if(is.na(x)){
 
-    grob <- grid::rectGrob(
+    grob = grid::rectGrob(
       gp = grid::gpar(col = NA, fill = NA),
       height = grid::unit(height, 'mm'),
       width = grid::unit(width, 'mm'))

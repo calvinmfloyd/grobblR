@@ -40,5 +40,6 @@ grob_col <- function(...,
     title_p = title_p,
     title_aes_list = title_aes_list,
     hjust = hjust,
-    vjust = vjust)
+    vjust = vjust
+    )
 }

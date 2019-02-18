@@ -20,7 +20,7 @@ library(grobblR)
 library(UsingR)
 
 `%>%` = dplyr::`%>%`
-pars <- unlist(strsplit(lorem, "\n\n"))
+2pars <- unlist(strsplit(lorem, "\n\n"))
 first_paragraph <- pars[1]
 data(iris)
 

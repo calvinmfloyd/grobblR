@@ -22,7 +22,8 @@ grob_row <- function(...,
 
   if(!is.numeric(p)) if(p < 0) stop(
     'p in grob_row() must be a positive numeric value.',
-    call. = F)
+    call. = F
+    )
 
   grob_row_class$new(
     contents = unlist(list(...)),
@@ -32,5 +33,6 @@ grob_row <- function(...,
     border_aes_list = border_aes_list,
     title = title,
     title_p = title_p,
-    title_aes_list = title_aes_list)
+    title_aes_list = title_aes_list
+    )
 }

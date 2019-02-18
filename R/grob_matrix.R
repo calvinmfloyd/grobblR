@@ -99,58 +99,34 @@ grob_matrix <- function(df, aes_list = ga_list(), m_type = 1, height = numeric()
 
   } else {
 
-    cex_vals <- seq(0.5, 15, 0.1)
-    rh <- height/nr - 2*aes_list$cell_sep
-
     column_props <- apply(
       rbind(colnames(df_fit), df_fit), 2,
-      function(x) max(graphics::strwidth(c(x), units = 'in')))
+      function(x) max(graphics::strwidth(c(x), units = 'in'))
+      )
 
     if(sum(column_props) == 0){
       column_props <- rep(1, length(column_props))
     } else {
-      column_props <- column_props/sum(column_props)}
+      column_props <- column_props/sum(column_props)
+    }
 
     cw <- width*column_props - 2*aes_list$cell_sep
 
-    widest_elements <- apply(
-      rbind(colnames(df_fit), df_fit), 2,
-      function(x) x[graphics::strwidth(x, units = 'in') == max(graphics::strwidth(c(x), units = 'in'))]
-    )
-
-    tallest_element <- c(df_fit)[
-      which(graphics::strheight(c(df_fit), units = 'in') == max(graphics::strheight(c(df_fit), units = 'in')))[1]]
-
-    poss_width_cex_vals <- sapply(
-      1:nc,
-      function(i){
-        x <- sapply(cex_vals, function(c) in_to_mm(graphics::strwidth(widest_elements[i], cex = c, units = 'in')))
-        if(sum(x <= cw[i]) == 0){
-          warning(sprintf(
-            "Text in %s is too wide for allotted width. Using minimum text cex value.",
-            m_type_desc$desc[m_type_desc$m_type == m_type]),
-            call. = F)
-          return(min(cex_vals))
-        } else {
-          cex_vals[max(which(x <= cw[i]))]
+    optimal_cvs = sapply(
+      1:nc, 
+      function(x){
+        cex_val_convergence(
+          string = paste(df[,x], collapse = '\n'),
+          n_lines = nr,
+          height = height,
+          width = cw[x],
+          convergence_limit = 0.05,
+          sep = '\n'
+        )$cex_val
         }
-        })
-
-    poss_str_heights <- sapply(
-      cex_vals,
-      function(c) in_to_mm(graphics::strheight(tallest_element, cex = c, units = 'in')))
-
-    if(sum(poss_str_heights <= rh) == 0){
-      warning(sprintf(
-        "Text in %s is too tall for allotted height. Using minimum text cex value.",
-        m_type_desc$desc[m_type_desc$m_type == m_type]),
-        call. = F)
-      max_str_height <- min(cex_vals)
-    } else {
-      max_str_height <- cex_vals[max(which(poss_str_heights <= rh))]
-    }
-
-    def_text_cex <- min(c(max(poss_width_cex_vals), max_str_height))
+      )
+    
+    def_text_cex <- ifelse(is.null(unlist(optimal_cvs)), 1, min(optimal_cvs))
     def_text_cex <- def_text_cex - text_cex_adj*def_text_cex
 
   }
