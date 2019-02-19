@@ -2,42 +2,43 @@
 % Please edit documentation in R/ga_list.R
 \name{ga_list}
 \alias{ga_list}
-\title{Grob aesthetic list used to give the grobs their aesthetics.}
+\title{Grob aesthetic list used to control aesthetics within `grobblR`.}
 \usage{
-ga_list(background_color = NULL, background_alpha = NULL, borders = NULL,
-  border_color = NULL, border_width = NULL, font_face = NULL,
-  text_color = NULL, text_align = NULL, text_v_align = NULL,
-  text_just = NULL, text_v_just = NULL, text_cex = NULL,
-  text_font = NULL, round_rect_radius = NULL, group_elements = NULL,
-  row_heights = NULL, column_widths = NULL, cell_sep = NULL,
-  colname_font_face = NULL, colname_background_color = NULL,
-  colname_background_alpha = NULL, colname_borders = NULL,
-  colname_border_color = NULL, colname_border_width = NULL,
-  colname_text_color = NULL, colname_text_align = NULL,
-  colname_text_v_align = NULL, colname_text_just = NULL,
-  colname_text_v_just = NULL, colname_text_cex = NULL,
-  colname_text_font = NULL, colname_round_rect_radius = NULL,
-  colname_group_elements = NULL, colname_row_heights = NULL,
-  colname_column_widths = NULL, colname_cell_sep = NULL,
-  color_gradient_columns = NULL, color_gradient_binary = NULL,
-  color_binary_cut_off = NULL, color_binary_high = NULL,
-  color_binary_low = NULL, color_binary_equal = NULL,
-  color_gradient_max = NULL, color_gradient_mid = NULL,
-  color_gradient_min = NULL, maintain_aspect_ratio = NULL, hjust = NULL,
-  vjust = NULL, n_lines = NULL, sep = NULL)
+ga_list(background_color = NULL, background_alpha = NULL,
+  border_color = NULL, border_sides = NULL, border_width = NULL,
+  font_face = NULL, text_color = NULL, text_align = NULL,
+  text_v_align = NULL, text_just = NULL, text_v_just = NULL,
+  text_cex = NULL, text_font = NULL, round_rect_radius = NULL,
+  group_elements = NULL, row_heights = NULL, column_widths = NULL,
+  cell_sep = NULL, colname_font_face = NULL,
+  colname_background_color = NULL, colname_background_alpha = NULL,
+  colname_border_color = NULL, colname_border_sides = NULL,
+  colname_border_width = NULL, colname_text_color = NULL,
+  colname_text_align = NULL, colname_text_v_align = NULL,
+  colname_text_just = NULL, colname_text_v_just = NULL,
+  colname_text_cex = NULL, colname_text_font = NULL,
+  colname_round_rect_radius = NULL, colname_group_elements = NULL,
+  colname_row_heights = NULL, colname_column_widths = NULL,
+  colname_cell_sep = NULL, color_gradient_columns = NULL,
+  color_gradient_binary = NULL, color_binary_cut_off = NULL,
+  color_binary_high = NULL, color_binary_low = NULL,
+  color_binary_equal = NULL, color_gradient_max = NULL,
+  color_gradient_mid = NULL, color_gradient_min = NULL,
+  maintain_aspect_ratio = NULL, hjust = NULL, vjust = NULL,
+  n_lines = NULL, sep = NULL)
 }
 \arguments{
 \item{background_color}{Controls the background color of the elements of the matrix. If the matrix has no rownames or colnames, the default is white. If the matrix has column names, the default is white-gray90 on every odd-even row. Used with matrices.}
 
-\item{background_alpha}{Controls the background alpha/opacity of the elements of the matrix. Values are used in grid::gpar(). Default is 1.0. Used with matrices.}
-
-\item{borders}{Controls the borders of the elements of the matrix. The input is a string with the possible words "top", "bottom", "left", "right" separated by commas. For example, "top, left, right" will put borders on the top, left and right side of the grid cell, but not the bottom. Default is "", or no borders. Used with matrices.}
+\item{background_alpha}{Controls the background alpha/opacity of the elements of the matrix. Values are used in \code{grid::gpar()}. Default is 1.0. Used with matrices.}
 
 \item{border_color}{Controls the color of the selected borders. Default is gray40. Used with matrices.}
 
-\item{border_width}{Controls the line width density/thickness of the selected borders. Values are used in grid::gpar(). Default is 4. Used with matrices.}
+\item{border_sides}{Controls the borders of the elements of the matrix. The input is a string with the possible words "top", "bottom", "left", "right" separated by commas. For example, "top, left, right" will put borders on the top, left and right side of the grid cell, but not the bottom. Default is "", or no borders. Used with matrices.}
 
-\item{font_face}{Controls the font face of the elements of the matrix (i.e. bold, italic, etc.). Values are used in grid::gpar(). Default for table elements is normal, or 1. Default for column name elements is bold and italic, or 4. Used with matrices or character strings.}
+\item{border_width}{Controls the line width density/thickness of the selected borders. Values are used in \code{grid::gpar()}. Default is 4. Used with matrices.}
+
+\item{font_face}{Controls the font face of the elements of the matrix (i.e. bold, italic, etc.). Values are used in \code{grid::gpar()}. Default for table elements is normal, or 1. Default for column name elements is bold and italic, or 4. Used with matrices or character strings.}
 
 \item{text_color}{Controls the text color of the elements of the matrix. Default for table elements and row names is black, and a gray-blue color for column names. Used with matrices or character strings.}
 
@@ -62,6 +63,42 @@ ga_list(background_color = NULL, background_alpha = NULL, borders = NULL,
 \item{column_widths}{If automatic column widths are not desired, the user can provide a vector of widths for each column in the matrix in mm. Used with matrices.}
 
 \item{cell_sep}{Controls the amount of padding around each cell in mm. Default is 1 mm. Used with matrices.}
+
+\item{colname_font_face}{Controls the font face of column names.}
+
+\item{colname_background_color}{Controls the \code{background_color} of column names.}
+
+\item{colname_background_alpha}{Controls the \code{background_alpha} of column names.}
+
+\item{colname_border_color}{Controls the \code{border_color} of column names.}
+
+\item{colname_border_sides}{Controls the \code{border_sides} of column names.}
+
+\item{colname_border_width}{Controls the \code{border_width} of column names.}
+
+\item{colname_text_color}{Controls the \code{text_color} of column names.}
+
+\item{colname_text_align}{Controls the \code{text_align} of column names.}
+
+\item{colname_text_v_align}{Controls the \code{text_v_align} of column names.}
+
+\item{colname_text_just}{Controls the \code{text_just} of column names.}
+
+\item{colname_text_v_just}{Controls the \code{text_v_just} of column names.}
+
+\item{colname_text_cex}{Controls the \code{text_cex} of column names.}
+
+\item{colname_text_font}{Controls the \code{text_font} of column names.}
+
+\item{colname_round_rect_radius}{Controls the \code{round_rect_radius} of column names.}
+
+\item{colname_group_elements}{Controls the \code{group_elements} of column names.}
+
+\item{colname_row_heights}{Controls the \code{row_heights} of column names.}
+
+\item{colname_column_widths}{Controls the \code{column_widths} of column names.}
+
+\item{colname_cell_sep}{Controls the \code{cell_sep} of column names.}
 
 \item{color_gradient_columns}{Controls the columns which a color gradient scale will be applied to. Integer values denoting the column numbers. Can only be applied to columns with all numeric values. Used with matrices.}
 
@@ -91,5 +128,5 @@ ga_list(background_color = NULL, background_alpha = NULL, borders = NULL,
 A list with all possible aesthetic elements that can be adjusted, with the class of "grob_aes_list".
 }
 \description{
-Grob aesthetic list used to give the grobs their aesthetics.
+Grob aesthetic list used to control aesthetics within `grobblR`.
 }

@@ -13,7 +13,7 @@ convert_to_grob(x, height, width, aes_list = ga_list())
 
 \item{width}{The numeric width in mm of the desired grob.}
 
-\item{aes_list}{The list outputted by \code{ga_list()} which contains elements to adjust aesthetics to the grob of \code{x}. Different type of grobs have different types of elements of this list which will affect its aesthetics.\\
+\item{aes_list}{The list outputted by \code{ga_list} which contains elements to adjust aesthetics to the grob of \code{x}. Different type of grobs have different types of elements of this list which will affect its aesthetics.\\
 For character strings or matrices of dimensions n x p, the aesthetic elements can either be a single value which will be applied to the entire matrix, or a matrix of dimension n x p, which specifies how each element of the matrix will be adjusted. Note that column names and acual matrix elements are treated differently.\\
 Possible elements for character strings, matrices and images can be found in \code{\link{ga_list}}.
 \itemize{

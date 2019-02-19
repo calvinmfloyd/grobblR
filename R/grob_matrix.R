@@ -16,13 +16,18 @@
 #' @return A grob of df, with the corresponding aesthetics.
 #' @export
 
-grob_matrix <- function(df, aes_list = ga_list(), m_type = 1, height = numeric(), width = numeric(), text_cex_adj = 0.2){
+grob_matrix <- function(df,
+                        aes_list = ga_list(),
+                        m_type = 1,
+                        height = numeric(),
+                        width = numeric(),
+                        text_cex_adj = 0.2){
 
   in_to_mm <- function(x) x*25.4
 
   decimal_places <- function(x) {
     if((x %% 1) != 0){
-      return(nchar(strsplit(sub('0+$', '', as.character(x)), ".", fixed = T)[[1]][[2]]))
+      return(nchar(strsplit(sub('0+$', '', as.character(round(x,5))), ".", fixed = T)[[1]][[2]]))
     } else {
       return(0)
     }
@@ -34,7 +39,8 @@ grob_matrix <- function(df, aes_list = ga_list(), m_type = 1, height = numeric()
 
   m_type_desc <- data.frame(
     m_type = c(1, 2, 3, 4, 5)
-    ,desc = c('matrix', 'table', 'column names', 'row names', 'title'))
+    ,desc = c('matrix', 'table', 'column names', 'row names', 'title')
+    )
 
   df_fit <- df
   if(m_type == 3) df <- matrix(colnames(df), nrow = 1)
@@ -54,7 +60,8 @@ grob_matrix <- function(df, aes_list = ga_list(), m_type = 1, height = numeric()
     color_binary_equal = 'gray90',
     color_gradient_max = '#63BE7B',
     color_gradient_mid = '#FFEB84',
-    color_gradient_min = '#F8696B')
+    color_gradient_min = '#F8696B'
+    )
 
   for(val_name in names(def_vals_non_matrices)){
 
@@ -68,7 +75,6 @@ grob_matrix <- function(df, aes_list = ga_list(), m_type = 1, height = numeric()
       aes_list[[val_name]] <- def_vals_non_matrices[[val_name]]
     }
   }
-  # ----
 
   def_vals_matrices <- list(
     font_face = c(1, 1, 2, 3, 2),
@@ -84,7 +90,8 @@ grob_matrix <- function(df, aes_list = ga_list(), m_type = 1, height = numeric()
     border_color = c('gray40', 'gray40', 'gray40', 'gray40', 'gray40'),
     # text_angle = c(0, 0, 0, 0, 0),
     border_width = c(4, 4, 1, 4, 4),
-    round_rect_radius = c(0.0, 0.0, 0.0, 0.0, 0.2))
+    round_rect_radius = c(0.0, 0.0, 0.0, 0.0, 0.2)
+    )
 
   def_orig_vals_list <- c(def_vals_matrices, def_vals_non_matrices)
 
@@ -130,7 +137,7 @@ grob_matrix <- function(df, aes_list = ga_list(), m_type = 1, height = numeric()
     def_text_cex <- def_text_cex - text_cex_adj*def_text_cex
 
   }
-  # ----
+
 
   # Adding in default values (matrices) if they are missing ----
 
@@ -161,7 +168,7 @@ grob_matrix <- function(df, aes_list = ga_list(), m_type = 1, height = numeric()
   if(length(aes_list[['color_gradient_columns']]) > 0 &
      aes_list[['color_gradient_binary']] %in% FALSE &
      m_type %in% c(1,2)){
-
+    
     crp.f <- grDevices::colorRampPalette(
       c(aes_list[['color_gradient_min']],
         aes_list[['color_gradient_mid']],
@@ -189,7 +196,7 @@ grob_matrix <- function(df, aes_list = ga_list(), m_type = 1, height = numeric()
         }
     }
 
-  # ----
+  
 
   # Adjustments to text_just, text_align, text_v_just, text_v_align ----
 
@@ -241,7 +248,7 @@ grob_matrix <- function(df, aes_list = ga_list(), m_type = 1, height = numeric()
   aes_list[['text_v_just']] <- matrix(as.numeric(aes_list[['text_v_just']]), nrow = nr)
   aes_list[['text_v_align']] <- matrix(as.numeric(aes_list[['text_v_align']]), nrow = nr)
 
-  # ----
+  
 
   # Aesthetic value type checks before we start creating the grobs themselves ----
 
@@ -253,7 +260,7 @@ grob_matrix <- function(df, aes_list = ga_list(), m_type = 1, height = numeric()
     }
   }
 
-  # ----
+  
 
   # Creating each of our mini grobs that will compose the grob_matrix ----
   raw_grobs <- grid::gList()
@@ -297,7 +304,7 @@ grob_matrix <- function(df, aes_list = ga_list(), m_type = 1, height = numeric()
       }
     }}
 
-  # ----
+  
 
   # Creating the layout matrix, dependent on if we're grouping elements ----
   if(aes_list$group_elements){
@@ -335,7 +342,7 @@ grob_matrix <- function(df, aes_list = ga_list(), m_type = 1, height = numeric()
     layout_matrix <- matrix(1:(nr*nc), nrow = nr, ncol = nc)
 
   }
-  # ----
+  
 
   if(length(aes_list$row_heights) == 0 & length(height) == 0){
 
@@ -383,7 +390,7 @@ grob_matrix <- function(df, aes_list = ga_list(), m_type = 1, height = numeric()
     aes_list$column_widths <- rep(width/nc, nc)
 
   }
-  # ----
+  
 
   first_element_indices <- unlist(lapply(unique(c(layout_matrix)), function(x) min(which(c(layout_matrix) == x))))
 

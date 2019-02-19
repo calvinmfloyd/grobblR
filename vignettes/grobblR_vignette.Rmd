@@ -20,9 +20,9 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-Being an avid user of R, I attempt to do everything I need to do within R and avoid using applications such as Microsoft Excel. When I first started using R, however, I found Excel to be noticeably better at one thing in particular: Creating extremely customizable PDF reports. In Excel you can shade specific cells, adjust font sizes, pick borders and many other things to create unique-looking reports, which are able to be fitted onto a single sheet of paper. While Excel is very good at being flexible and letting the user customize the look of the report, the process is rather manual and forces a user like myself to go outside the R workspace to another application.
+Being an avid user of R, I attempt to do everything I need to do within R and avoid using other applications such as Microsoft Excel. When I first started using R, however, I found Excel to be noticeably better at one thing in particular: Creating extremely customizable PDF reports. In Excel you can shade specific cells, adjust font sizes, pick borders and many other things to create unique-looking reports which are able to be fitted onto a single sheet of paper. While Excel is very good at being flexible and letting the user customize the look of the report, the process is rather manual and forces a user like myself to go outside the R workspace to another application.
 
-Working for the Sacramento Kings in their analytics department, we needed to create various reports on a daily basis and we were not about to do our data analysis in R, transfer the data into Excel, and then format the report to how we wanted it to look. We needed to come up with a way to create automated, flexible multi-page PDF reports within the R environment for our front office and our coaching staff. The `grobblR` package is an extenstion of the methodology we implemented to create those reports - using "grid graphical objects", AKA *grobs*, seen in the `grid` and `gridExtra` packages. We believe that the `grobblR` package is one of the better options to create unique, flexible reports within R - and helps users stay away from the dreaded Excel!
+Working for the Sacramento Kings in their analytics department, we needed to create various reports on a daily basis and we were not about to do our data analysis in R, transfer the data into Excel, and then format the report to how we wanted it to look. We needed to come up with a way to create automated, flexible multi-page PDF reports within the R environment for our front office and coaching staff. The `grobblR` package is an extenstion of the methodology we implemented to create those reports - using "grid graphical objects", AKA *grobs*, as seen in the `grid` and `gridExtra` packages. 
 
 ```{r Install grobblR}
 # devtools::install_github('calvinmfloyd/grobblR')
@@ -39,8 +39,8 @@ Taken from the `grid::grob()` [documentation](https://stat.ethz.ch/R-manual/R-de
 
 Within `grobblR`, the objects able to be converted to a grob are:  
 
-  * Data frames / matrice  
-      + A Vector of values
+  * Data frames / matrices
+      + A vector of values
   * `ggplot` plots  
   * `.png` files  
   * Character strings  
@@ -52,7 +52,7 @@ It was our goal with this package to create flexible functionality that would al
 
 ## Grob Layout
 
-When coming up with what the `grobblR` package would look like, we first had to decide on the most intuitive way to layout the user's grobs on the page. We decided on a Shiny-like bootstrap method, which would incorporate nested grob-rows (a row combining one or several grobs) and grob-columns (a column combining one or several grobs) within an overall layout of grobs (which we will call a grob-layout). What the `grob_layout()` function does is evaluate the overall dimensions of the page you desire, and then distributes heights and widths to the grobs that will make up the page, based on proportions and the amount of grob-rows (`grob_row()`) and grob-columns (`grob_col()`) within the overall grob-layout (`grob_layout()`). For example, if we wanted to do a simple 2x2 grid system on a 100 mm x 100 mm page, we would simply write:
+When coming up with what the `grobblR` package would look like, we first had to decide on the most intuitive way to layout the user's grobs on the page. We decided on a Shiny-like bootstrap method, which would incorporate nested grob-rows (a row combining one or several grobs) and grob-columns (a column combining one or several grobs) within an overall layout of grobs (which we will call a grob-layout). What the main grob-layout function does is evaluate the overall dimensions of the page you desire, and then distributes heights and widths to the grobs that will make up the page, based on proportions and the amount of grob-rows (`grob_row()`) and grob-columns (`grob_col()`) within the overall grob-layout (`grob_layout()`). For example, if we wanted to do a simple `2 x 2` grid system on a `100mm x 100mm` page, we would simply write:
 
 ```{r 2x2 system}
 gl = grob_layout(
@@ -66,7 +66,7 @@ gl = grob_layout(
 gridExtra::grid.arrange(gl$grob)
 ```
 
-The `grob_row()`'s tell the `grob_layout()` that we want two rows on the outermost layer, and since there are two `grob_col()`'s within each of the `grob_row()`'s, the result is a 2x2 grid. But the result doesn't have to be a nice 2x2 grid - we could have a layout where the first row has two columns and the second has one:
+The `grob_row()`'s tell the `grob_layout()` that we want two rows on the outermost layer, and since there are two `grob_col()`'s within each of the `grob_row()`'s, the result is a `2 x 2` grid. But the result doesn't have to be a nice `2 x 2` grid - we could have a layout where the first row has two columns and the second has one:
 
 ```{r 2 row, 3 element system}
 gl = grob_layout(
@@ -80,7 +80,7 @@ gl = grob_layout(
 gridExtra::grid.arrange(gl$grob)
 ```
 
-Similar to the objects outputted by `grob_layout()`, the objects outputted by `grob_row()` and `grob_col()` also can produce their own grobs. Not as clean as performing the actions through `grob_layout()`, but the height and width can also be tweaked for these grob-column and grob-row objects - where the default for both is 100mm x 100mm (setting `border = T` will be addressed later on).
+Similar to the objects outputted by `grob_layout()`, the objects outputted by `grob_row()` and `grob_col()` also can produce their own grobs. Not as clean as performing the actions through `grob_layout()`, but the height and width can also be tweaked for these grob-column and grob-row objects - where the default for both is `100mm x 100mm` (setting `border = T` will be addressed later on).
 
 ```{r grob_col grob}
 gl = grob_col('grob-column grob')
@@ -125,7 +125,7 @@ gl = grob_layout(
 gridExtra::grid.arrange(gl$grob)
 ```
 
-One benefit of this is in case the user isn't totally sure how many grob-rows there will be within the grob-layout, the user can dynamically create the list of grob-rows and insert that list within `grob_layout()`:
+One benefit of this is in case the user isn't totally sure how many grob-rows there will be within the grob-layout, the user does not explicitly need to define each grob-row: He/she can dynamically create the list of grob-rows and insert that list within `grob_layout()`.
 
 ```{r list, loose demonstration (grob-col)}
 
@@ -195,7 +195,7 @@ Note that `grob_col()` is where the object of the user's choosing is actually co
 
 ### Padding
 
-The `padding` parameter within `grob_layout()` controls the very outside padding on the page (default of 10 mm), and the `padding` parameter within `grob_col()` controls the amount of room between the grob itself and the outer grob-row (default of 2 mm) - helping separate the grobs and giving them air to breathe. The `padding` parameter within `grob_col()` allows grob-columns to be shifted around its allotted space, making use of the `hjust` and `vjust` parameters within `grob_col()`. The defaults for both are `0.5` (having the grob centered in its allotted space). Setting `hjust` to `1.0` pushes the grob as far right as it can go (opposite for setting it to `0.0`), and setting `vjust` to `1.0` pushes the grob as far to the top as it can go (again, opposite for setting it to `0.0`):
+The `padding` parameter within `grob_layout()` controls the very outside padding on the page, and the `padding` parameter within `grob_col()` controls the amount of room between the grob itself and the outer grob-row - helping separate the grobs and giving them air to breathe. The `padding` parameter within `grob_col()` allows grob-columns to be shifted around its allotted space, making use of the `hjust` and `vjust` parameters within `grob_col()`. The defaults for both are `0.5` (having the grob centered in its allotted space). Setting `hjust` to `1.0` pushes the grob as far right as it can go (opposite for setting it to `0.0`), and setting `vjust` to `1.0` pushes the grob as far to the top as it can go (again, opposite for setting it to `0.0`):
 
 ```{r hjust and vjust}
 gl = grob_layout(
@@ -235,7 +235,7 @@ gl = grob_layout(
 gridExtra::grid.arrange(gl$grob)
 ```
 
-There are two grob-rows on the same, outermost layer of the grob-layout, so the height of the page, 90 mm (removing 10 mm for padding), will be distributed between those two grob-rows. The `p` parameter (standing for "proportion"), controls how the height is proportionally distributed. Since the first grob-row has a `p` of 2, and the second has a `p` of 1, the first grob-row gets `2/(2+1) = 2/3` of the height (60 mm), and the second grob-row gets `1/(2+1) = 1/3` of the height (30 mm). The same logic applies to grob-columns:
+There are two grob-rows on the same, outermost layer of the grob-layout, so the height of the page, 90 mm (removing 10 mm for padding), will be distributed between those two grob-rows. The `p` parameter (standing for "proportion"), controls how the height is proportionally distributed. Since the first grob-row has a `p` of 2, and the second has a `p` of 1, the first grob-row gets `2/(2+1) = 2/3` of the height (60 mm), and the second grob-row gets `1/(2+1) = 1/3` of the height (30 mm). If the user sets `p` to a positive value less than one, say `p = 1/3`, then that grob-row would receive one-third of the proportion of the grob-rows on its level/layer (assuming all other grob-rows on its level/layer have `p = 1`). The same logic applies to grob-columns:
 
 ```{r 1x2 system - p parameter}
 gl = grob_layout(
@@ -316,6 +316,8 @@ Another general aesthetic of a grob-layout are title options for each grob-row, 
 
 ```{r Title customization}
 gl = grob_layout(
+  title = 'grob-layout Title',
+  title_aes_list = ga_list(background_color = 'red'),
   grob_row(
     grob_col('A'),
     grob_col(
@@ -335,8 +337,6 @@ gl = grob_layout(
       font_face = 3
       )
     ),
-  title = 'grob-layout Title',
-  title_aes_list = ga_list(background_color = 'red'),
   height = 100,
   width = 100,
   padding = 5
@@ -370,7 +370,7 @@ This will also come into play when we discuss the `grob_to_pdf()` function later
 
 ## Matrix Grobs
 
-Data frames/matrices are probably the most complex of all the grobbable (yep, that's a word now) objects in the `grobblR` package. With matrices, each element is essentially its own tiny grob. So if the user has a `2x2` matrix which he/she wants to convert to a grob, the `grobblR` method is to create 4 distinct tiny grobs and combine them all together to create the appearance of the matrix which was inputted. This allows for very customizable looks for matrices - which we needed to do a lot in Sacramento. If we needed to color specific elements of the matrix, or change their font face, or change their font size, we could do that using this methodology. 
+Data frames/matrices are probably the most complex of all the grobbable (yep, that's a word now) objects in the `grobblR` package. With matrices, each element is essentially its own tiny grob. So if the user has a `2 x 2` matrix which he/she wants to convert to a grob, the `grobblR` method is to create 4 distinct tiny grobs and combine them all together to create the appearance of the matrix which was inputted. This allows for very customizable looks for matrices - which we needed to do a lot in Sacramento. If we needed to color specific elements of the matrix, or change their font face, or change their font size, we could do that using this methodology. 
 
 ### Matrix Aesthetic Control
 
@@ -395,7 +395,7 @@ gl = grob_layout(
 gridExtra::grid.arrange(gl$grob)
 ```
 
-But say the user wanted different cells of the matrix to have different background colors. He/she would need to specify a separate aesthetic matrix correpsonding to the background color of each cell of the original matrix. Since `mat` is a 2x2 matrix, we need to specify a another 2x2 matrix with each element denoting a background color for each of the cells in `mat`:
+But say the user wanted different cells of the matrix to have different background colors. He/she would need to specify a separate aesthetic matrix correpsonding to the background color of each cell of the original matrix. Since `mat` is a `2 x 2` matrix, we need to specify a another `2 x 2` matrix with each element denoting a background color for each of the cells in `mat`:
 
 ```{r Setting color_mat}
 color_mat = matrix(c('white', 'red', 'gray90', 'blue'), nrow = 2, byrow = T)
@@ -589,9 +589,9 @@ gg2 = ggplot(iris, aes(x = Sepal.Length, y = Petal.Length, color = Species)) +
   guides(color = F)
 
 gl = grob_layout(
+  title = 'Iris Dataset',
   grob_row(grob_col(gg1), grob_col(gg2)),
   grob_row(grob_col(head(iris))),
-  title = 'Iris Dataset',
   height = 100,
   width = 100
   )
@@ -878,5 +878,4 @@ The saved PDF can be found [here](https://github.com/calvinmfloyd/grobblR/blob/m
 
 ## Conclusions
 
-The `grobblR` package provides R users with a way to quickly create dyanmic reports with attention to detail - a feature we did not believe to be readily accessible in other packages. In the future we hope to enhance and add even more features, but `grobblR`
-
+The `grobblR` package provides R users with a way to quickly create dyanmic reports with attention to detail - a feature we did not find to be readily available in other packages. In the future we hope to enhance and add even more features, but, even as it currently stands, we believe `grobblR` is a valuable utility in daily data visualization and data reporting tasks.

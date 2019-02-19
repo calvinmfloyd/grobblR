@@ -4,9 +4,9 @@
 \alias{grob_layout}
 \title{The main \code{grobblR} function which contains and organizes \code{\link{grob_col}}'s and \code{\link{grob_row}}'s, giving the overall grob-layout its shape.}
 \usage{
-grob_layout(..., height = 280, width = 216, padding = 10, title = "",
-  title_aes_list = ga_list(), title_p = 0.1, page_number = "",
-  row_heights = c())
+grob_layout(..., height = 280, width = 216, padding = max(height,
+  width)/25, title = "", title_aes_list = ga_list(), title_p = 0.1,
+  page_number = "", row_heights = c())
 }
 \arguments{
 \item{...}{The combination of grob_row's and grob_col's which will help give the main grob outputted its shape and look.}
@@ -28,7 +28,7 @@ grob_layout(..., height = 280, width = 216, padding = 10, title = "",
 \item{grob_padding}{The numeric amount of padding for each individual grob within their designated grid of area in mm. Default is 2 mm.}
 }
 \value{
-An R6 class containing all information necessary to create the overall grob-layout. The grob itself is called with \code{grob_layout()$grob}.
+An R6 class object containing all information necessary to create the overall grob-layout. The grob itself is called with \code{grob_layout()$grob}.
 }
 \description{
 The main \code{grobblR} function which contains and organizes \code{\link{grob_col}}'s and \code{\link{grob_row}}'s, giving the overall grob-layout its shape.
