@@ -378,7 +378,7 @@ Using the `aes_list` parameter and the `ga_list()` function within `grob_col()`,
 
 ### Cell-by-Cell Aesthetic Control
 
-There's a lot to digest above, but these flexible aesthetics make for an incrediblly customizable matrix look. Say the user was only concerned with the background color of a matrix, and he/she wanted to have it uniform for every cell, all the user would need to do is set a single value for `bg_color` as an element within `aes_list`:
+These flexible aesthetics make for an incrediblly customizable matrix look. Say the user was only concerned with the background color of a matrix, and he/she wanted to have it uniform for every cell, all the user would need to do is set a single value for `background_color` as an element within `aes_list`:
 
 ```{r Setting mat}
 mat = matrix(1:4, nrow = 2, byrow = T)
@@ -575,7 +575,7 @@ gridExtra::grid.arrange(gl$grob)
 
 ## ggplot Grobs
 
-The next objects accepted by `grobblR` are `ggplot2` plots. The `ggplot` plot is stretched or squished depending on what the dimensions of the allotted space are:
+The next objects accepted by `grobblR` are `ggplot2` plots. The `ggplot` is stretched or squished depending on what the dimensions of the allotted space are:
 
 ```{r ggplot Grobs}
 data(iris)
@@ -603,7 +603,7 @@ gridExtra::grid.arrange(gl$grob)
 
 ## Image Grobs
 
-At this moment in time, only images in `.png` format are allowed in `grobblR`. In order for `grobblR` to detect the user wants to include an image, `.png` must be in the file name of the image. If the user does not want to maintain the aspect ratio of the image and allow it to be stretched within its allotted space, `maintain_aspect_ratio = F` must be inserted within the `aes_list` list.
+Currently, only images in `.png` format are allowed in `grobblR`. In order for `grobblR` to detect the user wants to include an image, `.png` must be in the file name of the image. If the user does not want to maintain the aspect ratio of the image and allow it to be stretched within its allotted space, `maintain_aspect_ratio = F` must be inserted within the `aes_list` list.
 
 ```{r .png Grobs}
 gl = grob_layout(
