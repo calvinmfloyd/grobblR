@@ -4,7 +4,8 @@
 \alias{grob_image}
 \title{Converts a raw .png file to a grob, with flexible aesthetics.}
 \usage{
-grob_image(img_path, aes_list, height = numeric(), width = numeric())
+grob_image(img_path, aes_list, height = numeric(), width = numeric(),
+  units = c("mm", "cm", "inches"))
 }
 \arguments{
 \item{img_path}{The local path to the raw .png file.}
@@ -14,6 +15,8 @@ grob_image(img_path, aes_list, height = numeric(), width = numeric())
 \item{height}{A numeric value designating the total height of the matrix grob in mm.}
 
 \item{width}{A numeric value designating the total width of the matrix grob in mm.}
+
+\item{units}{The units of the given height and width for the grob. Options are 'mm', 'cm' or 'inches', with the default of 'mm'.}
 }
 \value{
 A grob of the raw .png file.

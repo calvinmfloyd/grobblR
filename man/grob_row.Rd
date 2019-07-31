@@ -2,16 +2,17 @@
 % Please edit documentation in R/grob_row.R
 \name{grob_row}
 \alias{grob_row}
-\title{The grob-row function which helps gives the grob from the \code{grobblR::grob_layout()} function its shape. Works hand in hand with the \code{grob_col()} function.}
+\title{The grob-row function which helps gives the grob from the \code{\link{grob_layout()}} function its shape. Works hand-in-hand with the \code{\link{grob_col()}} function.}
 \usage{
-grob_row(..., p = 1, padding = 1, border = F,
-  border_aes_list = ga_list(), title = "",
-  title_aes_list = ga_list(), title_p = 0.2)
+grob_row(..., p = 1, border = F, border_aes_list = ga_list(),
+  title = "", title_aes_list = ga_list(), title_p = 0.1,
+  caption = "", caption_aes_list = ga_list(), caption_p = 0.05,
+  padding_p = 0.05, padding = NA_real_, height = NA_real_)
 }
 \arguments{
 \item{...}{A series of \code{grob_col}'s.}
 
-\item{p}{The numeric proportion of the given height which should be given to sub-grob's outputted in this grob-row. Defaults to 1.}
+\item{p}{The numeric proportion of the given height which should be given to sub-grobs outputted in the grob-row. Defaults to 1. Overridden if a \code{height} is supplied.}
 
 \item{border}{A TRUE/FALSE argument corresponding to whether or not a border around the outputted grob-row is desired. Defaults to FALSE.}
 
@@ -21,13 +22,28 @@ grob_row(..., p = 1, padding = 1, border = F,
 
 \item{title_aes_list}{The list outputted by \code{\link{ga_list}}, which controls aesthetics of the title of the grob-row.}
 
-\item{title_p}{The numeric proportion of height within the grob-row and its allotted space which will be used by the title grob. A numeric value between 0 and 0.5.}
+\item{title_p}{The numeric proportion of height within the grob-row which will be used by the title grob. A numeric value between 0 and 0.25.}
+
+\item{caption}{A character string which will be displayed as the caption of the grob-row.}
+
+\item{caption_aes_list}{The list outputted by \code{\link{ga_list}}, which controls aesthetics of the caption of the grob-row.}
+
+\item{caption_p}{The numeric proportion of height within the grob-row which will be used by the caption grob. A numeric value between 0 and 0.25.}
+
+\item{padding_p}{The proportion of the minimum of the height and width which will be used for the padding around the edge of the grob-row. Overridden by any numeric value provided in the \code{padding} parameter.}
+
+\item{padding}{The numeric amount of padding around the edge of the grob-row in the \code{units} supplied by the grob-layout. Overrides the \code{padding_p} parameter.}
+
+\item{height}{The numeric height of the grob-row in the \code{units} supplied by the grob-layout. Overrides the \code{p} parameter.}
 
 \item{border_sides}{Controls the borders around the total grob-row. The input is a string with the possible words "top", "bottom", "left", "right" separated by ", ". For example, "top, left, right" will put borders on the top, left and right side of the grid cell, but not the bottom. Default is "top, bottom, left, right", or all borders.}
 }
 \value{
-An R6 class object which contains all the information needed to carry on to its grob columns and create the grob-row.
+An R6 class object which contains all the information needed to carry on to its grob-columns and create the grob-row.
 }
 \description{
-The grob-row function which helps gives the grob from the \code{grobblR::grob_layout()} function its shape. Works hand in hand with the \code{grob_col()} function.
+The grob-row function which helps gives the grob from the \code{\link{grob_layout()}} function its shape. Works hand-in-hand with the \code{\link{grob_col()}} function.
+}
+\details{
+The individual grob-row is obtained with \code{grob_row()$grob}.
 }

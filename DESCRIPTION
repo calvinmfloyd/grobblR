@@ -1,14 +1,25 @@
 Package: grobblR
-Title: Create flexible reports with combined grid objects.
+Title: The package intent on creating reports within the R environment as easy and intuitive as possible.
 Version: 1.0
 Authors@R: person("Calvin", "Floyd", email = "calvin.michael.floyd@gmail.com", role = c("aut", "cre"))
-Description: Making use of grid objects, combine objects of various types into a single, cohesive grid object which can be converted to reports in the format of the user's choosing. Attempts to make the process as intuitive as possible, with a Shiny bootstrap-like method to creating new rows and columns of different size proportions.
+Description: Making use of graphical grid objects (grobs), grobblR intuitively combines objects of various types into a single, cohesive grob which can be converted into reports.
 Depends: R (>= 3.3.1)
-Imports: ggplot2, graphics, grid, gridExtra, png, R6, grDevices
+Imports:
+  ggplot2,
+  graphics,
+  grDevices,
+  grid,
+  gridExtra,
+  png,
+  R6,
+  scales,
+  stringr
 License: 1.0.153
+Language: en-US
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.0
-Suggests: knitr,
-    rmarkdown
+RoxygenNote: 6.1.1
+Suggests: 
+  knitr,
+  rmarkdown
 VignetteBuilder: knitr

@@ -22,12 +22,19 @@ knitr::opts_chunk$set(
 
 Being an avid user of R, I attempt to do everything I need to do within R and avoid using other applications such as Microsoft Excel. When I first started using R, however, I found Excel to be noticeably better at one thing in particular: Creating extremely customizable PDF reports. In Excel you can shade specific cells, adjust font sizes, pick borders and many other things to create unique-looking reports which are able to be fitted onto a single sheet of paper. While Excel is very good at being flexible and letting the user customize the look of the report, the process is rather manual and forces a user like myself to go outside the R workspace to another application.
 
-Working for the Sacramento Kings in their analytics department, we needed to create various reports on a daily basis and we were not about to do our data analysis in R, transfer the data into Excel, and then format the report to how we wanted it to look. We needed to come up with a way to create automated, flexible multi-page PDF reports within the R environment for our front office and coaching staff. The `grobblR` package is an extenstion of the methodology we implemented to create those reports - using "grid graphical objects", AKA *grobs*, as seen in the `grid` and `gridExtra` packages. 
+Working for the Sacramento Kings in their analytics department, we needed to create various reports on a daily basis and we were not about to do our data analysis in R, transfer the data into Excel, and then format the report to how we wanted it to look. We needed to come up with a way to create automated, flexible multi-page PDF reports within the R environment for our front office and coaching staff. The `grobblR` package is an extension of the methodology we implemented to create those reports - using "grid graphical objects", AKA *grobs*, as seen in the `grid` and `gridExtra` packages. 
 
 ```{r Install grobblR}
 # devtools::install_github('calvinmfloyd/grobblR')
 devtools::load_all()
 ```
+
+Note: To plot and view the grobs as we produce them, we can either use the generic `plot(grob)` or `gridExtra::grid.arrange(grob)`. Since the plots outputted by `grid.arrange()` more resemble the PDF reports outputted by by `grobblR`, we will load in the `gridExtra` package, and use its functionality to display the grobs in this vignette.
+
+```{r Load in GridExtra}
+library(gridExtra)
+```
+
 
 ***
 
@@ -63,7 +70,7 @@ gl = grob_layout(
   padding = 5
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 The `grob_row()`'s tell the `grob_layout()` that we want two rows on the outermost layer, and since there are two `grob_col()`'s within each of the `grob_row()`'s, the result is a `2 x 2` grid. But the result doesn't have to be a nice `2 x 2` grid - we could have a layout where the first row has two columns and the second has one:
@@ -77,7 +84,7 @@ gl = grob_layout(
   padding = 5
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 Similar to the objects outputted by `grob_layout()`, the objects outputted by `grob_row()` and `grob_col()` also can produce their own grobs. Not as clean as performing the actions through `grob_layout()`, but the height and width can also be tweaked for these grob-column and grob-row objects - where the default for both is `100mm x 100mm` (setting `border = T` will be addressed later on).
@@ -86,7 +93,7 @@ Similar to the objects outputted by `grob_layout()`, the objects outputted by `g
 gl = grob_col('grob-column grob')
 gl$height = 50
 gl$width = 50
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 ```{r grob_row grob}
@@ -96,7 +103,7 @@ gl = grob_row(
   )
 gl$height = 50
 gl$width = 100
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 Another feature of `grobblR` is that the outermost `grob_row()` objects can either be loose within `grob_layout()` or they can be contained within a list:
@@ -122,7 +129,7 @@ gl = grob_layout(
   padding = 5
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 One benefit of this is in case the user isn't totally sure how many grob-rows there will be within the grob-layout, the user does not explicitly need to define each grob-row: He/she can dynamically create the list of grob-rows and insert that list within `grob_layout()`.
@@ -141,7 +148,7 @@ gl = grob_layout(
   padding = 5
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 The same utility can also be found with the `grob_row()` function:
@@ -160,7 +167,7 @@ gl = grob_layout(
   padding = 5
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 ### Nested Rows and Columns
@@ -188,7 +195,7 @@ gl = grob_layout(
   padding = 5
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 Note that `grob_col()` is where the object of the user's choosing is actually converted to a grob, and each `grob_col()` needs to be wrapped in a `grob_row()`, in order for the flow of information to work correctly. Thus, the outermost layer in a grob-layout must consist of grob-rows, each of which have one or several grob-columns inside.
@@ -216,10 +223,10 @@ gl = grob_layout(
   padding = 5
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
-### Size Control - Proportion Paramter
+### Size Control - Proportion Parameter
 
 In order to control the height and the width of the size of these grids, the user must tweak the `p` parameter within both `grob_row()` and `grob_col()`. The default for `p` is 1, but let's see what happens when we tweak it for a grid-system with two grob-rows:
 
@@ -232,7 +239,7 @@ gl = grob_layout(
   padding = 5
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 There are two grob-rows on the same, outermost layer of the grob-layout, so the height of the page, 90 mm (removing 10 mm for padding), will be distributed between those two grob-rows. The `p` parameter (standing for "proportion"), controls how the height is proportionally distributed. Since the first grob-row has a `p` of 2, and the second has a `p` of 1, the first grob-row gets `2/(2+1) = 2/3` of the height (60 mm), and the second grob-row gets `1/(2+1) = 1/3` of the height (30 mm). If the user sets `p` to a positive value less than one, say `p = 1/3`, then that grob-row would receive one-third of the proportion of the grob-rows on its level/layer (assuming all other grob-rows on its level/layer have `p = 1`). The same logic applies to grob-columns:
@@ -248,7 +255,7 @@ gl = grob_layout(
   padding = 5
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 Since these are grob-columns and not grob-rows, the width, and not the height, of the allotted space is distributed among the two grob-columns. The same logic applies as the user goes deeper and deeper into the nested grob-rows and grob-columns - allotted space is equally distributed among grob-rows or grob-columns on the same level/layer unless the user specifies differently with `p`. It should be noted that `p` can be any positive numeric value, integer or not.
@@ -259,7 +266,7 @@ Since these are grob-columns and not grob-rows, the width, and not the height, o
 
 ### Grob Aesthetic Control - `ga_list`
 
-In the `grobblR` package, there are many aspects the user can control the aesthetics of: Borders with the `border_aes_list` parameter, titles with the `title_aes_list` parameter, and aesthetics within the grobs themselves with the `aes_list` parameter. The user can only utilize these aesthetic paramters by using the `ga_list()` function, which has a wide variety of aesthetic options accepted by `grobblR` (such as `text_color` and `border_width`). Another pro of the function is that the user can easily see which aesthetic tweaks are allowed by going through the parameters of `ga_list()`. Examples of how `ga_list()` is implemented can be seen below in succeeding sections.
+In the `grobblR` package, there are many aspects the user can control the aesthetics of: Borders with the `border_aes_list` parameter, titles with the `title_aes_list` parameter, and aesthetics within the grobs themselves with the `aes_list` parameter. The user can only utilize these aesthetic parameters by using the `ga_list()` function, which has a wide variety of aesthetic options accepted by `grobblR` (such as `text_color` and `border_width`). Another pro of the function is that the user can easily see which aesthetic tweaks are allowed by going through the parameters of `ga_list()`. Examples of how `ga_list()` is implemented can be seen below in succeeding sections.
 
 ### Borders
 
@@ -305,7 +312,7 @@ gl = grob_layout(
   padding = 5
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 The `border_aes_list` controls the aesthetics of the border. The three aesthetic controls for `border_aes_list` are `border_color`, which controls the color of the lines, `border_width`, which controls the thickness of the lines, and `border_sides`. As you can guess, `border_sides` within `ga_list()` controls which of the four borders show up around the grob-row or grob-column. Setting `border_sides` equal to "left, right" will show only the left and right borders and gets rid of the top and bottom ones. The default is "top, bottom, left, right", which gives all four sides of the border. Of course, these border aesthetics will only show up if `border = T`.
@@ -342,7 +349,7 @@ gl = grob_layout(
   padding = 5
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 If a `title` is inputted into any of `grob_col()`, `grob_row()` or `grob_layout()`, a title will appear at the top of the respective allotted space. The default is the title taking up 10% (`title_p = 0.1`) of the allotted height (the title can take up a maximum of 50%), and a `gray40` color background with white font. The `title_aes_list` parameter controls the aesthetics of the title grob. The title grob is treated as a single value `1 x 1` matrix, so the aesthetic parameters in `title_aes_list` are treated the same as described in the Matrix Grobs section later on. 
@@ -361,7 +368,7 @@ gl = grob_layout(
   page_number = 1
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 This will also come into play when we discuss the `grob_to_pdf()` function later on, and converting multiple grob-layouts into a multiple-page PDF report.
@@ -378,7 +385,7 @@ Using the `aes_list` parameter and the `ga_list()` function within `grob_col()`,
 
 ### Cell-by-Cell Aesthetic Control
 
-These flexible aesthetics make for an incrediblly customizable matrix look. Say the user was only concerned with the background color of a matrix, and he/she wanted to have it uniform for every cell, all the user would need to do is set a single value for `background_color` as an element within `aes_list`:
+These flexible aesthetics make for an incredibly customizable matrix look. Say the user was only concerned with the background color of a matrix, and he/she wanted to have it uniform for every cell, all the user would need to do is set a single value for `background_color` as an element within `aes_list`:
 
 ```{r Setting mat}
 mat = matrix(1:4, nrow = 2, byrow = T)
@@ -392,10 +399,10 @@ gl = grob_layout(
   width = 100
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
-But say the user wanted different cells of the matrix to have different background colors. He/she would need to specify a separate aesthetic matrix correpsonding to the background color of each cell of the original matrix. Since `mat` is a `2 x 2` matrix, we need to specify a another `2 x 2` matrix with each element denoting a background color for each of the cells in `mat`:
+But say the user wanted different cells of the matrix to have different background colors. He/she would need to specify a separate aesthetic matrix corresponding to the background color of each cell of the original matrix. Since `mat` is a `2 x 2` matrix, we need to specify a another `2 x 2` matrix with each element denoting a background color for each of the cells in `mat`:
 
 ```{r Setting color_mat}
 color_mat = matrix(c('white', 'red', 'gray90', 'blue'), nrow = 2, byrow = T)
@@ -409,7 +416,7 @@ gl = grob_layout(
   width = 100
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 The same can be said for most of the other aesthetic elements listed above. For example, the `text_color` can be changed for individual elements of a matrix, but `color_gradient_binary` is a `TRUE`/`FALSE` value, and cannot be changed for individual elements. Below is a grob-layout with 4 matrix grobs with various aesthetic elements tweaked.
@@ -463,7 +470,7 @@ gl = grob_layout(
   width = 100
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 Definitely not the most appealing to the eye, but the flexibility of matrix grobs in `grobblR` is demonstrated.
@@ -516,7 +523,7 @@ gl = grob_layout(
   width = 100
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 ### Column Name Treatment
@@ -550,7 +557,7 @@ gl = grob_layout(
   width = 100
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 ### Vector of Values
@@ -568,7 +575,7 @@ gl = grob_layout(
   width = 100
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 ***
@@ -596,7 +603,7 @@ gl = grob_layout(
   width = 100
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 ***
@@ -620,7 +627,7 @@ gl = grob_layout(
   width = 100
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 ***
@@ -638,14 +645,14 @@ gl = grob_layout(
   width = 100
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 There are a couple things unique to character strings that the user can tweak in `aes_list` and `ga_list()`:  
 
   * `n_lines` - The maximum number of lines desired for the character string to be broken up into.
       + Useful for when only one line is desired (`n_lines = 1`).
-  * `sep` - The separator within the character string which designates where a new line should start.
+  * `str_sep` - The separator within the character string which designates where a new line should start.
       + Useful for breaking up character strings meant to be bulleted lists.
   
 In action:
@@ -671,7 +678,7 @@ gl = grob_layout(
     grob_col(
       bulleted_list,
       aes_list = ga_list(
-        sep = '\n',
+        str_sep = '\n',
         text_just = 'left',
         text_color = 'purple',
         font_face = matrix(c(1,2,1,1,1), ncol = 1)
@@ -682,7 +689,7 @@ gl = grob_layout(
   width = 100
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 At the very end of the character string being processed, if the string is converted to `n` lines, the character string is converted into a `n x 1` matrix, so any aesthetic that can be changed with a matrix can also be applied here. Thus, you can edit separate lines' aesthetics with an `n x 1` aesthetic matrix (such as the matrix used in the `font_face` aesthetic for the bottom grob above), but the **user must make sure he/she is certain how many lines the character string is going to be converted to, or else the aesthetic change will not take**. Above `text_just` was implemented to right-align and left-align separate text grobs, and `text_color` was used to color the text. 
@@ -691,7 +698,7 @@ At the very end of the character string being processed, if the string is conver
 
 ## Empty Space Grobs
 
-Us here at the `grobblR` HQ understand that sometimes the user will need to bump some things to the top, to the bottom, to the left, or to the right. Sometimes the user might even need to compact some grobs - the automatic sizing occurring in `grobblR` only knows to fill allotted space with whatever object its given, so the grobs may appear stretched at times. After much deliberation, we decided on adding in the option to add *empty space grobs* with `NA` which are simply that: empty space. We saw this briefly in the secition discussing borders, but here is another example:
+Us here at the `grobblR` HQ understand that sometimes the user will need to bump some things to the top, to the bottom, to the left, or to the right. Sometimes the user might even need to compact some grobs - the automatic sizing occurring in `grobblR` only knows to fill allotted space with whatever object its given, so the grobs may appear stretched at times. After much deliberation, we decided on adding in the option to add *empty space grobs* with `NA` which are simply that: empty space. We saw this briefly in the section discussing borders, but here is another example:
 
 ```{r empty space grob}
 gl = grob_layout(
@@ -713,7 +720,7 @@ gl = grob_layout(
   width = 100
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 The table on the left may appeared somewhat stretched because it's filling its allotted space, but the other two tables appear more properly sized thanks to the empty space grobs.
@@ -878,4 +885,4 @@ The saved PDF can be found [here](https://github.com/calvinmfloyd/grobblR/blob/m
 
 ## Conclusions
 
-The `grobblR` package provides R users with a way to quickly create dyanmic reports with attention to detail - a feature we did not find to be readily available in other packages. In the future we hope to enhance and add even more features, but, even as it currently stands, we believe `grobblR` is a valuable utility in daily data visualization and data reporting tasks.
+The `grobblR` package provides R users with a way to quickly create dynamic reports with attention to detail - a feature we did not find to be readily available in other packages. In the future we hope to enhance and add even more features, but, even as it currently stands, we believe `grobblR` is a valuable utility in daily data visualization and data reporting tasks.
