@@ -7,15 +7,6 @@
 #' @param border_sides Controls the borders of the elements of the matrix. The input is a string with the possible words "top", "bottom", "left", "right" separated by commas. For example, "top, left, right" will put borders on the top, left and right side of the grid cell, but not the bottom. Default is "", or no borders. Used with matrices.
 #' @param border_width Controls the line width density/thickness of the selected borders. Values are used in \code{grid::gpar()}. Default is 4. Used with matrices.
 #' @param padding_p Controls the amount of proportional padding around each matrix cell. Used with matrices.
-#' @param color_binary_cut_off A cut-off value which the binary color gradient will be applied to. Default is 0. Used with matrices.
-#' @param color_binary_high The color of the binary color gradient if the numeric element is greater than the \code{color_binary_cut_off}. Default is green. Used with matrices.
-#' @param color_binary_low The color of the binary color gradient if the numeric element is less than the \code{color_binary_cut_off}. Default is red. Used with matrices.
-#' @param color_binary_equal The color of the binary color gradient if the numeric element is equal to the \code{color_binary_cut_off}. Default is gray. Used with matrices.
-#' @param color_gradient_binary A TRUE/FALSE value which signifies if a binary color gradient should be applied to the \code{color_gradient_columns}. Used with matrices.
-#' @param color_gradient_columns Controls the columns which a color gradient scale will be applied to. Integer values denoting the column numbers. Can only be applied to columns with all numeric values. Used with matrices.
-#' @param color_gradient_max The high color for the gradual color gradient. Default is green. Used with matrices.
-#' @param color_gradient_mid The middle color for the gradual color gradient. Default is yellow. Used with matrices.
-#' @param color_gradient_min The low color for the gradual color gradient. Default is red. Used with matrices.
 #' @param column_widths If automatic column widths are not desired, the user can provide a vector of widths for each column in the matrix in whatever units are specified in the grob-layout. Used with matrices.
 #' @param font_face Controls the font face of the elements of the matrix (i.e. bold, italic, etc.). Values are used in \code{grid::gpar()}. Default for table elements is normal, or 1. Default for column name elements is bold and italic, or 4. Used with matrices or character strings.
 #' @param round_rect_radius Controls the radius of the corners of the rectangles matrix text is laid on top of. Used with matrices.
@@ -45,6 +36,15 @@
 #' @param cell_round_rect_radius Controls the \code{round_rect_radius} of matrix cells. Overridden by the \code{round_rect_radius} parameter.
 #' @param cell_column_widths Controls the \code{column_widths} of matrix cells. Overridden by the \code{column_widths} parameter.
 #' @param cell_padding_p Controls the \code{padding_p} of matrix cells. Overridden by the \code{padding_p} parameter.
+#' @param cell_color_binary_cut_off A cut-off value which the binary color gradient will be applied to. Default is 0. Used with matrices.
+#' @param cell_color_binary_high The color of the binary color gradient if the numeric element is greater than the \code{color_binary_cut_off}. Default is green. Used with matrices.
+#' @param cell_color_binary_low The color of the binary color gradient if the numeric element is less than the \code{color_binary_cut_off}. Default is red. Used with matrices.
+#' @param cell_color_binary_equal The color of the binary color gradient if the numeric element is equal to the \code{color_binary_cut_off}. Default is gray. Used with matrices.
+#' @param cell_color_gradient_binary A TRUE/FALSE value which signifies if a binary color gradient should be applied to the \code{color_gradient_columns}. Used with matrices.
+#' @param cell_color_gradient_columns Controls the columns which a color gradient scale will be applied to. Integer values denoting the column numbers. Can only be applied to columns with all numeric values. Used with matrices.
+#' @param cell_color_gradient_max The high color for the gradual color gradient. Default is green. Used with matrices.
+#' @param cell_color_gradient_mid The middle color for the gradual color gradient. Default is yellow. Used with matrices.
+#' @param cell_color_gradient_min The low color for the gradual color gradient. Default is red. Used with matrices.
 #' @param colname_font_face Controls the font face of column names. Overridden by the \code{font_face} parameter.
 #' @param colname_background_color Controls the \code{background_color} of column names. Overridden by the \code{background_color} parameter.
 #' @param colname_background_alpha Controls the \code{background_alpha} of column names. Overridden by the \code{background_alpha} parameter.
@@ -99,6 +99,15 @@ ga_list = function(aspect_ratio_multiplier = NULL,
                    cell_group_elements = NULL,
                    cell_column_widths = NULL,
                    cell_padding_p = NULL,
+                   cell_color_gradient_columns = NULL,
+                   cell_color_gradient_binary = NULL,
+                   cell_color_binary_cut_off = NULL,
+                   cell_color_binary_high = NULL,
+                   cell_color_binary_low = NULL,
+                   cell_color_binary_equal = NULL,
+                   cell_color_gradient_max = NULL,
+                   cell_color_gradient_mid = NULL,
+                   cell_color_gradient_min = NULL,
                    colname_font_face = NULL,
                    colname_background_color = NULL,
                    colname_background_alpha = NULL,
@@ -116,15 +125,6 @@ ga_list = function(aspect_ratio_multiplier = NULL,
                    colname_group_elements = NULL,
                    colname_column_widths = NULL,
                    colname_padding_p = NULL,
-                   color_gradient_columns = NULL,
-                   color_gradient_binary = NULL,
-                   color_binary_cut_off = NULL,
-                   color_binary_high = NULL,
-                   color_binary_low = NULL,
-                   color_binary_equal = NULL,
-                   color_gradient_max = NULL,
-                   color_gradient_mid = NULL,
-                   color_gradient_min = NULL,
                    maintain_aspect_ratio = NULL,
                    n_lines = NULL,
                    str_sep = NULL) {
@@ -163,6 +163,15 @@ ga_list = function(aspect_ratio_multiplier = NULL,
     cell_group_elements = cell_group_elements,
     cell_column_widths = cell_column_widths,
     cell_padding_p = cell_padding_p,
+    cell_color_gradient_columns = cell_color_gradient_columns,
+    cell_color_gradient_binary = cell_color_gradient_binary,
+    cell_color_binary_cut_off = cell_color_binary_cut_off,
+    cell_color_binary_high = cell_color_binary_high,
+    cell_color_binary_low = cell_color_binary_low,
+    cell_color_binary_equal = cell_color_binary_equal,
+    cell_color_gradient_max = cell_color_gradient_max,
+    cell_color_gradient_mid = cell_color_gradient_mid,
+    cell_color_gradient_min = cell_color_gradient_min,
     colname_font_face = colname_font_face,
     colname_background_color = colname_background_color,
     colname_background_alpha = colname_background_alpha,
@@ -180,15 +189,6 @@ ga_list = function(aspect_ratio_multiplier = NULL,
     colname_group_elements = colname_group_elements,
     colname_column_widths = colname_column_widths,
     colname_padding_p = colname_padding_p,
-    color_gradient_columns = color_gradient_columns,
-    color_gradient_binary = color_gradient_binary,
-    color_binary_cut_off = color_binary_cut_off,
-    color_binary_high = color_binary_high,
-    color_binary_low = color_binary_low,
-    color_binary_equal = color_binary_equal,
-    color_gradient_max = color_gradient_max,
-    color_gradient_mid = color_gradient_mid,
-    color_gradient_min = color_gradient_min,
     maintain_aspect_ratio = maintain_aspect_ratio,
     aspect_ratio_multiplier = aspect_ratio_multiplier,
     n_lines = n_lines,

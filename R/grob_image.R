@@ -31,11 +31,20 @@ grob_image = function(img_path,
 
   if (edit_dims) {
 
-    img_hw_ratio = dim(raw_png)[1]/dim(raw_png)[2]
-    img_wh_ratio = dim(raw_png)[2]/dim(raw_png)[1]
-
-    height_adj = ifelse(height >= width, height, width*img_hw_ratio)
-    width_adj = ifelse(width >= height, width, height*img_wh_ratio)
+    img_height_width_ratio = dim(raw_png)[1]/dim(raw_png)[2]
+    img_width_height_ratio = dim(raw_png)[2]/dim(raw_png)[1]
+    
+    if (height >= width) {
+      
+      width_adj = width
+      height_adj = width*img_height_width_ratio
+      
+    } else if (height < width) {
+      
+      height_adj = height
+      width_adj = height*img_width_height_ratio
+      
+    }
 
   } else {
 

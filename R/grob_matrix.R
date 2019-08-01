@@ -21,6 +21,7 @@ grob_matrix = function(df,
                        m_type = 1,
                        height = numeric(),
                        width = numeric(),
+                       padding = numeric(),
                        units = c('mm', 'cm', 'inches'),
                        text_cex_adj = 0.2){
 
@@ -28,7 +29,7 @@ grob_matrix = function(df,
   stopifnot(!length(height) == 0, !length(width) == 0)
   stopifnot(m_type %in% 1:5)
   units = match.arg(units)
-  
+
   m_type_desc = data.frame(
     m_type = c(1, 2, 3, 4, 5),
     desc = c('matrix', 'table', 'column names', 'caption', 'title')
@@ -72,7 +73,7 @@ grob_matrix = function(df,
     }
   }
 
-  padding = aes_list$padding_p*min(c(height, width))
+  padding = aes_list$padding_p*width
   
   def_vals_matrices = list(
     font_face = c(1, 1, 2, 3, 4),
@@ -95,7 +96,7 @@ grob_matrix = function(df,
   # Making adjustments to text_cex, if need be ----
   adjust_cex = length(aes_list$text_cex) == 0 &
     (length(height) == 1 & length(aes_list$row_heights) == 0)
-  
+
   if(!adjust_cex){
 
     def_text_cex = 2

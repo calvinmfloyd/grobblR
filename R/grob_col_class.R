@@ -143,14 +143,22 @@ grob_col_class = R6::R6Class(
       grob_height = height_w_padding - title_height - caption_height
       raw_grobs = grid::gList()
 
+      if (R6::is.R6(contents[[1]])) {
+        
+        inputted_heights = sapply(1:length(contents), function(i) contents[[i]]$height)
+        inputted_heights[!is.na(inputted_heights)] = inputted_heights[!is.na(inputted_heights)]/grob_height
+        if (any(!is.na(inputted_heights)))
+          for (i in which(!is.na(inputted_heights)))
+            contents[[i]]$proportion = inputted_heights[i]
+        
+        height_proportions = sapply(1:length(contents), function(i) contents[[i]]$proportion)
+        
+      }
+
       for(i in 1:length(contents)){
 
         if(R6::is.R6(contents[[i]])){
-
-          inputted_heights = sapply(1:length(contents), function(i) contents[[i]]$width)
-          inputted_heights[!is.na(inputted_heights)] = inputted_heights[!is.na(inputted_heights)]/grob_height
-          for(i in which(!is.na(inputted_heights))) contents[[i]]$proportion = inputted_heights[i]
-          height_proportions = sapply(1:length(contents), function(i) contents[[i]]$proportion)
+          
           contents[[i]]$height = grob_height*(height_proportions/sum(height_proportions))[i]
           contents[[i]]$width = width
           contents[[i]]$units = units

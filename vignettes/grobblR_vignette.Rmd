@@ -98,8 +98,8 @@ grid.arrange(gl$grob)
 
 ```{r grob_row grob}
 gl = grob_row(
-  grob_col('grob-column 1', border = T),
-  grob_col('grob-column 2', border = T)
+  grob_col('grob-column 1', border = TRUE),
+  grob_col('grob-column 2', border = TRUE)
   )
 gl$height = 50
 gl$width = 100
@@ -138,7 +138,7 @@ One benefit of this is in case the user isn't totally sure how many grob-rows th
 
 list_of_grob_rows = list()
 for(i in 1:4){
-  list_of_grob_rows[[i]] = grob_row(grob_col(i), grob_col(i^2), border = T)
+  list_of_grob_rows[[i]] = grob_row(grob_col(i), grob_col(i^2), border = TRUE)
 }
 
 gl = grob_layout(
@@ -157,7 +157,7 @@ The same utility can also be found with the `grob_row()` function:
 
 list_of_grob_cols = list()
 for(i in 1:4){
-  list_of_grob_cols[[i]] = grob_col(i, border = T)
+  list_of_grob_cols[[i]] = grob_col(i, border = TRUE)
 }
 
 gl = grob_layout(
@@ -177,18 +177,18 @@ One of the ways that makes `grobblR` truly flexible is the ability to create "ne
 ```{r 2x2 system w/ borders}
 gl = grob_layout(
   grob_row(
-    grob_col(1, border = T),
-    grob_col(2, border = T),
-    border = T
+    grob_col(1, border = TRUE),
+    grob_col(2, border = TRUE),
+    border = TRUE
     ),
   grob_row(
-    grob_col(3, border = T),
+    grob_col(3, border = TRUE),
     grob_col(
-      grob_row(grob_col(4, border = T), border = T),
-      grob_row(grob_col(5, border = T), border = T),
-      border = T
+      grob_row(grob_col(4, border = TRUE), border = TRUE),
+      grob_row(grob_col(5, border = TRUE), border = TRUE),
+      border = TRUE
       ),
-    border = T
+    border = TRUE
     ),
   height = 100,
   width = 100,
@@ -208,15 +208,15 @@ The `padding` parameter within `grob_layout()` controls the very outside padding
 gl = grob_layout(
   grob_row(
     # center
-    grob_col(1, border = T, padding = 5),
+    grob_col(1, border = TRUE, padding = 5),
     # top center
-    grob_col(2, border = T, padding = 5, vjust = 1)
+    grob_col(2, border = TRUE, padding = 5, vjust = 1)
     ),
   grob_row(
     # top right
-    grob_col(3, border = T, padding = 5, hjust = 1, vjust = 1),
+    grob_col(3, border = TRUE, padding = 5, hjust = 1, vjust = 1),
     # bottom left
-    grob_col(4, border = T, padding = 5, hjust = 0, vjust = 0)
+    grob_col(4, border = TRUE, padding = 5, hjust = 0, vjust = 0)
     ),
   height = 100,
   width = 100,
@@ -232,8 +232,8 @@ In order to control the height and the width of the size of these grids, the use
 
 ```{r 2x1 system - p parameter}
 gl = grob_layout(
-  grob_row(grob_col('p=2'), p = 2, border = T),
-  grob_row(grob_col('p=1'), p = 1, border = T),
+  grob_row(grob_col('p=2'), p = 2, border = TRUE),
+  grob_row(grob_col('p=1'), p = 1, border = TRUE),
   height = 100,
   width = 100,
   padding = 5
@@ -247,8 +247,8 @@ There are two grob-rows on the same, outermost layer of the grob-layout, so the 
 ```{r 1x2 system - p parameter}
 gl = grob_layout(
   grob_row(
-    grob_col('p=2', p = 2, border = T),
-    grob_col('p=1', p = 1, border = T)
+    grob_col('p=2', p = 2, border = TRUE),
+    grob_col('p=1', p = 1, border = TRUE)
     ),
   height = 100,
   width = 100,
@@ -270,14 +270,14 @@ In the `grobblR` package, there are many aspects the user can control the aesthe
 
 ### Borders
 
-As we just saw, setting `border = T` in either `grob_row()` or `grob_col()` puts a border around the respective grob-row or grob-column. Those borders can be customized with the `border_aes_list` parameter:
+As we just saw, setting `border = TRUE` in either `grob_row()` or `grob_col()` puts a border around the respective grob-row or grob-column. Those borders can be customized with the `border_aes_list` parameter:
 
 ```{r Border customization}
 gl = grob_layout(
   grob_row(
     grob_col(
       'A',
-      border = T,
+      border = TRUE,
       border_aes_list = ga_list(
         border_sides = 'right, bottom',
         border_color = 'red'
@@ -286,20 +286,20 @@ gl = grob_layout(
     grob_col(NA, p = 0.25),
     grob_col(
       'B',
-      border = T,
+      border = TRUE,
       border_aes_list = ga_list(border_width = 8)
       )
     ),
   grob_row(
     grob_col(
       'C',
-      border = T,
+      border = TRUE,
       border_aes_list = ga_list(border_sides = 'top, bottom')
       ),
     grob_col(NA, p = 0.25),
     grob_col(
       'D',
-      border = T,
+      border = TRUE,
       border_aes_list = ga_list(
         border_sides = 'left, right, bottom',
         border_color = 'blue',
@@ -388,7 +388,7 @@ Using the `aes_list` parameter and the `ga_list()` function within `grob_col()`,
 These flexible aesthetics make for an incredibly customizable matrix look. Say the user was only concerned with the background color of a matrix, and he/she wanted to have it uniform for every cell, all the user would need to do is set a single value for `background_color` as an element within `aes_list`:
 
 ```{r Setting mat}
-mat = matrix(1:4, nrow = 2, byrow = T)
+mat = matrix(1:4, nrow = 2, byrow = TRUE)
 mat
 ```
 
@@ -405,7 +405,7 @@ grid.arrange(gl$grob)
 But say the user wanted different cells of the matrix to have different background colors. He/she would need to specify a separate aesthetic matrix corresponding to the background color of each cell of the original matrix. Since `mat` is a `2 x 2` matrix, we need to specify a another `2 x 2` matrix with each element denoting a background color for each of the cells in `mat`:
 
 ```{r Setting color_mat}
-color_mat = matrix(c('white', 'red', 'gray90', 'blue'), nrow = 2, byrow = T)
+color_mat = matrix(c('white', 'red', 'gray90', 'blue'), nrow = 2, byrow = TRUE)
 color_mat
 ```
 
@@ -422,7 +422,7 @@ grid.arrange(gl$grob)
 The same can be said for most of the other aesthetic elements listed above. For example, the `text_color` can be changed for individual elements of a matrix, but `color_gradient_binary` is a `TRUE`/`FALSE` value, and cannot be changed for individual elements. Below is a grob-layout with 4 matrix grobs with various aesthetic elements tweaked.
 
 ```{r First matrix, cell-by-cell customization, 2}
-mat_char = matrix(c('Apple','Pear','Grape','Cherry'), nrow = 2, byrow = T)
+mat_char = matrix(c('Apple','Pear','Grape','Cherry'), nrow = 2, byrow = TRUE)
 
 gl = grob_layout(
   grob_row(
@@ -486,14 +486,14 @@ gl = grob_layout(
   grob_row(
     grob_col(
       df,
-      aes_list = ga_list(color_gradient_columns = 3)
+      aes_list = ga_list(cell_color_gradient_columns = 3)
       ),
     grob_col(
       df,
       aes_list = ga_list(
-        color_gradient_columns = 3,
-        color_gradient_binary = T,
-        color_binary_cut_off = 2.5
+        cell_color_gradient_columns = 3,
+        cell_color_gradient_binary = TRUE,
+        cell_color_binary_cut_off = 2.5
         )
       )
     ),
@@ -501,21 +501,21 @@ gl = grob_layout(
     grob_col(
       df,
       aes_list = ga_list(
-        color_gradient_columns = c(2,3),
-        color_gradient_max = 'blue',
-        color_gradient_mid = 'purple',
-        color_gradient_min = 'red'
+        cell_color_gradient_columns = c(2,3),
+        cell_color_gradient_max = 'blue',
+        cell_color_gradient_mid = 'purple',
+        cell_color_gradient_min = 'red'
         )
       ),
     grob_col(
       df,
       aes_list = ga_list(
-        color_gradient_columns = c(2,3),
-        color_gradient_binary = T,
-        color_binary_cut_off = 2,
-        color_binary_high = 'yellow',
-        color_binary_equal = 'green',
-        color_binary_low = 'blue'
+        cell_color_gradient_columns = c(2,3),
+        cell_color_gradient_binary = TRUE,
+        cell_color_binary_cut_off = 2,
+        cell_color_binary_high = 'yellow',
+        cell_color_binary_equal = 'green',
+        cell_color_binary_low = 'blue'
         )
       )
     ),
@@ -536,20 +536,26 @@ gl = grob_layout(
     grob_col(df),
     grob_col(
       df,
-      aes_list = ga_list(colname_text_color = 'red', text_color = 'blue')
+      aes_list = ga_list(
+        colname_text_color = 'red',
+        cell_text_color = 'blue'
+        )
       )
     ),
   grob_row(
     grob_col(
       df,
-      aes_list = ga_list(colname_font_face = 3, font_face = 2)
+      aes_list = ga_list(
+        colname_font_face = 3,
+        cell_font_face = 2
+        )
       ),
     grob_col(
       df,
       aes_list = ga_list(
         colname_text_color = c('red','purple','blue'),
         colname_background_color = 'gray90',
-        background_color = 'white'
+        cell_background_color = 'white'
         )
       )
     ),
@@ -569,8 +575,8 @@ plain_vector = c(1, 2, 3)
 named_vector = c('a' = 4, 'b' = 5, 'c' = 6)
 
 gl = grob_layout(
-  grob_row(grob_col(plain_vector), border = T),
-  grob_row(grob_col(named_vector), border = T),
+  grob_row(grob_col(plain_vector), border = TRUE),
+  grob_row(grob_col(named_vector), border = TRUE),
   height = 100,
   width = 100
   )
@@ -587,13 +593,19 @@ The next objects accepted by `grobblR` are `ggplot2` plots. The `ggplot` is stre
 ```{r ggplot Grobs}
 data(iris)
 library(ggplot2)
-gg1 = ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+gg1 = ggplot(
+  data = iris, 
+  mapping = aes(x = Sepal.Length, y = Sepal.Width, color = Species)
+  ) +
   geom_point() +
-  guides(color = F)
+  guides(color = FALSE)
 
-gg2 = ggplot(iris, aes(x = Sepal.Length, y = Petal.Length, color = Species)) +
+gg2 = ggplot(
+  data = iris,
+  mapping = aes(x = Sepal.Length, y = Petal.Length, color = Species)
+  ) +
   geom_point() +
-  guides(color = F)
+  guides(color = FALSE)
 
 gl = grob_layout(
   title = 'Iris Dataset',
@@ -615,12 +627,12 @@ Currently, only images in `.png` format are allowed in `grobblR`. In order for `
 ```{r .png Grobs}
 gl = grob_layout(
   grob_row(
-    border = T,
-    grob_col('kings_logo.png', border = T),
+    border = TRUE,
+    grob_col('kings_logo.png', border = TRUE),
     grob_col(
       'kings_logo.png',
-      aes_list = ga_list(maintain_aspect_ratio = F),
-      border = T
+      aes_list = ga_list(maintain_aspect_ratio = FALSE),
+      border = TRUE
       )
     ),
   height = 100,
@@ -640,7 +652,7 @@ Also in Sacramento, we would need to include paragraphs of scouting reports for 
 text = "The quick brown fox jumps over the lazy dog."
 
 gl = grob_layout(
-  grob_row(grob_col(text, border = T), border = T),
+  grob_row(border = TRUE, grob_col(text, border = TRUE)),
   height = 100,
   width = 100
   )
@@ -667,14 +679,14 @@ bulleted_list = paste0(
   )
 
 gl = grob_layout(
-  grob_row(border = T, grob_col(text, border = T)),
+  grob_row(border = TRUE, grob_col(text, border = T)),
   grob_row(
     p = 2/3,
-    border = T,
-    grob_col(border = T, text, aes_list = ga_list(n_lines = 1, text_just = 'right'))
+    border = TRUE,
+    grob_col(border = TRUE, text, aes_list = ga_list(n_lines = 1, text_just = 'right'))
     ),
   grob_row(
-    border = T,
+    border = TRUE,
     grob_col(
       bulleted_list,
       aes_list = ga_list(
@@ -703,7 +715,7 @@ Us here at the `grobblR` HQ understand that sometimes the user will need to bump
 ```{r empty space grob}
 gl = grob_layout(
   grob_row(
-    border = T,
+    border = TRUE,
     grob_col(df, padding = 0),
     grob_col(
       padding = 0,
@@ -748,10 +760,6 @@ bench_bulleted_list = paste0(
 ```
 
 ```{r two page grob-layout}
-# dummy text
-pars = unlist(strsplit(UsingR::lorem, "\n\n"))
-first_paragraph = pars[1]
-second_paragraph = pars[2]
 sac_purple = '#5A2D81'
 
 first_page_gl = grob_layout(
@@ -826,7 +834,7 @@ second_page_gl = grob_layout(
       )
     ),
   grob_row(
-    border = T,
+    border = TRUE,
     border_aes_list = ga_list(border_width = 4, border_color = sac_purple),
     grob_col(
       grob_row(p = 2, grob_col('webber.png')),
@@ -862,7 +870,7 @@ second_page_gl = grob_layout(
 
 Now that we have two grob-layout pages established, let's put them together into a single PDF document with `grob_to_pdf()`! With the `grob_to_pdf()` function, the user has to provide a `file_name` for the PDF output, and whether to add a page number to each of the grob-layouts in their bottom-right corners. Only the objects outputted by `grob_layout()` can be inserted into `grob_to_pdf()`, either loose or contained in a single list:
 
-```{r Grob to PDF, eval=F}
+```{r Grob to PDF, eval=TRUE}
 # grob_to_pdf(
 #   first_page_gl,
 #   second_page_gl,
@@ -875,7 +883,8 @@ Now that we have two grob-layout pages established, let's put them together into
 grob_to_pdf(
   list(first_page_gl, second_page_gl),
   file_name = 'grobblR_vignette',
-  add_page_numbers = T
+  add_page_numbers = TRUE,
+  meta_data_title = 'grobblR SAC 2001-02 Summary'
   )
 ```
 
