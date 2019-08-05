@@ -44,7 +44,7 @@ grob_matrix = function(df,
   # Adding in default values (non-matrices) if they are missing ----
   def_vals_non_matrices = list(
     group_elements = FALSE,
-    padding_p = 0.05,
+    padding_p = 0.005,
     color_gradient_columns = numeric(),
     color_gradient_binary = FALSE,
     color_binary_cut_off = 0,

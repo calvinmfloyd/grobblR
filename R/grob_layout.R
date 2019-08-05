@@ -33,7 +33,7 @@ grob_layout = function(...,
                        caption = '',
                        caption_aes_list = ga_list(),
                        caption_p = 0.05,
-                       padding_p = 0.1,
+                       padding_p = 0.05,
                        padding = NA_real_,
                        page_number = ''){
 
