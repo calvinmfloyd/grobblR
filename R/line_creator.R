@@ -7,12 +7,16 @@
 #' @param width A numeric value designating the total width of the matrix grob in mm.
 #' @return A list containing a vector with each index equal to a line of the broken-down string, a TRUE/FALSE value indicating whether the lines will fit within equal sized rows and the widths in mm of each of the lines.
 
-line_creator = function(cex_val, string, height = numeric(), width = numeric(), sep = '\n'){
-
-  in_to_mm = function(x) x*25.4
+line_creator = function(cex_val,
+                        string,
+                        height = numeric(),
+                        width = numeric(),
+                        units = c('mm', 'cm', 'inches'),
+                        sep = '\n') {
 
   if(sep == '|') stop("Cannot use '|' as a separator.", call. = F)
-
+  units = match.arg(units)
+  
   paragraphs = unlist(strsplit(string, split = sep))
 
   if(length(paragraphs) == 0){
@@ -30,8 +34,11 @@ line_creator = function(cex_val, string, height = numeric(), width = numeric(), 
 
       words = unlist(strsplit(p, ' '))
       n_words = length(words)
-      width_of_words = in_to_mm(graphics::strwidth(paste(words, ' '), cex = cex_val, units = 'inches'))
-
+      width_of_words = units_convert(
+        graphics::strwidth(paste(words, ' '), cex = cex_val, units = 'inches'),
+        from_units = 'inches',
+        to_units = units
+        )
       out_of_words = FALSE
       line_index_start = 1
       words_to_line = rep(0, n_words)
@@ -48,9 +55,17 @@ line_creator = function(cex_val, string, height = numeric(), width = numeric(), 
     }
 
       n_lines = length(lines)
-      width_of_lines = in_to_mm(graphics::strwidth(lines, cex = cex_val, units = 'inches'))
+      width_of_lines = units_convert(
+        graphics::strwidth(lines, cex = cex_val, units = 'inches'),
+        from_units = 'inches',
+        to_units = units
+        )
       potential_rh = (height/n_lines) - (height/n_lines)*0.5
-      actual_rh = max(in_to_mm(graphics::strheight(lines, cex = cex_val, units = 'inches')))
+      actual_rh = max(units_convert(
+        graphics::strheight(lines, cex = cex_val, units = 'inches'),
+        from_units = 'inches',
+        to_units = units
+        ))
 
     list(
       'valid' = actual_rh < potential_rh & max(width_of_lines) < width,

@@ -4,13 +4,21 @@
 \alias{ga_list}
 \title{Grob aesthetic list used to control aesthetics within `grobblR`.}
 \usage{
-ga_list(background_color = NULL, background_alpha = NULL,
-  border_color = NULL, border_sides = NULL, border_width = NULL,
-  font_face = NULL, text_color = NULL, text_align = NULL,
-  text_v_align = NULL, text_just = NULL, text_v_just = NULL,
-  text_cex = NULL, text_font = NULL, round_rect_radius = NULL,
-  group_elements = NULL, row_heights = NULL, column_widths = NULL,
-  cell_sep = NULL, colname_font_face = NULL,
+ga_list(aspect_ratio_multiplier = NULL, background_color = NULL,
+  background_alpha = NULL, border_color = NULL, border_sides = NULL,
+  border_width = NULL, font_face = NULL, text_color = NULL,
+  text_align = NULL, text_v_align = NULL, text_just = NULL,
+  text_v_just = NULL, text_cex = NULL, text_font = NULL,
+  round_rect_radius = NULL, column_widths = NULL, padding_p = NULL,
+  cell_font_face = NULL, cell_background_color = NULL,
+  cell_background_alpha = NULL, cell_border_color = NULL,
+  cell_border_sides = NULL, cell_border_width = NULL,
+  cell_text_color = NULL, cell_text_align = NULL,
+  cell_text_v_align = NULL, cell_text_just = NULL,
+  cell_text_v_just = NULL, cell_text_cex = NULL,
+  cell_text_font = NULL, cell_round_rect_radius = NULL,
+  cell_group_elements = NULL, cell_column_widths = NULL,
+  cell_padding_p = NULL, colname_font_face = NULL,
   colname_background_color = NULL, colname_background_alpha = NULL,
   colname_border_color = NULL, colname_border_sides = NULL,
   colname_border_width = NULL, colname_text_color = NULL,
@@ -18,16 +26,17 @@ ga_list(background_color = NULL, background_alpha = NULL,
   colname_text_just = NULL, colname_text_v_just = NULL,
   colname_text_cex = NULL, colname_text_font = NULL,
   colname_round_rect_radius = NULL, colname_group_elements = NULL,
-  colname_row_heights = NULL, colname_column_widths = NULL,
-  colname_cell_sep = NULL, color_gradient_columns = NULL,
-  color_gradient_binary = NULL, color_binary_cut_off = NULL,
-  color_binary_high = NULL, color_binary_low = NULL,
-  color_binary_equal = NULL, color_gradient_max = NULL,
-  color_gradient_mid = NULL, color_gradient_min = NULL,
-  maintain_aspect_ratio = NULL, hjust = NULL, vjust = NULL,
-  n_lines = NULL, sep = NULL)
+  colname_column_widths = NULL, colname_padding_p = NULL,
+  color_gradient_columns = NULL, color_gradient_binary = NULL,
+  color_binary_cut_off = NULL, color_binary_high = NULL,
+  color_binary_low = NULL, color_binary_equal = NULL,
+  color_gradient_max = NULL, color_gradient_mid = NULL,
+  color_gradient_min = NULL, maintain_aspect_ratio = NULL,
+  n_lines = NULL, str_sep = NULL)
 }
 \arguments{
+\item{aspect_ratio_multiplier}{A numeric value which controls how much to increase/decrease the aspect ratio of images or ggplots.}
+
 \item{background_color}{Controls the background color of the elements of the matrix. If the matrix has no rownames or colnames, the default is white. If the matrix has column names, the default is white-gray90 on every odd-even row. Used with matrices.}
 
 \item{background_alpha}{Controls the background alpha/opacity of the elements of the matrix. Values are used in \code{grid::gpar()}. Default is 1.0. Used with matrices.}
@@ -56,49 +65,73 @@ ga_list(background_color = NULL, background_alpha = NULL,
 
 \item{round_rect_radius}{Controls the radius of the corners of the rectangles matrix text is laid on top of. Used with matrices.}
 
-\item{group_elements}{Controls whether same, adjacent elements within the matrix should be grouped together into one single grid. A TRUE/FALSE value, with the default being FALSE. Used with matrices.}
+\item{column_widths}{If automatic column widths are not desired, the user can provide a vector of widths for each column in the matrix in whatever units are specified in the grob-layout. Used with matrices.}
 
-\item{row_heights}{If equal row heights are not desired, the user can provide a vector of heights for each row in the matrix in mm. Used with matrices.}
+\item{padding_p}{Controls the amount of proportional padding around each matrix cell. Used with matrices.}
 
-\item{column_widths}{If automatic column widths are not desired, the user can provide a vector of widths for each column in the matrix in mm. Used with matrices.}
+\item{cell_font_face}{Controls the font face of matrix cells. Overridden by the \code{font_face} parameter.}
 
-\item{cell_sep}{Controls the amount of padding around each cell in mm. Default is 1 mm. Used with matrices.}
+\item{cell_background_color}{Controls the \code{background_color} of matrix cells. Overridden by the \code{background_color} parameter.}
 
-\item{colname_font_face}{Controls the font face of column names.}
+\item{cell_background_alpha}{Controls the \code{background_alpha} of matrix cells. Overridden by the \code{background_alpha} parameter.}
 
-\item{colname_background_color}{Controls the \code{background_color} of column names.}
+\item{cell_border_color}{Controls the \code{border_color} of matrix cells. Overridden by the \code{border_color} parameter.}
 
-\item{colname_background_alpha}{Controls the \code{background_alpha} of column names.}
+\item{cell_border_sides}{Controls the \code{border_sides} of matrix cells. Overridden by the \code{border_sides} parameter.}
 
-\item{colname_border_color}{Controls the \code{border_color} of column names.}
+\item{cell_border_width}{Controls the \code{border_width} of matrix cells. Overridden by the \code{border_width} parameter.}
 
-\item{colname_border_sides}{Controls the \code{border_sides} of column names.}
+\item{cell_text_color}{Controls the \code{text_color} of matrix cells. Overridden by the \code{text_color} parameter.}
 
-\item{colname_border_width}{Controls the \code{border_width} of column names.}
+\item{cell_text_align}{Controls the \code{text_align} of matrix cells. Overridden by the \code{text_align} parameter.}
 
-\item{colname_text_color}{Controls the \code{text_color} of column names.}
+\item{cell_text_v_align}{Controls the \code{text_v_align} of matrix cells. Overridden by the \code{text_v_align} parameter.}
 
-\item{colname_text_align}{Controls the \code{text_align} of column names.}
+\item{cell_text_just}{Controls the \code{text_just} of matrix cells. Overridden by the \code{text_just} parameter.}
 
-\item{colname_text_v_align}{Controls the \code{text_v_align} of column names.}
+\item{cell_text_v_just}{Controls the \code{text_v_just} of matrix cells. Overridden by the \code{text_v_just} parameter.}
 
-\item{colname_text_just}{Controls the \code{text_just} of column names.}
+\item{cell_text_cex}{Controls the \code{text_cex} of matrix cells. Overridden by the \code{text_cex} parameter.}
 
-\item{colname_text_v_just}{Controls the \code{text_v_just} of column names.}
+\item{cell_text_font}{Controls the \code{text_font} of matrix cells. Overridden by the \code{text_font} parameter.}
 
-\item{colname_text_cex}{Controls the \code{text_cex} of column names.}
+\item{cell_round_rect_radius}{Controls the \code{round_rect_radius} of matrix cells. Overridden by the \code{round_rect_radius} parameter.}
 
-\item{colname_text_font}{Controls the \code{text_font} of column names.}
+\item{cell_column_widths}{Controls the \code{column_widths} of matrix cells. Overridden by the \code{column_widths} parameter.}
 
-\item{colname_round_rect_radius}{Controls the \code{round_rect_radius} of column names.}
+\item{cell_padding_p}{Controls the \code{padding_p} of matrix cells. Overridden by the \code{padding_p} parameter.}
 
-\item{colname_group_elements}{Controls the \code{group_elements} of column names.}
+\item{colname_font_face}{Controls the font face of column names. Overridden by the \code{font_face} parameter.}
 
-\item{colname_row_heights}{Controls the \code{row_heights} of column names.}
+\item{colname_background_color}{Controls the \code{background_color} of column names. Overridden by the \code{background_color} parameter.}
 
-\item{colname_column_widths}{Controls the \code{column_widths} of column names.}
+\item{colname_background_alpha}{Controls the \code{background_alpha} of column names. Overridden by the \code{background_alpha} parameter.}
 
-\item{colname_cell_sep}{Controls the \code{cell_sep} of column names.}
+\item{colname_border_color}{Controls the \code{border_color} of column names. Overridden by the \code{border_color} parameter.}
+
+\item{colname_border_sides}{Controls the \code{border_sides} of column names. Overridden by the \code{border_sides} parameter.}
+
+\item{colname_border_width}{Controls the \code{border_width} of column names. Overridden by the \code{border_width} parameter.}
+
+\item{colname_text_color}{Controls the \code{text_color} of column names. Overridden by the \code{text_color} parameter.}
+
+\item{colname_text_align}{Controls the \code{text_align} of column names. Overridden by the \code{text_align} parameter.}
+
+\item{colname_text_v_align}{Controls the \code{text_v_align} of column names. Overridden by the \code{text_v_align} parameter.}
+
+\item{colname_text_just}{Controls the \code{text_just} of column names. Overridden by the \code{text_just} parameter.}
+
+\item{colname_text_v_just}{Controls the \code{text_v_just} of column names. Overridden by the \code{text_v_just} parameter.}
+
+\item{colname_text_cex}{Controls the \code{text_cex} of column names. Overridden by the \code{text_cex} parameter.}
+
+\item{colname_text_font}{Controls the \code{text_font} of column names. Overridden by the \code{text_font} parameter.}
+
+\item{colname_round_rect_radius}{Controls the \code{round_rect_radius} of column names. Overridden by the \code{round_rect_radius} parameter.}
+
+\item{colname_column_widths}{Controls the \code{column_widths} of column names. Overridden by the \code{column_widths} parameter.}
+
+\item{colname_padding_p}{Controls the \code{padding_p} of column names. Overridden by the \code{padding_p} parameter.}
 
 \item{color_gradient_columns}{Controls the columns which a color gradient scale will be applied to. Integer values denoting the column numbers. Can only be applied to columns with all numeric values. Used with matrices.}
 
@@ -122,7 +155,7 @@ ga_list(background_color = NULL, background_alpha = NULL,
 
 \item{n_lines}{The maximum number of lines is desired for the character string to be broken up into. Used with character strings.}
 
-\item{sep}{The separator within the character string which designates where a new line should start. Used with character strings.}
+\item{str_sep}{The separator within the character string which designates where a new line should start. Used with character strings.}
 }
 \value{
 A list with all possible aesthetic elements that can be adjusted, with the class of "grob_aes_list".

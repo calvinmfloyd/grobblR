@@ -4,13 +4,14 @@ cex_val_convergence = function(string,
                                sep,
                                height,
                                width,
+                               units = c('mm', 'cm', 'inches'),
                                cex_val_min = 0,
                                cex_val_max = 50,
                                convergence_limit = 0.25){
 
   sep = ifelse(is.null(sep), '\n', sep)
   n_lines = ifelse(is.null(n_lines), 10000, n_lines)
-  if(sep == '|') stop("Cannot use '|' as a separator.", call. = F)
+  if(sep == '|') stop("Cannot use '|' as a separator.", call. = FALSE)
 
   cv_min = cex_val_min
   cv_max = cex_val_max
@@ -37,6 +38,7 @@ cex_val_convergence = function(string,
       string = string,
       height = height,
       width = width,
+      units = units,
       sep = sep
     )
     fit_valid = lc$valid

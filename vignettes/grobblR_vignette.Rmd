@@ -22,12 +22,19 @@ knitr::opts_chunk$set(
 
 Being an avid user of R, I attempt to do everything I need to do within R and avoid using other applications such as Microsoft Excel. When I first started using R, however, I found Excel to be noticeably better at one thing in particular: Creating extremely customizable PDF reports. In Excel you can shade specific cells, adjust font sizes, pick borders and many other things to create unique-looking reports which are able to be fitted onto a single sheet of paper. While Excel is very good at being flexible and letting the user customize the look of the report, the process is rather manual and forces a user like myself to go outside the R workspace to another application.
 
-Working for the Sacramento Kings in their analytics department, we needed to create various reports on a daily basis and we were not about to do our data analysis in R, transfer the data into Excel, and then format the report to how we wanted it to look. We needed to come up with a way to create automated, flexible multi-page PDF reports within the R environment for our front office and coaching staff. The `grobblR` package is an extenstion of the methodology we implemented to create those reports - using "grid graphical objects", AKA *grobs*, as seen in the `grid` and `gridExtra` packages. 
+Working for the Sacramento Kings in their analytics department, we needed to create various reports on a daily basis and we were not about to do our data analysis in R, transfer the data into Excel, and then format the report to how we wanted it to look. We needed to come up with a way to create automated, flexible multi-page PDF reports within the R environment for our front office and coaching staff. The `grobblR` package is an extension of the methodology we implemented to create those reports - using "grid graphical objects", AKA *grobs*, as seen in the `grid` and `gridExtra` packages. 
 
 ```{r Install grobblR}
 # devtools::install_github('calvinmfloyd/grobblR')
 devtools::load_all()
 ```
+
+Note: To plot and view the grobs as we produce them, we can either use the generic `plot(grob)` or `gridExtra::grid.arrange(grob)`. Since the plots outputted by `grid.arrange()` more resemble the PDF reports outputted by by `grobblR`, we will load in the `gridExtra` package, and use its functionality to display the grobs in this vignette.
+
+```{r Load in gridExtra}
+library(gridExtra)
+```
+
 
 ***
 
@@ -63,7 +70,7 @@ gl = grob_layout(
   padding = 5
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 The `grob_row()`'s tell the `grob_layout()` that we want two rows on the outermost layer, and since there are two `grob_col()`'s within each of the `grob_row()`'s, the result is a `2 x 2` grid. But the result doesn't have to be a nice `2 x 2` grid - we could have a layout where the first row has two columns and the second has one:
@@ -77,26 +84,26 @@ gl = grob_layout(
   padding = 5
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
-Similar to the objects outputted by `grob_layout()`, the objects outputted by `grob_row()` and `grob_col()` also can produce their own grobs. Not as clean as performing the actions through `grob_layout()`, but the height and width can also be tweaked for these grob-column and grob-row objects - where the default for both is `100mm x 100mm` (setting `border = T` will be addressed later on).
+Similar to the objects outputted by `grob_layout()`, the objects outputted by `grob_row()` and `grob_col()` also can produce their own grobs. Not as clean as performing the actions through `grob_layout()`, but the height and width can also be tweaked for these grob-column and grob-row objects - where the default for both is `100mm x 100mm` (setting `border = TRUE` will be addressed later on).
 
 ```{r grob_col grob}
-gl = grob_col('grob-column grob')
-gl$height = 50
-gl$width = 50
-gridExtra::grid.arrange(gl$grob)
+gc = grob_col('grob-column grob')
+gc$height = 50
+gc$width = 50
+grid.arrange(gc$grob)
 ```
 
 ```{r grob_row grob}
-gl = grob_row(
-  grob_col('grob-column 1', border = T),
-  grob_col('grob-column 2', border = T)
+gr = grob_row(
+  grob_col('grob-column 1', border = TRUE),
+  grob_col('grob-column 2', border = TRUE)
   )
-gl$height = 50
-gl$width = 100
-gridExtra::grid.arrange(gl$grob)
+gr$height = 50
+gr$width = 100
+grid.arrange(gr$grob)
 ```
 
 Another feature of `grobblR` is that the outermost `grob_row()` objects can either be loose within `grob_layout()` or they can be contained within a list:
@@ -122,7 +129,7 @@ gl = grob_layout(
   padding = 5
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 One benefit of this is in case the user isn't totally sure how many grob-rows there will be within the grob-layout, the user does not explicitly need to define each grob-row: He/she can dynamically create the list of grob-rows and insert that list within `grob_layout()`.
@@ -131,7 +138,7 @@ One benefit of this is in case the user isn't totally sure how many grob-rows th
 
 list_of_grob_rows = list()
 for(i in 1:4){
-  list_of_grob_rows[[i]] = grob_row(grob_col(i), grob_col(i^2), border = T)
+  list_of_grob_rows[[i]] = grob_row(border = TRUE, grob_col(i), grob_col(i^2))
 }
 
 gl = grob_layout(
@@ -141,7 +148,7 @@ gl = grob_layout(
   padding = 5
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 The same utility can also be found with the `grob_row()` function:
@@ -150,7 +157,7 @@ The same utility can also be found with the `grob_row()` function:
 
 list_of_grob_cols = list()
 for(i in 1:4){
-  list_of_grob_cols[[i]] = grob_col(i, border = T)
+  list_of_grob_cols[[i]] = grob_col(border = TRUE, i)
 }
 
 gl = grob_layout(
@@ -160,79 +167,85 @@ gl = grob_layout(
   padding = 5
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 ### Nested Rows and Columns
 
-One of the ways that makes `grobblR` truly flexible is the ability to create "nested" rows and columns - where we can insert grob-rows into grob-columns, and vice-versa. This is made possible by incorporating the `R6` package's active classes. Say we wanted to edit the above grob and add a second grob-column in the second grob-row which contains two grob-rows within it, we would write (setting `border = T` for each of the grob-rows and grob-columns to see how space is allocated):
+One of the ways that makes `grobblR` truly flexible is the ability to create "nested" rows and columns - where we can insert grob-rows into grob-columns, and vice-versa. This is made possible by incorporating the `R6` package's active classes. Say we wanted to edit the above grob and add a second grob-column in the second grob-row which contains two grob-rows within it, we would write (setting `border = TRUE` for each of the grob-rows and grob-columns to see how space is allocated):
 
 ```{r 2x2 system w/ borders}
 gl = grob_layout(
   grob_row(
-    grob_col(1, border = T),
-    grob_col(2, border = T),
-    border = T
+    border = TRUE,
+    grob_col(border = TRUE, 1),
+    grob_col(border = TRUE, 2)
     ),
   grob_row(
-    grob_col(3, border = T),
+    border = TRUE,
+    grob_col(border = TRUE, 3),
     grob_col(
-      grob_row(grob_col(4, border = T), border = T),
-      grob_row(grob_col(5, border = T), border = T),
-      border = T
-      ),
-    border = T
+      border = TRUE,
+      grob_row(border = TRUE, grob_col(border = TRUE, 4)),
+      grob_row(border = TRUE, grob_col(border = TRUE, 5))
+      )
     ),
   height = 100,
   width = 100,
   padding = 5
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 Note that `grob_col()` is where the object of the user's choosing is actually converted to a grob, and each `grob_col()` needs to be wrapped in a `grob_row()`, in order for the flow of information to work correctly. Thus, the outermost layer in a grob-layout must consist of grob-rows, each of which have one or several grob-columns inside.
 
 ### Padding
 
-The `padding` parameter within `grob_layout()` controls the very outside padding on the page, and the `padding` parameter within `grob_col()` controls the amount of room between the grob itself and the outer grob-row - helping separate the grobs and giving them air to breathe. The `padding` parameter within `grob_col()` allows grob-columns to be shifted around its allotted space, making use of the `hjust` and `vjust` parameters within `grob_col()`. The defaults for both are `0.5` (having the grob centered in its allotted space). Setting `hjust` to `1.0` pushes the grob as far right as it can go (opposite for setting it to `0.0`), and setting `vjust` to `1.0` pushes the grob as far to the top as it can go (again, opposite for setting it to `0.0`):
+The `padding_p` and `padding` parameters within `grob_layout()` controls the very outside padding on the page, and the `padding_p` and `padding` parameters within `grob_col()` controls the amount of room between the grob itself and the outer grob-row - helping separate the grobs and giving them air to breathe. Note that `padding_p` is the default and takes a small percentage of the height or width (depending on which is less) and uses that as the padding around the space. If `padding` is set to a numeric amount in the units specified in the grob-layout, then that will override the corresponding `padding_p`.
+
+The padding parameters within `grob_col()` allows grob-columns to be shifted around its allotted space, making use of the `hjust` and `vjust` parameters within `grob_col()`. The defaults for both are `0.5` (having the grob centered in its allotted space). Setting `hjust` to `1.0` pushes the grob as far right as it can go (opposite for setting it to `0.0`), and setting `vjust` to `1.0` pushes the grob as far to the top as it can go (again, opposite for setting it to `0.0`). The `hjust` and `vjust` parameters can also be pushed past 0 and 1 to better nudge around grob-columns to where the user wants them, though it should be noted that if they go past > 1 or < 0, the grob-columns will be outside of their allotted space.
 
 ```{r hjust and vjust}
 gl = grob_layout(
   grob_row(
     # center
-    grob_col(1, border = T, padding = 5),
-    # top center
-    grob_col(2, border = T, padding = 5, vjust = 1)
+    grob_col(1, border = TRUE, padding = 5),
+    # top, center
+    grob_col(2, border = TRUE, padding = 5, vjust = 1),
+    # extreme top, center
+    grob_col(3, border = TRUE, padding = 5, vjust = 1.75)
     ),
   grob_row(
-    # top right
-    grob_col(3, border = T, padding = 5, hjust = 1, vjust = 1),
-    # bottom left
-    grob_col(4, border = T, padding = 5, hjust = 0, vjust = 0)
+    # extreme bottom, left
+    grob_col(4, border = TRUE, padding = 5, hjust = -0.5, vjust = -1),
+    # bottom, left
+    grob_col(5, border = TRUE, padding = 5, hjust = 0, vjust = 0),
+    # top, left
+    grob_col(6, border = TRUE, padding = 5, hjust = 0, vjust = 1)
     ),
   height = 100,
   width = 100,
   padding = 5
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
-### Size Control - Proportion Paramter
+### Size Control - Proportion Parameter
 
 In order to control the height and the width of the size of these grids, the user must tweak the `p` parameter within both `grob_row()` and `grob_col()`. The default for `p` is 1, but let's see what happens when we tweak it for a grid-system with two grob-rows:
 
 ```{r 2x1 system - p parameter}
 gl = grob_layout(
-  grob_row(grob_col('p=2'), p = 2, border = T),
-  grob_row(grob_col('p=1'), p = 1, border = T),
+  grob_row(grob_col('p=2'), p = 2, border = TRUE),
+  grob_row(grob_col('p=1'), p = 1, border = TRUE),
   height = 100,
   width = 100,
   padding = 5
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 There are two grob-rows on the same, outermost layer of the grob-layout, so the height of the page, 90 mm (removing 10 mm for padding), will be distributed between those two grob-rows. The `p` parameter (standing for "proportion"), controls how the height is proportionally distributed. Since the first grob-row has a `p` of 2, and the second has a `p` of 1, the first grob-row gets `2/(2+1) = 2/3` of the height (60 mm), and the second grob-row gets `1/(2+1) = 1/3` of the height (30 mm). If the user sets `p` to a positive value less than one, say `p = 1/3`, then that grob-row would receive one-third of the proportion of the grob-rows on its level/layer (assuming all other grob-rows on its level/layer have `p = 1`). The same logic applies to grob-columns:
@@ -240,15 +253,15 @@ There are two grob-rows on the same, outermost layer of the grob-layout, so the 
 ```{r 1x2 system - p parameter}
 gl = grob_layout(
   grob_row(
-    grob_col('p=2', p = 2, border = T),
-    grob_col('p=1', p = 1, border = T)
+    grob_col('p=2', p = 2, border = TRUE),
+    grob_col('p=1', p = 1, border = TRUE)
     ),
   height = 100,
   width = 100,
   padding = 5
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 Since these are grob-columns and not grob-rows, the width, and not the height, of the allotted space is distributed among the two grob-columns. The same logic applies as the user goes deeper and deeper into the nested grob-rows and grob-columns - allotted space is equally distributed among grob-rows or grob-columns on the same level/layer unless the user specifies differently with `p`. It should be noted that `p` can be any positive numeric value, integer or not.
@@ -259,45 +272,45 @@ Since these are grob-columns and not grob-rows, the width, and not the height, o
 
 ### Grob Aesthetic Control - `ga_list`
 
-In the `grobblR` package, there are many aspects the user can control the aesthetics of: Borders with the `border_aes_list` parameter, titles with the `title_aes_list` parameter, and aesthetics within the grobs themselves with the `aes_list` parameter. The user can only utilize these aesthetic paramters by using the `ga_list()` function, which has a wide variety of aesthetic options accepted by `grobblR` (such as `text_color` and `border_width`). Another pro of the function is that the user can easily see which aesthetic tweaks are allowed by going through the parameters of `ga_list()`. Examples of how `ga_list()` is implemented can be seen below in succeeding sections.
+In the `grobblR` package, there are many aspects the user can control the aesthetics of: Borders with the `border_aes_list` parameter, titles with the `title_aes_list` parameter, and aesthetics within the grobs themselves with the `aes_list` parameter. The user can only utilize these aesthetic parameters by using the `ga_list()` function, which has a wide variety of aesthetic options accepted by `grobblR` (such as `text_color` and `border_width`). Another pro of the function is that the user can easily see which aesthetic tweaks are allowed by going through the parameters of `ga_list()`. Examples of how `ga_list()` is implemented can be seen below in succeeding sections.
 
 ### Borders
 
-As we just saw, setting `border = T` in either `grob_row()` or `grob_col()` puts a border around the respective grob-row or grob-column. Those borders can be customized with the `border_aes_list` parameter:
+As we just saw, setting `border = TRUE` in either `grob_row()` or `grob_col()` puts a border around the respective grob-row or grob-column. Those borders can be customized with the `border_aes_list` parameter:
 
 ```{r Border customization}
 gl = grob_layout(
   grob_row(
     grob_col(
-      'A',
-      border = T,
+      border = TRUE,
       border_aes_list = ga_list(
         border_sides = 'right, bottom',
         border_color = 'red'
-        )
+        ),
+      'A'
       ),
-    grob_col(NA, p = 0.25),
+    grob_col(p = 0.25, NA),
     grob_col(
-      'B',
-      border = T,
-      border_aes_list = ga_list(border_width = 8)
+      border = TRUE,
+      border_aes_list = ga_list(border_width = 8),
+      'B'
       )
     ),
   grob_row(
     grob_col(
-      'C',
-      border = T,
-      border_aes_list = ga_list(border_sides = 'top, bottom')
+      border = TRUE,
+      border_aes_list = ga_list(border_sides = 'top, bottom'),
+      'C'
       ),
-    grob_col(NA, p = 0.25),
+    grob_col(p = 0.25, NA),
     grob_col(
-      'D',
-      border = T,
+      border = TRUE,
       border_aes_list = ga_list(
         border_sides = 'left, right, bottom',
         border_color = 'blue',
         border_width = 5
-        )
+        ),
+      'D'
       )
     ),
   height = 100,
@@ -305,10 +318,10 @@ gl = grob_layout(
   padding = 5
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
-The `border_aes_list` controls the aesthetics of the border. The three aesthetic controls for `border_aes_list` are `border_color`, which controls the color of the lines, `border_width`, which controls the thickness of the lines, and `border_sides`. As you can guess, `border_sides` within `ga_list()` controls which of the four borders show up around the grob-row or grob-column. Setting `border_sides` equal to "left, right" will show only the left and right borders and gets rid of the top and bottom ones. The default is "top, bottom, left, right", which gives all four sides of the border. Of course, these border aesthetics will only show up if `border = T`.
+The `border_aes_list` controls the aesthetics of the border. The three aesthetic controls for `border_aes_list` are `border_color`, which controls the color of the lines, `border_width`, which controls the thickness of the lines, and `border_sides`. As you can guess, `border_sides` within `ga_list()` controls which of the four borders show up around the grob-row or grob-column. Setting `border_sides` equal to "left, right" will show only the left and right borders and gets rid of the top and bottom ones. The default is "top, bottom, left, right", which gives all four sides of the border. Of course, these border aesthetics will only show up if `border = TRUE`.
 
 ### Titles
 
@@ -342,10 +355,10 @@ gl = grob_layout(
   padding = 5
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
-If a `title` is inputted into any of `grob_col()`, `grob_row()` or `grob_layout()`, a title will appear at the top of the respective allotted space. The default is the title taking up 10% (`title_p = 0.1`) of the allotted height (the title can take up a maximum of 50%), and a `gray40` color background with white font. The `title_aes_list` parameter controls the aesthetics of the title grob. The title grob is treated as a single value `1 x 1` matrix, so the aesthetic parameters in `title_aes_list` are treated the same as described in the Matrix Grobs section later on. 
+If a `title` is inputted into any of `grob_col()`, `grob_row()` or `grob_layout()`, a title will appear at the top of the respective allotted space. The default is the title taking up 10% (`title_p = 0.1`) of the allotted height (the title can take up a maximum of 25%), and a `gray40` color background with white font. The `title_aes_list` parameter controls the aesthetics of the title grob. The title grob is treated as a single value `1 x 1` matrix, so the aesthetic parameters in `title_aes_list` are treated the same as described in the Matrix Grobs section later on. 
 
 ### Page Number
 
@@ -361,7 +374,7 @@ gl = grob_layout(
   page_number = 1
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 This will also come into play when we discuss the `grob_to_pdf()` function later on, and converting multiple grob-layouts into a multiple-page PDF report.
@@ -378,10 +391,10 @@ Using the `aes_list` parameter and the `ga_list()` function within `grob_col()`,
 
 ### Cell-by-Cell Aesthetic Control
 
-These flexible aesthetics make for an incrediblly customizable matrix look. Say the user was only concerned with the background color of a matrix, and he/she wanted to have it uniform for every cell, all the user would need to do is set a single value for `background_color` as an element within `aes_list`:
+These flexible aesthetics make for an incredibly customizable matrix look. Say the user was only concerned with the background color of a matrix, and he/she wanted to have it uniform for every cell, all the user would need to do is set a single value for `background_color` as an element within `aes_list`:
 
 ```{r Setting mat}
-mat = matrix(1:4, nrow = 2, byrow = T)
+mat = matrix(1:4, nrow = 2, byrow = TRUE)
 mat
 ```
 
@@ -392,13 +405,13 @@ gl = grob_layout(
   width = 100
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
-But say the user wanted different cells of the matrix to have different background colors. He/she would need to specify a separate aesthetic matrix correpsonding to the background color of each cell of the original matrix. Since `mat` is a `2 x 2` matrix, we need to specify a another `2 x 2` matrix with each element denoting a background color for each of the cells in `mat`:
+But say the user wanted different cells of the matrix to have different background colors. He/she would need to specify a separate aesthetic matrix corresponding to the background color of each cell of the original matrix. Since `mat` is a `2 x 2` matrix, we need to specify a another `2 x 2` matrix with each element denoting a background color for each of the cells in `mat`:
 
 ```{r Setting color_mat}
-color_mat = matrix(c('white', 'red', 'gray90', 'blue'), nrow = 2, byrow = T)
+color_mat = matrix(c('white', 'red', 'gray90', 'blue'), nrow = 2, byrow = TRUE)
 color_mat
 ```
 
@@ -409,13 +422,13 @@ gl = grob_layout(
   width = 100
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
-The same can be said for most of the other aesthetic elements listed above. For example, the `text_color` can be changed for individual elements of a matrix, but `color_gradient_binary` is a `TRUE`/`FALSE` value, and cannot be changed for individual elements. Below is a grob-layout with 4 matrix grobs with various aesthetic elements tweaked.
+The same can be said for most of the other aesthetic elements listed above. For example, the `text_color` can be changed for individual elements of a matrix, but `cell_color_gradient_binary` is a `TRUE`/`FALSE` value, and cannot be changed for individual elements. Below is a grob-layout with 4 matrix grobs with various aesthetic elements tweaked.
 
 ```{r First matrix, cell-by-cell customization, 2}
-mat_char = matrix(c('Apple','Pear','Grape','Cherry'), nrow = 2, byrow = T)
+mat_char = matrix(c('Apple', 'Pear', 'Grape', 'Cherry'), nrow = 2, byrow = TRUE)
 
 gl = grob_layout(
   grob_row(
@@ -463,14 +476,14 @@ gl = grob_layout(
   width = 100
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 Definitely not the most appealing to the eye, but the flexibility of matrix grobs in `grobblR` is demonstrated.
 
 ### Color Gradients
 
-Another feature I wanted to incorporate after seeing its usefulness in Excel, was the ability to color code column numeric values based on their value - where, for example, the low value would be colored red and the high value would be colored green, with a gradual color ascent going from red to green with yellow as a middle color. I also wanted to make it as flexible as possible, so the user could pick what colors he/she wants to use, and whether the color gradient would be binary or not (`color_gradient_binary`).
+Another feature I wanted to incorporate after seeing its usefulness in Excel, was the ability to color code column numeric values based on their value - where, for example, the low value would be colored red and the high value would be colored green, with a gradual color ascent going from red to green with yellow as a middle color. I also wanted to make it as flexible as possible, so the user could pick what colors he/she wants to use, and whether the color gradient would be binary or not (`cell_color_gradient_binary`).
 
 ```{r Color Gradient Demonstration}
 df = data.frame(letter = letters[1:5], rank = 1:5, rank_2 = 5:1)
@@ -479,14 +492,14 @@ gl = grob_layout(
   grob_row(
     grob_col(
       df,
-      aes_list = ga_list(color_gradient_columns = 3)
+      aes_list = ga_list(cell_color_gradient_columns = 3)
       ),
     grob_col(
       df,
       aes_list = ga_list(
-        color_gradient_columns = 3,
-        color_gradient_binary = T,
-        color_binary_cut_off = 2.5
+        cell_color_gradient_columns = 3,
+        cell_color_gradient_binary = TRUE,
+        cell_color_binary_cut_off = 2.5
         )
       )
     ),
@@ -494,21 +507,21 @@ gl = grob_layout(
     grob_col(
       df,
       aes_list = ga_list(
-        color_gradient_columns = c(2,3),
-        color_gradient_max = 'blue',
-        color_gradient_mid = 'purple',
-        color_gradient_min = 'red'
+        cell_color_gradient_columns = c(2,3),
+        cell_color_gradient_max = 'blue',
+        cell_color_gradient_mid = 'purple',
+        cell_color_gradient_min = 'red'
         )
       ),
     grob_col(
       df,
       aes_list = ga_list(
-        color_gradient_columns = c(2,3),
-        color_gradient_binary = T,
-        color_binary_cut_off = 2,
-        color_binary_high = 'yellow',
-        color_binary_equal = 'green',
-        color_binary_low = 'blue'
+        cell_color_gradient_columns = c(2,3),
+        cell_color_gradient_binary = TRUE,
+        cell_color_binary_cut_off = 2,
+        cell_color_binary_high = 'yellow',
+        cell_color_binary_equal = 'green',
+        cell_color_binary_low = 'blue'
         )
       )
     ),
@@ -516,10 +529,13 @@ gl = grob_layout(
   width = 100
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 ### Column Name Treatment
+
+For every matrix aesthetic option (except the color gradient options), there will be an option to 
+
 
 Notice that the default look of the matrix/data frame changes once column names are added. When column names are detected on a matrix or data frame, the default look changes to make it look more like a table, rather than just individual elements of a matrix. When column names are included, it should be noted that the column names and the elements of the table itself are treated separately. If the user wants to edit elements of the column names instead of the table, then the user must insert a `colname_` in front of whatever aesthetic the user wants to change. For example, if the user wanted to change the text color of the column names to red, he/she would insert `colname_text_color = 'red'` into the `aes_list` list. This goes for any of the other aesthetics the user wants to change. The column header portion is treated as a `1 x m` matrix, where `m` is the number of columns of the matrix/data frame. Also, it should be noted that, at this moment in time, row names are ignored in `grobblR`.
 
@@ -529,20 +545,26 @@ gl = grob_layout(
     grob_col(df),
     grob_col(
       df,
-      aes_list = ga_list(colname_text_color = 'red', text_color = 'blue')
+      aes_list = ga_list(
+        colname_text_color = 'red',
+        cell_text_color = 'blue'
+        )
       )
     ),
   grob_row(
     grob_col(
       df,
-      aes_list = ga_list(colname_font_face = 3, font_face = 2)
+      aes_list = ga_list(
+        colname_font_face = 3,
+        cell_font_face = 2
+        )
       ),
     grob_col(
       df,
       aes_list = ga_list(
         colname_text_color = c('red','purple','blue'),
         colname_background_color = 'gray90',
-        background_color = 'white'
+        cell_background_color = 'white'
         )
       )
     ),
@@ -550,7 +572,7 @@ gl = grob_layout(
   width = 100
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 ### Vector of Values
@@ -562,13 +584,13 @@ plain_vector = c(1, 2, 3)
 named_vector = c('a' = 4, 'b' = 5, 'c' = 6)
 
 gl = grob_layout(
-  grob_row(grob_col(plain_vector), border = T),
-  grob_row(grob_col(named_vector), border = T),
+  grob_row(grob_col(plain_vector), border = TRUE),
+  grob_row(grob_col(named_vector), border = TRUE),
   height = 100,
   width = 100
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 ***
@@ -580,13 +602,19 @@ The next objects accepted by `grobblR` are `ggplot2` plots. The `ggplot` is stre
 ```{r ggplot Grobs}
 data(iris)
 library(ggplot2)
-gg1 = ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+gg1 = ggplot(
+  data = iris, 
+  mapping = aes(x = Sepal.Length, y = Sepal.Width, color = Species)
+  ) +
   geom_point() +
-  guides(color = F)
+  guides(color = FALSE)
 
-gg2 = ggplot(iris, aes(x = Sepal.Length, y = Petal.Length, color = Species)) +
+gg2 = ggplot(
+  data = iris,
+  mapping = aes(x = Sepal.Length, y = Petal.Length, color = Species)
+  ) +
   geom_point() +
-  guides(color = F)
+  guides(color = FALSE)
 
 gl = grob_layout(
   title = 'Iris Dataset',
@@ -596,7 +624,7 @@ gl = grob_layout(
   width = 100
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 ***
@@ -608,19 +636,22 @@ Currently, only images in `.png` format are allowed in `grobblR`. In order for `
 ```{r .png Grobs}
 gl = grob_layout(
   grob_row(
-    border = T,
-    grob_col('kings_logo.png', border = T),
+    border = TRUE,
     grob_col(
-      'kings_logo.png',
-      aes_list = ga_list(maintain_aspect_ratio = F),
-      border = T
+      border = TRUE,
+      'kings_logo.png'
+      ),
+    grob_col(
+      border = TRUE,
+      aes_list = ga_list(maintain_aspect_ratio = FALSE),
+      'kings_logo.png'
       )
     ),
   height = 100,
   width = 100
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 ***
@@ -633,19 +664,25 @@ Also in Sacramento, we would need to include paragraphs of scouting reports for 
 text = "The quick brown fox jumps over the lazy dog."
 
 gl = grob_layout(
-  grob_row(grob_col(text, border = T), border = T),
+  grob_row(
+    border = TRUE,
+    grob_col(
+      border = TRUE,
+      text
+      )
+    ),
   height = 100,
   width = 100
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 There are a couple things unique to character strings that the user can tweak in `aes_list` and `ga_list()`:  
 
   * `n_lines` - The maximum number of lines desired for the character string to be broken up into.
       + Useful for when only one line is desired (`n_lines = 1`).
-  * `sep` - The separator within the character string which designates where a new line should start.
+  * `str_sep` - The separator within the character string which designates where a new line should start.
       + Useful for breaking up character strings meant to be bulleted lists.
   
 In action:
@@ -660,29 +697,33 @@ bulleted_list = paste0(
   )
 
 gl = grob_layout(
-  grob_row(border = T, grob_col(text, border = T)),
+  grob_row(border = TRUE, grob_col(text, border = T)),
   grob_row(
     p = 2/3,
-    border = T,
-    grob_col(border = T, text, aes_list = ga_list(n_lines = 1, text_just = 'right'))
+    border = TRUE,
+    grob_col(
+      border = TRUE,
+      aes_list = ga_list(n_lines = 1, text_just = 'right'),
+      text
+      )
     ),
   grob_row(
-    border = T,
+    border = TRUE,
     grob_col(
-      bulleted_list,
       aes_list = ga_list(
-        sep = '\n',
+        str_sep = '\n',
         text_just = 'left',
         text_color = 'purple',
         font_face = matrix(c(1,2,1,1,1), ncol = 1)
-        )
+        ),
+      bulleted_list
       )
     ),
   height = 100,
   width = 100
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 At the very end of the character string being processed, if the string is converted to `n` lines, the character string is converted into a `n x 1` matrix, so any aesthetic that can be changed with a matrix can also be applied here. Thus, you can edit separate lines' aesthetics with an `n x 1` aesthetic matrix (such as the matrix used in the `font_face` aesthetic for the bottom grob above), but the **user must make sure he/she is certain how many lines the character string is going to be converted to, or else the aesthetic change will not take**. Above `text_just` was implemented to right-align and left-align separate text grobs, and `text_color` was used to color the text. 
@@ -691,29 +732,27 @@ At the very end of the character string being processed, if the string is conver
 
 ## Empty Space Grobs
 
-Us here at the `grobblR` HQ understand that sometimes the user will need to bump some things to the top, to the bottom, to the left, or to the right. Sometimes the user might even need to compact some grobs - the automatic sizing occurring in `grobblR` only knows to fill allotted space with whatever object its given, so the grobs may appear stretched at times. After much deliberation, we decided on adding in the option to add *empty space grobs* with `NA` which are simply that: empty space. We saw this briefly in the secition discussing borders, but here is another example:
+Us here at the `grobblR` HQ understand that sometimes the user will need to bump some things to the top, to the bottom, to the left, or to the right. Sometimes the user might even need to compact some grobs - the automatic sizing occurring in `grobblR` only knows to fill allotted space with whatever object its given, so the grobs may appear stretched at times. After much deliberation, we decided on adding in the option to add *empty space grobs* with `NA` which are simply that: empty space. We saw this briefly in the section discussing borders, but here is another example:
 
 ```{r empty space grob}
 gl = grob_layout(
   grob_row(
-    border = T,
-    grob_col(df, padding = 0),
+    border = TRUE,
+    grob_col(df),
     grob_col(
-      padding = 0,
-      grob_row(grob_col(df, padding = 0), padding = 0),
-      grob_row(grob_col(NA, padding = 0), padding = 0)
+      grob_row(grob_col(df)),
+      grob_row(grob_col(p = 1/3, NA))
       ),
     grob_col(
-      padding = 0,
-      grob_row(grob_col(NA, p = 1/3, padding = 0), padding = 0),
-      grob_row(grob_col(df, padding = 0), padding = 0)
+      grob_row(grob_col(p = 1/3, NA)),
+      grob_row(grob_col(df))
       )
     ),
   height = 100,
   width = 100
   )
 
-gridExtra::grid.arrange(gl$grob)
+grid.arrange(gl$grob)
 ```
 
 The table on the left may appeared somewhat stretched because it's filling its allotted space, but the other two tables appear more properly sized thanks to the empty space grobs.
@@ -722,7 +761,7 @@ The table on the left may appeared somewhat stretched because it's filling its a
 
 ## Grob Layout to PDF
 
-It should be noted that the default values for the `height` and `width` parameters within `grob_layout()` are `280` and `216`, as these are the values needed to properly fit the grob-layout onto a piece of `11 x 8.5` inch computer paper, portrait orientation. Thus, the defaults in `grob_layout()` are meant for printing and fitting the PDF of the grob-layout onto a piece of paper. Obviously there are other uses for PDF files, but this is the one we found most useful. Before demonstrating how to convert these grob-layouts to actual PDF files, let's create a couple:
+It should be noted that the default values for the `height` and `width` parameters within `grob_layout()` are `280` and `216` and the default units are `mm`, as these are the values needed to properly fit the grob-layout onto a piece of standard computer paper, portrait orientation. (Other potential options for the) Thus, the defaults in `grob_layout()` are meant for printing and fitting the PDF of the grob-layout onto a piece of paper. Obviously there are other uses for PDF files, but this is the one we found most useful. Before demonstrating how to convert these grob-layouts to actual PDF files, let's create a couple:
 
 ```{r season summary, include=F}
 
@@ -741,121 +780,154 @@ bench_bulleted_list = paste0(
 ```
 
 ```{r two page grob-layout}
-# dummy text
-pars = unlist(strsplit(UsingR::lorem, "\n\n"))
-first_paragraph = pars[1]
-second_paragraph = pars[2]
 sac_purple = '#5A2D81'
+
+main_title_aes_list = ga_list(
+  background_color = sac_purple,
+  font_face = 2,
+  text_color = 'white',
+  text_just = 'center'
+  )
+
+title_aes_list = ga_list(
+  text_color = sac_purple,
+  text_just = 'center',
+  font_face = 2,
+  border_sides = 'bottom'
+  )
+
+player_caption_aes_list = ga_list(
+  text_just = 'center'
+  )
 
 first_page_gl = grob_layout(
   title = '2001-02 Sacramento Kings',
-  title_aes_list = ga_list(background_color = sac_purple),
+  title_aes_list = main_title_aes_list,
   grob_row(
     grob_col('kings_logo_old.png', p = 1/2),
-    grob_col('adelman.png', title = 'COACH - Rick Adelman'),
+    grob_col(
+      caption = 'COACH - Rick Adelman',
+      caption_aes_list = player_caption_aes_list,
+      'adelman.png'
+      ),
     grob_col(
       p = 1/2,
-      'Record : 61-21',
       aes_list = ga_list(
         n_lines = 1,
         font_face = 2,
         text_color = 'gray40'
-        )
+        ),
+      'Record: 61-21'
       )
     ),
   grob_row(
     title = 'BACK COURT',
+    title_p = 0.15,
+    title_aes_list = title_aes_list,
     grob_col(NA, p = 1/2),
-    grob_col('bibby.png', title = "PG - Mike Bibby"),
-    grob_col('christie.png', title = 'SG - Doug Christie'),
-    grob_col(NA, p = 1/2)
+    grob_col(
+      caption = "PG - Mike Bibby",
+      caption_aes_list = player_caption_aes_list,
+      'bibby.png'
+      ),
+    grob_col(
+      caption = 'SG - Doug Christie',
+      caption_aes_list = player_caption_aes_list,
+      'christie.png'
+      ),
+    grob_col(p = 1/2, NA)
     ),
   grob_row(
     title = 'FRONT COURT',
-    grob_col('stojakovic.png', title = 'SF - Peja Stojakovic'),
-    grob_col('divac.png', title = 'C - Vlade Divac'),
-    grob_col('webber.png', title = 'PF - Chris Webber')
+    title_p = 0.15,
+    title_aes_list = title_aes_list,
+    grob_col(
+      caption = 'SF - Peja Stojakovic',
+      caption_aes_list = player_caption_aes_list,
+      'stojakovic.png'
+      ),
+    grob_col(
+      caption = 'C - Vlade Divac',
+      caption_aes_list = player_caption_aes_list,
+      'divac.png'
+      ),
+    grob_col(
+      caption = 'PF - Chris Webber',
+      caption_aes_list = player_caption_aes_list,
+      'webber.png'
+      )
     ),
   grob_row(
     p = 2/3,
     grob_col(
-      season_summary_02_pt1,
-      aes_list = ga_list(text_just = 'left')
+      aes_list = ga_list(text_just = 'left'),
+      season_summary_02_pt1
       )
     )
   )
 
 second_page_gl = grob_layout(
-  title = "Season Accolades",
+  title = "2001-02 Season Accolades",
+  title_aes_list = main_title_aes_list,
   grob_row(
     grob_col(
-      "",
-      p = 1/4,
-      aes_list = ga_list(round_rect_radius = 0.2, background_color = 'gray40')
+      p = 1/5,
+      aes_list = ga_list(round_rect_radius = 0.2, background_color = 'gray40'),
+      ""
       ),
-    grob_col(title = "BE - Hedo Turkoglu", 'hedo.png'),
+    grob_col(
+      caption = "BE - Hedo Turkoglu",
+      caption_aes_list = player_caption_aes_list,
+      'hedo.png'
+      ),
     grob_col('kings_lion_logo.png')
     ),
   grob_row(
     grob_col(
-      bulleted_list,
-      aes_list = ga_list(n_lines = 5, text_color = sac_purple, text_just = 'left')
+      aes_list = ga_list(n_lines = 5, text_color = sac_purple, text_just = 'left'),
+      bulleted_list
       ),
     grob_col(
-      bench_bulleted_list,
-      aes_list = ga_list(n_lines = 5, text_color = sac_purple, text_just = 'left')
+      aes_list = ga_list(n_lines = 5, text_color = sac_purple, text_just = 'left'),
+      bench_bulleted_list
       ),
     grob_col(
-      p = 1/4,
-      "",
-      aes_list = ga_list(round_rect_radius = 0.2, background_color = 'gray40')
+      p = 1/5,
+      aes_list = ga_list(round_rect_radius = 0.2, background_color = 'gray40'),
+      ""
       )
     ),
   grob_row(
     p = 2/3,
     grob_col(
-      season_summary_02_pt2,
-      aes_list = ga_list(text_just = 'left')
+      aes_list = ga_list(text_just = 'left'),
+      season_summary_02_pt2
       )
     ),
   grob_row(
-    border = T,
-    border_aes_list = ga_list(border_width = 4, border_color = sac_purple),
-    grob_col(
-      grob_row(p = 2, grob_col('webber.png')),
-      grob_row(
-        grob_col(
-          'All-NBA, 2nd Team',
-          aes_list = ga_list(
-            n_lines = 1,
-            round_rect_radius = 0.2,
-            background_color = sac_purple,
-            text_color = 'white'
-            )
-          )
-        )
+    border = TRUE,
+    border_aes_list = ga_list(
+      border_width = 4,
+      border_color = sac_purple
       ),
     grob_col(
-      grob_row(p = 2, grob_col('christie.png')),
-      grob_row(
-        grob_col(
-          'All-Defense, 2nd Team',
-          aes_list = ga_list(
-            n_lines = 1,
-            round_rect_radius = 0.2,
-            background_color = sac_purple,
-            text_color = 'white'
-            )
-          )
-        )
+      caption = 'All-NBA, 2nd Team',
+      caption_aes_list = ga_list(text_just = 'center', text_color = sac_purple),
+      'webber.png'
+      ),
+    grob_col(
+      caption = 'All-Defense, 2nd Team',
+      caption_aes_list = ga_list(text_just = 'center', text_color = sac_purple),
+      'christie.png'
       )
     )
   )
+
 ```
 
 Now that we have two grob-layout pages established, let's put them together into a single PDF document with `grob_to_pdf()`! With the `grob_to_pdf()` function, the user has to provide a `file_name` for the PDF output, and whether to add a page number to each of the grob-layouts in their bottom-right corners. Only the objects outputted by `grob_layout()` can be inserted into `grob_to_pdf()`, either loose or contained in a single list:
 
-```{r Grob to PDF, eval=F}
+```{r Grob to PDF, eval=TRUE}
 # grob_to_pdf(
 #   first_page_gl,
 #   second_page_gl,
@@ -868,7 +940,8 @@ Now that we have two grob-layout pages established, let's put them together into
 grob_to_pdf(
   list(first_page_gl, second_page_gl),
   file_name = 'grobblR_vignette',
-  add_page_numbers = T
+  add_page_numbers = TRUE,
+  meta_data_title = 'grobblR SAC 2001-02 Summary'
   )
 ```
 
@@ -878,4 +951,4 @@ The saved PDF can be found [here](https://github.com/calvinmfloyd/grobblR/blob/m
 
 ## Conclusions
 
-The `grobblR` package provides R users with a way to quickly create dyanmic reports with attention to detail - a feature we did not find to be readily available in other packages. In the future we hope to enhance and add even more features, but, even as it currently stands, we believe `grobblR` is a valuable utility in daily data visualization and data reporting tasks.
+The `grobblR` package provides R users with a way to quickly create dynamic reports with attention to detail - a feature we did not find to be readily available in other packages. In the future we hope to enhance and add even more features, but, even as it currently stands, we believe `grobblR` is a valuable utility in daily data visualization and data reporting tasks.

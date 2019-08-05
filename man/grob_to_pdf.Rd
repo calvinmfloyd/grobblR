@@ -2,18 +2,26 @@
 % Please edit documentation in R/grob_to_pdf.R
 \name{grob_to_pdf}
 \alias{grob_to_pdf}
-\title{Converts a single grob to a pdf, or combines multiple grobs into a multiple page PDF document. Saves to the working directory. Only takes grobs with heights and widths in units of mm.}
+\title{Converts a single grob-layout to a PDF, or combines multiple grob-layouts into a multiple page PDF document.}
 \usage{
-grob_to_pdf(..., file_name = character(), add_page_numbers = F)
+grob_to_pdf(..., file_name = character(), add_page_numbers = FALSE,
+  meta_data_title = character())
 }
 \arguments{
 \item{...}{The single grob or series of grobs which will be converted to a PDF document.}
 
 \item{file_name}{The desired file name of the resulting PDF document in character format.}
+
+\item{add_page_numbers}{If TRUE, page numbers will be added to the bottom right corners of the pages of the document, based on the order of the grob-layouts listed.}
+
+\item{meta_data_title}{Title string to embed as the /Title field in the file. If not provided, it will default to the \code{file_name} provided.}
 }
 \value{
-A PDF document of the grob(s) which will be saved to the working directory.
+A PDF document of the grob-layout(s) which will be saved to the working directory.
 }
 \description{
-Converts a single grob to a pdf, or combines multiple grobs into a multiple page PDF document. Saves to the working directory. Only takes grobs with heights and widths in units of mm.
+Converts a single grob-layout to a PDF, or combines multiple grob-layouts into a multiple page PDF document.
+}
+\details{
+In the case of multiple page documents, the dimensions of the overall document will be determined by the dimensions of the first grob-layout listed.
 }

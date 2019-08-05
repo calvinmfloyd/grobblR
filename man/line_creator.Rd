@@ -5,7 +5,7 @@
 \title{Breaks down character strings into one or several lines, and determines if it would fit into a specific height and width.}
 \usage{
 line_creator(cex_val, string, height = numeric(), width = numeric(),
-  sep = "\\n")
+  units = c("mm", "cm", "inches"), sep = "\\n")
 }
 \arguments{
 \item{cex_val}{The text cex multiplier applied to the string.}
