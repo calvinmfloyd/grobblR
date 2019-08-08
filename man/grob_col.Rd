@@ -6,8 +6,8 @@
 \usage{
 grob_col(..., p = 1, aes_list = ga_list(), border = F,
   border_aes_list = ga_list(), title = "",
-  title_aes_list = ga_list(), title_p = 0.1, caption = "",
-  caption_aes_list = ga_list(), caption_p = 0.05, padding_p = 0.05,
+  title_aes_list = ga_list(), title_p = 0.15, caption = "",
+  caption_aes_list = ga_list(), caption_p = 0.15, padding_p = 0.05,
   width = NA_real_, padding = NA_real_, hjust = 0.5, vjust = 0.5)
 }
 \arguments{

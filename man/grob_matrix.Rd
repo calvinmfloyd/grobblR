@@ -5,8 +5,8 @@
 \title{Converts a data.frame/matrix to a grob, with flexible aesthetics.}
 \usage{
 grob_matrix(df, aes_list = ga_list(), m_type = 1, height = numeric(),
-  width = numeric(), units = c("mm", "cm", "inches"),
-  text_cex_adj = 0.2)
+  width = numeric(), padding = numeric(), units = c("mm", "cm",
+  "inches"), text_cex_adj = 0.2)
 }
 \arguments{
 \item{df}{The data.frame/matrix to be converted to a grob.}

@@ -5,8 +5,8 @@
 \title{The grob-row function which helps gives the grob from the \code{\link{grob_layout()}} function its shape. Works hand-in-hand with the \code{\link{grob_col()}} function.}
 \usage{
 grob_row(..., p = 1, border = F, border_aes_list = ga_list(),
-  title = "", title_aes_list = ga_list(), title_p = 0.1,
-  caption = "", caption_aes_list = ga_list(), caption_p = 0.05,
+  title = "", title_aes_list = ga_list(), title_p = 0.15,
+  caption = "", caption_aes_list = ga_list(), caption_p = 0.15,
   padding_p = 0.05, padding = NA_real_, height = NA_real_)
 }
 \arguments{

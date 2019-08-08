@@ -8,7 +8,8 @@
 #' @param border_width Controls the line width density/thickness of the selected borders. Values are used in \code{grid::gpar()}. Default is 4. Used with matrices.
 #' @param padding_p Controls the amount of proportional padding around each matrix cell. Used with matrices.
 #' @param column_widths If automatic column widths are not desired, the user can provide a vector of widths for each column in the matrix in whatever units are specified in the grob-layout. Used with matrices.
-#' @param font_face Controls the font face of the elements of the matrix (i.e. bold, italic, etc.). Values are used in \code{grid::gpar()}. Default for table elements is normal, or 1. Default for column name elements is bold and italic, or 4. Used with matrices or character strings.
+#' @param font_face Controls the font face of the elements of the matrix (i.e. bold, italic, etc.). Values are used in \code{grid::gpar()}. Default for table elements is normal, or 1. Default for column name elements is "bold", or 2. Used with matrices or character strings.
+#' @param group_elements A TRUE/FALSE argument on whether like, adjacent matrix elements should be grouped together into a single element. Default is FALSE.
 #' @param round_rect_radius Controls the radius of the corners of the rectangles matrix text is laid on top of. Used with matrices.
 #' @param maintain_aspect_ratio A TRUE/FALSE value which indicates whether the aspect ratio of the image should be maintained. Default is FALSE - meaning the image will be stretched to fit the designated grid area. Used with images.
 #' @param text_align Controls where the text in each grid cell will be centered around, horizontally. A numeric value between 0 and 1, with 0 being all the way to the left of the grid cell, and 1 being all the way to the right of the grid cell. Default is 0.5. Can also input 'left', 'right' or 'center', which will also make edits to \code{text_just} to make the text completely left-justified, right-justified or centered, respectively. Used with matrices or character strings.
@@ -20,7 +21,8 @@
 #' @param text_v_just Controls the vertical justification of the text in the matrix. A numeric value between 0 and 1, with 0 being bottom justification and 1 being top justification. Default is 0.5, or center justification. Can also input 'top', 'bottom' or 'center', which will also make edits to \code{text_v_align} to make the text completely top-justified, bottom-justified or centered, respectively. Used with matrices or character strings.
 #' @param n_lines The maximum number of lines is desired for the character string to be broken up into. Used with character strings.
 #' @param str_sep The separator within the character string which designates where a new line should start. Used with character strings.
-#' @param cell_font_face Controls the font face of matrix cells. Overridden by the \code{font_face} parameter.
+#' @param cell_font_face Controls the \code{font_face} of matrix cells. Overridden by the \code{font_face} parameter.
+#' @param cell_group_elements Controls the \code{group_elements} of matrix cells. Overridden by the \code{group_elements} parameter.
 #' @param cell_background_color Controls the \code{background_color} of matrix cells. Overridden by the \code{background_color} parameter.
 #' @param cell_background_alpha Controls the \code{background_alpha} of matrix cells. Overridden by the \code{background_alpha} parameter.
 #' @param cell_border_color Controls the \code{border_color} of matrix cells. Overridden by the \code{border_color} parameter.
@@ -46,6 +48,7 @@
 #' @param cell_color_gradient_mid The middle color for the gradual color gradient. Default is yellow. Used with matrices.
 #' @param cell_color_gradient_min The low color for the gradual color gradient. Default is red. Used with matrices.
 #' @param colname_font_face Controls the font face of column names. Overridden by the \code{font_face} parameter.
+#' @param colname_group_elements Controls the \code{group_elements} of column names. Overridden by the \code{group_elements} parameter.
 #' @param colname_background_color Controls the \code{background_color} of column names. Overridden by the \code{background_color} parameter.
 #' @param colname_background_alpha Controls the \code{background_alpha} of column names. Overridden by the \code{background_alpha} parameter.
 #' @param colname_border_color Controls the \code{border_color} of column names. Overridden by the \code{border_color} parameter.
@@ -72,6 +75,7 @@ ga_list = function(aspect_ratio_multiplier = NULL,
                    border_sides = NULL,
                    border_width = NULL,
                    font_face = NULL,
+                   group_elements = NULL,
                    text_color = NULL,
                    text_align = NULL,
                    text_v_align = NULL,
@@ -83,6 +87,7 @@ ga_list = function(aspect_ratio_multiplier = NULL,
                    column_widths = NULL,
                    padding_p = NULL,
                    cell_font_face = NULL,
+                   cell_group_elements = NULL,
                    cell_background_color = NULL,
                    cell_background_alpha = NULL,
                    cell_border_color = NULL,
@@ -96,7 +101,6 @@ ga_list = function(aspect_ratio_multiplier = NULL,
                    cell_text_cex = NULL,
                    cell_text_font = NULL,
                    cell_round_rect_radius = NULL,
-                   cell_group_elements = NULL,
                    cell_column_widths = NULL,
                    cell_padding_p = NULL,
                    cell_color_gradient_columns = NULL,
@@ -109,6 +113,7 @@ ga_list = function(aspect_ratio_multiplier = NULL,
                    cell_color_gradient_mid = NULL,
                    cell_color_gradient_min = NULL,
                    colname_font_face = NULL,
+                   colname_group_elements = NULL,
                    colname_background_color = NULL,
                    colname_background_alpha = NULL,
                    colname_border_color = NULL,
@@ -122,7 +127,6 @@ ga_list = function(aspect_ratio_multiplier = NULL,
                    colname_text_cex = NULL,
                    colname_text_font = NULL,
                    colname_round_rect_radius = NULL,
-                   colname_group_elements = NULL,
                    colname_column_widths = NULL,
                    colname_padding_p = NULL,
                    maintain_aspect_ratio = NULL,
@@ -131,6 +135,7 @@ ga_list = function(aspect_ratio_multiplier = NULL,
 
   grob_aes_list = list(
     font_face = font_face,
+    group_elements = group_elements,
     background_color = background_color,
     background_alpha = background_alpha,
     border_color = border_color,
@@ -147,6 +152,7 @@ ga_list = function(aspect_ratio_multiplier = NULL,
     column_widths = column_widths,
     padding_p = padding_p,
     cell_font_face = cell_font_face,
+    cell_group_elements = cell_group_elements,
     cell_background_color = cell_background_color,
     cell_background_alpha = cell_background_alpha,
     cell_border_color = cell_border_color,
@@ -160,7 +166,6 @@ ga_list = function(aspect_ratio_multiplier = NULL,
     cell_text_cex = cell_text_cex,
     cell_text_font = cell_text_font,
     cell_round_rect_radius = cell_round_rect_radius,
-    cell_group_elements = cell_group_elements,
     cell_column_widths = cell_column_widths,
     cell_padding_p = cell_padding_p,
     cell_color_gradient_columns = cell_color_gradient_columns,
@@ -173,6 +178,7 @@ ga_list = function(aspect_ratio_multiplier = NULL,
     cell_color_gradient_mid = cell_color_gradient_mid,
     cell_color_gradient_min = cell_color_gradient_min,
     colname_font_face = colname_font_face,
+    colname_group_elements = colname_group_elements,
     colname_background_color = colname_background_color,
     colname_background_alpha = colname_background_alpha,
     colname_border_color = colname_border_color,
@@ -186,7 +192,6 @@ ga_list = function(aspect_ratio_multiplier = NULL,
     colname_text_cex = colname_text_cex,
     colname_text_font = colname_text_font,
     colname_round_rect_radius = colname_round_rect_radius,
-    colname_group_elements = colname_group_elements,
     colname_column_widths = colname_column_widths,
     colname_padding_p = colname_padding_p,
     maintain_aspect_ratio = maintain_aspect_ratio,

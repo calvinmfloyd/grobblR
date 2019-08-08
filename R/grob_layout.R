@@ -35,7 +35,7 @@ grob_layout = function(...,
                        caption_p = 0.05,
                        padding_p = 0.05,
                        padding = NA_real_,
-                       page_number = ''){
+                       page_number = '') {
 
   units = match.arg(units)
   

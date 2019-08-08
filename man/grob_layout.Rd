@@ -7,7 +7,7 @@
 grob_layout(..., height = 280, width = 216, units = c("mm", "cm",
   "inches"), title = "", title_aes_list = ga_list(), title_p = 0.1,
   caption = "", caption_aes_list = ga_list(), caption_p = 0.05,
-  padding_p = 0.1, padding = NA_real_, page_number = "")
+  padding_p = 0.05, padding = NA_real_, page_number = "")
 }
 \arguments{
 \item{...}{The combination of grob-rows and grob-columns which will help give the main grob-layout outputted its shape and look.}
