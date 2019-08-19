@@ -44,7 +44,7 @@ grob_matrix = function(df,
   # Adding in default values (non-matrices) if they are missing ----
   def_vals_non_matrices = list(
     group_elements = FALSE,
-    padding_p = 0.005,
+    padding_p = 0.0025,
     color_gradient_columns = numeric(),
     color_gradient_binary = FALSE,
     color_binary_cut_off = 0,
@@ -73,7 +73,7 @@ grob_matrix = function(df,
     }
   }
 
-  padding = aes_list$padding_p*width
+  padding = (aes_list$padding_p[1])*width
   
   def_vals_matrices = list(
     font_face = c(1, 1, 2, 3, 4),
