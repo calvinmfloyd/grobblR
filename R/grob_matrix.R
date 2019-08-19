@@ -409,7 +409,7 @@ grob_matrix = function(df,
     }
     aes_list$column_widths = tmp_column_widths
 
-  } else if (adjust_cex) {
+  } else if (adjust_cex & length(aes_list$column_widths) ==  0) {
 
     aes_list$column_widths = cw
 

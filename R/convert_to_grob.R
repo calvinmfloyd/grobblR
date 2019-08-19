@@ -30,16 +30,23 @@ convert_to_grob = function(x,
     x = as.matrix(x)
     matrix_aes_elements = get_matrix_aes_elements()
     colname_present = !is.null(colnames(x))
-    width_adj = 0
     height_adj = ifelse(colname_present, 1, 0)
+
+    if (length(aes_list$cell_text_cex) > 0 & length(aes_list$colname_column_widths) == 0) {
+      aes_list$colname_column_widths = rep(width/ncol(x), ncol(x))
+    }
     
-    if(colname_present){
+    if (length(aes_list$colname_text_cex) > 0 & length(aes_list$cell_column_widths) == 0) {
+      aes_list$cell_column_widths = rep(width/ncol(x), ncol(x))
+    }
+    
+    if (colname_present) {
 
       colname_ga_list = list()
 
-      for(name in matrix_aes_elements){
+      for (name in matrix_aes_elements) {
 
-        if(!is.null(aes_list[[name]])){
+        if (!is.null(aes_list[[name]])) {
           
           colname_ga_list[[name]] = aes_list[[name]]
           
@@ -56,7 +63,7 @@ convert_to_grob = function(x,
         m_type = 3,
         aes_list = colname_ga_list,
         height = height/(nrow(x) + 1),
-        width = width - width_adj*width/(ncol(x) + 1),
+        width = width,
         units = units
         )
     }
@@ -74,13 +81,13 @@ convert_to_grob = function(x,
           
         }
     }
-    
+ 
     cell_grob = grob_matrix(
       df = x,
       m_type = ifelse(colname_present, 2, 1),
       aes_list = cell_ga_list,
       height = height - height*height_adj/(nrow(x) + 1),
-      width = width - width*width_adj/(ncol(x) + 1),
+      width = width,
       units = units
       )
 
