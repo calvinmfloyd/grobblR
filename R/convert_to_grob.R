@@ -32,14 +32,6 @@ convert_to_grob = function(x,
     colname_present = !is.null(colnames(x))
     height_adj = ifelse(colname_present, 1, 0)
 
-    if (length(aes_list$cell_text_cex) > 0 & length(aes_list$colname_column_widths) == 0) {
-      aes_list$colname_column_widths = rep(width/ncol(x), ncol(x))
-    }
-    
-    if (length(aes_list$colname_text_cex) > 0 & length(aes_list$cell_column_widths) == 0) {
-      aes_list$cell_column_widths = rep(width/ncol(x), ncol(x))
-    }
-    
     if (colname_present) {
 
       colname_ga_list = list()
@@ -81,7 +73,7 @@ convert_to_grob = function(x,
           
         }
     }
- 
+
     cell_grob = grob_matrix(
       df = x,
       m_type = ifelse(colname_present, 2, 1),

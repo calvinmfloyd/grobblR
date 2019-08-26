@@ -8,6 +8,7 @@
 #' @param border_width Controls the line width density/thickness of the selected borders. Values are used in \code{grid::gpar()}. Default is 4. Used with matrices.
 #' @param padding_p Controls the amount of proportional padding around each matrix cell. Used with matrices.
 #' @param column_widths If automatic column widths are not desired, the user can provide a vector of widths for each column in the matrix in whatever units are specified in the grob-layout. Used with matrices.
+#' @param column_widths_p If automatic column widths are not desired, the user can provide a vector of width proportions (ideally adding to 1) for each column in the matrix in whatever units are specified in the grob-layout. Used with matrices. Overridden by \code{column_widths} argument.
 #' @param font_face Controls the font face of the elements of the matrix (i.e. bold, italic, etc.). Values are used in \code{grid::gpar()}. Default for table elements is normal, or 1. Default for column name elements is "bold", or 2. Used with matrices or character strings.
 #' @param group_elements A TRUE/FALSE argument on whether like, adjacent matrix elements should be grouped together into a single element. Default is FALSE.
 #' @param round_rect_radius Controls the radius of the corners of the rectangles matrix text is laid on top of. Used with matrices.
@@ -37,6 +38,7 @@
 #' @param cell_text_font Controls the \code{text_font} of matrix cells. Overridden by the \code{text_font} parameter.
 #' @param cell_round_rect_radius Controls the \code{round_rect_radius} of matrix cells. Overridden by the \code{round_rect_radius} parameter.
 #' @param cell_column_widths Controls the \code{column_widths} of matrix cells. Overridden by the \code{column_widths} parameter.
+#' @param cell_column_widths_p Controls the \code{column_widths_p} of matrix cells. Overridden by the \code{column_widths_p} parameter.
 #' @param cell_padding_p Controls the \code{padding_p} of matrix cells. Overridden by the \code{padding_p} parameter.
 #' @param cell_color_binary_cut_off A cut-off value which the binary color gradient will be applied to. Default is 0. Used with matrices.
 #' @param cell_color_binary_high The color of the binary color gradient if the numeric element is greater than the \code{color_binary_cut_off}. Default is green. Used with matrices.
@@ -63,6 +65,7 @@
 #' @param colname_text_font Controls the \code{text_font} of column names. Overridden by the \code{text_font} parameter.
 #' @param colname_round_rect_radius Controls the \code{round_rect_radius} of column names. Overridden by the \code{round_rect_radius} parameter.
 #' @param colname_column_widths Controls the \code{column_widths} of column names. Overridden by the \code{column_widths} parameter.
+#' @param colname_column_widths_p Controls the \code{column_widths_p} of column names. Overridden by the \code{column_widths_p} parameter.
 #' @param colname_padding_p Controls the \code{padding_p} of column names. Overridden by the \code{padding_p} parameter.
 
 #' @return A list with all possible aesthetic elements that can be adjusted, with the class of "grob_aes_list".
@@ -85,6 +88,7 @@ ga_list = function(aspect_ratio_multiplier = NULL,
                    text_font = NULL,
                    round_rect_radius = NULL,
                    column_widths = NULL,
+                   column_widths_p = NULL,
                    padding_p = NULL,
                    cell_font_face = NULL,
                    cell_group_elements = NULL,
@@ -102,6 +106,7 @@ ga_list = function(aspect_ratio_multiplier = NULL,
                    cell_text_font = NULL,
                    cell_round_rect_radius = NULL,
                    cell_column_widths = NULL,
+                   cell_column_widths_p = NULL,
                    cell_padding_p = NULL,
                    cell_color_gradient_columns = NULL,
                    cell_color_gradient_binary = NULL,
@@ -128,6 +133,7 @@ ga_list = function(aspect_ratio_multiplier = NULL,
                    colname_text_font = NULL,
                    colname_round_rect_radius = NULL,
                    colname_column_widths = NULL,
+                   colname_column_widths_p = NULL,
                    colname_padding_p = NULL,
                    maintain_aspect_ratio = NULL,
                    n_lines = NULL,
@@ -150,6 +156,7 @@ ga_list = function(aspect_ratio_multiplier = NULL,
     text_font = text_font,
     round_rect_radius = round_rect_radius,
     column_widths = column_widths,
+    column_widths_p = column_widths_p,
     padding_p = padding_p,
     cell_font_face = cell_font_face,
     cell_group_elements = cell_group_elements,
@@ -167,6 +174,7 @@ ga_list = function(aspect_ratio_multiplier = NULL,
     cell_text_font = cell_text_font,
     cell_round_rect_radius = cell_round_rect_radius,
     cell_column_widths = cell_column_widths,
+    cell_column_widths_p = cell_column_widths_p,
     cell_padding_p = cell_padding_p,
     cell_color_gradient_columns = cell_color_gradient_columns,
     cell_color_gradient_binary = cell_color_gradient_binary,
@@ -193,6 +201,7 @@ ga_list = function(aspect_ratio_multiplier = NULL,
     colname_text_font = colname_text_font,
     colname_round_rect_radius = colname_round_rect_radius,
     colname_column_widths = colname_column_widths,
+    colname_column_widths_p = colname_column_widths_p,
     colname_padding_p = colname_padding_p,
     maintain_aspect_ratio = maintain_aspect_ratio,
     aspect_ratio_multiplier = aspect_ratio_multiplier,

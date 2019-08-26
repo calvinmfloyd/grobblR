@@ -10,7 +10,7 @@ ga_list(aspect_ratio_multiplier = NULL, background_color = NULL,
   text_color = NULL, text_align = NULL, text_v_align = NULL,
   text_just = NULL, text_v_just = NULL, text_cex = NULL,
   text_font = NULL, round_rect_radius = NULL, column_widths = NULL,
-  padding_p = NULL, cell_font_face = NULL,
+  column_widths_p = NULL, padding_p = NULL, cell_font_face = NULL,
   cell_group_elements = NULL, cell_background_color = NULL,
   cell_background_alpha = NULL, cell_border_color = NULL,
   cell_border_sides = NULL, cell_border_width = NULL,
@@ -18,8 +18,8 @@ ga_list(aspect_ratio_multiplier = NULL, background_color = NULL,
   cell_text_v_align = NULL, cell_text_just = NULL,
   cell_text_v_just = NULL, cell_text_cex = NULL,
   cell_text_font = NULL, cell_round_rect_radius = NULL,
-  cell_column_widths = NULL, cell_padding_p = NULL,
-  cell_color_gradient_columns = NULL,
+  cell_column_widths = NULL, cell_column_widths_p = NULL,
+  cell_padding_p = NULL, cell_color_gradient_columns = NULL,
   cell_color_gradient_binary = NULL, cell_color_binary_cut_off = NULL,
   cell_color_binary_high = NULL, cell_color_binary_low = NULL,
   cell_color_binary_equal = NULL, cell_color_gradient_max = NULL,
@@ -32,8 +32,8 @@ ga_list(aspect_ratio_multiplier = NULL, background_color = NULL,
   colname_text_just = NULL, colname_text_v_just = NULL,
   colname_text_cex = NULL, colname_text_font = NULL,
   colname_round_rect_radius = NULL, colname_column_widths = NULL,
-  colname_padding_p = NULL, maintain_aspect_ratio = NULL,
-  n_lines = NULL, str_sep = NULL)
+  colname_column_widths_p = NULL, colname_padding_p = NULL,
+  maintain_aspect_ratio = NULL, n_lines = NULL, str_sep = NULL)
 }
 \arguments{
 \item{aspect_ratio_multiplier}{A numeric value which controls how much to increase/decrease the aspect ratio of images or ggplots.}
@@ -70,6 +70,8 @@ ga_list(aspect_ratio_multiplier = NULL, background_color = NULL,
 
 \item{column_widths}{If automatic column widths are not desired, the user can provide a vector of widths for each column in the matrix in whatever units are specified in the grob-layout. Used with matrices.}
 
+\item{column_widths_p}{If automatic column widths are not desired, the user can provide a vector of width proportions (ideally adding to 1) for each column in the matrix in whatever units are specified in the grob-layout. Used with matrices. Overridden by \code{column_widths} argument.}
+
 \item{padding_p}{Controls the amount of proportional padding around each matrix cell. Used with matrices.}
 
 \item{cell_font_face}{Controls the \code{font_face} of matrix cells. Overridden by the \code{font_face} parameter.}
@@ -103,6 +105,8 @@ ga_list(aspect_ratio_multiplier = NULL, background_color = NULL,
 \item{cell_round_rect_radius}{Controls the \code{round_rect_radius} of matrix cells. Overridden by the \code{round_rect_radius} parameter.}
 
 \item{cell_column_widths}{Controls the \code{column_widths} of matrix cells. Overridden by the \code{column_widths} parameter.}
+
+\item{cell_column_widths_p}{Controls the \code{column_widths_p} of matrix cells. Overridden by the \code{column_widths_p} parameter.}
 
 \item{cell_padding_p}{Controls the \code{padding_p} of matrix cells. Overridden by the \code{padding_p} parameter.}
 
@@ -155,6 +159,8 @@ ga_list(aspect_ratio_multiplier = NULL, background_color = NULL,
 \item{colname_round_rect_radius}{Controls the \code{round_rect_radius} of column names. Overridden by the \code{round_rect_radius} parameter.}
 
 \item{colname_column_widths}{Controls the \code{column_widths} of column names. Overridden by the \code{column_widths} parameter.}
+
+\item{colname_column_widths_p}{Controls the \code{column_widths_p} of column names. Overridden by the \code{column_widths_p} parameter.}
 
 \item{colname_padding_p}{Controls the \code{padding_p} of column names. Overridden by the \code{padding_p} parameter.}
 

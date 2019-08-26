@@ -93,6 +93,38 @@ grob_matrix = function(df,
 
   def_orig_vals_list = c(def_vals_matrices, def_vals_non_matrices)
 
+  # Figuring out the column proportions ----
+ 
+  if (length(width) == 1 & length(aes_list[['column_widths']]) == nc) {
+    
+    column_props = aes_list[['column_widths']]
+    
+  } else if (length(width) == 1 & length(aes_list[['column_widths_p']]) == nc) {
+  
+    column_props = aes_list[['column_widths_p']]/sum(aes_list[['column_widths_p']])
+    
+  } else {
+  
+    column_props = apply(
+      X = rbind(colnames(df_fit), df_fit),
+      MARGIN = 2,
+      FUN = function(x) max(graphics::strwidth(c(x), units = 'in'))
+      )
+    
+    if (sum(column_props) == 0) {
+      
+      column_props = rep(1, length(column_props))
+      
+    } else {
+      
+      column_props = column_props/sum(column_props)
+      
+    }
+    
+  }
+ 
+  column_widths = width*column_props - 2*padding
+  
   # Making adjustments to text_cex, if need be ----
   adjust_cex = length(aes_list$text_cex) == 0 &
     (length(height) == 1 & length(aes_list$row_heights) == 0)
@@ -103,32 +135,6 @@ grob_matrix = function(df,
 
   } else {
 
-    if (length(width) == 1 & length(aes_list$column_widths) > 0) {
-      
-      column_props = aes_list$column_widths
-      cw = aes_list$column_widths - 2*padding
-      
-    } else {
-    
-      column_props = apply(
-        X = rbind(colnames(df_fit), df_fit),
-        MARGIN = 2,
-        FUN = function(x) max(graphics::strwidth(c(x), units = 'in'))
-        )
-      
-      if (sum(column_props) == 0) {
-        
-        column_props = rep(1, length(column_props))
-        
-      } else {
-        
-        column_props = column_props/sum(column_props)
-        
-      }
-      
-      cw = width*column_props - 2*padding
-    }
-
     optimal_cvs = sapply(
       X = 1:nc, 
       FUN = function(x){
@@ -137,7 +143,7 @@ grob_matrix = function(df,
           n_lines = nr,
           height = height,
           units = units,
-          width = cw[x],
+          width = column_widths[x],
           convergence_limit = 0.05,
           sep = '\n'
         )$cex_val
@@ -148,7 +154,7 @@ grob_matrix = function(df,
     def_text_cex = def_text_cex - text_cex_adj*def_text_cex
 
   }
-
+  
   # Adding in default values (matrices) if they are missing ----
 
   def_vals_matrices$text_cex = rep(def_text_cex, length(def_vals_matrices[[1]]))
@@ -320,46 +326,46 @@ grob_matrix = function(df,
       }
     }}
 
-      if (aes_list$group_elements) {
-        
-        ue = unique(c(as.matrix(df)))
-        level_df = data.frame(element = ue, level = 1:length(ue), stringsAsFactors = FALSE)
-        matched_df = matrix(level_df$level[match(df, level_df$element)], nrow = nr)
-        m_v = c(matched_df)
-        l_v = rep(0, nr * nc)
-        i_v = 1:(nr * nc)
-        
-        for (i in i_v) {
-          
-            r = (i - 1)%/%nr
-            like_indices = which(m_v == m_v[i])
-            left_index = i_v[i_v == (i - nr)]
-            top_bottom_indices = i_v[(i_v - 1)%/%nr == r & i_v %in% c(i - 1, i + 1)]
-            adj_indices = c(left_index, top_bottom_indices)
-            if (length(like_indices) == 1 | i == min(like_indices) | all(!like_indices %in% adj_indices)) {
-                
-              l_v[i] = ifelse(i == 1, 1, max(cumsum(l_v)[1:(i - 1)]) - cumsum(l_v)[i - 1] + 1)
-              
-            }
-            else if (i != min(like_indices) & (i + 1) %in% like_indices & !(i - nr) %in% like_indices) {
-              
-                l_v[i] = cumsum(l_v)[min(like_indices)] - cumsum(l_v)[i - 1]
-                
-            }
-            else if ((i - nr) %in% like_indices) {
-              
-                l_v[i] = cumsum(l_v)[i - nr] - cumsum(l_v)[i - 1]
-                
-            }
-        }
-        
-        layout_matrix = matrix(cumsum(l_v), nrow = nr)
-    }
-    else {
+    if (aes_list$group_elements) {
       
-        layout_matrix = matrix(1:(nr * nc), nrow = nr, ncol = nc)
+      ue = unique(c(as.matrix(df)))
+      level_df = data.frame(element = ue, level = 1:length(ue), stringsAsFactors = FALSE)
+      matched_df = matrix(level_df$level[match(df, level_df$element)], nrow = nr)
+      m_v = c(matched_df)
+      l_v = rep(0, nr * nc)
+      i_v = 1:(nr * nc)
+      
+      for (i in i_v) {
         
-    }
+          r = (i - 1)%/%nr
+          like_indices = which(m_v == m_v[i])
+          left_index = i_v[i_v == (i - nr)]
+          top_bottom_indices = i_v[(i_v - 1)%/%nr == r & i_v %in% c(i - 1, i + 1)]
+          adj_indices = c(left_index, top_bottom_indices)
+          if (length(like_indices) == 1 | i == min(like_indices) | all(!like_indices %in% adj_indices)) {
+              
+            l_v[i] = ifelse(i == 1, 1, max(cumsum(l_v)[1:(i - 1)]) - cumsum(l_v)[i - 1] + 1)
+            
+          }
+          else if (i != min(like_indices) & (i + 1) %in% like_indices & !(i - nr) %in% like_indices) {
+            
+              l_v[i] = cumsum(l_v)[min(like_indices)] - cumsum(l_v)[i - 1]
+              
+          }
+          else if ((i - nr) %in% like_indices) {
+            
+              l_v[i] = cumsum(l_v)[i - nr] - cumsum(l_v)[i - 1]
+              
+          }
+      }
+      
+      layout_matrix = matrix(cumsum(l_v), nrow = nr)
+  }
+  else {
+    
+      layout_matrix = matrix(1:(nr * nc), nrow = nr, ncol = nc)
+      
+  }
 
   if(length(aes_list$row_heights) == 0 & length(height) == 0){
 
@@ -388,7 +394,7 @@ grob_matrix = function(df,
 
   }
 
-  if (length(aes_list$column_widths) == 0 & length(width) == 0) {
+  if (length(aes_list[['column_widths']]) == 0 & length(width) == 0) {
 
     tmp_column_widths = c()
     for(i in 1:nc){
@@ -407,15 +413,15 @@ grob_matrix = function(df,
         )
       tmp_column_widths = c(tmp_column_widths, max(ind_column_widths) + 2*padding)
     }
-    aes_list$column_widths = tmp_column_widths
+    aes_list[['column_widths']] = tmp_column_widths
 
-  } else if (adjust_cex & length(aes_list$column_widths) ==  0) {
+  } else if (length(aes_list[['column_widths']]) ==  0) {
 
-    aes_list$column_widths = cw
+    aes_list[['column_widths']] = column_widths
 
-  } else if (length(width) == 1 & length(aes_list$column_widths) != nc) {
+  } else if (length(width) == 1 & length(aes_list[['column_widths']]) != nc) {
 
-    aes_list$column_widths = rep(width/nc, nc)
+    aes_list[['column_widths']] = rep(width/nc, nc)
 
   }
   
@@ -423,8 +429,8 @@ grob_matrix = function(df,
 
   gridExtra::arrangeGrob(
     grobs = raw_grobs[first_element_indices],
-    heights = grid::unit(aes_list$row_heights, units),
-    widths = grid::unit(aes_list$column_widths, units),
+    heights = grid::unit(aes_list[['row_heights']], units),
+    widths = grid::unit(aes_list[['column_widths']], units),
     layout_matrix = layout_matrix
     )
 
