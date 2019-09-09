@@ -13,7 +13,7 @@ alter_cells(mat, value, row_numbers = NULL, column_numbers = NULL)
 
 \item{row_numbers}{The row numbers the user wishes to alter.}
 
-\item{column_numbers}{The row numbers the user wishes to alter.}
+\item{column_numbers}{The column numbers the user wishes to alter.}
 }
 \value{
 A matrix with the desired cells altered.

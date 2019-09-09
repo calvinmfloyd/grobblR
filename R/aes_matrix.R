@@ -43,7 +43,7 @@ alter_rows = function(mat, value, row_numbers = NULL) {
 #'
 #' @param mat The matrix the user wishes to alter cells of.
 #' @param value The single value that will replace specific cells of the matrix.
-#' @param column_numbers The row numbers the user wishes to alter.
+#' @param column_numbers The column numbers the user wishes to alter.
 #' @return A matrix with the desired columns altered.
 #' @examples 
 #' df = data.frame(x = c(1, 2, 3), y = c(4, 5, 6))
@@ -66,7 +66,7 @@ alter_columns = function(mat, value, column_numbers = NULL) {
 #' @param mat The matrix the user wishes to alter cells of.
 #' @param value The single value that will replace specific cells of the matrix.
 #' @param row_numbers The row numbers the user wishes to alter.
-#' @param column_numbers The row numbers the user wishes to alter.
+#' @param column_numbers The column numbers the user wishes to alter.
 #' @return A matrix with the desired cells altered.
 #' @examples 
 #' df = data.frame(x = c(1, 2, 3), y = c(4, 5, 6))
