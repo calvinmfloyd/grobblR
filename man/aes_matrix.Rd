@@ -3,21 +3,26 @@
 \name{aes_matrix}
 \alias{aes_matrix}
 \title{Create a matrix based off the dimensions of a data.frame/matrix and a single 
-value to make up its cells.}
+value to make up its cells. Designed to be used as an aesthetic matrix within
+\code{ga_list()}.}
 \usage{
-aes_matrix(df, value)
+aes_matrix(df, value, column_names = FALSE)
 }
 \arguments{
 \item{df}{A data.frame the resulting matrix will get its dimensions from.}
 
 \item{value}{The single value that will make up the cells of the resulting matrix.}
+
+\item{column_names}{A TRUE/FALSE value indicating if the resulting aesthetic
+matrix is intended to be used for the column names.}
 }
 \value{
 A matrix based on the dimensions of \code{df} and \code{value}.
 }
 \description{
 Create a matrix based off the dimensions of a data.frame/matrix and a single 
-value to make up its cells.
+value to make up its cells. Designed to be used as an aesthetic matrix within
+\code{ga_list()}.
 }
 \examples{
 df = data.frame(x = c(1, 2, 3), y = c(4, 5, 6))

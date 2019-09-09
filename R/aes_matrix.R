@@ -1,18 +1,22 @@
 #' Create a matrix based off the dimensions of a data.frame/matrix and a single 
-#' value to make up its cells.
+#' value to make up its cells. Designed to be used as an aesthetic matrix within
+#' \code{ga_list()}.
 #'
 #' @param df A data.frame the resulting matrix will get its dimensions from.
 #' @param value The single value that will make up the cells of the resulting matrix.
+#' @param column_names A TRUE/FALSE value indicating if the resulting aesthetic
+#' matrix is intended to be used for the column names.
 #' @return A matrix based on the dimensions of \code{df} and \code{value}.
 #' @examples 
 #' df = data.frame(x = c(1, 2, 3), y = c(4, 5, 6))
 #' aes_matrix(df, 'white')
 #' @export
 
-aes_matrix = function(df, value) {
+aes_matrix = function(df, value, column_names = FALSE) {
   
   value = check_value(value = value)
-
+  if (column_names) df = matrix(colnames(df), nrow = 1, ncol = ncol(df))
+  
   matrix(value, nrow = nrow(df), ncol = ncol(df))
   
 }
@@ -84,12 +88,27 @@ alter_cells = function(mat, value, row_numbers = NULL, column_numbers = NULL) {
   mat
 }
 
+get_even_indicator = function() {
+  'even'
+}
+
+get_odd_indicator = function() {
+  'odd'
+}
+
+get_last_indicator = function() {
+  'last'
+}
+
+get_first_indicator = function() {
+  'first'
+}
 
 check_value = function(value) {
   
   if (length(value) != 1) {
     
-    stop('Please provide a value of length 1.')
+    stop('Please provide a value of length 1.', call. = FALSE)
     
   }
   
@@ -99,23 +118,49 @@ check_value = function(value) {
 
 check_row_numbers = function(mat, row_numbers = NULL) {
   
+  even_indicator = get_even_indicator()
+  odd_indicator = get_odd_indicator()
+  last_indicator = get_last_indicator()
+  first_indicator = get_first_indicator()
+  
+  allowable_strings = c(
+    even_indicator,
+    odd_indicator,
+    last_indicator,
+    first_indicator
+    )
+  
+  nr = nrow(mat)
+  
+  if (!row_numbers %in% allowable_strings && (any(row_numbers > nr) || any(row_numbers < 1))) {
+    
+    stop(
+      call. = FALSE,
+      paste0(
+        'Make sure the row numbers to be altered are not outside the ',
+        'dimensions of the initial data.frame/matrix.'
+        )
+      )
+    
+  }
+  
   if (is.null(row_numbers)) {
     
-    return(1:nrow(mat))
+    return(1:nr)
     
-  } else if (row_numbers[1] == 'even') {
+  } else if (row_numbers[1] == even_indicator) {
     
-    return(seq(2, nrow(mat), 2))
+    return(seq(2, nr, 2))
     
-  } else if (row_numbers[1] == 'odd') {
+  } else if (row_numbers[1] == odd_indicator) {
     
-    return(seq(1, nrow(mat), 2))
+    return(seq(1, nr, 2))
     
-  } else if (row_numbers[1] == 'last') {
+  } else if (row_numbers[1] == last_indicator) {
     
-    return(nrow(mat))
+    return(nr)
     
-  } else if (row_numbers[1] == 'first') {
+  } else if (row_numbers[1] == first_indicator) {
     
     return(1)
     
@@ -129,23 +174,49 @@ check_row_numbers = function(mat, row_numbers = NULL) {
 
 check_column_numbers = function(mat, column_numbers = NULL) {
   
+  even_indicator = get_even_indicator()
+  odd_indicator = get_odd_indicator()
+  last_indicator = get_last_indicator()
+  first_indicator = get_first_indicator()
+  
+  allowable_strings = c(
+    even_indicator,
+    odd_indicator,
+    last_indicator,
+    first_indicator
+    )
+  
+  nc = ncol(mat)
+  
+  if (!column_numbers %in% allowable_strings && (any(column_numbers > nc) || any(column_numbers < 1))) {
+    
+    stop(
+      call. = FALSE,
+      paste0(
+        'Make sure the column numbers to be altered are not outside the ',
+        'dimensions of the initial data.frame/matrix.'
+        )
+      )
+    
+  }
+
   if (is.null(column_numbers)) {
     
-    return(1:ncol(mat))
+    return(1:nc)
     
-  } else if (column_numbers[1] == 'even') {
+  } else if (column_numbers[1] == even_indicator) {
     
-    return(seq(2, ncol(mat), 2))
+    return(seq(2, nc, 2))
     
-  } else if (column_numbers[1] == 'odd') {
+  } else if (column_numbers[1] == odd_indicator) {
     
-    return(seq(1, ncol(mat), 2))
+    return(seq(1, nc, 2))
     
-  } else if (column_numbers[1] == 'last') {
+  } else if (column_numbers[1] == last_indicator) {
     
-    return(ncol(mat))
+    return(nc)
     
-  } else if (column_numbers[1] == 'first') {
+  } else if (column_numbers[1] == first_indicator) {
     
     return(1)
     
