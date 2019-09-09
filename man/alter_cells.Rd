@@ -11,9 +11,11 @@ alter_cells(mat, value, row_numbers = NULL, column_numbers = NULL)
 
 \item{value}{The single value that will replace specific cells of the matrix.}
 
-\item{row_numbers}{The row numbers the user wishes to alter.}
+\item{row_numbers}{The row numbers the user wishes to alter. See \code{\link{alter_rows}}
+for information on special inputs.}
 
-\item{column_numbers}{The column numbers the user wishes to alter.}
+\item{column_numbers}{The column numbers the user wishes to alter. See \code{\link{alter_columns}}
+for information on special inputs.}
 }
 \value{
 A matrix with the desired cells altered.

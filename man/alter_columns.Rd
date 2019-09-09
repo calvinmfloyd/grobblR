@@ -11,7 +11,14 @@ alter_columns(mat, value, column_numbers = NULL)
 
 \item{value}{The single value that will replace specific cells of the matrix.}
 
-\item{column_numbers}{The column numbers the user wishes to alter.}
+\item{column_numbers}{The column numbers the user wishes to alter. The user can also 
+input:
+\itemize{
+\item 'odd' - Only alter odd numbered columns.
+\item 'even' - Only alter even numbered columns.
+\item 'first' - Only alter the first column.
+\item 'last' - Only alter the last column.
+}}
 }
 \value{
 A matrix with the desired columns altered.

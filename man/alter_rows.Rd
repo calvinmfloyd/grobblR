@@ -11,7 +11,14 @@ alter_rows(mat, value, row_numbers = NULL)
 
 \item{value}{The single value that will replace specific cells of the matrix.}
 
-\item{row_numbers}{The row numbers the user wishes to alter.}
+\item{row_numbers}{The row numbers the user wishes to alter. The user can also 
+input:
+\itemize{
+\item 'odd' - Only alter odd numbered rows.
+\item 'even' - Only alter even numbered rows.
+\item 'first' - Only alter the first row.
+\item 'last' - Only alter the last row.
+}}
 }
 \value{
 A matrix with the desired rows altered.

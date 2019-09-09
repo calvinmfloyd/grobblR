@@ -2,7 +2,7 @@
 % Please edit documentation in R/grob_row.R
 \name{grob_row}
 \alias{grob_row}
-\title{The grob-row function which helps gives the grob from the \code{\link{grob_layout()}} function its shape. Works hand-in-hand with the \code{\link{grob_col()}} function.}
+\title{The grob-row function which helps gives the grob from the \code{\link{grob_layout}} function its shape. Works hand-in-hand with the \code{\link{grob_col}} function.}
 \usage{
 grob_row(..., p = 1, border = F, border_aes_list = ga_list(),
   title = "", title_aes_list = ga_list(), title_p = 0.15,
@@ -42,7 +42,7 @@ grob_row(..., p = 1, border = F, border_aes_list = ga_list(),
 An R6 class object which contains all the information needed to carry on to its grob-columns and create the grob-row.
 }
 \description{
-The grob-row function which helps gives the grob from the \code{\link{grob_layout()}} function its shape. Works hand-in-hand with the \code{\link{grob_col()}} function.
+The grob-row function which helps gives the grob from the \code{\link{grob_layout}} function its shape. Works hand-in-hand with the \code{\link{grob_col}} function.
 }
 \details{
 The individual grob-row is obtained with \code{grob_row()$grob}.

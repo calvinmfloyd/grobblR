@@ -1,4 +1,4 @@
-#' The grob-row function which helps gives the grob from the \code{\link{grob_layout()}} function its shape. Works hand-in-hand with the \code{\link{grob_col()}} function.
+#' The grob-row function which helps gives the grob from the \code{\link{grob_layout}} function its shape. Works hand-in-hand with the \code{\link{grob_col}} function.
 #'
 #' @param ... A series of \code{grob_col}'s.
 #' @param p The numeric proportion of the given height which should be given to sub-grobs outputted in the grob-row. Defaults to 1. Overridden if a \code{height} is supplied.
