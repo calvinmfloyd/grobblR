@@ -4,7 +4,7 @@
 \alias{aes_matrix}
 \title{Create a matrix based off the dimensions of a data.frame/matrix and a single 
 value to make up its cells. Designed to be used as an aesthetic matrix within
-\code{ga_list()}.}
+\code{\link{ga_list}}.}
 \usage{
 aes_matrix(df, value, column_names = FALSE)
 }
@@ -22,7 +22,7 @@ A matrix based on the dimensions of \code{df} and \code{value}.
 \description{
 Create a matrix based off the dimensions of a data.frame/matrix and a single 
 value to make up its cells. Designed to be used as an aesthetic matrix within
-\code{ga_list()}.
+\code{\link{ga_list}}.
 }
 \examples{
 df = data.frame(x = c(1, 2, 3), y = c(4, 5, 6))

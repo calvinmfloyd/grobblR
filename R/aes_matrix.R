@@ -1,6 +1,6 @@
 #' Create a matrix based off the dimensions of a data.frame/matrix and a single 
 #' value to make up its cells. Designed to be used as an aesthetic matrix within
-#' \code{ga_list()}.
+#' \code{\link{ga_list}}.
 #'
 #' @param df A data.frame the resulting matrix will get its dimensions from.
 #' @param value The single value that will make up the cells of the resulting matrix.
