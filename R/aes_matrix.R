@@ -164,6 +164,10 @@ check_row_numbers = function(mat, row_numbers = NULL) {
     
     return(1:nr)
     
+  } else if (length(row_numbers) == 0) {
+    
+    return(integer(0))
+    
   } else if (row_numbers[1] == even_indicator) {
     
     return(seq(2, nr, 2))
