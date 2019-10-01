@@ -87,7 +87,7 @@ grob_matrix = function(df,
     text_v_just = c(0.5, 0.5, 0.5, 0.5, 0.5),
     text_font = c('sans', 'sans', 'sans', 'sans', 'sans', 'sans'),
     border_color = c('gray40', 'gray40', 'gray40', 'gray40', 'gray40'),
-    border_width = c(4, 4, 1, 4, 4),
+    border_width = c(1, 1, 1, 1, 1),
     round_rect_radius = c(0.0, 0.0, 0.0, 0.0, 0.2)
     )
 
