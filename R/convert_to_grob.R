@@ -6,10 +6,6 @@
 #' @param aes_list The list outputted by \code{ga_list} which contains elements to adjust aesthetics to the grob of \code{x}. Different type of grobs have different types of elements of this list which will affect its aesthetics.\\
 #' For character strings or matrices of dimensions n x p, the aesthetic elements can either be a single value which will be applied to the entire matrix, or a matrix of dimension n x p, which specifies how each element of the matrix will be adjusted. Note that column names and actual matrix elements are treated differently.\\
 #' Possible elements for character strings, matrices and images can be found in \code{\link{ga_list}}.
-#' \itemize{
-#' \item \code{n_lines} The maximum number of lines is desired for the character string to be broken up into.
-#' \item \code{sep} The separator within the character string which designates where a new line should start.
-#' }
 #' @return A grob of x with aesthetics based on the aes_list parameter.
 #' @export
 
