@@ -223,6 +223,10 @@ check_column_numbers = function(mat, column_numbers = NULL) {
   if (is.null(column_numbers)) {
     
     return(1:nc)
+  
+  } else if (length(column_numbers) == 0) {
+    
+    return(integer(0))
     
   } else if (column_numbers[1] == even_indicator) {
     
