@@ -149,8 +149,8 @@ convert_to_grob = function(x,
 
   }
   else if (ggplot2::is.ggplot(x)) {
-
-    png_name = sprintf("ggplot_grob_%s.png", format(Sys.time(), '%m_%d_%Y_%H_%M_%S'))
+    
+    png_name = file.path(tempdir(), sprintf("ggplot_grob_%s.png", format(Sys.time(), '%m_%d_%Y_%H_%M_%S')))
     aspect_ratio_multiplier = ifelse(
       length(aes_list$aspect_ratio_multiplier) == 0,
       1,
@@ -173,7 +173,7 @@ convert_to_grob = function(x,
       units = units
       )
     
-    file.remove(png_name)
+    remove_file = file.remove(png_name)
 
   }
   else if (grid::is.grob(x)) {
