@@ -43,7 +43,6 @@ grob_matrix = function(df,
 
   # Adding in default values (non-matrices) if they are missing ----
   def_vals_non_matrices = list(
-    group_elements = FALSE,
     padding_p = 0.0025,
     color_gradient_columns = numeric(),
     color_gradient_binary = FALSE,
@@ -86,9 +85,11 @@ grob_matrix = function(df,
     text_just = c(0.5, 0.5, 0.5, 0.0, 0.0),
     text_v_just = c(0.5, 0.5, 0.5, 0.5, 0.5),
     text_font = c('sans', 'sans', 'sans', 'sans', 'sans', 'sans'),
+    text_rot = c(0.0, 0.0, 0.0, 0.0, 0.0),
     border_color = c('gray40', 'gray40', 'gray40', 'gray40', 'gray40'),
     border_width = c(1, 1, 1, 1, 1),
-    round_rect_radius = c(0.0, 0.0, 0.0, 0.0, 0.2)
+    round_rect_radius = c(0.0, 0.0, 0.0, 0.0, 0.2),
+    group_elements = c(FALSE, FALSE, FALSE, FALSE, FALSE)
     )
 
   def_orig_vals_list = c(def_vals_matrices, def_vals_non_matrices)
@@ -138,13 +139,14 @@ grob_matrix = function(df,
     optimal_cvs = sapply(
       X = 1:nc, 
       FUN = function(x){
+        column_edited = ifelse(df[,x] %in% '', " ", df[,x])
         cex_val_convergence(
-          string = paste(df[,x], collapse = '\n'),
+          string = paste(column_edited, collapse = '\n'),
           n_lines = nr,
           height = height,
           units = units,
           width = column_widths[x],
-          convergence_limit = 0.05,
+          convergence_limit = 0.01,
           sep = '\n'
         )$cex_val
         }
@@ -300,6 +302,7 @@ grob_matrix = function(df,
         y = grid::unit(aes_list$text_v_align[i,j], "npc"),
         hjust = aes_list$text_just[i,j],
         vjust = aes_list$text_v_just[i,j],
+        rot = aes_list$text_rot[i,j],
         gp = grid::gpar(
           fontface = aes_list$font_face[i,j],
           fontfamily = aes_list$text_font[i,j],
@@ -326,46 +329,8 @@ grob_matrix = function(df,
       }
     }}
 
-    if (aes_list$group_elements) {
-      
-      ue = unique(c(as.matrix(df)))
-      level_df = data.frame(element = ue, level = 1:length(ue), stringsAsFactors = FALSE)
-      matched_df = matrix(level_df$level[match(df, level_df$element)], nrow = nr)
-      m_v = c(matched_df)
-      l_v = rep(0, nr * nc)
-      i_v = 1:(nr * nc)
-      
-      for (i in i_v) {
-        
-          r = (i - 1)%/%nr
-          like_indices = which(m_v == m_v[i])
-          left_index = i_v[i_v == (i - nr)]
-          top_bottom_indices = i_v[(i_v - 1)%/%nr == r & i_v %in% c(i - 1, i + 1)]
-          adj_indices = c(left_index, top_bottom_indices)
-          if (length(like_indices) == 1 | i == min(like_indices) | all(!like_indices %in% adj_indices)) {
-              
-            l_v[i] = ifelse(i == 1, 1, max(cumsum(l_v)[1:(i - 1)]) - cumsum(l_v)[i - 1] + 1)
-            
-          }
-          else if (i != min(like_indices) & (i + 1) %in% like_indices & !(i - nr) %in% like_indices) {
-            
-              l_v[i] = cumsum(l_v)[min(like_indices)] - cumsum(l_v)[i - 1]
-              
-          }
-          else if ((i - nr) %in% like_indices) {
-            
-              l_v[i] = cumsum(l_v)[i - nr] - cumsum(l_v)[i - 1]
-              
-          }
-      }
-      
-      layout_matrix = matrix(cumsum(l_v), nrow = nr)
-  }
-  else {
-    
-      layout_matrix = matrix(1:(nr * nc), nrow = nr, ncol = nc)
-      
-  }
+  # Layout Matrix ----
+  layout_matrix = get_layout_matrix(df, aes_list$group_elements)
 
   if(length(aes_list$row_heights) == 0 & length(height) == 0){
 

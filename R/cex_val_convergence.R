@@ -7,7 +7,7 @@ cex_val_convergence = function(string,
                                units = c('mm', 'cm', 'inches'),
                                cex_val_min = 0,
                                cex_val_max = 50,
-                               convergence_limit = 0.25){
+                               convergence_limit = 0.01){
 
   sep = ifelse(is.null(sep), '\n', sep)
   n_lines = ifelse(is.null(n_lines), 10000, n_lines)

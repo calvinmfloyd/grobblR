@@ -9,17 +9,18 @@ ga_list(aspect_ratio_multiplier = NULL, background_color = NULL,
   border_width = NULL, font_face = NULL, group_elements = NULL,
   text_color = NULL, text_align = NULL, text_v_align = NULL,
   text_just = NULL, text_v_just = NULL, text_cex = NULL,
-  text_font = NULL, round_rect_radius = NULL, column_widths = NULL,
-  column_widths_p = NULL, padding_p = NULL, cell_font_face = NULL,
-  cell_group_elements = NULL, cell_background_color = NULL,
-  cell_background_alpha = NULL, cell_border_color = NULL,
-  cell_border_sides = NULL, cell_border_width = NULL,
-  cell_text_color = NULL, cell_text_align = NULL,
-  cell_text_v_align = NULL, cell_text_just = NULL,
-  cell_text_v_just = NULL, cell_text_cex = NULL,
-  cell_text_font = NULL, cell_round_rect_radius = NULL,
-  cell_column_widths = NULL, cell_column_widths_p = NULL,
-  cell_padding_p = NULL, cell_color_gradient_columns = NULL,
+  text_font = NULL, text_rot = NULL, round_rect_radius = NULL,
+  column_widths = NULL, column_widths_p = NULL, padding_p = NULL,
+  cell_font_face = NULL, cell_group_elements = NULL,
+  cell_background_color = NULL, cell_background_alpha = NULL,
+  cell_border_color = NULL, cell_border_sides = NULL,
+  cell_border_width = NULL, cell_text_color = NULL,
+  cell_text_align = NULL, cell_text_v_align = NULL,
+  cell_text_just = NULL, cell_text_v_just = NULL,
+  cell_text_cex = NULL, cell_text_font = NULL, cell_text_rot = NULL,
+  cell_round_rect_radius = NULL, cell_column_widths = NULL,
+  cell_column_widths_p = NULL, cell_padding_p = NULL,
+  cell_color_gradient_columns = NULL,
   cell_color_gradient_binary = NULL, cell_color_binary_cut_off = NULL,
   cell_color_binary_high = NULL, cell_color_binary_low = NULL,
   cell_color_binary_equal = NULL, cell_color_gradient_max = NULL,
@@ -31,9 +32,10 @@ ga_list(aspect_ratio_multiplier = NULL, background_color = NULL,
   colname_text_align = NULL, colname_text_v_align = NULL,
   colname_text_just = NULL, colname_text_v_just = NULL,
   colname_text_cex = NULL, colname_text_font = NULL,
-  colname_round_rect_radius = NULL, colname_column_widths = NULL,
-  colname_column_widths_p = NULL, colname_padding_p = NULL,
-  maintain_aspect_ratio = NULL, n_lines = NULL, str_sep = NULL)
+  colname_text_rot = NULL, colname_round_rect_radius = NULL,
+  colname_column_widths = NULL, colname_column_widths_p = NULL,
+  colname_padding_p = NULL, maintain_aspect_ratio = NULL,
+  n_lines = NULL, str_sep = NULL)
 }
 \arguments{
 \item{aspect_ratio_multiplier}{A numeric value which controls how much to increase/decrease the aspect ratio of images or ggplots.}
@@ -65,6 +67,8 @@ ga_list(aspect_ratio_multiplier = NULL, background_color = NULL,
 \item{text_cex}{Controls the size of the text within the matrix. Default is automatic text sizing based on the length of the elements within the matrix, the row heights and the column widths. Used with matrices or character strings.}
 
 \item{text_font}{Controls the font family of the text within the matrix. Default is sans. Used with matrices or character strings.}
+
+\item{text_rot}{Controls the rotation in degrees of the text within the matrix. Default is 0 degrees. Used with matrices or character strings. \strong{Please be aware that the automatic text sizing will not react properly if the text is angled at anything other than 0 degrees.}}
 
 \item{round_rect_radius}{Controls the radius of the corners of the rectangles matrix text is laid on top of. Used with matrices.}
 
@@ -101,6 +105,8 @@ ga_list(aspect_ratio_multiplier = NULL, background_color = NULL,
 \item{cell_text_cex}{Controls the \code{text_cex} of matrix cells. Overridden by the \code{text_cex} parameter.}
 
 \item{cell_text_font}{Controls the \code{text_font} of matrix cells. Overridden by the \code{text_font} parameter.}
+
+\item{cell_text_rot}{Controls the \code{text_rot} of matrix cells. Overridden by the \code{text_rot} parameter.}
 
 \item{cell_round_rect_radius}{Controls the \code{round_rect_radius} of matrix cells. Overridden by the \code{round_rect_radius} parameter.}
 
@@ -155,6 +161,8 @@ ga_list(aspect_ratio_multiplier = NULL, background_color = NULL,
 \item{colname_text_cex}{Controls the \code{text_cex} of column names. Overridden by the \code{text_cex} parameter.}
 
 \item{colname_text_font}{Controls the \code{text_font} of column names. Overridden by the \code{text_font} parameter.}
+
+\item{colname_text_rot}{Controls the \code{text_rot} of column names. Overridden by the \code{text_rot} parameter.}
 
 \item{colname_round_rect_radius}{Controls the \code{round_rect_radius} of column names. Overridden by the \code{round_rect_radius} parameter.}
 

@@ -17,6 +17,7 @@
 #' @param text_cex Controls the size of the text within the matrix. Default is automatic text sizing based on the length of the elements within the matrix, the row heights and the column widths. Used with matrices or character strings.
 #' @param text_color Controls the text color of the elements of the matrix. Default for table elements and row names is black, and a gray-blue color for column names. Used with matrices or character strings.
 #' @param text_font Controls the font family of the text within the matrix. Default is sans. Used with matrices or character strings.
+#' @param text_rot Controls the rotation in degrees of the text within the matrix. Default is 0 degrees. Used with matrices or character strings. \strong{Please be aware that the automatic text sizing will not react properly if the text is angled at anything other than 0 degrees.}
 #' @param text_just Controls the horizontal justification of the text in the matrix. A numeric value between 0 and 1, with 0 being left justification and 1 being right justification. Default is 0.5, or center justification. Can also input 'left', 'right' or 'center', which will also make edits to \code{text_align} to make the text completely left-justified, right-justified or centered, respectively. Used with matrices or character strings.
 #' @param text_v_align Controls where the text in each grid cell will be centered around, vertically. A numeric value between 0 and 1, with 0 being all the way to the bottom of the grid cell, and 1 being all the way to the top of the grid cell. Default is 0.5. Can also input 'top', 'bottom' or 'center', which will also make edits to \code{text_v_just} to make the text completely top-justified, bottom-justified or centered, respectively. Used with matrices or character strings.
 #' @param text_v_just Controls the vertical justification of the text in the matrix. A numeric value between 0 and 1, with 0 being bottom justification and 1 being top justification. Default is 0.5, or center justification. Can also input 'top', 'bottom' or 'center', which will also make edits to \code{text_v_align} to make the text completely top-justified, bottom-justified or centered, respectively. Used with matrices or character strings.
@@ -36,6 +37,7 @@
 #' @param cell_text_v_just Controls the \code{text_v_just} of matrix cells. Overridden by the \code{text_v_just} parameter.
 #' @param cell_text_cex Controls the \code{text_cex} of matrix cells. Overridden by the \code{text_cex} parameter.
 #' @param cell_text_font Controls the \code{text_font} of matrix cells. Overridden by the \code{text_font} parameter.
+#' @param cell_text_rot Controls the \code{text_rot} of matrix cells. Overridden by the \code{text_rot} parameter.
 #' @param cell_round_rect_radius Controls the \code{round_rect_radius} of matrix cells. Overridden by the \code{round_rect_radius} parameter.
 #' @param cell_column_widths Controls the \code{column_widths} of matrix cells. Overridden by the \code{column_widths} parameter.
 #' @param cell_column_widths_p Controls the \code{column_widths_p} of matrix cells. Overridden by the \code{column_widths_p} parameter.
@@ -63,6 +65,7 @@
 #' @param colname_text_v_just Controls the \code{text_v_just} of column names. Overridden by the \code{text_v_just} parameter.
 #' @param colname_text_cex Controls the \code{text_cex} of column names. Overridden by the \code{text_cex} parameter.
 #' @param colname_text_font Controls the \code{text_font} of column names. Overridden by the \code{text_font} parameter.
+#' @param colname_text_rot Controls the \code{text_rot} of column names. Overridden by the \code{text_rot} parameter.
 #' @param colname_round_rect_radius Controls the \code{round_rect_radius} of column names. Overridden by the \code{round_rect_radius} parameter.
 #' @param colname_column_widths Controls the \code{column_widths} of column names. Overridden by the \code{column_widths} parameter.
 #' @param colname_column_widths_p Controls the \code{column_widths_p} of column names. Overridden by the \code{column_widths_p} parameter.
@@ -86,6 +89,7 @@ ga_list = function(aspect_ratio_multiplier = NULL,
                    text_v_just = NULL,
                    text_cex = NULL,
                    text_font = NULL,
+                   text_rot = NULL,
                    round_rect_radius = NULL,
                    column_widths = NULL,
                    column_widths_p = NULL,
@@ -104,6 +108,7 @@ ga_list = function(aspect_ratio_multiplier = NULL,
                    cell_text_v_just = NULL,
                    cell_text_cex = NULL,
                    cell_text_font = NULL,
+                   cell_text_rot = NULL,
                    cell_round_rect_radius = NULL,
                    cell_column_widths = NULL,
                    cell_column_widths_p = NULL,
@@ -131,6 +136,7 @@ ga_list = function(aspect_ratio_multiplier = NULL,
                    colname_text_v_just = NULL,
                    colname_text_cex = NULL,
                    colname_text_font = NULL,
+                   colname_text_rot = NULL,
                    colname_round_rect_radius = NULL,
                    colname_column_widths = NULL,
                    colname_column_widths_p = NULL,
@@ -172,6 +178,7 @@ ga_list = function(aspect_ratio_multiplier = NULL,
     cell_text_v_just = cell_text_v_just,
     cell_text_cex = cell_text_cex,
     cell_text_font = cell_text_font,
+    cell_text_rot = cell_text_rot,
     cell_round_rect_radius = cell_round_rect_radius,
     cell_column_widths = cell_column_widths,
     cell_column_widths_p = cell_column_widths_p,
@@ -199,6 +206,7 @@ ga_list = function(aspect_ratio_multiplier = NULL,
     colname_text_v_just = colname_text_v_just,
     colname_text_cex = colname_text_cex,
     colname_text_font = colname_text_font,
+    colname_text_rot = colname_text_rot,
     colname_round_rect_radius = colname_round_rect_radius,
     colname_column_widths = colname_column_widths,
     colname_column_widths_p = colname_column_widths_p,
