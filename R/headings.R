@@ -8,10 +8,9 @@
 column_names_to_row = function(df) {
   
   mat = convert_to_matrix(df)
-  col_names = colnames(mat)
+  grob_col_names = colnames(mat)
   colnames(mat) = NULL
-  mat_w_column_names = rbind(col_names, mat)
-  rownames(mat_w_column_names) = NULL
+  mat_w_column_names = rbind(grob_col_names, mat)
   mat_w_column_names
 
 }
@@ -44,16 +43,15 @@ add_column_headings = function(mat, headings = list(), heading_cols = list()) {
   }
  
   num_elements = length(headings)
-  column_heading = rep(" ", ncol(mat))
+  grob_column_heading = rep(" ", ncol(mat))
   
   for (i in 1:num_elements) {
     
-    column_heading[heading_cols[[i]]] = headings[[i]]
+    grob_column_heading[heading_cols[[i]]] = headings[[i]]
   
   }
   
-  mat_w_column_headings = rbind(column_heading, mat)
-  rownames(mat_w_column_headings) = NULL
+  mat_w_column_headings = rbind(grob_column_heading, mat)
   return(mat_w_column_headings)
   
 }
@@ -86,16 +84,15 @@ add_row_headings = function(mat, headings = list(), heading_rows = list()) {
   }
  
   num_elements = length(headings)
-  row_heading = rep(" ", nrow(mat))
+  grob_row_heading = rep(" ", nrow(mat))
   
   for (i in 1:num_elements) {
     
-    row_heading[heading_rows[[i]]] = headings[[i]]
+    grob_row_heading[heading_rows[[i]]] = headings[[i]]
   
   }
   
-  mat_w_row_headings = cbind(row_heading, mat)
-  colnames(mat_w_row_headings) = NULL
+  mat_w_row_headings = cbind(grob_row_heading, mat)
   return(mat_w_row_headings)
   
 }

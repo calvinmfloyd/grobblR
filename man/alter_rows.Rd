@@ -4,21 +4,22 @@
 \alias{alter_rows}
 \title{Alter the values at specific rows of a matrix.}
 \usage{
-alter_rows(mat, value, row_numbers = NULL)
+alter_rows(mat, value, rows = NULL)
 }
 \arguments{
 \item{mat}{The matrix the user wishes to alter cells of.}
 
 \item{value}{The single value that will replace specific cells of the matrix.}
 
-\item{row_numbers}{The row numbers the user wishes to alter. The user can also 
-input:
+\item{rows}{The rows the user wishes to alter. Can be numeric row positions, or 
+the user can also input:
 \itemize{
 \item 'odd' - Only alter odd numbered rows.
 \item 'even' - Only alter even numbered rows.
 \item 'first' - Only alter the first row.
 \item 'last' - Only alter the last row.
-}}
+}
+Also, the user can provide the row name of the column they wish to alter.}
 }
 \value{
 A matrix with the desired rows altered.
@@ -29,5 +30,5 @@ Alter the values at specific rows of a matrix.
 \examples{
 df = data.frame(x = c(1, 2, 3), y = c(4, 5, 6))
 mat = aes_matrix(df, 'white')
-alter_rows(mat = mat, value = 'red', row_numbers = c(1, 2))
+alter_rows(mat = mat, value = 'red', rows = c(1, 2))
 }

@@ -4,17 +4,17 @@
 \alias{alter_cells}
 \title{Alter the values at specific row-column combinations of a matrix.}
 \usage{
-alter_cells(mat, value, row_numbers = NULL, column_numbers = NULL)
+alter_cells(mat, value, rows = NULL, columns = NULL)
 }
 \arguments{
 \item{mat}{The matrix the user wishes to alter cells of.}
 
 \item{value}{The single value that will replace specific cells of the matrix.}
 
-\item{row_numbers}{The row numbers the user wishes to alter. See \code{\link{alter_rows}}
+\item{rows}{The rows the user wishes to alter. See \code{\link{alter_rows}}
 for information on special inputs.}
 
-\item{column_numbers}{The column numbers the user wishes to alter. See \code{\link{alter_columns}}
+\item{columns}{The columns the user wishes to alter. See \code{\link{alter_columns}}
 for information on special inputs.}
 }
 \value{
@@ -26,5 +26,5 @@ Alter the values at specific row-column combinations of a matrix.
 \examples{
 df = data.frame(x = c(1, 2, 3), y = c(4, 5, 6))
 mat = aes_matrix(df, 'white')
-alter_cells(mat = mat, value = 'red', row_numbers = c(1,2), column_numbers = 1)
+alter_cells(mat = mat, value = 'red', rows = c(1,2), columns = 1)
 }

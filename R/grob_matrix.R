@@ -146,7 +146,7 @@ grob_matrix = function(df,
           height = height,
           units = units,
           width = column_widths[x],
-          convergence_limit = 0.01,
+          convergence_limit = 0.025,
           sep = '\n'
         )$cex_val
         }

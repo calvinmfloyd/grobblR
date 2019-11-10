@@ -2,7 +2,7 @@
 #' value to make up its cells. Designed to be used as an aesthetic matrix within
 #' \code{\link{ga_list}}.
 #'
-#' @param df A data.frame the resulting matrix will get its dimensions from.
+#' @param df A data.frame/matrix the resulting matrix will get its dimensions from.
 #' @param value The single value that will make up the cells of the resulting matrix.
 #' @param column_names A TRUE/FALSE value indicating if the resulting aesthetic
 #' matrix is intended to be used for the column names.
@@ -15,9 +15,14 @@
 aes_matrix = function(df, value, column_names = FALSE) {
   
   value = check_value(value = value)
-  if (column_names) df = matrix(colnames(df), nrow = 1, ncol = ncol(df))
+  if (column_names) df = matrix(1, nrow = 1, ncol = ncol(df))
   
-  matrix(value, nrow = nrow(df), ncol = ncol(df))
+  matrix(
+    data = value,
+    nrow = nrow(df),
+    ncol = ncol(df),
+    dimnames = list(rownames(df), colnames(df))
+    )
   
 }
 
@@ -25,27 +30,28 @@ aes_matrix = function(df, value, column_names = FALSE) {
 #'
 #' @param mat The matrix the user wishes to alter cells of.
 #' @param value The single value that will replace specific cells of the matrix.
-#' @param row_numbers The row numbers the user wishes to alter. The user can also 
-#' input:
+#' @param rows The rows the user wishes to alter. Can be numeric row positions, or 
+#' the user can also input:
 #' \itemize{
 #' \item 'odd' - Only alter odd numbered rows.
 #' \item 'even' - Only alter even numbered rows.
 #' \item 'first' - Only alter the first row.
 #' \item 'last' - Only alter the last row.
 #' }
+#' Also, the user can provide the row name of the column they wish to alter.
 #' @return A matrix with the desired rows altered.
 #' @examples 
 #' df = data.frame(x = c(1, 2, 3), y = c(4, 5, 6))
 #' mat = aes_matrix(df, 'white')
-#' alter_rows(mat = mat, value = 'red', row_numbers = c(1, 2))
+#' alter_rows(mat = mat, value = 'red', rows = c(1, 2))
 #' @export
 
-alter_rows = function(mat, value, row_numbers = NULL) {
+alter_rows = function(mat, value, rows = NULL) {
   
   value = check_value(value = value)
-  row_numbers = check_row_numbers(mat = mat, row_numbers = row_numbers)
+  rows = check_rows(mat = mat, rows = rows)
   
-  mat[row_numbers, 1:ncol(mat)] = value
+  mat[rows, 1:ncol(mat)] = value
   mat
 
 }
@@ -54,27 +60,28 @@ alter_rows = function(mat, value, row_numbers = NULL) {
 #'
 #' @param mat The matrix the user wishes to alter cells of.
 #' @param value The single value that will replace specific cells of the matrix.
-#' @param column_numbers The column numbers the user wishes to alter. The user can also 
-#' input:
+#' @param columns The columns the user wishes to alter. Can be numeric column
+#' positions, or the user can input:
 #' \itemize{
 #' \item 'odd' - Only alter odd numbered columns.
 #' \item 'even' - Only alter even numbered columns.
 #' \item 'first' - Only alter the first column.
 #' \item 'last' - Only alter the last column.
 #' }
+#' Also, the user can provide the column name of the column they wish to alter.
 #' @return A matrix with the desired columns altered.
 #' @examples 
 #' df = data.frame(x = c(1, 2, 3), y = c(4, 5, 6))
 #' mat = aes_matrix(df, 'white')
-#' alter_columns(mat = mat, value = 'red', column_numbers = 1)
+#' alter_columns(mat = mat, value = 'red', columns = 1)
 #' @export
 
-alter_columns = function(mat, value, column_numbers = NULL) {
+alter_columns = function(mat, value, columns = NULL) {
   
   value = check_value(value = value)
-  column_numbers = check_column_numbers(mat = mat, column_numbers = column_numbers)
+  columns = check_columns(mat = mat, columns = columns)
   
-  mat[1:nrow(mat), column_numbers] = value
+  mat[1:nrow(mat), columns] = value
   mat
   
 }
@@ -83,24 +90,24 @@ alter_columns = function(mat, value, column_numbers = NULL) {
 #'
 #' @param mat The matrix the user wishes to alter cells of.
 #' @param value The single value that will replace specific cells of the matrix.
-#' @param row_numbers The row numbers the user wishes to alter. See \code{\link{alter_rows}}
+#' @param rows The rows the user wishes to alter. See \code{\link{alter_rows}}
 #' for information on special inputs.
-#' @param column_numbers The column numbers the user wishes to alter. See \code{\link{alter_columns}}
+#' @param columns The columns the user wishes to alter. See \code{\link{alter_columns}}
 #' for information on special inputs.
 #' @return A matrix with the desired cells altered.
 #' @examples 
 #' df = data.frame(x = c(1, 2, 3), y = c(4, 5, 6))
 #' mat = aes_matrix(df, 'white')
-#' alter_cells(mat = mat, value = 'red', row_numbers = c(1,2), column_numbers = 1)
+#' alter_cells(mat = mat, value = 'red', rows = c(1,2), columns = 1)
 #' @export
 
-alter_cells = function(mat, value, row_numbers = NULL, column_numbers = NULL) {
+alter_cells = function(mat, value, rows = NULL, columns = NULL) {
   
   value = check_value(value = value)
-  row_numbers = check_row_numbers(mat = mat, row_numbers = row_numbers)
-  column_numbers = check_column_numbers(mat = mat, column_numbers = column_numbers)
+  rows = check_rows(mat = mat, rows = rows)
+  columns = check_columns(mat = mat, columns = columns)
   
-  mat[row_numbers, column_numbers] = value
+  mat[rows, columns] = value
   mat
 }
 
@@ -132,7 +139,7 @@ check_value = function(value) {
 
 }
 
-check_row_numbers = function(mat, row_numbers = NULL) {
+check_rows = function(mat, rows = NULL) {
   
   even_indicator = get_even_indicator()
   odd_indicator = get_odd_indicator()
@@ -143,12 +150,13 @@ check_row_numbers = function(mat, row_numbers = NULL) {
     even_indicator,
     odd_indicator,
     last_indicator,
-    first_indicator
+    first_indicator,
+    rownames(mat)
     )
   
   nr = nrow(mat)
   
-  if (!row_numbers %in% allowable_strings && (any(row_numbers > nr) || any(row_numbers < 1))) {
+  if (!rows %in% allowable_strings && (any(rows > nr) || any(rows < 1))) {
     
     stop(
       call. = FALSE,
@@ -160,39 +168,55 @@ check_row_numbers = function(mat, row_numbers = NULL) {
     
   }
   
-  if (is.null(row_numbers)) {
+  if (is.null(rows)) {
     
     return(1:nr)
     
-  } else if (length(row_numbers) == 0) {
+  } else if (length(rows) == 0) {
     
     return(integer(0))
     
-  } else if (row_numbers[1] == even_indicator) {
-    
-    return(seq(2, nr, 2))
-    
-  } else if (row_numbers[1] == odd_indicator) {
-    
-    return(seq(1, nr, 2))
-    
-  } else if (row_numbers[1] == last_indicator) {
-    
-    return(nr)
-    
-  } else if (row_numbers[1] == first_indicator) {
-    
-    return(1)
-    
   } else {
     
-    return(row_numbers)
+    row_positions = c()
+    
+    for (row in rows) {
+    
+      if (row %in% even_indicator) {
+        
+        row_positions = c(row_positions, seq(2, nc, 2))
+        
+      } else if (row %in% odd_indicator) {
+        
+        row_positions = c(row_positions, seq(1, nc, 2))
+        
+      } else if (row %in% last_indicator) {
+        
+        row_positions = c(row_positions, nc)
+        
+      } else if (row %in% first_indicator) {
+        
+        row_positions = c(row_positions, 1)
+      
+      } else if (row %in% rownames(mat)) {
+        
+        row_positions = c(row_positions, which(rownames(mat) %in% row))
+        
+      } else {
+        
+        row_positions = c(row_positions, row)
+        
+      }
+      
+    }
+    
+    return(row_positions)
     
   }
   
 }
 
-check_column_numbers = function(mat, column_numbers = NULL) {
+check_columns = function(mat, columns = NULL) {
   
   even_indicator = get_even_indicator()
   odd_indicator = get_odd_indicator()
@@ -203,12 +227,13 @@ check_column_numbers = function(mat, column_numbers = NULL) {
     even_indicator,
     odd_indicator,
     last_indicator,
-    first_indicator
+    first_indicator,
+    colnames(mat)
     )
   
   nc = ncol(mat)
   
-  if (!column_numbers %in% allowable_strings && (any(column_numbers > nc) || any(column_numbers < 1))) {
+  if (!columns %in% allowable_strings && (any(columns > nc) || any(columns < 1))) {
     
     stop(
       call. = FALSE,
@@ -220,34 +245,51 @@ check_column_numbers = function(mat, column_numbers = NULL) {
     
   }
 
-  if (is.null(column_numbers)) {
+  if (is.null(columns)) {
     
     return(1:nc)
-  
-  } else if (length(column_numbers) == 0) {
+    
+  } else if (length(columns) == 0) {
     
     return(integer(0))
     
-  } else if (column_numbers[1] == even_indicator) {
-    
-    return(seq(2, nc, 2))
-    
-  } else if (column_numbers[1] == odd_indicator) {
-    
-    return(seq(1, nc, 2))
-    
-  } else if (column_numbers[1] == last_indicator) {
-    
-    return(nc)
-    
-  } else if (column_numbers[1] == first_indicator) {
-    
-    return(1)
-    
   } else {
     
-    return(column_numbers)
+    column_positions = c()
+    
+    for (column in columns) {
+    
+      if (column %in% even_indicator) {
+        
+        column_positions = c(column_positions, seq(2, nc, 2))
+        
+      } else if (column %in% odd_indicator) {
+        
+        column_positions = c(column_positions, seq(1, nc, 2))
+        
+      } else if (column %in% last_indicator) {
+        
+        column_positions = c(column_positions, nc)
+        
+      } else if (column %in% first_indicator) {
+        
+        column_positions = c(column_positions, 1)
+      
+      } else if (column %in% colnames(mat)) {
+        
+        column_positions = c(column_positions, which(colnames(mat) %in% column))
+        
+      } else {
+        
+        column_positions = c(column_positions, column)
+        
+      }
+      
+    }
+    
+    return(column_positions)
     
   }
+  
   
 }

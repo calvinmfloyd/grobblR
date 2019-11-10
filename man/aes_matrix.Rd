@@ -9,7 +9,7 @@ value to make up its cells. Designed to be used as an aesthetic matrix within
 aes_matrix(df, value, column_names = FALSE)
 }
 \arguments{
-\item{df}{A data.frame the resulting matrix will get its dimensions from.}
+\item{df}{A data.frame/matrix the resulting matrix will get its dimensions from.}
 
 \item{value}{The single value that will make up the cells of the resulting matrix.}
 
