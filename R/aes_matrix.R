@@ -184,15 +184,15 @@ check_rows = function(mat, rows = NULL) {
     
       if (row %in% even_indicator) {
         
-        row_positions = c(row_positions, seq(2, nc, 2))
+        row_positions = c(row_positions, seq(2, nr, 2))
         
       } else if (row %in% odd_indicator) {
         
-        row_positions = c(row_positions, seq(1, nc, 2))
+        row_positions = c(row_positions, seq(1, nr, 2))
         
       } else if (row %in% last_indicator) {
         
-        row_positions = c(row_positions, nc)
+        row_positions = c(row_positions, nr)
         
       } else if (row %in% first_indicator) {
         
