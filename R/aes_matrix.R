@@ -15,7 +15,11 @@
 aes_matrix = function(df, value, column_names = FALSE) {
   
   value = check_value(value = value)
-  if (column_names) df = matrix(1, nrow = 1, ncol = ncol(df))
+  if (column_names) {
+    
+    df = matrix(1, nrow = 1, ncol = ncol(df), dimnames = list(NULL, colnames(df)))
+    
+  }
   
   matrix(
     data = value,
