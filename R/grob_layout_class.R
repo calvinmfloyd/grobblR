@@ -125,22 +125,25 @@ grob_layout_class = R6::R6Class(
       # Creating the Layout Matrix ----
       nr = length(contents)
       layout_matrix = matrix(1:nr, ncol = 1)
-
-      # Calculating Row Heights ----
       inputted_row_heights = sapply(1:nr, function(i) contents[[i]]$height)
-      inputted_row_heights[!is.na(inputted_row_heights)] = inputted_row_heights[!is.na(inputted_row_heights)]/grob_height
-      for(i in which(!is.na(inputted_row_heights))) contents[[i]]$proportion = inputted_row_heights[i]
-      row_proportions = sapply(1:nr, function(i) contents[[i]]$proportion)
-      row_heights = grob_height*(row_proportions/sum(row_proportions))
+      inputted_proportions = sapply(1:nr, function(i) contents[[i]]$proportion)
+      
+      row_heights = allot_sizes(
+        space_size = grob_height,
+        inputted_proportions = inputted_proportions,
+        inputted_sizes = inputted_row_heights
+        )
 
       # Readjusting Grob Widths to fit in the given Page Height and Page Width ----
       raw_grobs = grid::gList()
       for(i in 1:nr){
+        
         contents[[i]]$height = row_heights[i]
         contents[[i]]$width = width_w_padding
         contents[[i]]$units = units
         contents[[i]]$grob_layout_location = trimws(paste0(scales::ordinal(i), " grob-row"))
         raw_grobs = grid::gList(raw_grobs, contents[[i]]$grob)
+        
       }
 
       grob = gridExtra::arrangeGrob(

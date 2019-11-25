@@ -146,12 +146,16 @@ grob_col_class = R6::R6Class(
       if (R6::is.R6(contents[[1]])) {
         
         inputted_heights = sapply(1:length(contents), function(i) contents[[i]]$height)
-        inputted_heights[!is.na(inputted_heights)] = inputted_heights[!is.na(inputted_heights)]/grob_height
-        if (any(!is.na(inputted_heights)))
-          for (i in which(!is.na(inputted_heights)))
-            contents[[i]]$proportion = inputted_heights[i]
+        inputted_proportions = sapply(1:length(contents), function(i) contents[[i]]$proportion)
+        heights = allot_sizes(
+          space_size = grob_height,
+          inputted_proportions = inputted_proportions,
+          inputted_sizes = inputted_heights
+          )
+
+      } else {
         
-        height_proportions = sapply(1:length(contents), function(i) contents[[i]]$proportion)
+        heights = grob_height
         
       }
 
@@ -159,7 +163,7 @@ grob_col_class = R6::R6Class(
 
         if(R6::is.R6(contents[[i]])){
           
-          contents[[i]]$height = grob_height*(height_proportions/sum(height_proportions))[i]
+          contents[[i]]$height = heights[i]
           contents[[i]]$width = width
           contents[[i]]$units = units
           contents[[i]]$grob_layout_location = trimws(paste0(location, paste0(", ", scales::ordinal(i), " grob-row")))
@@ -167,11 +171,9 @@ grob_col_class = R6::R6Class(
 
         } else {
 
-          height_proportions = 1
-
           ctg = convert_to_grob(
             x = contents[[i]],
-            height = grob_height,
+            height = heights,
             width = width_w_padding,
             units = units,
             aes_list = aes_list
@@ -180,7 +182,7 @@ grob_col_class = R6::R6Class(
           g = gridExtra::arrangeGrob(
             grobs = grid::gList(grid::nullGrob(), grid::nullGrob(), grid::nullGrob(), grid::nullGrob(), ctg),
             layout_matrix = cbind(3, rbind(1, 5, 2), 4),
-            heights = grid::unit(c(2*padding*(1-vjust), grob_height, 2*padding*vjust), units),
+            heights = grid::unit(c(2*padding*(1-vjust), heights, 2*padding*vjust), units),
             widths = grid::unit(c(2*padding*hjust, width_w_padding, 2*padding*(1-hjust)), units)
             )
           
@@ -191,7 +193,7 @@ grob_col_class = R6::R6Class(
       grob = gridExtra::arrangeGrob(
         grobs = raw_grobs,
         layout_matrix = matrix(1:length(raw_grobs), ncol = 1),
-        heights = grid::unit(grob_height*(height_proportions/sum(height_proportions)), units),
+        heights = grid::unit(heights, units),
         widths = grid::unit(width, units)
         )
 
@@ -204,7 +206,7 @@ grob_col_class = R6::R6Class(
           title_p = title_p,
           title_height = title_height,
           units = units
-        )
+          )
         
       }
       
@@ -217,7 +219,7 @@ grob_col_class = R6::R6Class(
           caption_p = caption_p,
           caption_height = caption_height,
           units = units
-        )
+          )
         
       }
 

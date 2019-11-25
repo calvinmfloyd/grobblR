@@ -110,11 +110,15 @@ grob_row_class = R6::R6Class(
       title_present = nchar(title) > 0
       caption_present = nchar(caption) > 0
       padding = ifelse(!is.na(padding), padding, padding_proportion*min(c(height, width)))
+      
       inputted_widths = sapply(1:length(contents), function(i) contents[[i]]$width)
-      inputted_widths[!is.na(inputted_widths)] = inputted_widths[!is.na(inputted_widths)]/width
-      for(i in which(!is.na(inputted_widths))) contents[[i]]$proportion = inputted_widths[i]
-      proportions = unlist(lapply(1:length(contents), function(i) contents[[i]]$proportion))
-      widths = (proportions/sum(proportions))*(width - 2*padding)
+      inputted_proportions = sapply(1:length(contents), function(i) contents[[i]]$proportion)
+      widths = allot_sizes(
+        space_size = width - 2*padding,
+        inputted_proportions = inputted_proportions, 
+        inputted_sizes = inputted_widths
+        )
+      
       height_w_padding = height - 2*padding
       title_height = height_w_padding*title_p*title_present
       caption_height = height_w_padding*caption_p*caption_present
