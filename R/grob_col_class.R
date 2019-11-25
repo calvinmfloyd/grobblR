@@ -150,7 +150,11 @@ grob_col_class = R6::R6Class(
         heights = allot_sizes(
           space_size = grob_height,
           inputted_proportions = inputted_proportions,
-          inputted_sizes = inputted_heights
+          inputted_sizes = inputted_heights,
+          grob_layout_location = location,
+          affected_grobs = 'grob-rows',
+          measurement = 'height',
+          units = units
           )
 
       } else {

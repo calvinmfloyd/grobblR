@@ -38,12 +38,67 @@ get_matrix_aes_elements = function() {
 }
 
 
-allot_sizes = function(space_size, inputted_proportions, inputted_sizes) {
+allot_sizes = function(space_size,
+                       inputted_proportions,
+                       inputted_sizes,
+                       grob_layout_location = '',
+                       affected_grobs = '',
+                       measurement = '',
+                       units = 'mm') {
   
   have_inputted_sizes = !is.na(inputted_sizes)
   all_inputted_sizes = all(have_inputted_sizes)
   all_inputted_proportions = all(!have_inputted_sizes)
   
+  # - Checking to make sure the inputted sizes don't actually go above the alloted
+  # space size.
+  total_inputted_sizes = sum(inputted_sizes, na.rm = TRUE)
+  if (total_inputted_sizes > space_size) {
+  
+    stop(
+      paste0(
+        "The total inputted ", measurement, " of ", total_inputted_sizes, units, " is greater ",
+        "than the allotted ", measurement, " of ", round(space_size, 1), units, " ",
+        "for the ", affected_grobs, " in the ", grob_layout_location, "."
+        ),
+      call. = FALSE
+      )
+    
+  }
+
+  # - If all the specifc sizes are given, making sure they add up to the total 
+  # allotted space size.
+  if (all_inputted_sizes && total_inputted_sizes != space_size) {
+  
+    stop(
+      paste0(
+        "All sizes are provided, but the total inputted ", measurement,
+        " of ", total_inputted_sizes, units, " does not equal ",
+        "the allotted ", measurement, " of ", round(space_size, 1), units, " ",
+        "for the ", affected_grobs, " in the ", grob_layout_location, "."
+        ),
+      call. = FALSE
+      )
+    
+  }
+  
+  # - If some but not all specifc sizes are given, making sure they leave room 
+  # for the rows that rely on proportions for their sizes.
+  if (!all_inputted_sizes && total_inputted_sizes == space_size) {
+  
+    stop(
+      paste0(
+        "Some sizes are provided, but the total inputted ", measurement,
+        " of ", total_inputted_sizes, units, " equals ",
+        "the allotted ", measurement, " of ", round(space_size, 1), units, ", ",
+        "leaving no room for the ", affected_grobs, " that rely on proportions",
+        " in the ", grob_layout_location, "."
+        ),
+      call. = FALSE
+      )
+    
+  }
+    
   # - 3 Situations we must handle when alloting sizes to grobs:
   # (1) The user gives all specific sizes for the grobs
   # (2) The user gives all size proportions for the grobs
@@ -55,8 +110,7 @@ allot_sizes = function(space_size, inputted_proportions, inputted_sizes) {
   # total space size, then the sizes will be spread out 
   # appropriately over the total height of the grob-layout.
 
-    proportions = inputted_sizes/sum(inputted_sizes)
-    sizes = space_size*proportions
+    sizes = inputted_sizes
 
   # - Case (2)
   } else if (all_inputted_proportions) {

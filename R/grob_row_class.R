@@ -116,7 +116,11 @@ grob_row_class = R6::R6Class(
       widths = allot_sizes(
         space_size = width - 2*padding,
         inputted_proportions = inputted_proportions, 
-        inputted_sizes = inputted_widths
+        inputted_sizes = inputted_widths,
+        grob_layout_location = location,
+        affected_grobs = 'grob-columns',
+        measurement = 'width',
+        units = units
         )
       
       height_w_padding = height - 2*padding

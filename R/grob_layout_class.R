@@ -131,7 +131,11 @@ grob_layout_class = R6::R6Class(
       row_heights = allot_sizes(
         space_size = grob_height,
         inputted_proportions = inputted_proportions,
-        inputted_sizes = inputted_row_heights
+        inputted_sizes = inputted_row_heights,
+        grob_layout_location = 'grob-layout',
+        affected_grobs = 'outermost grob-rows',
+        measurement = 'height',
+        units = units
         )
 
       # Readjusting Grob Widths to fit in the given Page Height and Page Width ----
