@@ -7,20 +7,18 @@
 
 <!-- badges: end -->
 
-The goal of grobblR is to give R users the ability to easily create
-flexible, reproducible PDF reports incorporating *grobs* and allowing
-the user to combine them in any way they desired. *Grobs* are taken from
-`grid::grob()`
-[documentation](https://stat.ethz.ch/R-manual/R-devel/library/grid/html/grid.grob.html):
-
-> A grid graphical object (“grob”) is a description of a graphical item.
-> These basic classes provide default behaviour for validating, drawing,
-> and modifying graphical objects.
+The grobblR package allows R users the ability to intuitively create
+flexible, reproducible PDF reports comprised of aesthetically pleasing
+tables, images, plots and/or text. The way grobblR does this is by
+implementing *grobs* from the
+[grid](https://www.rdocumentation.org/packages/grid/versions/3.6.1) and
+[gridExtra](https://cran.r-project.org/web/packages/gridExtra/index.html)
+packages.
 
 Within grobblR, the objects able to be converted to a grob are:
 
   - Data frames / matrices
-      - A vector of values
+      - Or a vector of values
   - `ggplot` plots  
   - `.png` files  
   - Character strings  
