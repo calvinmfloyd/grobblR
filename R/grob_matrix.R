@@ -183,7 +183,7 @@ grob_matrix = function(df,
     }
   }
 
-  if (background_color_not_inputted & m_type %in% c(2,4)) {
+  if (background_color_not_inputted & m_type %in% c(2)) {
     
     aes_list[['background_color']][rep(c(F,T), length = nr),] = 'gray95'
     
