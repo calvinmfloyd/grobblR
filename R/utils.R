@@ -50,15 +50,17 @@ allot_sizes = function(space_size,
   all_inputted_sizes = all(have_inputted_sizes)
   all_inputted_proportions = all(!have_inputted_sizes)
   
+  total_inputted_sizes = round(sum(inputted_sizes, na.rm = TRUE), 1)
+  space_size = round(space_size, 1)
+  
   # - Checking to make sure the inputted sizes don't actually go above the alloted
   # space size.
-  total_inputted_sizes = sum(inputted_sizes, na.rm = TRUE)
   if (total_inputted_sizes > space_size) {
   
     stop(
       paste0(
         "The total inputted ", measurement, " of ", total_inputted_sizes, units, " is greater ",
-        "than the allotted ", measurement, " of ", round(space_size, 1), units, " ",
+        "than the allotted ", measurement, " of ", space_size, units, " ",
         "for the ", affected_grobs, " in the ", grob_layout_location, "."
         ),
       call. = FALSE
@@ -74,7 +76,7 @@ allot_sizes = function(space_size,
       paste0(
         "All sizes are provided, but the total inputted ", measurement,
         " of ", total_inputted_sizes, units, " does not equal ",
-        "the allotted ", measurement, " of ", round(space_size, 1), units, " ",
+        "the allotted ", measurement, " of ", space_size, units, " ",
         "for the ", affected_grobs, " in the ", grob_layout_location, "."
         ),
       call. = FALSE
@@ -90,7 +92,7 @@ allot_sizes = function(space_size,
       paste0(
         "Some sizes are provided, but the total inputted ", measurement,
         " of ", total_inputted_sizes, units, " equals ",
-        "the allotted ", measurement, " of ", round(space_size, 1), units, ", ",
+        "the allotted ", measurement, " of ", space_size, units, ", ",
         "leaving no room for the ", affected_grobs, " that rely on proportions",
         " in the ", grob_layout_location, "."
         ),
