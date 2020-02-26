@@ -4,8 +4,12 @@
 \alias{grob_to_pdf}
 \title{Converts a single grob-layout to a PDF, or combines multiple grob-layouts into a multiple page PDF document.}
 \usage{
-grob_to_pdf(..., file_name = character(), add_page_numbers = FALSE,
-  meta_data_title = character())
+grob_to_pdf(
+  ...,
+  file_name = character(),
+  add_page_numbers = FALSE,
+  meta_data_title = character()
+)
 }
 \arguments{
 \item{...}{The single grob or series of grobs which will be converted to a PDF document.}

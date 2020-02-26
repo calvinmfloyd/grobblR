@@ -1,3 +1,230 @@
+#' Takes in an object, and converts it to a grob based on inputted aesthetics arguments.
+#'
+#' @param x The object which needs to be converted to a grob. Must be either: A data.frame/matrix, the file name of a .png image, a character string, a vector, a ggplot object, NA (for an empty grob), or already a grob. 
+#' @param height The numeric height in mm of the desired grob.
+#' @param width The numeric width in mm of the desired grob.
+#' @param aes_list The list outputted by \code{ga_list} which contains elements to adjust aesthetics to the grob of \code{x}. Different type of grobs have different types of elements of this list which will affect its aesthetics.\\
+#' For character strings or matrices of dimensions n x p, the aesthetic elements can either be a single value which will be applied to the entire matrix, or a matrix of dimension n x p, which specifies how each element of the matrix will be adjusted. Note that column names and actual matrix elements are treated differently.\\
+#' Possible elements for character strings, matrices and images can be found in \code{\link{ga_list}}.
+#' @return A grob of x with aesthetics based on the aes_list parameter.
+#' @export
+
+convert_to_grob = function(x,
+                           height,
+                           width,
+                           units = c('mm', 'cm', 'inches'),
+                           aes_list = ga_list()) {
+
+  units = match.arg(units)
+
+  if (is(x, 'grob_matrix_object')) {
+    
+    x$height = height
+    x$width = width
+    x$units = units
+    aes_list = x$finish_ga_list
+    x = x$current
+    colnames(x) = NULL
+      
+  }
+  
+  if (all(is.numeric(x), length(x) > 0, is.null(dim(x)))) {
+    
+    x = convert_to_matrix(x)
+    
+  }
+  
+  # Matrix / Data.Frame ----
+  if(is.data.frame(x) | is.matrix(x)){
+
+    x = as.matrix(x)
+    matrix_aes_elements = get_matrix_aes_elements()
+    colname_present = !is.null(colnames(x))
+    height_adj = ifelse(colname_present, 1, 0)
+
+    if (colname_present) {
+
+      colname_ga_list = list()
+
+      for (name in matrix_aes_elements) {
+
+        if (!is.null(aes_list[[name]])) {
+          
+          colname_ga_list[[name]] = aes_list[[name]]
+          
+        } else {
+          
+          colname_ga_list[[name]] = aes_list[[paste0('colname_', name)]]
+          
+        }
+          
+      }
+
+      colname_grob = convert_to_matrix_grob(
+        df = x,
+        m_type = 3,
+        aes_list = colname_ga_list,
+        height = height/(nrow(x) + 1),
+        width = width,
+        units = units
+        )
+    }
+
+    cell_ga_list = list()
+    for(name in matrix_aes_elements){
+      
+        if(!is.null(aes_list[[name]])){
+          
+          cell_ga_list[[name]] = aes_list[[name]]
+          
+        } else {
+          
+          cell_ga_list[[name]] = aes_list[[paste0('cell_', name)]]
+          
+        }
+    }
+
+    cell_grob = convert_to_matrix_grob(
+      df = x,
+      m_type = ifelse(colname_present, 2, 1),
+      aes_list = cell_ga_list,
+      height = height - height*height_adj/(nrow(x) + 1),
+      width = width,
+      units = units
+      )
+
+    if(colname_present){
+
+      grob = gridExtra::arrangeGrob(
+        grobs = grid::gList(cell_grob, colname_grob),
+        layout_matrix = rbind(c(2), c(1)),
+        widths = grid::unit(width, units),
+        heights = grid::unit(c(height/(nrow(x) + 1), height - height/(nrow(x) + 1)), units)
+        )
+
+    } else {
+
+      grob = cell_grob
+
+    }
+
+  }
+  
+  # Image ----
+  else if (ifelse(is.character(x), grepl('.png', x), FALSE)) {
+    if(!file.exists(x)) stop(sprintf("The file '%s' does not exist.", x), call. = FALSE)
+
+    grob = convert_to_image_grob(
+      img_path = x,
+      aes_list = aes_list,
+      height = height,
+      width = width,
+      units = units
+      )
+
+  }
+  
+  # Text ----
+  else if (ifelse(is.character(x), !grepl('.png', x), FALSE)) {
+
+    if (is.null(aes_list$text_cex)) {
+      
+      n_lines = ifelse(!is.null(aes_list$n_lines), aes_list$n_lines, 10000)
+      sep = ifelse(!is.null(aes_list$str_sep), aes_list$str_sep, '\n')
+      
+      lines = cex_val_convergence(
+        string = x,
+        n_lines = n_lines,
+        sep = sep,
+        height = height,
+        width = width,
+        units = units
+        )
+      aes_list$text_cex = convert_to_matrix(lines$cex_val)
+      
+    } else {
+      
+      lines = line_creator(
+        cex_val = aes_list$text_cex,
+        string = x,
+        height = height,
+        width = width,
+        units = units
+        )
+      
+    }
+    
+    text_matrix = matrix(lines$lines, ncol = 1)
+    grob = convert_to_matrix_grob(
+      df = text_matrix,
+      aes_list = aes_list,
+      height = height,
+      width = width,
+      units = units
+      )
+
+  }
+  
+  # ggplot2 ----
+  else if (ggplot2::is.ggplot(x)) {
+    
+    png_name = file.path(
+      tempdir(),
+      sprintf("ggplot_grob_%s.png", format(Sys.time(), '%m_%d_%Y_%H_%M_%S'))
+      )
+    
+    aspect_ratio_multiplier = ifelse(
+      length(aes_list$aspect_ratio_multiplier) == 0,
+      1,
+      aes_list$aspect_ratio_multiplier
+      )
+    
+    ggplot2::ggsave(
+      filename = png_name,
+      plot = x,
+      height = height*aspect_ratio_multiplier,
+      width = width*aspect_ratio_multiplier,
+      unit = ifelse(units %in% 'inches', 'in', units)
+      )
+    
+    grob = convert_to_image_grob(
+      img_path = png_name,
+      aes_list = aes_list,
+      height = height,
+      width = width,
+      units = units
+      )
+    
+    remove_file = file.remove(png_name)
+
+  }
+  
+  # Pre-Made grob ----
+  else if (grid::is.grob(x)) {
+
+    grob = x
+
+  }
+  
+  # NA ----
+  else if (is.na(x)) {
+
+    grob = grid::rectGrob(
+      gp = grid::gpar(col = NA, fill = NA),
+      height = grid::unit(height, units),
+      width = grid::unit(width, units)
+      )
+
+  } else {
+
+    stop(paste0("Object of class ", class(x)," not accepted."), call. = F)
+
+  }
+
+  return(grob)
+
+}
+
 #' Converts a data.frame/matrix to a grob, with flexible aesthetics.
 #'
 #' @param df The data.frame/matrix to be converted to a grob.
@@ -16,14 +243,14 @@
 #' @return A grob of df, with the corresponding aesthetics.
 #' @export
 
-grob_matrix = function(df,
-                       aes_list = ga_list(),
-                       m_type = 1,
-                       height = numeric(),
-                       width = numeric(),
-                       padding = numeric(),
-                       units = c('mm', 'cm', 'inches'),
-                       text_cex_adj = 0.2){
+convert_to_matrix_grob = function(df,
+                                  aes_list = ga_list(),
+                                  m_type = 1,
+                                  height = numeric(),
+                                  width = numeric(),
+                                  padding = numeric(),
+                                  units = c('mm', 'cm', 'inches'),
+                                  text_cex_adj = 0.2){
 
   stopifnot(!is.null(nrow(df)), !is.null(ncol(df)))
   stopifnot(!length(height) == 0, !length(width) == 0)
@@ -43,21 +270,12 @@ grob_matrix = function(df,
 
   # Adding in default values (non-matrices) if they are missing ----
   def_vals_non_matrices = list(
-    padding_p = 0.0025,
-    color_gradient_columns = numeric(),
-    color_gradient_binary = FALSE,
-    color_binary_cut_off = 0,
-    color_binary_high = '#63BE7B',
-    color_binary_low = '#F8696B',
-    color_binary_equal = 'gray90',
-    color_gradient_max = '#63BE7B',
-    color_gradient_mid = '#FFEB84',
-    color_gradient_min = '#F8696B'
+    padding_p = 0.0025
     )
 
   for(val_name in names(def_vals_non_matrices)){
 
-    if (length(aes_list[[val_name]]) > 1 & val_name != 'color_gradient_columns') {
+    if (length(aes_list[[val_name]]) > 1 & !val_name %in% c('padding_p')) {
       
       stop(
         sprintf("The %s in aes_list has a length of %d, but must be a single value.", val_name, length(aes_list[[val_name]])),
@@ -65,7 +283,7 @@ grob_matrix = function(df,
         )
     }
 
-    if(length(aes_list[[val_name]]) == 0){
+    if (length(aes_list[[val_name]]) == 0){
       
       aes_list[[val_name]] = def_vals_non_matrices[[val_name]]
       
@@ -94,8 +312,10 @@ grob_matrix = function(df,
 
   def_orig_vals_list = c(def_vals_matrices, def_vals_non_matrices)
 
-  # Figuring out the column proportions ----
- 
+  # - Setting row-heights, which at this time will all be equal heights
+  aes_list[['row_heights']] = rep(height/nr, nr)
+  
+  # Figuring out the column proportions and widths ----
   if (length(width) == 1 & length(aes_list[['column_widths']]) == nc) {
     
     column_props = aes_list[['column_widths']]
@@ -123,12 +343,19 @@ grob_matrix = function(df,
     }
     
   }
- 
-  column_widths = width*column_props - 2*padding
+
+  if (length(aes_list[['column_widths_p']]) == nc & length(aes_list[['padding_p']]) == nc) {
+    
+    aes_list[['column_widths']] = width*column_props
+    
+  } else {
+  
+    aes_list[['column_widths']] = width*column_props - 2*padding
+    
+  }
   
   # Making adjustments to text_cex, if need be ----
-  adjust_cex = length(aes_list$text_cex) == 0 &
-    (length(height) == 1 & length(aes_list$row_heights) == 0)
+  adjust_cex = length(aes_list$text_cex) == 0 & length(height) == 1
 
   if(!adjust_cex){
 
@@ -189,40 +416,10 @@ grob_matrix = function(df,
     
   }
 
-  if(length(aes_list[['color_gradient_columns']]) > 0 &
-     aes_list[['color_gradient_binary']] %in% FALSE &
-     m_type %in% c(1,2)){
-    
-      crp.f = grDevices::colorRampPalette(
-        c(aes_list[['color_gradient_min']],
-          aes_list[['color_gradient_mid']],
-          aes_list[['color_gradient_max']])
-        )
-  
-      for(cc in aes_list[['color_gradient_columns']]){
-  
-        num_vals = as.numeric(df[,cc])
-        range = (max(num_vals) - min(num_vals))
-        dp = decimal_places(range)
-        range = range*10^dp
-        crp = crp.f(range + 1)
-        val_vec = (num_vals - min(num_vals))*10^dp + 1
-        aes_list[['background_color']][,cc] = crp[val_vec]
-        }
-
-    } else if (aes_list[['color_gradient_binary']] %in% TRUE & m_type %in% c(1,2)){
-
-      for(cc in aes_list[['color_gradient_columns']]){
-
-        num_vals = as.numeric(df[,cc])
-        aes_list[['background_color']][,cc][num_vals < aes_list[['color_binary_cut_off']][1]] = aes_list[['color_binary_low']]
-        aes_list[['background_color']][,cc][num_vals > aes_list[['color_binary_cut_off']][1]] = aes_list[['color_binary_high']]
-        aes_list[['background_color']][,cc][num_vals == aes_list[['color_binary_cut_off']][1]] = aes_list[['color_binary_equal']]
-        }
-    }
-
   # Adjustments to text_just, text_align, text_v_just, text_v_align ----
 
+  # - Horizontal adjustments
+  
   for(val_name in c('text_just', 'text_align')){
     if(!any(is.numeric(aes_list[[val_name]]), all(aes_list[[val_name]] %in% c('left', 'right', 'center')))){
       stop(paste0(
@@ -246,7 +443,7 @@ grob_matrix = function(df,
   aes_list[['text_just']] = matrix(as.numeric(aes_list[['text_just']]), nrow = nr)
   aes_list[['text_align']] = matrix(as.numeric(aes_list[['text_align']]), nrow = nr)
 
-  ####
+  # - Vertical adjustments
 
   al_text_v_just = aes_list[['text_v_just']]
   al_text_v_align = aes_list[['text_v_align']]
@@ -272,7 +469,6 @@ grob_matrix = function(df,
   aes_list[['text_v_align']] = matrix(as.numeric(aes_list[['text_v_align']]), nrow = nr)
 
   # Aesthetic value type checks before we start creating the grobs themselves ----
-
   for(val_name in names(def_orig_vals_list)){
     if(!class(c(aes_list[[val_name]])) %in% class(def_orig_vals_list[[val_name]])){
       stop(sprintf(
@@ -282,9 +478,11 @@ grob_matrix = function(df,
     }
   }
 
-  # Creating each of our mini grobs that will compose the grob_matrix ----
+  # Creating each of our mini grobs that will compose the matrix grob ----
   raw_grobs = grid::gList()
+  
   for(j in 1:nc){
+    
     for(i in 1:nr){
 
       rect_grob = grid::roundrectGrob(
@@ -295,7 +493,7 @@ grob_matrix = function(df,
           alpha = aes_list$background_alpha[i,j]
           )
         )
-
+      
       text_grob = grid::textGrob(
         df[i,j],
         x = grid::unit(aes_list$text_align[i,j], "npc"),
@@ -331,65 +529,6 @@ grob_matrix = function(df,
 
   # Layout Matrix ----
   layout_matrix = get_layout_matrix(df, aes_list$group_elements)
-
-  if(length(aes_list$row_heights) == 0 & length(height) == 0){
-
-    tmp_row_heights = c()
-    for(i in 1:nr){
-      ind_row_heights = mapply(
-        function(text, cex, face, fam){
-          units_convert(
-            x = graphics::strheight(text, units = 'in', cex = cex, family = fam, font = face),
-            from_units = 'inches',
-            to_units = units
-            )
-        },
-        df[i,],
-        aes_list$text_cex[i,],
-        aes_list$font_face[i,],
-        aes_list$text_font[i,]
-        )
-      tmp_row_heights = c(tmp_row_heights, max(ind_row_heights) + 2*padding)
-    }
-    aes_list$row_heights = rep(max(tmp_row_heights), nr)
-
-  } else if(length(height) == 1 & length(aes_list$row_heights) != nr){
-
-    aes_list$row_heights = rep(height/nr, nr)
-
-  }
-
-  if (length(aes_list[['column_widths']]) == 0 & length(width) == 0) {
-
-    tmp_column_widths = c()
-    for(i in 1:nc){
-      ind_column_widths = mapply(
-        function(text, cex, face, fam){
-          units_convert(
-            x = graphics::strwidth(text, units = 'in', cex = cex, family = fam, font = face),
-            from_units = 'inches',
-            to_units = units
-            )
-          },
-        df[,i],
-        aes_list$text_cex[,i],
-        aes_list$font_face[,i],
-        aes_list$text_font[,i]
-        )
-      tmp_column_widths = c(tmp_column_widths, max(ind_column_widths) + 2*padding)
-    }
-    aes_list[['column_widths']] = tmp_column_widths
-
-  } else if (length(aes_list[['column_widths']]) ==  0) {
-
-    aes_list[['column_widths']] = column_widths
-
-  } else if (length(width) == 1 & length(aes_list[['column_widths']]) != nc) {
-
-    aes_list[['column_widths']] = rep(width/nc, nc)
-
-  }
-  
   first_element_indices = unlist(lapply(unique(c(layout_matrix)), function(x) min(which(c(layout_matrix) == x))))
 
   gridExtra::arrangeGrob(
@@ -400,3 +539,69 @@ grob_matrix = function(df,
     )
 
 }
+
+#' Converts a raw .png file to a grob, with flexible aesthetics.
+#'
+#' @param img_path The local path to the raw .png file.
+#' @param aes_list The list outputted by \code{\link{ga_list}} which gives the image grob its aesthetics.
+#' @param height A numeric value designating the total height of the matrix grob in mm.
+#' @param width A numeric value designating the total width of the matrix grob in mm.
+#' @param units The units of the given height and width for the grob. Options are 'mm', 'cm' or 'inches', with the default of 'mm'.
+#' @return A grob of the raw .png file.
+#' @export
+
+convert_to_image_grob = function(img_path,
+                                 aes_list,
+                                 height = numeric(),
+                                 width = numeric(),
+                                 units = c('mm', 'cm', 'inches')) {
+
+  stopifnot(!length(height) == 0, !length(width) == 0)
+  units = match.arg(units)
+  
+  raw_png = png::readPNG(normalizePath(file.path(img_path)))
+  edit_dims = ifelse(
+    length(aes_list$maintain_aspect_ratio) == 0,
+    TRUE,
+    aes_list$maintain_aspect_ratio
+    )
+  aspect_ratio_multiplier = ifelse(
+    length(aes_list$aspect_ratio_multiplier) == 0,
+    1,
+    aes_list$aspect_ratio_multiplier
+    )
+
+  if (edit_dims) {
+
+    img_height_width_ratio = dim(raw_png)[1]/dim(raw_png)[2]
+    img_width_height_ratio = dim(raw_png)[2]/dim(raw_png)[1]
+    
+    if (height >= width) {
+      
+      width_adj = width
+      height_adj = width*img_height_width_ratio
+      
+    } else if (height < width) {
+      
+      height_adj = height
+      width_adj = height*img_width_height_ratio
+      
+    }
+
+  } else {
+
+    height_adj = height
+    width_adj = width
+    
+  }
+
+  grid::rasterGrob(
+    raw_png,
+    height = grid::unit(height_adj*aspect_ratio_multiplier, units = units),
+    width = grid::unit(width_adj*aspect_ratio_multiplier, units = units)
+    )
+
+}
+
+
+

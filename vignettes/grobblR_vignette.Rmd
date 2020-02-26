@@ -29,10 +29,11 @@ Working for the Sacramento Kings in their analytics department, we needed to cre
 devtools::load_all()
 ```
 
-Note: To plot and view the grobs as we produce them, we can either use the generic `plot(grob)` or `gridExtra::grid.arrange(grob)`. Since the plots outputted by `grid.arrange()` more resemble the PDF reports outputted by by `grobblR`, we will load in the `gridExtra` package, and use its functionality to display the grobs in this vignette.
+Note: To plot and view the grobs as we produce them, we can either use the generic `plot(grob)` or `gridExtra::grid.arrange(grob)`. Since the plots outputted by `grid.arrange()` more resemble the PDF reports outputted by by `grobblR`, we will load in the `gridExtra` package, and use its functionality to display the grobs in this vignette. Also, some parts of grobblR were created with the idea that they would work well with the `%>%` pipe, so we will load that in from the `dplyr` package.
 
 ```{r Load in gridExtra}
 library(gridExtra)
+`%>%` = dplyr::`%>%`
 ```
 
 
@@ -44,7 +45,7 @@ Taken from the `grid::grob()` [documentation](https://stat.ethz.ch/R-manual/R-de
 
 > A grid graphical object (“grob”) is a description of a graphical item. These basic classes provide default behaviour for validating, drawing, and modifying graphical objects. 
 
-Within `grobblR`, the objects able to be converted to a grob are:  
+Within `grobblR`, the objects able to be converted to a grob are:
 
   * Data frames / matrices
       + A vector of values
@@ -53,7 +54,7 @@ Within `grobblR`, the objects able to be converted to a grob are:
   * Character strings  
   * Empty space (represented with `NA`)  
 
-It was our goal with this package to create flexible functionality that would allow the user to combine these types of grobs in any way they desired.
+It was the goal of this package to create flexible functionality that would allow the user to combine these types of grobs in any way they desired.
 
 ***
 
@@ -202,7 +203,7 @@ Note that `grob_col()` is where the object of the user's choosing is actually co
 
 ### Padding
 
-The `padding_p` and `padding` parameters within `grob_layout()` controls the very outside padding on the page, and the `padding_p` and `padding` parameters within `grob_col()` controls the amount of room between the grob itself and the outer grob-row - helping separate the grobs and giving them air to breathe. Note that `padding_p` is the default and takes a small percentage of the height or width (depending on which is less) and uses that as the padding around the space. If `padding` is set to a numeric amount in the units specified in the grob-layout, then that will override the corresponding `padding_p`.
+The `padding_p` and `padding` parameters within `grob_layout()` controls the very outside padding on the page, and the `padding_p` and `padding` parameters within `grob_col()` controls the amount of room between the grob itself and the outer grob-row - helping separate the grobs and giving them air to breathe. Note that `padding_p` is the default and takes a small percentage of the height or width (depending on which is less) and uses that as the padding around the space. If `padding` is set to a numeric amount in the units specified in the grob-layout, then that will override `padding_p`.
 
 The padding parameters within `grob_col()` allows grob-columns to be shifted around its allotted space, making use of the `hjust` and `vjust` parameters within `grob_col()`. The defaults for both are `0.5` (having the grob centered in its allotted space). Setting `hjust` to `1.0` pushes the grob as far right as it can go (opposite for setting it to `0.0`), and setting `vjust` to `1.0` pushes the grob as far to the top as it can go (again, opposite for setting it to `0.0`). The `hjust` and `vjust` parameters can also be pushed past 0 and 1 to better nudge around grob-columns to where the user wants them, though it should be noted that if they go past > 1 or < 0, the grob-columns will be outside of their allotted space.
 
@@ -399,6 +400,7 @@ mat
 ```
 
 ```{r First matrix example}
+
 gl = grob_layout(
   grob_row(grob_col(mat, aes_list = ga_list(background_color = 'gray80'))),
   height = 100,
@@ -410,12 +412,13 @@ grid.arrange(gl$grob)
 
 But say the user wanted different cells of the matrix to have different background colors. He/she would need to specify a separate aesthetic matrix corresponding to the background color of each cell of the original matrix. Since `mat` is a `2 x 2` matrix, we need to specify a another `2 x 2` matrix with each element denoting a background color for each of the cells in `mat`:
 
-```{r Setting color_mat}
-color_mat = matrix(c('white', 'red', 'gray90', 'blue'), nrow = 2, byrow = TRUE)
-color_mat
-```
-
 ```{r First matrix, cell-by-cell customization, 1}
+
+grob_matrix_object = mat %>%
+  grob_matrix_object() %>%
+  add_aesthetic(aesthetic = 'background_color', group = 'cells', value = 'white')
+
+
 gl = grob_layout(
   grob_row(grob_col(mat, aes_list = ga_list(background_color = color_mat))),
   height = 100,

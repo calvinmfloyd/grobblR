@@ -1,7 +1,7 @@
 
 
 grob_row_class = R6::R6Class(
-  "grob_row",
+  classname = "grob_row",
   public = list(
     height = 100,
     width = 100,
@@ -113,6 +113,7 @@ grob_row_class = R6::R6Class(
       
       inputted_widths = sapply(1:length(contents), function(i) contents[[i]]$width)
       inputted_proportions = sapply(1:length(contents), function(i) contents[[i]]$proportion)
+      
       widths = allot_sizes(
         space_size = width - 2*padding,
         inputted_proportions = inputted_proportions, 

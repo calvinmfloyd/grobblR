@@ -1,4 +1,4 @@
-#' Grob aesthetic list used to control aesthetics within `grobblR`.
+#' Grob aesthetic list used to control aesthetics within grobblR.
 #'
 #' @param aspect_ratio_multiplier A numeric value which controls how much to increase/decrease the aspect ratio of images or ggplots.
 #' @param background_alpha Controls the background alpha/opacity of the elements of the matrix. Values are used in \code{grid::gpar()}. Default is 1.0. Used with matrices.
@@ -42,15 +42,6 @@
 #' @param cell_column_widths Controls the \code{column_widths} of matrix cells. Overridden by the \code{column_widths} parameter.
 #' @param cell_column_widths_p Controls the \code{column_widths_p} of matrix cells. Overridden by the \code{column_widths_p} parameter.
 #' @param cell_padding_p Controls the \code{padding_p} of matrix cells. Overridden by the \code{padding_p} parameter.
-#' @param cell_color_binary_cut_off A cut-off value which the binary color gradient will be applied to. Default is 0. Used with matrices.
-#' @param cell_color_binary_high The color of the binary color gradient if the numeric element is greater than the \code{color_binary_cut_off}. Default is green. Used with matrices.
-#' @param cell_color_binary_low The color of the binary color gradient if the numeric element is less than the \code{color_binary_cut_off}. Default is red. Used with matrices.
-#' @param cell_color_binary_equal The color of the binary color gradient if the numeric element is equal to the \code{color_binary_cut_off}. Default is gray. Used with matrices.
-#' @param cell_color_gradient_binary A TRUE/FALSE value which signifies if a binary color gradient should be applied to the \code{color_gradient_columns}. Used with matrices.
-#' @param cell_color_gradient_columns Controls the columns which a color gradient scale will be applied to. Integer values denoting the column numbers. Can only be applied to columns with all numeric values. Used with matrices.
-#' @param cell_color_gradient_max The high color for the gradual color gradient. Default is green. Used with matrices.
-#' @param cell_color_gradient_mid The middle color for the gradual color gradient. Default is yellow. Used with matrices.
-#' @param cell_color_gradient_min The low color for the gradual color gradient. Default is red. Used with matrices.
 #' @param colname_font_face Controls the font face of column names. Overridden by the \code{font_face} parameter.
 #' @param colname_group_elements Controls the \code{group_elements} of column names. Overridden by the \code{group_elements} parameter.
 #' @param colname_background_color Controls the \code{background_color} of column names. Overridden by the \code{background_color} parameter.
@@ -113,15 +104,6 @@ ga_list = function(aspect_ratio_multiplier = NULL,
                    cell_column_widths = NULL,
                    cell_column_widths_p = NULL,
                    cell_padding_p = NULL,
-                   cell_color_gradient_columns = NULL,
-                   cell_color_gradient_binary = NULL,
-                   cell_color_binary_cut_off = NULL,
-                   cell_color_binary_high = NULL,
-                   cell_color_binary_low = NULL,
-                   cell_color_binary_equal = NULL,
-                   cell_color_gradient_max = NULL,
-                   cell_color_gradient_mid = NULL,
-                   cell_color_gradient_min = NULL,
                    colname_font_face = NULL,
                    colname_group_elements = NULL,
                    colname_background_color = NULL,
@@ -145,6 +127,25 @@ ga_list = function(aspect_ratio_multiplier = NULL,
                    n_lines = NULL,
                    str_sep = NULL) {
 
+  convert_to_matrix = function(x) {
+  
+    if (length(x) > 0 & is.null(nrow(x))) {
+     
+      x = t(as.matrix(x))
+       
+    }
+    
+    if (is.data.frame(x)) {
+      
+      x = as.matrix(x)
+      
+    }
+    
+    return(x)
+    
+  }
+  
+  
   grob_aes_list = list(
     font_face = font_face,
     group_elements = group_elements,
@@ -183,15 +184,6 @@ ga_list = function(aspect_ratio_multiplier = NULL,
     cell_column_widths = cell_column_widths,
     cell_column_widths_p = cell_column_widths_p,
     cell_padding_p = cell_padding_p,
-    cell_color_gradient_columns = cell_color_gradient_columns,
-    cell_color_gradient_binary = cell_color_gradient_binary,
-    cell_color_binary_cut_off = cell_color_binary_cut_off,
-    cell_color_binary_high = cell_color_binary_high,
-    cell_color_binary_low = cell_color_binary_low,
-    cell_color_binary_equal = cell_color_binary_equal,
-    cell_color_gradient_max = cell_color_gradient_max,
-    cell_color_gradient_mid = cell_color_gradient_mid,
-    cell_color_gradient_min = cell_color_gradient_min,
     colname_font_face = colname_font_face,
     colname_group_elements = colname_group_elements,
     colname_background_color = colname_background_color,
@@ -217,9 +209,12 @@ ga_list = function(aspect_ratio_multiplier = NULL,
     str_sep = str_sep
     )
 
-  grob_aes_list = lapply(grob_aes_list, convert_to_matrix)
+  grob_aes_list = lapply(
+    X = grob_aes_list,
+    FUN = convert_to_matrix
+    )
   class(grob_aes_list) = 'grob_aes_list'
-  grob_aes_list
+  return(grob_aes_list)
 
 }
 

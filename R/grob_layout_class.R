@@ -1,6 +1,6 @@
 
 grob_layout_class = R6::R6Class(
-  "grob_layout",
+  classname = "grob_layout",
   public = list(
     height = 100,
     width = 100,

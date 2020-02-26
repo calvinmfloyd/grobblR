@@ -1,3 +1,4 @@
+
 #' Create a matrix based off the dimensions of a data.frame/matrix and a single 
 #' value to make up its cells. Designed to be used as an aesthetic matrix within
 #' \code{\link{ga_list}}.
@@ -52,6 +53,7 @@ aes_matrix = function(df, value, column_names = FALSE) {
 
 alter_rows = function(mat, value, rows = NULL) {
   
+  mat = check_mat(mat = mat, location = 'alter_rows()')
   value = check_value(value = value)
   rows = check_rows(mat = mat, rows = rows)
   
@@ -82,6 +84,7 @@ alter_rows = function(mat, value, rows = NULL) {
 
 alter_columns = function(mat, value, columns = NULL) {
   
+  mat = check_mat(mat = mat, location = 'alter_columns()')
   value = check_value(value = value)
   columns = check_columns(mat = mat, columns = columns)
   
@@ -129,6 +132,27 @@ get_last_indicator = function() {
 
 get_first_indicator = function() {
   'first'
+}
+
+check_mat = function(mat, location) {
+
+  is_matrix_check = 'matrix' %in% is(mat)
+  is_aesthetic_object_check = 'AestheticObject' %in% is(mat)
+  
+  if (!(is_matrix_check | is_aesthetic_object_check)) {
+    
+    stop(
+      call. = FALSE,
+      paste0(
+        'The object inserted into ', location, ' must either be a',
+        'matrix or the object outputted by start_aes().'
+        )
+      )
+
+  }
+  
+  return(mat)
+
 }
 
 check_value = function(value) {

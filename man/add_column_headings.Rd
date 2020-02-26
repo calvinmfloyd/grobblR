@@ -5,7 +5,7 @@
 \title{Add column headings onto a matrix. Intended to be used with
 the group_elements aesthetic within \code{\link{grob_col}}.}
 \usage{
-add_column_headings(mat, headings = list(), heading_cols = list())
+add_column_headings(mat, headings, heading_cols)
 }
 \arguments{
 \item{mat}{The matrix the column headings will be added onto.}

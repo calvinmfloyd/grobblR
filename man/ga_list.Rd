@@ -2,40 +2,71 @@
 % Please edit documentation in R/ga_list.R
 \name{ga_list}
 \alias{ga_list}
-\title{Grob aesthetic list used to control aesthetics within `grobblR`.}
+\title{Grob aesthetic list used to control aesthetics within grobblR.}
 \usage{
-ga_list(aspect_ratio_multiplier = NULL, background_color = NULL,
-  background_alpha = NULL, border_color = NULL, border_sides = NULL,
-  border_width = NULL, font_face = NULL, group_elements = NULL,
-  text_color = NULL, text_align = NULL, text_v_align = NULL,
-  text_just = NULL, text_v_just = NULL, text_cex = NULL,
-  text_font = NULL, text_rot = NULL, round_rect_radius = NULL,
-  column_widths = NULL, column_widths_p = NULL, padding_p = NULL,
-  cell_font_face = NULL, cell_group_elements = NULL,
-  cell_background_color = NULL, cell_background_alpha = NULL,
-  cell_border_color = NULL, cell_border_sides = NULL,
-  cell_border_width = NULL, cell_text_color = NULL,
-  cell_text_align = NULL, cell_text_v_align = NULL,
-  cell_text_just = NULL, cell_text_v_just = NULL,
-  cell_text_cex = NULL, cell_text_font = NULL, cell_text_rot = NULL,
-  cell_round_rect_radius = NULL, cell_column_widths = NULL,
-  cell_column_widths_p = NULL, cell_padding_p = NULL,
-  cell_color_gradient_columns = NULL,
-  cell_color_gradient_binary = NULL, cell_color_binary_cut_off = NULL,
-  cell_color_binary_high = NULL, cell_color_binary_low = NULL,
-  cell_color_binary_equal = NULL, cell_color_gradient_max = NULL,
-  cell_color_gradient_mid = NULL, cell_color_gradient_min = NULL,
-  colname_font_face = NULL, colname_group_elements = NULL,
-  colname_background_color = NULL, colname_background_alpha = NULL,
-  colname_border_color = NULL, colname_border_sides = NULL,
-  colname_border_width = NULL, colname_text_color = NULL,
-  colname_text_align = NULL, colname_text_v_align = NULL,
-  colname_text_just = NULL, colname_text_v_just = NULL,
-  colname_text_cex = NULL, colname_text_font = NULL,
-  colname_text_rot = NULL, colname_round_rect_radius = NULL,
-  colname_column_widths = NULL, colname_column_widths_p = NULL,
-  colname_padding_p = NULL, maintain_aspect_ratio = NULL,
-  n_lines = NULL, str_sep = NULL)
+ga_list(
+  aspect_ratio_multiplier = NULL,
+  background_color = NULL,
+  background_alpha = NULL,
+  border_color = NULL,
+  border_sides = NULL,
+  border_width = NULL,
+  font_face = NULL,
+  group_elements = NULL,
+  text_color = NULL,
+  text_align = NULL,
+  text_v_align = NULL,
+  text_just = NULL,
+  text_v_just = NULL,
+  text_cex = NULL,
+  text_font = NULL,
+  text_rot = NULL,
+  round_rect_radius = NULL,
+  column_widths = NULL,
+  column_widths_p = NULL,
+  padding_p = NULL,
+  cell_font_face = NULL,
+  cell_group_elements = NULL,
+  cell_background_color = NULL,
+  cell_background_alpha = NULL,
+  cell_border_color = NULL,
+  cell_border_sides = NULL,
+  cell_border_width = NULL,
+  cell_text_color = NULL,
+  cell_text_align = NULL,
+  cell_text_v_align = NULL,
+  cell_text_just = NULL,
+  cell_text_v_just = NULL,
+  cell_text_cex = NULL,
+  cell_text_font = NULL,
+  cell_text_rot = NULL,
+  cell_round_rect_radius = NULL,
+  cell_column_widths = NULL,
+  cell_column_widths_p = NULL,
+  cell_padding_p = NULL,
+  colname_font_face = NULL,
+  colname_group_elements = NULL,
+  colname_background_color = NULL,
+  colname_background_alpha = NULL,
+  colname_border_color = NULL,
+  colname_border_sides = NULL,
+  colname_border_width = NULL,
+  colname_text_color = NULL,
+  colname_text_align = NULL,
+  colname_text_v_align = NULL,
+  colname_text_just = NULL,
+  colname_text_v_just = NULL,
+  colname_text_cex = NULL,
+  colname_text_font = NULL,
+  colname_text_rot = NULL,
+  colname_round_rect_radius = NULL,
+  colname_column_widths = NULL,
+  colname_column_widths_p = NULL,
+  colname_padding_p = NULL,
+  maintain_aspect_ratio = NULL,
+  n_lines = NULL,
+  str_sep = NULL
+)
 }
 \arguments{
 \item{aspect_ratio_multiplier}{A numeric value which controls how much to increase/decrease the aspect ratio of images or ggplots.}
@@ -116,24 +147,6 @@ ga_list(aspect_ratio_multiplier = NULL, background_color = NULL,
 
 \item{cell_padding_p}{Controls the \code{padding_p} of matrix cells. Overridden by the \code{padding_p} parameter.}
 
-\item{cell_color_gradient_columns}{Controls the columns which a color gradient scale will be applied to. Integer values denoting the column numbers. Can only be applied to columns with all numeric values. Used with matrices.}
-
-\item{cell_color_gradient_binary}{A TRUE/FALSE value which signifies if a binary color gradient should be applied to the \code{color_gradient_columns}. Used with matrices.}
-
-\item{cell_color_binary_cut_off}{A cut-off value which the binary color gradient will be applied to. Default is 0. Used with matrices.}
-
-\item{cell_color_binary_high}{The color of the binary color gradient if the numeric element is greater than the \code{color_binary_cut_off}. Default is green. Used with matrices.}
-
-\item{cell_color_binary_low}{The color of the binary color gradient if the numeric element is less than the \code{color_binary_cut_off}. Default is red. Used with matrices.}
-
-\item{cell_color_binary_equal}{The color of the binary color gradient if the numeric element is equal to the \code{color_binary_cut_off}. Default is gray. Used with matrices.}
-
-\item{cell_color_gradient_max}{The high color for the gradual color gradient. Default is green. Used with matrices.}
-
-\item{cell_color_gradient_mid}{The middle color for the gradual color gradient. Default is yellow. Used with matrices.}
-
-\item{cell_color_gradient_min}{The low color for the gradual color gradient. Default is red. Used with matrices.}
-
 \item{colname_font_face}{Controls the font face of column names. Overridden by the \code{font_face} parameter.}
 
 \item{colname_group_elements}{Controls the \code{group_elements} of column names. Overridden by the \code{group_elements} parameter.}
@@ -182,5 +195,5 @@ ga_list(aspect_ratio_multiplier = NULL, background_color = NULL,
 A list with all possible aesthetic elements that can be adjusted, with the class of "grob_aes_list".
 }
 \description{
-Grob aesthetic list used to control aesthetics within `grobblR`.
+Grob aesthetic list used to control aesthetics within grobblR.
 }

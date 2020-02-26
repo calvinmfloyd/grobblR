@@ -1,6 +1,6 @@
 
 grob_col_class = R6::R6Class(
-  "grob_col",
+  classname = "grob_col",
   public = list(
     contents = list(),
     proportion = 1,
@@ -75,7 +75,7 @@ grob_col_class = R6::R6Class(
                     location = self$grob_layout_location){
 
       content_classes = unlist(lapply(contents, class))
-      if(any(content_classes %in% c('R6', 'grob_row')) & !all(content_classes %in% c('R6', 'grob_row'))){
+      if (any(content_classes %in% 'grob_row') & !all(content_classes %in% c('grob_row', 'R6'))) {
         stop(
           call. = FALSE,
           paste0(
@@ -143,7 +143,7 @@ grob_col_class = R6::R6Class(
       grob_height = height_w_padding - title_height - caption_height
       raw_grobs = grid::gList()
 
-      if (R6::is.R6(contents[[1]])) {
+      if (is(contents[[1]], 'grob_row')) {
         
         inputted_heights = sapply(1:length(contents), function(i) contents[[i]]$height)
         inputted_proportions = sapply(1:length(contents), function(i) contents[[i]]$proportion)
@@ -165,7 +165,7 @@ grob_col_class = R6::R6Class(
 
       for(i in 1:length(contents)){
 
-        if(R6::is.R6(contents[[i]])){
+        if (is(contents[[i]], 'grob_row')) {
           
           contents[[i]]$height = heights[i]
           contents[[i]]$width = width
@@ -236,7 +236,7 @@ grob_col_class = R6::R6Class(
           )
         )
 
-      grob
+      return(grob)
 
     })
   )

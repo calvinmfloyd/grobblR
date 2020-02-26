@@ -4,10 +4,21 @@
 \alias{grob_layout}
 \title{The main \code{grobblR} function which contains and organizes \code{\link{grob_col}}'s and \code{\link{grob_row}}'s, giving the overall grob-layout its shape.}
 \usage{
-grob_layout(..., height = 280, width = 216, units = c("mm", "cm",
-  "inches"), title = "", title_aes_list = ga_list(), title_p = 0.1,
-  caption = "", caption_aes_list = ga_list(), caption_p = 0.05,
-  padding_p = 0.05, padding = NA_real_, page_number = "")
+grob_layout(
+  ...,
+  height = 280,
+  width = 216,
+  units = c("mm", "cm", "inches"),
+  title = "",
+  title_aes_list = ga_list(),
+  title_p = 0.1,
+  caption = "",
+  caption_aes_list = ga_list(),
+  caption_p = 0.05,
+  padding_p = 0.05,
+  padding = NA_real_,
+  page_number = ""
+)
 }
 \arguments{
 \item{...}{The combination of grob-rows and grob-columns which will help give the main grob-layout outputted its shape and look.}
