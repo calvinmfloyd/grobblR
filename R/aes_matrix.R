@@ -58,7 +58,8 @@ alter_rows = function(mat, value, rows = NULL) {
   rows = check_rows(mat = mat, rows = rows)
   
   mat[rows, 1:ncol(mat)] = value
-  mat
+  return(mat)
+
 
 }
 
@@ -137,16 +138,12 @@ get_first_indicator = function() {
 check_mat = function(mat, location) {
 
   is_matrix_check = 'matrix' %in% is(mat)
-  is_aesthetic_object_check = 'AestheticObject' %in% is(mat)
   
-  if (!(is_matrix_check | is_aesthetic_object_check)) {
+  if (!(is_matrix_check)) {
     
     stop(
       call. = FALSE,
-      paste0(
-        'The object inserted into ', location, ' must either be a',
-        'matrix or the object outputted by start_aes().'
-        )
+      paste0('The object inserted into ', location, ' must be a matrix.')
       )
 
   }

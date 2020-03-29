@@ -1,38 +1,51 @@
 
-`%>%` = dplyr::`%>%`
+options(stringsAsFactors = FALSE)
 
-#' Add an aesthetic to a grob object class.
-#' @param grob_object The R6 grob object class outputted by \code{\link{grob_matrix}}.
-#' @param aesthetic The aesthetic the user wishes to add.
+#' Add an aesthetic to a grob matrix or grob text object.
+#' @param grob_object The R6 object outputted by either \code{\link{grob_matrix}} or \code{\link{grob_text}}.
+#' @param aesthetic The matrix aesthetic the user wishes to add.
 #' @param group The group of the grob matrix object the user wants to add the 
 #' aesthetic to. For matrices, the user can add an aesthetic to the cells, the
-#' column names or the column headings.
-#' @param value A single value the user wants to apply to the group of matrix 
+#' column names or the column headings. If the user is passing through a grob text
+#' object, then only 'cells' will be accepted.
+#' @param value A single value the user wants to apply to the group of matrix / text 
 #' elements for the given aesthetic.
-#' @return The R6 grob object class with its aesthetics properties altered.
+#' @return The R6 object of the grob matrix class with its aesthetics properties altered.
 #' 
 #' @export
 #' 
 #' @examples
 #' 
-#' library(dplyr)
 #' df = data.frame(var1 = c(5, 14, 6, 10), var2 = c(3, 30, 17, 7))
 #' df %>%
 #'   grob_matrix() %>% 
-#'   add_aesthetic(aesthetic = 'text_color', group = 'cells', value = 'red') %>%
-#'   grob_col(width = 100) %>%
-#'   .$grob %>%
-#'   plot()
+#'   add_aesthetic(aesthetic = 'text_color', value = 'red', group = 'cells') %>%
+#'   view_grob()
 #' 
 
 add_aesthetic = function(grob_object,
                          aesthetic,
-                         group = c('cells', 'column_names', 'column_headings'),
-                         value = NULL) {
+                         value = NULL,
+                         group = c('cells', 'column_names', 'column_headings')) {
   
   group = match.arg(group)
   value = check_value(value = value)
-  aesthetic = check_aesthetic(aesthetic = aesthetic, location = 'add_aesthetic()')
+  
+  is_grob_matrix = is(grob_object, 'grob_matrix_object')
+  
+  # - Checking to make sure it's a valid grob object
+  if (!is_grob_matrix) {
+    
+     error_msg = glue::glue("
+       Please provide an object initialized by grob_matrix() or grob_text() in add_aesthetic().
+       ")
+    
+    stop(error_msg, call. = FALSE)
+     
+  }
+  
+  aesthetic = check_aesthetic(aesthetic = aesthetic, type = 'matrix', location = 'add_aesthetic()')
+  group = check_group(group = group, test = grob_object$test, location = 'add_aesthetic()')
   
   if (!is.null(grob_object$aesthetic_list[[aesthetic]])) {
     
@@ -86,7 +99,6 @@ add_aesthetic = function(grob_object,
 #' 
 #' @examples 
 #' 
-#' library(dplyr)
 #' df = data.frame(var1 = c(5, 14, 6, 10), var2 = c(3, 30, 17, 7))
 #' df %>%
 #'   grob_matrix() %>%
@@ -95,9 +107,7 @@ add_aesthetic = function(grob_object,
 #'     .f = ~ 'blue',
 #'     abs(var2 - var1) > 1
 #'     ) %>%
-#'   grob_col(width = 100) %>%
-#'   .$grob %>%
-#'   plot()
+#'   view_grob()
 #' 
 #' test_function = function(x) ifelse(x > 15, 2, 1)
 #' 
@@ -108,20 +118,19 @@ add_aesthetic = function(grob_object,
 #'     aesthetic = 'font_face',
 #'     group = 'cells'
 #'     ) %>%
-#'   grob_col(width = 100) %>%
-#'   .$grob %>%
-#'   plot()
+#'   view_grob()
 #' 
 
 alter_at = function(grob_object, 
                     .f = NULL,
                     ...,
                     columns = NULL,
+                    rows = NULL,
                     data = NULL,
                     aesthetic = NULL,
                     group = NULL) {
 
-  if (!is(grob_object, 'grob_matrix_object')) {
+  if (!is(grob_object, 'grob_matrix_object') | !grob_object[['type']] %in% 'matrix') {
     
     error_msg = "A grob_matrix() object must be passed through alter_at()." 
     stop(error_msg, call. = FALSE)
@@ -143,14 +152,10 @@ alter_at = function(grob_object,
   # - If no columns are provided, then we will alter all columns.
   if (is.null(columns)) {
     
-    columns = colnames(grob_object$initial)
+    columns = 1:ncol(grob_object$initial)
     
   }
-  
-  # - Figuring out which indices are each of te selected columns, which will
-  # help us if the user wants to apply the function to a different data.frame
-  which_columns = which(columns %in% colnames(grob_object$initial))
-  
+
   # - If no aesthetic is provided in the function parameters, then it is assumed
   # the user wants to alter the last edited aesthetic either from an add_aesthetic() or
   # a previous alter_at().
@@ -201,7 +206,7 @@ alter_at = function(grob_object,
     if (is.na(grob_object$current_group)) {
       
       error_msg = glue::glue("
-        Please provide a group ('cells', 'column_names', 'column_headings') to \\
+        Please provide a group ('cells', 'column_names' or 'column_headings') to \\
         adjust, either within add_aesthetic() or alter_at().
         ")
       
@@ -215,50 +220,163 @@ alter_at = function(grob_object,
   # will make sure the dimensions of the data.frame are correct first.
   if (!is.null(data)) {
     
-    initial_dims = dim(grob_object$initial)
+    proper_dims = grob_object$test %>%
+      dplyr::filter(grobblR_group %in% grob_object$current_group) %>%
+      dplyr::select(-grobblR_group) %>%
+      dim()
+    
     data_dims = dim(data)
     
-    if (!all(initial_dims == data_dims)) {
+    if (!all(proper_dims == data_dims)) {
       
       error_msg = glue::glue("
         The dimensions of data parameter in alter_at() must be the same dimensions \\
         as the initial matrix/data.frame/vector. 
-        The dimensions of data are {data_dims[1]}x{data_dims[2]}, and the dimensions \\
-        of the initial object are {initial_dims[1]}x{initial_dims[2]}.
+        The dimensions of the data parameter are {data_dims[1]}x{data_dims[2]}, and \\
+        the valid dimensions of the current matrix are {proper_dims[1]}x{proper_dims[2]}.
         ")
       
       stop(error_msg, call. = FALSE)
       
     }
     
-    # - Mirroring the process the initial object went through (any column headings,
-    # converting column names to row).
-    if (grob_object$column_names_to_row == 1) {
-      
-      data = rbind(NA, data)
-      
-    }
+    # - Now that we've made sure the dimensions of the data parameter are correct,
+    # we will go in and empty rows above and below where needed in order to match
+    # the dimensions of the current matrix (with added column names and/or column
+    # headings)
+    current_nc = ncol(grob_object$current)
+    total_rows = 1:nrow(grob_object$test)
+    target_rows = which(grob_object$test[['grobblR_group']] %in% grob_object$current_group)
+    n_rows_above = sum(total_rows < min(target_rows))
+    n_rows_below = sum(total_rows > max(target_rows))
+    df_above = matrix(NA, nrow = n_rows_above, ncol = current_nc) %>% 
+      data.frame() %>%
+      purrr::set_names(colnames(data))  
+    df_below = matrix(NA, nrow = n_rows_below, ncol = current_nc) %>% 
+      data.frame() %>%
+      purrr::set_names(colnames(data))  
     
-    for (i in 1:grob_object$column_headings_added) {
-      
-      data = rbind(NA, data)
-      
-    }
+    data = rbind(df_above, data, df_below)
+    data[['grobblR_group']] = grob_object$test[['grobblR_group']]
     
   } else {
     
     data = grob_object$test
     
   }
+
+    # - If no columns are provided, then we will alter all columns.
+  if (is.null(columns)) {
+    
+    columns = 1:ncol(grob_object$initial)
+    
+  }
+
+  # - Figuring out which indices are each of te selected columns, which will
+  # help us if the user wants to apply the function to a different data.frame
+  if (!is.numeric(columns)) {
+    
+    valid_column_names = colnames(data %>% dplyr::select(-grobblR_group))
+    which_columns = which(columns %in% valid_column_names)
+    
+    if (length(which_columns) == 0) {
+      
+      error_msg = glue::glue("
+        None of the columasdsadasDSAn names provided in alter_at() are valid. Valid column names are: \\
+        {glue::glue_collapse(valid_column_names, sep = ', ', width = 100)}
+        ")
+      
+      stop(error_msg, call. = FALSE)
+      
+    }
+    
+    
+  } else {
+    
+    # - Checking to make sure the numeric column(s) provided are actually valid
+    if (!all(dplyr::between(x = columns, left = 1, right = ncol(grob_object$initial)))) {
+      
+      error_msg = glue::glue("
+        If providing numeric column indices in alter_at(), please make sure they are all between \\
+        1 and {ncol(grob_object$initial)}.
+        ")
+      
+      stop(error_msg, call. = FALSE)
+      
+    }
+    
+    which_columns = columns
+    
+  }
   
-  boolean_vector = grob_object$test %>%
+  # - If no rows are provided, then we will alter all rows.
+  current_group = grob_object$current_group
+  cells_rows = nrow(grob_object$test[grob_object$test[['grobblR_group']] %in% 'cells', ])
+
+  # - Since we are putting column names & column headings into the same data.frame 
+  # as the cells, we need to adjust which rows to apply the function to based on 
+  # what the current group is.
+  row_additions = 0 +
+    ifelse(
+      test = current_group %in% c('cells'),
+      yes = grob_object$column_names_to_row + grob_object$column_headings_added,
+      no = 0
+      ) +
+    ifelse(
+      test = current_group %in% c('column_names'),
+      yes = grob_object$column_headings_added,
+      no = 0
+      )
+  
+  subset = grob_object$test[grob_object$test[['grobblR_group']] %in% current_group, ]
+  subset_nrow = nrow(subset)
+  
+  if (is.null(rows)) {
+  
+    rows = 1:subset_nrow + row_additions
+    
+  } else {
+    
+    # - Checking to make sure the user provided numeric row indices 
+    if (!is.numeric(rows)) {
+      
+      error_msg = glue::glue("
+        Please provide numeric row indices to manipulate. Based on the initial data, please \\
+        provide any row indices 1 through {subset_nrow} within alter_at().
+        ")
+      
+      stop(error_msg, call. = FALSE)
+      
+    }
+    
+    # - Checking to make sure the numeric row indices are actually in range for the 
+    # given subset of data.
+    if (!all(dplyr::between(x = rows, left = 1, right = subset_nrow))) {
+      
+      error_msg = glue::glue("
+        Please provide numeric row between 1 through {subset_nrow} within alter_at().
+        ")
+      
+      stop(error_msg, call. = FALSE)
+      
+    }
+    
+    rows = rows + row_additions
+    
+  }
+  
+  boolean_vector = data %>%
     dplyr::mutate(
       applied_filter = dplyr::coalesce(eval(filter_expression), FALSE),
-      which_to_alter = applied_filter & (grobblR_group %in% grob_object$current_group)
+      which_to_alter = (
+        applied_filter &
+          (grobblR_group %in% grob_object$current_group) &
+          (dplyr::row_number() %in% rows)
+        )
       ) %>%
     dplyr::pull(which_to_alter)
   
-  boolean_matrix = aes_matrix(df = grob_object$test, value = FALSE) %>%
+  boolean_matrix = aes_matrix(df = data, value = FALSE) %>%
     data.frame(stringsAsFactors = FALSE) %>%
     dplyr::select(
       -dplyr::matches('grobblR_group')
@@ -268,8 +386,7 @@ alter_at = function(grob_object,
       .funs = list(~ boolean_vector)
       ) %>%
     as.matrix()
- 
-  data_columns = colnames(data)[which_columns]
+  
   applied_function_mat = data %>%
     dplyr::select(
       -dplyr::matches('grobblR_group')
@@ -277,10 +394,11 @@ alter_at = function(grob_object,
     dplyr::filter(boolean_vector) %>%
     dplyr::rowwise() %>%
     dplyr::mutate_at(
-      .vars = dplyr::vars(data_columns),
+      .vars = which_columns,
       .funs = list(.f)
       ) %>%
     dplyr::ungroup() %>%
+    dplyr::select(which_columns) %>%
     as.matrix()
   
   grob_object$aesthetic_list[[grob_object$current_aesthetic]][boolean_matrix] = applied_function_mat
@@ -289,10 +407,14 @@ alter_at = function(grob_object,
   
 }
 
-check_aesthetic = function(aesthetic, location) {
+check_aesthetic = function(aesthetic, type, location) {
   
-  valid_aesthetics = get_matrix_aesthetics()
+  if (type %in% c('matrix')) {
     
+    valid_aesthetics = get_matrix_aesthetics()
+    
+  }
+  
   if (!aesthetic %in% valid_aesthetics) {
     
     error_msg = glue::glue("

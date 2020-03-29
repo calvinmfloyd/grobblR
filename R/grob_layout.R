@@ -15,10 +15,12 @@
 #' @param page_number A single value that can be converted to an integer for the page number in the bottom right of the grob-layout within the padding. If it cannot be converted to an integer, the page number will not appear.
 #' @return An R6 class object containing all information necessary to create the overall grob-layout. The grob itself is called with \code{grob_layout()$grob}.
 #' @examples
+#' 
 #' gl = grob_layout(
 #'   grob_row(grob_col(1), grob_col(2)),
 #'   grob_row(grob_col(3))
 #'   )
+#'   
 #' # to retrieve the grob-layout
 #' gl$grob
 #' @export
@@ -53,7 +55,6 @@ grob_layout = function(...,
     caption = caption,
     caption_p = caption_p,
     caption_aes_list = caption_aes_list
-
     )
 
 }

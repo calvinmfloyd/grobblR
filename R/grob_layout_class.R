@@ -142,11 +142,12 @@ grob_layout_class = R6::R6Class(
       raw_grobs = grid::gList()
       for(i in 1:nr){
         
-        contents[[i]]$height = row_heights[i]
-        contents[[i]]$width = width_w_padding
-        contents[[i]]$units = units
-        contents[[i]]$grob_layout_location = trimws(paste0(scales::ordinal(i), " grob-row"))
-        raw_grobs = grid::gList(raw_grobs, contents[[i]]$grob)
+        grob_row_clone = contents[[i]]$clone()
+        grob_row_clone$height = row_heights[i]
+        grob_row_clone$width = width_w_padding
+        grob_row_clone$units = units
+        grob_row_clone$grob_layout_location = trimws(paste0(scales::ordinal(i), " grob-row"))
+        raw_grobs = grid::gList(raw_grobs, grob_row_clone$grob)
         
       }
 

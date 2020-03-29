@@ -1,4 +1,5 @@
 
+usethis::use_pipe(export = TRUE)
 
 units_convert = function(x, from_units, to_units) {
   

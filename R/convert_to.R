@@ -28,13 +28,20 @@ convert_to_grob = function(x,
       
   }
   
+  if (is(x, 'grob_image_object')) {
+    
+    aes_list = x$finish_ga_list
+    x = x$initial
+      
+  }
+  
   if (all(is.numeric(x), length(x) > 0, is.null(dim(x)))) {
     
     x = convert_to_matrix(x)
     
   }
   
-  # Matrix / Data.Frame ----
+  # Matrix / Data.Frame
   if(is.data.frame(x) | is.matrix(x)){
 
     x = as.matrix(x)
@@ -110,9 +117,18 @@ convert_to_grob = function(x,
 
   }
   
-  # Image ----
-  else if (ifelse(is.character(x), grepl('.png', x), FALSE)) {
-    if(!file.exists(x)) stop(sprintf("The file '%s' does not exist.", x), call. = FALSE)
+  # Image 
+  else if (ifelse(is.character(x), tools::file_ext(x) %in% 'png', FALSE)) {
+    
+    if (!file.exists(x)) {
+      
+      error_msg = glue::glue("
+        The file '{x}' does not exist.
+        ")
+
+      stop(error_msg, call. = FALSE)
+
+    }
 
     grob = convert_to_image_grob(
       img_path = x,
@@ -124,18 +140,17 @@ convert_to_grob = function(x,
 
   }
   
-  # Text ----
+  # Text 
   else if (ifelse(is.character(x), !grepl('.png', x), FALSE)) {
 
     if (is.null(aes_list$text_cex)) {
       
       n_lines = ifelse(!is.null(aes_list$n_lines), aes_list$n_lines, 10000)
-      sep = ifelse(!is.null(aes_list$str_sep), aes_list$str_sep, '\n')
       
       lines = cex_val_convergence(
         string = x,
         n_lines = n_lines,
-        sep = sep,
+        sep = '\n',
         height = height,
         width = width,
         units = units
@@ -165,7 +180,7 @@ convert_to_grob = function(x,
 
   }
   
-  # ggplot2 ----
+  # ggplot object
   else if (ggplot2::is.ggplot(x)) {
     
     png_name = file.path(
@@ -199,14 +214,14 @@ convert_to_grob = function(x,
 
   }
   
-  # Pre-Made grob ----
+  # Pre-Made grob 
   else if (grid::is.grob(x)) {
 
     grob = x
 
   }
   
-  # NA ----
+  # NA (empty grob)
   else if (is.na(x)) {
 
     grob = grid::rectGrob(
@@ -268,7 +283,7 @@ convert_to_matrix_grob = function(df,
   nr = nrow(df)
   nc = ncol(df)
 
-  # Adding in default values (non-matrices) if they are missing ----
+  # Adding in default values (non-matrices) if they are missing
   def_vals_non_matrices = list(
     padding_p = 0.0025
     )
@@ -315,7 +330,7 @@ convert_to_matrix_grob = function(df,
   # - Setting row-heights, which at this time will all be equal heights
   aes_list[['row_heights']] = rep(height/nr, nr)
   
-  # Figuring out the column proportions and widths ----
+  # - Figuring out the column proportions and widths
   if (length(width) == 1 & length(aes_list[['column_widths']]) == nc) {
     
     column_props = aes_list[['column_widths']]
@@ -354,7 +369,7 @@ convert_to_matrix_grob = function(df,
     
   }
   
-  # Making adjustments to text_cex, if need be ----
+  # Making adjustments to text_cex, if need be 
   adjust_cex = length(aes_list$text_cex) == 0 & length(height) == 1
 
   if(!adjust_cex){
@@ -384,7 +399,7 @@ convert_to_matrix_grob = function(df,
 
   }
   
-  # Adding in default values (matrices) if they are missing ----
+  # Adding in default values (matrices) if they are missing 
 
   def_vals_matrices$text_cex = rep(def_text_cex, length(def_vals_matrices[[1]]))
   background_color_not_inputted = all(dim(aes_list$background_color) == 0)
@@ -416,7 +431,7 @@ convert_to_matrix_grob = function(df,
     
   }
 
-  # Adjustments to text_just, text_align, text_v_just, text_v_align ----
+  # Adjustments to text_just, text_align, text_v_just, text_v_align 
 
   # - Horizontal adjustments
   
@@ -433,12 +448,12 @@ convert_to_matrix_grob = function(df,
   al_text_just = aes_list[['text_just']]
   al_text_align = aes_list[['text_align']]
 
+  aes_list[['text_just']][al_text_just %in% 'center' | al_text_align %in% 'center'] = 0.5
+  aes_list[['text_align']][al_text_just %in% 'center' | al_text_align %in% 'center'] = 0.5
   aes_list[['text_just']][al_text_just %in% 'left' | al_text_align %in% 'left'] = 0
   aes_list[['text_align']][al_text_just %in% 'left' | al_text_align %in% 'left'] = 0
   aes_list[['text_just']][al_text_just %in% 'right' | al_text_align %in% 'right'] = 1
   aes_list[['text_align']][al_text_just %in% 'right' | al_text_align %in% 'right'] = 1
-  aes_list[['text_just']][al_text_just %in% 'center' | al_text_align %in% 'center'] = 0.5
-  aes_list[['text_align']][al_text_just %in% 'center' | al_text_align %in% 'center'] = 0.5
 
   aes_list[['text_just']] = matrix(as.numeric(aes_list[['text_just']]), nrow = nr)
   aes_list[['text_align']] = matrix(as.numeric(aes_list[['text_align']]), nrow = nr)
@@ -458,17 +473,17 @@ convert_to_matrix_grob = function(df,
     }
   }
 
+  aes_list[['text_v_just']][al_text_v_just %in% 'center' | al_text_v_align %in% 'center'] = 0.5
+  aes_list[['text_v_align']][al_text_v_just %in% 'center' | al_text_v_align %in% 'center'] = 0.5
   aes_list[['text_v_just']][al_text_v_just %in% 'bottom' | al_text_v_align %in% 'bottom'] = 0
   aes_list[['text_v_align']][al_text_v_just %in% 'bottom' | al_text_v_align %in% 'bottom'] = 0
   aes_list[['text_v_just']][al_text_v_just %in% 'top' | al_text_v_align %in% 'top'] = 1
   aes_list[['text_v_align']][al_text_v_just %in% 'top' | al_text_v_align %in% 'top'] = 1
-  aes_list[['text_v_just']][al_text_v_just %in% 'center' | al_text_v_align %in% 'center'] = 0.5
-  aes_list[['text_v_align']][al_text_v_just %in% 'center' | al_text_v_align %in% 'center'] = 0.5
 
   aes_list[['text_v_just']] = matrix(as.numeric(aes_list[['text_v_just']]), nrow = nr)
   aes_list[['text_v_align']] = matrix(as.numeric(aes_list[['text_v_align']]), nrow = nr)
 
-  # Aesthetic value type checks before we start creating the grobs themselves ----
+  # Aesthetic value type checks before we start creating the grobs themselves
   for(val_name in names(def_orig_vals_list)){
     if(!class(c(aes_list[[val_name]])) %in% class(def_orig_vals_list[[val_name]])){
       stop(sprintf(
@@ -478,7 +493,7 @@ convert_to_matrix_grob = function(df,
     }
   }
 
-  # Creating each of our mini grobs that will compose the matrix grob ----
+  # Creating each of our mini grobs that will compose the matrix grob
   raw_grobs = grid::gList()
   
   for(j in 1:nc){
@@ -527,7 +542,7 @@ convert_to_matrix_grob = function(df,
       }
     }}
 
-  # Layout Matrix ----
+  # Layout Matrix
   layout_matrix = get_layout_matrix(df, aes_list$group_elements)
   first_element_indices = unlist(lapply(unique(c(layout_matrix)), function(x) min(which(c(layout_matrix) == x))))
 

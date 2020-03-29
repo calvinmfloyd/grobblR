@@ -384,7 +384,7 @@ This will also come into play when we discuss the `grob_to_pdf()` function later
 
 ## Matrix Grobs
 
-Data frames/matrices are probably the most complex of all the grobbable (yep, that's a word now) objects in the `grobblR` package. With matrices, each element is essentially its own tiny grob. So if the user has a `2 x 2` matrix which he/she wants to convert to a grob, the `grobblR` method is to create 4 distinct tiny grobs and combine them all together to create the appearance of the matrix which was inputted. This allows for very customizable looks for matrices - which we needed to do a lot in Sacramento. If we needed to color specific elements of the matrix, or change their font face, or change their font size, we could do that using this methodology. 
+Data frames/matrices are probably the most complex of all the accepted grob objects in the `grobblR` package. With matrices, each element is essentially its own tiny grob. So if the user has a `2 x 2` matrix which he/she wants to convert to a grob, the `grobblR` method is to create 4 distinct tiny grobs and combine them all together to create the appearance of the matrix which was inputted. This allows for very customizable looks for matrices - which we needed to do a lot in Sacramento. If we needed to color specific elements of the matrix, or change their font face, or change their font size, we could do that using this methodology. 
 
 ### Matrix Aesthetic Control
 

@@ -167,11 +167,12 @@ grob_col_class = R6::R6Class(
 
         if (is(contents[[i]], 'grob_row')) {
           
-          contents[[i]]$height = heights[i]
-          contents[[i]]$width = width
-          contents[[i]]$units = units
-          contents[[i]]$grob_layout_location = trimws(paste0(location, paste0(", ", scales::ordinal(i), " grob-row")))
-          raw_grobs = grid::gList(raw_grobs, contents[[i]]$grob)
+          grob_row_clone = contents[[i]]$clone()
+          grob_row_clone$height = heights[i]
+          grob_row_clone$width = width
+          grob_row_clone$units = units
+          grob_row_clone$grob_layout_location = trimws(paste0(location, paste0(", ", scales::ordinal(i), " grob-row")))
+          raw_grobs = grid::gList(raw_grobs, grob_row_clone$grob)
 
         } else {
 

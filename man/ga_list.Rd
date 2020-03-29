@@ -69,7 +69,7 @@ ga_list(
 )
 }
 \arguments{
-\item{aspect_ratio_multiplier}{A numeric value which controls how much to increase/decrease the aspect ratio of images or ggplots.}
+\item{aspect_ratio_multiplier}{A numeric value which controls how much to increase/decrease the aspect ratio of images or ggplot objects.}
 
 \item{background_color}{Controls the background color of the elements of the matrix. If the matrix has no rownames or colnames, the default is white. If the matrix has column names, the default is white-gray90 on every odd-even row. Used with matrices.}
 
@@ -188,8 +188,6 @@ ga_list(
 \item{maintain_aspect_ratio}{A TRUE/FALSE value which indicates whether the aspect ratio of the image should be maintained. Default is FALSE - meaning the image will be stretched to fit the designated grid area. Used with images.}
 
 \item{n_lines}{The maximum number of lines is desired for the character string to be broken up into. Used with character strings.}
-
-\item{str_sep}{The separator within the character string which designates where a new line should start. Used with character strings.}
 }
 \value{
 A list with all possible aesthetic elements that can be adjusted, with the class of "grob_aes_list".

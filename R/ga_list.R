@@ -1,6 +1,6 @@
 #' Grob aesthetic list used to control aesthetics within grobblR.
 #'
-#' @param aspect_ratio_multiplier A numeric value which controls how much to increase/decrease the aspect ratio of images or ggplots.
+#' @param aspect_ratio_multiplier A numeric value which controls how much to increase/decrease the aspect ratio of images or ggplot objects.
 #' @param background_alpha Controls the background alpha/opacity of the elements of the matrix. Values are used in \code{grid::gpar()}. Default is 1.0. Used with matrices.
 #' @param background_color Controls the background color of the elements of the matrix. If the matrix has no rownames or colnames, the default is white. If the matrix has column names, the default is white-gray90 on every odd-even row. Used with matrices.
 #' @param border_color Controls the color of the selected borders. Default is gray40. Used with matrices.
@@ -22,7 +22,6 @@
 #' @param text_v_align Controls where the text in each grid cell will be centered around, vertically. A numeric value between 0 and 1, with 0 being all the way to the bottom of the grid cell, and 1 being all the way to the top of the grid cell. Default is 0.5. Can also input 'top', 'bottom' or 'center', which will also make edits to \code{text_v_just} to make the text completely top-justified, bottom-justified or centered, respectively. Used with matrices or character strings.
 #' @param text_v_just Controls the vertical justification of the text in the matrix. A numeric value between 0 and 1, with 0 being bottom justification and 1 being top justification. Default is 0.5, or center justification. Can also input 'top', 'bottom' or 'center', which will also make edits to \code{text_v_align} to make the text completely top-justified, bottom-justified or centered, respectively. Used with matrices or character strings.
 #' @param n_lines The maximum number of lines is desired for the character string to be broken up into. Used with character strings.
-#' @param str_sep The separator within the character string which designates where a new line should start. Used with character strings.
 #' @param cell_font_face Controls the \code{font_face} of matrix cells. Overridden by the \code{font_face} parameter.
 #' @param cell_group_elements Controls the \code{group_elements} of matrix cells. Overridden by the \code{group_elements} parameter.
 #' @param cell_background_color Controls the \code{background_color} of matrix cells. Overridden by the \code{background_color} parameter.
@@ -205,8 +204,7 @@ ga_list = function(aspect_ratio_multiplier = NULL,
     colname_padding_p = colname_padding_p,
     maintain_aspect_ratio = maintain_aspect_ratio,
     aspect_ratio_multiplier = aspect_ratio_multiplier,
-    n_lines = n_lines,
-    str_sep = str_sep
+    n_lines = n_lines
     )
 
   grob_aes_list = lapply(

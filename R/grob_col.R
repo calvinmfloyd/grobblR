@@ -37,7 +37,11 @@ grob_col = function(...,
                     hjust = 0.5,
                     vjust = 0.5){
 
-  if(!is.numeric(p)) if(p < 0) stop("p in grob_col() must be a positive numeric value.", call. = FALSE)
+  if(!is.numeric(p)) {
+    
+    if(p < 0) stop("p in grob_col() must be a positive numeric value.", call. = FALSE)
+    
+  }
   
   grob_col_class$new(
     contents = list(...),

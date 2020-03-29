@@ -20,12 +20,13 @@ column_names_to_row = function(df) {
   
     }
     
-    if (length(colnames(df$current)) > 0) {
+    if (length(colnames(df$initial)) > 0) {
     
       mat = df$current
       column_names = colnames(mat)
+      mat = data.frame(mat, stringsAsFactors = FALSE)
       colnames(mat) = NULL
-    
+      
       mat_w_column_names = rbind(column_names, mat)
       df$current = mat_w_column_names
       df$test = add_extra_row_to_df(df = df$test, row_name_label = 'column_names')

@@ -10,6 +10,7 @@ alter_at(
   .f = NULL,
   ...,
   columns = NULL,
+  rows = NULL,
   data = NULL,
   aesthetic = NULL,
   group = NULL
@@ -53,7 +54,6 @@ the data.frame/matrix.
 }
 \examples{
 
-library(dplyr)
 df = data.frame(var1 = c(5, 14, 6, 10), var2 = c(3, 30, 17, 7))
 df \%>\%
   grob_matrix() \%>\%
@@ -62,9 +62,7 @@ df \%>\%
     .f = ~ 'blue',
     abs(var2 - var1) > 1
     ) \%>\%
-  grob_col(width = 100) \%>\%
-  .$grob \%>\%
-  plot()
+  view_grob()
 
 test_function = function(x) ifelse(x > 15, 2, 1)
 
@@ -75,8 +73,6 @@ df \%>\%
     aesthetic = 'font_face',
     group = 'cells'
     ) \%>\%
-  grob_col(width = 100) \%>\%
-  .$grob \%>\%
-  plot()
+  view_grob()
 
 }

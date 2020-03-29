@@ -1,9 +1,11 @@
-`%>%` = dplyr::`%>%`
+
 options(stringsAsFactors = FALSE)
 
-get_structure_lookup_df = function(current,
-                                   height = NULL,
-                                   width = NULL) {
+# Matrix ----
+
+get_matrix_structure_lookup_df = function(current,
+                                          height = NULL,
+                                          width = NULL) {
   
   nc = ncol(current)
   nr = nrow(current)
@@ -35,6 +37,7 @@ get_structure_lookup_df = function(current,
     dplyr::tibble(
       structure = 'column_widths_p',
       theme = 'default',
+      accepted_classes = list(c('numeric')),
       value = list(
         matrix(
           data = default_column_widths_p,
@@ -43,11 +46,20 @@ get_structure_lookup_df = function(current,
           )
         )
       ),
+    # N ----
+    # > Number of Lines ----
+    dplyr::tibble(
+      structure = 'n_lines',
+      theme = 'default',
+      accepted_classes = list(c('numeric')),
+      value = list(matrix(10000, nrow = 1, ncol = nc))
+      ),
     # P ----
     # > Padding Proportions ----
     dplyr::tibble(
       structure = 'padding_p',
       theme = 'default',
+      accepted_classes = list(c('numeric')),
       value = list(
         matrix(
           data = 0.05,
@@ -56,7 +68,7 @@ get_structure_lookup_df = function(current,
           )
         )
       )
-    
+
     ) %>%
     dplyr::bind_rows()
   
@@ -67,7 +79,7 @@ get_structure_lookup_df = function(current,
 get_all_matrix_structures = function() {
   
   data.frame() %>%
-    get_structure_lookup_df() %>%
+    get_matrix_structure_lookup_df() %>%
     .[['structure']] %>%
     unique()
 
@@ -76,9 +88,81 @@ get_all_matrix_structures = function() {
 get_matrix_structure = function(grob_matrix_object, structure) {
   
   grob_matrix_object$current %>%
-    get_structure_lookup_df() %>%
+    get_matrix_structure_lookup_df() %>%
     dplyr::filter(structure == !!structure)
 
 }
+
+# Image ----
+
+get_image_structure_lookup_df = function() {
+  
+  structure_lookup_df = list(
+    
+    # A ----
+    # > Aspect Ratio Multiplier ----
+    dplyr::tibble(
+      structure = 'aspect_ratio_multiplier',
+      accepted_classes = list(c('numeric')),
+      theme = 'default',
+      value = list(1)
+      ),
+    # M ----
+    # > Maintain Aspect Ratio ----
+    dplyr::tibble(
+      structure = 'maintain_aspect_ratio',
+      accepted_classes = list(c('logical')),
+      theme = 'default',
+      value = list(TRUE)
+      )
+    
+    ) %>%
+    dplyr::bind_rows()
+  
+ return(structure_lookup_df) 
+  
+}
+
+get_all_image_structures = function() {
+  
+  get_image_structure_lookup_df() %>%
+    .[['structure']] %>%
+    unique()
+  
+}
+
+get_image_structure = function(structure) {
+  
+  get_image_structure_lookup_df() %>%
+    dplyr::filter(structure == !!structure)
+
+}
+
+# Overall ----
+
+get_structure_lookup_df = function(type,
+                                   current = NULL,
+                                   height = NULL,
+                                   width = NULL) {
+  
+  if (type %in% c('matrix', 'text')) {
+    
+    lookup_df = get_matrix_structure_lookup_df(
+      current = current,
+      height = height,
+      width = width
+      )
+    
+  } else if (type %in% 'image') {
+    
+    
+    lookup_df = get_image_structure_lookup_df()
+    
+  }
+  
+  return(lookup_df)
+  
+}
+
 
 

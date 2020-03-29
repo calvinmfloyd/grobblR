@@ -2,42 +2,40 @@
 % Please edit documentation in R/aesthetics.R
 \name{add_aesthetic}
 \alias{add_aesthetic}
-\title{Add an aesthetic to a grob object class.}
+\title{Add an aesthetic to a grob matrix or grob text object.}
 \usage{
 add_aesthetic(
   grob_object,
   aesthetic,
-  group = c("cells", "column_names", "column_headings"),
-  value = NULL
+  value = NULL,
+  group = c("cells", "column_names", "column_headings")
 )
 }
 \arguments{
-\item{grob_object}{The R6 grob object class outputted by \code{\link{grob_matrix}}.}
+\item{grob_object}{The R6 object outputted by either \code{\link{grob_matrix}} or \code{\link{grob_text}}.}
 
-\item{aesthetic}{The aesthetic the user wishes to add.}
+\item{aesthetic}{The matrix aesthetic the user wishes to add.}
+
+\item{value}{A single value the user wants to apply to the group of matrix / text 
+elements for the given aesthetic.}
 
 \item{group}{The group of the grob matrix object the user wants to add the 
 aesthetic to. For matrices, the user can add an aesthetic to the cells, the
-column names or the column headings.}
-
-\item{value}{A single value the user wants to apply to the group of matrix 
-elements for the given aesthetic.}
+column names or the column headings. If the user is passing through a grob text
+object, then only 'cells' will be accepted.}
 }
 \value{
-The R6 grob object class with its aesthetics properties altered.
+The R6 object of the grob matrix class with its aesthetics properties altered.
 }
 \description{
-Add an aesthetic to a grob object class.
+Add an aesthetic to a grob matrix or grob text object.
 }
 \examples{
 
-library(dplyr)
 df = data.frame(var1 = c(5, 14, 6, 10), var2 = c(3, 30, 17, 7))
 df \%>\%
   grob_matrix() \%>\% 
-  add_aesthetic(aesthetic = 'text_color', group = 'cells', value = 'red') \%>\%
-  grob_col(width = 100) \%>\%
-  .$grob \%>\%
-  plot()
+  add_aesthetic(aesthetic = 'text_color', value = 'red', group = 'cells') \%>\%
+  view_grob()
 
 }
