@@ -44,6 +44,8 @@ get_matrix_aesthetic_lookup_df = function(test,
     n_elements_cells = nr_cells*nc_cells
     n_elements_column_names = nr_column_names*nc_cells
     n_elements_column_headings = nr_column_headings*nc_cells
+    
+    text_cex_add_vec = c(0)
 
   } else {
 
@@ -59,9 +61,12 @@ get_matrix_aesthetic_lookup_df = function(test,
     n_elements_column_names = nr_column_names*nc_cells
     n_elements_column_headings = nr_column_headings*nc_cells
     
+    text_cex_add_vec = rep(0, nc)
+    
     # Text Sizing, based on the structure of the grob matrix object
     if (all(dim(current) > 0)) {
       
+      text_cex_add_vec = structure_list[['text_cex_addition']]
       column_widths = width*(structure_list[['column_widths_p']]/sum(structure_list[['column_widths_p']]))
       column_widths_fit = column_widths - column_widths*structure_list[['padding_p']]
       
@@ -488,6 +493,12 @@ get_matrix_aesthetic_lookup_df = function(test,
           data = default_cell_text_cex,
           nrow = nr_cells,
           ncol = nc_cells
+          ) +
+        matrix(
+          data = rep(text_cex_add_vec, nr_cells),
+          nrow = nr_cells,
+          ncol = nc_cells,
+          byrow = TRUE
           )
         )
       ),
@@ -501,6 +512,12 @@ get_matrix_aesthetic_lookup_df = function(test,
           data = default_non_cell_text_cex,
           nrow = nr_column_names,
           ncol = nc_cells
+          ) +
+        matrix(
+          data = rep(text_cex_add_vec, nr_column_names),
+          nrow = nr_column_names,
+          ncol = nc_cells,
+          byrow = TRUE
           )
         )
       ),
@@ -514,6 +531,12 @@ get_matrix_aesthetic_lookup_df = function(test,
           data = default_non_cell_text_cex,
           nrow = nr_column_headings,
           ncol = nc_cells
+          ) +
+        matrix(
+          data = rep(text_cex_add_vec, nr_column_headings),
+          nrow = nr_column_headings,
+          ncol = nc_cells,
+          byrow = TRUE
           )
         )
       ),

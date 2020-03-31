@@ -74,6 +74,11 @@ add_structure = function(grob_object,
   if (length(value) == 1 & type %in% 'matrix') {
     
     value = rep(value, length = ncol(grob_object$current))
+    
+  }
+  
+  if (type %in% 'matrix') {
+    
     value = convert_to_matrix(value)
     
   }
