@@ -1,3 +1,6 @@
+
+#' Grob Aesthetic List
+#' 
 #' Grob aesthetic list used to control aesthetics within grobblR.
 #'
 #' @param aspect_ratio_multiplier A numeric value which controls how much to increase/decrease the aspect ratio of images or ggplot objects.

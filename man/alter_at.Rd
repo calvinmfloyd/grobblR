@@ -2,8 +2,7 @@
 % Please edit documentation in R/aesthetics.R
 \name{alter_at}
 \alias{alter_at}
-\title{Flexibly alter the aesthetic of a grob matrix object at specific points of
-the data.frame/matrix.}
+\title{Alter aesthetics at certain areas of a grob matrix}
 \usage{
 alter_at(
   grob_object,
@@ -17,14 +16,15 @@ alter_at(
 )
 }
 \arguments{
-\item{grob_object}{The R6 grob object class outputted by \code{\link{grob_matrix}}.}
+\item{grob_object}{The R6 grob object class outputted by \code{\link{grob_matrix}}
+or \code{\link{grob_text}}.}
 
 \item{.f}{A quosure style lambda \code{~ fun(.)}, which the user wants to apply
 to the specific subset of cells.}
 
 \item{...}{Logical predicates defined in terms of the variables in the initial 
 data.frame/matrix, or if the user provides a new data.frame to evaluate via 
-\code{data}. Multiple conditions are combined with &. Only rows where the condition 
+\code{data}. Multiple conditions are combined with \code{&}. Only rows where the condition 
 evaluates to TRUE are evaluated. 
 
 If no logical predicates provided, then the entire columns will be altered.}
@@ -33,9 +33,7 @@ If no logical predicates provided, then the entire columns will be altered.}
 the user wishes to alter.}
 
 \item{data}{A separate data.frame/matrix of the same dimensions as the initial 
-data.frame/matrix which the \code{.f} function will be applied to. Any potential
-filters will always be applied to the initial data.frame/matrix, regardless if 
-a separate data.frame/matrix is supplied.}
+data.frame/matrix which the \code{.f} function and any filters will be applied to.}
 
 \item{aesthetic}{Which aesthetic the user wants to make alterations to. If left 
 \code{NULL}, the function will look for the most previous altered aesthetic, either
@@ -46,7 +44,7 @@ via \code{\link{add_aesthetic}}, or a previous application of \code{alter_at}.}
 via \code{\link{add_aesthetic}}, or a previous application of \code{alter_at}.}
 }
 \value{
-The R6 grob object class with its aesthetics properties altered.
+The R6 grob matrix object class with its aesthetics properties altered.
 }
 \description{
 Flexibly alter the aesthetic of a grob matrix object at specific points of

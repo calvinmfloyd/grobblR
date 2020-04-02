@@ -1,11 +1,25 @@
-#' Converts a single grob-layout to a PDF, or combines multiple grob-layouts into a multiple page PDF document.
+
+#' Grob Layout to PDF
+#' 
+#' Converts a single grob-layout to a PDF, or combines multiple grob-layouts
+#' into a multiple page PDF document.
 #'
-#' @param ... The single grob or series of grobs which will be converted to a PDF document.
+#' @param ... The single \code{\link{grob_layout}}, or series of 
+#' \code{\link{grob_layout}}'s which will be converted to a PDF document.
+#' 
 #' @param file_name The desired file name of the resulting PDF document in character format.
-#' @param add_page_numbers If TRUE, page numbers will be added to the bottom right corners of the pages of the document, based on the order of the grob-layouts listed.
-#' @param meta_data_title Title string to embed as the /Title field in the file. If not provided, it will default to the \code{file_name} provided.
+#' 
+#' @param add_page_numbers If TRUE, page numbers will be added to the bottom 
+#' right corners of the pages of the document, based on the order of the grob-layouts listed.
+#' 
+#' @param meta_data_title Title string to embed as the /Title field in the file.
+#' If not provided, it will default to the \code{file_name} provided.
+#' 
 #' @return A PDF document of the grob-layout(s) which will be saved to the working directory.
-#' @details In the case of multiple page documents, the dimensions of the overall document will be determined by the dimensions of the first grob-layout listed.
+#' 
+#' @details In the case of multiple page documents, the dimensions of the overall
+#' document will be determined by the dimensions of the first grob-layout listed.
+#' 
 #' @export
 
 grob_to_pdf = function(...,

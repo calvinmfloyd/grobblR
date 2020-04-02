@@ -1,15 +1,23 @@
 
 options(stringsAsFactors = FALSE)
 
+#' Add an Aesthetic
+#' 
 #' Add an aesthetic to a grob matrix or grob text object.
-#' @param grob_object The R6 object outputted by either \code{\link{grob_matrix}} or \code{\link{grob_text}}.
+#' 
+#' @param grob_object The R6 object outputted by either \code{\link{grob_matrix}}
+#' or \code{\link{grob_text}}.
+#' 
 #' @param aesthetic The matrix aesthetic the user wishes to add.
+#' 
 #' @param group The group of the grob matrix object the user wants to add the 
 #' aesthetic to. For matrices, the user can add an aesthetic to the cells, the
 #' column names or the column headings. If the user is passing through a grob text
 #' object, then only 'cells' will be accepted.
+#' 
 #' @param value A single value the user wants to apply to the group of matrix / text 
 #' elements for the given aesthetic.
+#' 
 #' @return The R6 object of the grob matrix class with its aesthetics properties altered.
 #' 
 #' @export
@@ -69,31 +77,39 @@ add_aesthetic = function(grob_object,
   
 }
 
+#' Alter aesthetics at certain areas of a grob matrix
+#' 
 #' Flexibly alter the aesthetic of a grob matrix object at specific points of
 #' the data.frame/matrix.
-#' @param grob_object The R6 grob object class outputted by \code{\link{grob_matrix}}.
+#' 
+#' @param grob_object The R6 grob object class outputted by \code{\link{grob_matrix}}
+#' or \code{\link{grob_text}}.
+#' 
 #' @param .f A quosure style lambda \code{~ fun(.)}, which the user wants to apply
 #' to the specific subset of cells.
+#' 
 #' @param ... Logical predicates defined in terms of the variables in the initial 
 #' data.frame/matrix, or if the user provides a new data.frame to evaluate via 
-#' \code{data}. Multiple conditions are combined with &. Only rows where the condition 
+#' \code{data}. Multiple conditions are combined with \code{&}. Only rows where the condition 
 #' evaluates to TRUE are evaluated. 
 #' 
 #' If no logical predicates provided, then the entire columns will be altered.
 #' 
 #' @param columns A character vector of column names of the initial data.frame/matrix
 #' the user wishes to alter.
+#' 
 #' @param data A separate data.frame/matrix of the same dimensions as the initial 
-#' data.frame/matrix which the \code{.f} function will be applied to. Any potential
-#' filters will always be applied to the initial data.frame/matrix, regardless if 
-#' a separate data.frame/matrix is supplied.
+#' data.frame/matrix which the \code{.f} function and any filters will be applied to.
+#' 
 #' @param aesthetic Which aesthetic the user wants to make alterations to. If left 
 #' \code{NULL}, the function will look for the most previous altered aesthetic, either
 #' via \code{\link{add_aesthetic}}, or a previous application of \code{alter_at}.
+#' 
 #' @param group Which group of elements the user wants to make alterations to. If left 
 #' \code{NULL}, the function will look for the most previous altered group, either
 #' via \code{\link{add_aesthetic}}, or a previous application of \code{alter_at}.
-#' @return The R6 grob object class with its aesthetics properties altered.
+#' 
+#' @return The R6 grob matrix object class with its aesthetics properties altered.
 #' 
 #' @export
 #' 
@@ -409,11 +425,8 @@ alter_at = function(grob_object,
 
 check_aesthetic = function(aesthetic, type, location) {
   
-  if (type %in% c('matrix')) {
     
-    valid_aesthetics = get_matrix_aesthetics()
-    
-  }
+  valid_aesthetics = get_matrix_aesthetics()
   
   if (!aesthetic %in% valid_aesthetics) {
     

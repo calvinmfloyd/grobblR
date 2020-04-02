@@ -2,8 +2,8 @@
 grob_layout_class = R6::R6Class(
   classname = "grob_layout",
   public = list(
-    height = 100,
-    width = 100,
+    height = NA_real_,
+    width = NA_real_,
     units = 'mm',
     padding = NA_real_,
     padding_proportion = 0.1,
@@ -18,7 +18,6 @@ grob_layout_class = R6::R6Class(
     initialize = function(contents,
                           height,
                           width,
-                          units,
                           padding,
                           padding_proportion,
                           page_number,
@@ -31,7 +30,6 @@ grob_layout_class = R6::R6Class(
       self$contents = contents
       self$height = height
       self$width = width
-      self$units = units
       self$padding = padding
       self$padding_proportion = padding_proportion
       self$page_number = page_number

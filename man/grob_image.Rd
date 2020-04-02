@@ -2,7 +2,7 @@
 % Please edit documentation in R/grob_object_functions.R
 \name{grob_image}
 \alias{grob_image}
-\title{Initialize a grob image object, to be used within \code{\link{grob_col}}.}
+\title{Grob Image}
 \usage{
 grob_image(x)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/structures.R
 \name{add_structure}
 \alias{add_structure}
-\title{Add a structure to a grob matrix / image / text object.}
+\title{Add a Structure}
 \usage{
 add_structure(grob_object, structure, value)
 }
@@ -28,6 +28,32 @@ The initial R6 object of the grob object class with its structure properties alt
 }
 \description{
 Add a structure to a grob matrix / image / text object.
+}
+\note{
+The following are accepted structures:
+
+\describe{
+
+\item{Matrix / Text}{
+
+\itemize{
+
+\item \code{text_color} - The color of the text.
+\item \code{text_cex} - The cex of the text.
+
+}
+}
+
+\item{Image}{
+\itemize{
+
+\item \code{maintain_aspect_ratio} - The color of the text.
+\item \code{aspect_ratio_multiplier} - The cex of the text.
+
+}
+}
+
+}
 }
 \examples{
 

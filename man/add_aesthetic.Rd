@@ -2,7 +2,7 @@
 % Please edit documentation in R/aesthetics.R
 \name{add_aesthetic}
 \alias{add_aesthetic}
-\title{Add an aesthetic to a grob matrix or grob text object.}
+\title{Add an Aesthetic}
 \usage{
 add_aesthetic(
   grob_object,
@@ -12,7 +12,8 @@ add_aesthetic(
 )
 }
 \arguments{
-\item{grob_object}{The R6 object outputted by either \code{\link{grob_matrix}} or \code{\link{grob_text}}.}
+\item{grob_object}{The R6 object outputted by either \code{\link{grob_matrix}}
+or \code{\link{grob_text}}.}
 
 \item{aesthetic}{The matrix aesthetic the user wishes to add.}
 

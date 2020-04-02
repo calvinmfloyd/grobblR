@@ -4,8 +4,8 @@ grob_col_class = R6::R6Class(
   public = list(
     contents = list(),
     proportion = 1,
-    height = 100,
-    width = 100,
+    height = NA_real_,
+    width = NA_real_,
     units = 'mm',
     hjust = 0.5,
     vjust = 0.5,
@@ -180,7 +180,6 @@ grob_col_class = R6::R6Class(
             x = contents[[i]],
             height = heights,
             width = width_w_padding,
-            units = units,
             aes_list = aes_list
             )
 

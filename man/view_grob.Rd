@@ -2,9 +2,9 @@
 % Please edit documentation in R/view.R
 \name{view_grob}
 \alias{view_grob}
-\title{View a grob with a given width and height.}
+\title{View Grob}
 \usage{
-view_grob(grob, height = 100, width = 100, units = c("mm", "cm", "inches"))
+view_grob(grob, height = NA_real_, width = NA_real_)
 }
 \arguments{
 \item{grob}{An object outputted by one of the following functions:
@@ -18,22 +18,30 @@ view_grob(grob, height = 100, width = 100, units = c("mm", "cm", "inches"))
 
 }}
 
-\item{height}{The numeric height the user wishes to view the grob in.}
+\item{height}{The numeric height in millimeters the user wishes to view the grob in.}
 
-\item{width}{The numeric width the user wishes to view the grob in.}
-
-\item{units}{The units the provided height and width are in.}
+\item{width}{The numeric width in millimeters the user wishes to view the grob in.}
 }
 \description{
-View a grob with a given width and height.
+View an ouputted by one of the \code{grob_} functions with a given width and
+height.
 }
 \examples{
 
-data.frame(
+df = data.frame(
   v2 = c(15, 4, 16, 11),
   v2 = c(10, 30, 3, 10)
-  ) \%>\%
+  ) 
+  
+df \%>\%
   grob_matrix() \%>\%
+  view_grob()
+  
+gg = ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = x, y = y)) +
+  ggplot2::geom_line(color = 'red')
+  
+gg \%>\%
+  grob_image() \%>\%
   view_grob()
 
 }

@@ -1,5 +1,8 @@
 
+#' Add a Structure
+#' 
 #' Add a structure to a grob matrix / image / text object.
+#' 
 #' @param grob_object The R6 object initialized by one of:
 #' \itemize{
 #' 
@@ -14,6 +17,34 @@
 #' the initial object passed through \code{\link{grob_matrix}}, the user wants to apply to the 
 #' grob matrix object. Otherwise, a single value to apply to the \code{structure}.
 #' @return The initial R6 object of the grob object class with its structure properties altered.
+#' 
+#' @note 
+#' 
+#' The following are accepted structures:
+#' 
+#' \describe{
+#' 
+#' \item{Matrix / Text}{
+#' 
+#' \itemize{
+#' 
+#' \item \code{text_color} - The color of the text.
+#' \item \code{text_cex} - The cex of the text.
+#' 
+#' }
+#' }
+#' 
+#' \item{Image}{
+#' \itemize{
+#' 
+#' \item \code{maintain_aspect_ratio} - The color of the text.
+#' \item \code{aspect_ratio_multiplier} - The cex of the text.
+#' 
+#' }
+
+#' }
+#' 
+#' }
 #' 
 #' @export
 #' 

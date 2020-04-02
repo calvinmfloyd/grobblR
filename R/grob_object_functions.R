@@ -1,5 +1,8 @@
 
+#' Grob Matrix
+#' 
 #' Initialize a grob matrix object, to be used within \code{\link{grob_col}}.
+#' 
 #' @param x Either a data.frame, a matrix or a vector.
 #' 
 #' @return An R6 object of the grob matrix class.
@@ -67,7 +70,10 @@ grob_matrix = function(x) {
 
 }
 
+#' Grob Text
+#' 
 #' Initialize a grob text object, to be used within \code{\link{grob_col}}.
+#'
 #' @param x A single character string.
 #' 
 #' @return An R6 object of the grob matrix class.
@@ -112,7 +118,10 @@ grob_text = function(x) {
 
 }
 
+#' Grob Image
+#' 
 #' Initialize a grob image object, to be used within \code{\link{grob_col}}.
+#' 
 #' @param x Either a ggplot object or a file path to png image.
 #' 
 #' @return An R6 object of the grob image class.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/grob_object_functions.R
 \name{grob_text}
 \alias{grob_text}
-\title{Initialize a grob text object, to be used within \code{\link{grob_col}}.}
+\title{Grob Text}
 \usage{
 grob_text(x)
 }

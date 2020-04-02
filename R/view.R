@@ -1,5 +1,9 @@
 
-#' View a grob with a given width and height.
+#' View Grob
+#' 
+#' View an ouputted by one of the \code{grob_} functions with a given width and
+#' height.
+#' 
 #' @param grob An object outputted by one of the following functions:
 #' \itemize{
 #' 
@@ -10,30 +14,37 @@
 #' \item \code{\link{grob_layout}}
 #' 
 #' }
-#' @param height The numeric height the user wishes to view the grob in.
+#' @param height The numeric height in millimeters the user wishes to view the grob in.
 #' 
-#' @param width The numeric width the user wishes to view the grob in.
-#' 
-#' @param units The units the provided height and width are in.
+#' @param width The numeric width in millimeters the user wishes to view the grob in.
 #' 
 #' @export
 #' 
 #' @examples 
 #' 
-#' data.frame(
+#' df = data.frame(
 #'   v2 = c(15, 4, 16, 11),
 #'   v2 = c(10, 30, 3, 10)
-#'   ) %>%
+#'   ) 
+#'   
+#' df %>%
 #'   grob_matrix() %>%
+#'   view_grob()
+#'   
+#' gg = ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = x, y = y)) +
+#'   ggplot2::geom_line(color = 'red')
+#'   
+#' gg %>%
+#'   grob_image() %>%
 #'   view_grob()
 #' 
 
 view_grob = function(grob,
-                     height = 100,
-                     width = 100,
-                     units = c('mm', 'cm', 'inches')) {
+                     height = NA_real_,
+                     width = NA_real_) {
   
-  units = match.arg(units)
+  default_height = 100
+  default_width = 100
   is_grob_object = any(is(grob) %in% c('grob_matrix_object', 'grob_image_object'))
   is_grob_layout = any(is(grob) %in% c('grob_layout'))
   is_grob_row = is(grob, 'grob_row')
@@ -52,27 +63,31 @@ view_grob = function(grob,
   
   if (is_grob_object) {
 
-    height = units_convert(x = height, from_units = units, to_units = 'mm')
-    width = units_convert(x = width, from_units = units, to_units = 'mm')
+    height = ifelse(is.na(height), default_height, height)
+    width = ifelse(is.na(width), default_width, width)
     
     gc = grob_col(grob, width = width)
     gc$height = height
     
     gridExtra::grid.arrange(gc$grob)
-     
+
   } else if (any(is_grob_row, is_grob_col, is_grob_layout)) {
     
-    height = units_convert(x = height, from_units = units, to_units = 'mm')
-    width = units_convert(x = width, from_units = units, to_units = 'mm')
+    height = dplyr::case_when(
+      !is.na(height) ~ height,
+      !is.na(grob$height) ~ grob$height,
+      TRUE ~ default_height
+      )
     
+    width = dplyr::case_when(
+      !is.na(width) ~ width,
+      !is.na(grob$width) ~ grob$width,
+      TRUE ~ default_width
+      )
+
     grob$height = height
     grob$width = width
-    grob$units = 'mm'
     gridExtra::grid.arrange(grob$grob)
-    
-  } else {
-    
-    return(invisible())
     
   }
   

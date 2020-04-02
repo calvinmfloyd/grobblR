@@ -2,7 +2,7 @@
 % Please edit documentation in R/ga_list.R
 \name{ga_list}
 \alias{ga_list}
-\title{Grob aesthetic list used to control aesthetics within grobblR.}
+\title{Grob Aesthetic List}
 \usage{
 ga_list(
   aspect_ratio_multiplier = NULL,

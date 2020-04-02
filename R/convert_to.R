@@ -3,19 +3,20 @@
 #' @param x The object which needs to be converted to a grob. Must be either: A data.frame/matrix, the file name of a .png image, a character string, a vector, a ggplot object, NA (for an empty grob), or already a grob. 
 #' @param height The numeric height in mm of the desired grob.
 #' @param width The numeric width in mm of the desired grob.
-#' @param aes_list The list outputted by \code{ga_list} which contains elements to adjust aesthetics to the grob of \code{x}. Different type of grobs have different types of elements of this list which will affect its aesthetics.\\
-#' For character strings or matrices of dimensions n x p, the aesthetic elements can either be a single value which will be applied to the entire matrix, or a matrix of dimension n x p, which specifies how each element of the matrix will be adjusted. Note that column names and actual matrix elements are treated differently.\\
+#' @param aes_list The list outputted by \code{ga_list} which contains elements 
+#' to adjust aesthetics to the grob of \code{x}. Different type of grobs have
+#' different types of elements of this list which will affect its aesthetics.
+#' 
 #' Possible elements for character strings, matrices and images can be found in \code{\link{ga_list}}.
+#' 
 #' @return A grob of x with aesthetics based on the aes_list parameter.
-#' @export
 
 convert_to_grob = function(x,
                            height,
                            width,
-                           units = c('mm', 'cm', 'inches'),
                            aes_list = ga_list()) {
 
-  units = match.arg(units)
+  units = 'mm'
 
   if (is(x, 'grob_matrix_object')) {
     
@@ -78,7 +79,8 @@ convert_to_grob = function(x,
     }
 
     cell_ga_list = list()
-    for(name in matrix_aes_elements){
+    
+    for (name in matrix_aes_elements) {
       
         if(!is.null(aes_list[[name]])){
           
@@ -100,7 +102,7 @@ convert_to_grob = function(x,
       units = units
       )
 
-    if(colname_present){
+    if (colname_present) {
 
       grob = gridExtra::arrangeGrob(
         grobs = grid::gList(cell_grob, colname_grob),
@@ -122,10 +124,7 @@ convert_to_grob = function(x,
     
     if (!file.exists(x)) {
       
-      error_msg = glue::glue("
-        The file '{x}' does not exist.
-        ")
-
+      error_msg = glue::glue("The file '{x}' does not exist.")
       stop(error_msg, call. = FALSE)
 
     }
@@ -256,7 +255,6 @@ convert_to_grob = function(x,
 #' @param width A numeric value designating the total width of the matrix grob in mm.
 #' @param text_cex_adj A numeric value used to adjust the automatic text cex sizing.
 #' @return A grob of df, with the corresponding aesthetics.
-#' @export
 
 convert_to_matrix_grob = function(df,
                                   aes_list = ga_list(),
@@ -387,7 +385,7 @@ convert_to_matrix_grob = function(df,
           n_lines = nr,
           height = height,
           units = units,
-          width = column_widths[x],
+          width = aes_list[['column_widths']][x],
           convergence_limit = 0.025,
           sep = '\n'
         )$cex_val
@@ -563,7 +561,6 @@ convert_to_matrix_grob = function(df,
 #' @param width A numeric value designating the total width of the matrix grob in mm.
 #' @param units The units of the given height and width for the grob. Options are 'mm', 'cm' or 'inches', with the default of 'mm'.
 #' @return A grob of the raw .png file.
-#' @export
 
 convert_to_image_grob = function(img_path,
                                  aes_list,

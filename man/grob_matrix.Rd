@@ -2,7 +2,7 @@
 % Please edit documentation in R/grob_object_functions.R
 \name{grob_matrix}
 \alias{grob_matrix}
-\title{Initialize a grob matrix object, to be used within \code{\link{grob_col}}.}
+\title{Grob Matrix}
 \usage{
 grob_matrix(x)
 }
