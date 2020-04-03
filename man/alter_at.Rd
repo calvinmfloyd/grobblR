@@ -16,7 +16,7 @@ alter_at(
 )
 }
 \arguments{
-\item{grob_object}{The R6 grob object class outputted by \code{\link{grob_matrix}}
+\item{grob_object}{The R6 grob object class initialized by \code{\link{grob_matrix}}
 or \code{\link{grob_text}}.}
 
 \item{.f}{A quosure style lambda \code{~ fun(.)}, which the user wants to apply
@@ -37,7 +37,10 @@ data.frame/matrix which the \code{.f} function and any filters will be applied t
 
 \item{aesthetic}{Which aesthetic the user wants to make alterations to. If left 
 \code{NULL}, the function will look for the most previous altered aesthetic, either
-via \code{\link{add_aesthetic}}, or a previous application of \code{alter_at}.}
+via \code{\link{add_aesthetic}}, or a previous application of \code{alter_at}.
+
+View the documentation of \code{\link{add_aesthetic}} for a list of accepted 
+aesthetics.}
 
 \item{group}{Which group of elements the user wants to make alterations to. If left 
 \code{NULL}, the function will look for the most previous altered group, either

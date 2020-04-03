@@ -21,7 +21,9 @@ add_structure(grob_object, structure, value)
 \item{value}{If \code{grob_object} is outputted by \code{\link{grob_matrix}},
 then a single value, or a vector of values corresponding to each column of 
 the initial object passed through \code{\link{grob_matrix}}, the user wants to apply to the 
-grob matrix object. Otherwise, a single value to apply to the \code{structure}.}
+grob matrix object. 
+
+Otherwise, a single value to apply to the \code{structure}.}
 }
 \value{
 The initial R6 object of the grob object class with its structure properties altered.
@@ -29,8 +31,8 @@ The initial R6 object of the grob object class with its structure properties alt
 \description{
 Add a structure to a grob matrix / image / text object.
 }
-\note{
-The following are accepted structures:
+\details{
+Accepted structures:
 
 \describe{
 
@@ -38,8 +40,10 @@ The following are accepted structures:
 
 \itemize{
 
-\item \code{text_color} - The color of the text.
-\item \code{text_cex} - The cex of the text.
+\item \code{column_widths_p}
+\item \code{n_lines}
+\item \code{padding_p}
+\item \code{text_cex_addition}
 
 }
 }
@@ -47,13 +51,15 @@ The following are accepted structures:
 \item{Image}{
 \itemize{
 
-\item \code{maintain_aspect_ratio} - The color of the text.
-\item \code{aspect_ratio_multiplier} - The cex of the text.
+\item \code{aspect_ratio_multiplier}
+\item \code{maintain_aspect_ratio}
 
 }
 }
 
 }
+
+To see descriptions of the structures above, see the documentation of \code{\link{ga_list}}.
 }
 \examples{
 

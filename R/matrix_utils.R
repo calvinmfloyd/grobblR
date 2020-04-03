@@ -10,24 +10,6 @@ get_matrix_aes_elements = function() {
   
 }
 
-convert_to_matrix = function(x) {
-  
-  if (length(x) > 0 & is.null(nrow(x))) {
-   
-    x = t(as.matrix(x))
-     
-  }
-  
-  if (is.data.frame(x)) {
-    
-    x = as.matrix(x)
-    
-  }
-  
-  return(x)
-  
-}
-
 find_optimal_text_cex = function(mat,
                                  column_widths,
                                  height,

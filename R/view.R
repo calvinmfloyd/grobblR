@@ -1,7 +1,7 @@
 
 #' View Grob
 #' 
-#' View an ouputted by one of the \code{grob_} functions with a given width and
+#' View an grob outputted by one of the \code{grob_} functions with a given width and
 #' height.
 #' 
 #' @param grob An object outputted by one of the following functions:
@@ -19,6 +19,8 @@
 #' @param width The numeric width in millimeters the user wishes to view the grob in.
 #' 
 #' @export
+#' 
+#' @details Plotted with \code{\link[gridExtra]{grid.arrange}}.
 #' 
 #' @examples 
 #' 

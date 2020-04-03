@@ -21,15 +21,50 @@ or \code{\link{grob_text}}.}
 elements for the given aesthetic.}
 
 \item{group}{The group of the grob matrix object the user wants to add the 
-aesthetic to. For matrices, the user can add an aesthetic to the cells, the
-column names or the column headings. If the user is passing through a grob text
-object, then only 'cells' will be accepted.}
+aesthetic to. 
+
+For objects initialized by \code{\link{grob_matrix}}, the user can add an aesthetic to the 'cells', the
+'column_names' or the 'column_headings'. If the user is passing through an object 
+initialized by \code{\link{grob_text}}, then only 'cells' will be accepted.}
 }
 \value{
 The R6 object of the grob matrix class with its aesthetics properties altered.
 }
 \description{
-Add an aesthetic to a grob matrix or grob text object.
+Add an aesthetic to a grob matrix object.
+}
+\details{
+Accepted aesthetics:
+
+\describe{
+
+\item{Matrix / Text}{
+
+\itemize{
+
+\item \code{background_alpha}
+\item \code{background_color}
+\item \code{border_color}
+\item \code{border_sides}
+\item \code{border_width}
+\item \code{font_face}
+\item \code{group_elements}
+\item \code{round_rect_radius}
+\item \code{text_align}
+\item \code{text_cex}
+\item \code{text_font}
+\item \code{text_color}
+\item \code{text_just}
+\item \code{text_v_align}
+\item \code{text_v_just}
+\item \code{text_rot}
+
+}
+}
+
+}
+
+To see descriptions of the aesthetics above, see the documentation of \code{\link{ga_list}}.
 }
 \examples{
 

@@ -3,7 +3,7 @@ options(stringsAsFactors = FALSE)
 
 #' Add an Aesthetic
 #' 
-#' Add an aesthetic to a grob matrix or grob text object.
+#' Add an aesthetic to a grob matrix object.
 #' 
 #' @param grob_object The R6 object outputted by either \code{\link{grob_matrix}}
 #' or \code{\link{grob_text}}.
@@ -11,9 +11,11 @@ options(stringsAsFactors = FALSE)
 #' @param aesthetic The matrix aesthetic the user wishes to add.
 #' 
 #' @param group The group of the grob matrix object the user wants to add the 
-#' aesthetic to. For matrices, the user can add an aesthetic to the cells, the
-#' column names or the column headings. If the user is passing through a grob text
-#' object, then only 'cells' will be accepted.
+#' aesthetic to. 
+#' 
+#' For objects initialized by \code{\link{grob_matrix}}, the user can add an aesthetic to the 'cells', the
+#' 'column_names' or the 'column_headings'. If the user is passing through an object 
+#' initialized by \code{\link{grob_text}}, then only 'cells' will be accepted.
 #' 
 #' @param value A single value the user wants to apply to the group of matrix / text 
 #' elements for the given aesthetic.
@@ -21,6 +23,40 @@ options(stringsAsFactors = FALSE)
 #' @return The R6 object of the grob matrix class with its aesthetics properties altered.
 #' 
 #' @export
+#' 
+#' @details 
+#' 
+#' Accepted aesthetics:
+#' 
+#' \describe{
+#' 
+#' \item{Matrix / Text}{
+#' 
+#' \itemize{
+#' 
+#' \item \code{background_alpha}
+#' \item \code{background_color}
+#' \item \code{border_color}
+#' \item \code{border_sides}
+#' \item \code{border_width}
+#' \item \code{font_face}
+#' \item \code{group_elements}
+#' \item \code{round_rect_radius}
+#' \item \code{text_align}
+#' \item \code{text_cex}
+#' \item \code{text_font}
+#' \item \code{text_color}
+#' \item \code{text_just}
+#' \item \code{text_v_align}
+#' \item \code{text_v_just}
+#' \item \code{text_rot}
+#' 
+#' }
+#' }
+#' 
+#' }
+#' 
+#' To see descriptions of the aesthetics above, see the documentation of \code{\link{ga_list}}.
 #' 
 #' @examples
 #' 
@@ -82,7 +118,7 @@ add_aesthetic = function(grob_object,
 #' Flexibly alter the aesthetic of a grob matrix object at specific points of
 #' the data.frame/matrix.
 #' 
-#' @param grob_object The R6 grob object class outputted by \code{\link{grob_matrix}}
+#' @param grob_object The R6 grob object class initialized by \code{\link{grob_matrix}}
 #' or \code{\link{grob_text}}.
 #' 
 #' @param .f A quosure style lambda \code{~ fun(.)}, which the user wants to apply
@@ -104,6 +140,9 @@ add_aesthetic = function(grob_object,
 #' @param aesthetic Which aesthetic the user wants to make alterations to. If left 
 #' \code{NULL}, the function will look for the most previous altered aesthetic, either
 #' via \code{\link{add_aesthetic}}, or a previous application of \code{alter_at}.
+#' 
+#' View the documentation of \code{\link{add_aesthetic}} for a list of accepted 
+#' aesthetics.
 #' 
 #' @param group Which group of elements the user wants to make alterations to. If left 
 #' \code{NULL}, the function will look for the most previous altered group, either
@@ -148,7 +187,7 @@ alter_at = function(grob_object,
 
   if (!is(grob_object, 'grob_matrix_object') | !grob_object[['type']] %in% 'matrix') {
     
-    error_msg = "A grob_matrix() object must be passed through alter_at()." 
+    error_msg = "An object initialized by grob_matrix() must be passed through alter_at()." 
     stop(error_msg, call. = FALSE)
     
   }

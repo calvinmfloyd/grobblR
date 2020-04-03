@@ -23,8 +23,11 @@ view_grob(grob, height = NA_real_, width = NA_real_)
 \item{width}{The numeric width in millimeters the user wishes to view the grob in.}
 }
 \description{
-View an ouputted by one of the \code{grob_} functions with a given width and
+View an grob outputted by one of the \code{grob_} functions with a given width and
 height.
+}
+\details{
+Plotted with \code{\link[gridExtra]{grid.arrange}}.
 }
 \examples{
 
