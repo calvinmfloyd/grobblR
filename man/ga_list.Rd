@@ -105,7 +105,8 @@ right-justified or centered, respectively.}
 \item{text_v_align}{Controls where the text in each grid cell will be centered 
 around, vertically. A numeric value between 0 and 1, with 0 being all the way 
 to the bottom of the grid cell, and 1 being all the way to the top of the 
-grid cell. Default is 0.5. 
+grid cell. Default is 0.5.
+
 Can also input 'top', 'bottom' or 'center', which will also make edits 
 to \code{text_v_just} to make the text completely top-justified, bottom-justified 
 or centered, respectively.}
@@ -162,4 +163,10 @@ in front of them.
 
 Most of the matrix aesthetics / structures are inputted into \code{\link[grid]{gpar}}.
 More in-depth details on input possibilities can be found in its documentation.2
+
+To see which of the arguments are aesthetics and what types of grobs they apply to,
+view the documentation of \code{\link{add_aesthetic}}.
+
+To see which of the arguments are structures and what types of grobs they apply to,
+view the documentation of \code{\link{add_structure}}.
 }

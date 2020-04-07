@@ -128,20 +128,27 @@ add_caption_grob = function(grob,
   grob_height = sum(as.numeric(grob$heights))
   width = sum(as.numeric(grob$widths))
   
-  if(is.null(caption_aes_list$text_cex)){
-    n_lines = ifelse(!is.null(caption_aes_list$n_lines), caption_aes_list$n_lines, 10000)
-    sep = ifelse(!is.null(caption_aes_list$sep), caption_aes_list$sep, '\n')
+  if(is.null(caption_aes_list[['text_cex']])){
+    
+    n_lines = ifelse(!is.null(caption_aes_list[['n_lines']]), caption_aes_list[['n_lines']], 10000)
+    
     lines = cex_val_convergence(
       string = caption,
       n_lines = n_lines,
-      sep = sep,
+      sep = '\n',
       height = caption_height,
       width = width,
       units = units
       )
-    caption_aes_list$text_cex = convert_to_matrix(lines$cex_val)
+    caption_aes_list[['text_cex']] = convert_to_matrix(lines[['cex_val']])
     caption = lines$lines
-    if(length(caption) > 1) caption_aes_list$round_rect_radius = convert_to_matrix(0)
+    
+    if (length(caption) > 1) {
+      
+      caption_aes_list[['round_rect_radius']] = convert_to_matrix(0)
+      
+    }
+    
   }
   
   caption_grob = convert_to_matrix_grob(
@@ -176,7 +183,11 @@ add_page_number = function(grob, page_number, padding){
   
   pn_pad_pct = (0.3)/2
   ga_l = ga_list(text_color = 'gray40', background_color = NA)
-  if(page_number == '') ga_l$text_cex = convert_to_matrix(1)
+  if (page_number == '') {
+    
+    ga_l[['text_cex']] = convert_to_matrix(1)
+    
+  }
   
   page_number_grob = convert_to_grob(
     x = page_number,
@@ -215,20 +226,25 @@ add_title_grob = function(grob,
   grob_height = sum(as.numeric(grob$heights))
   width = sum(as.numeric(grob$widths))
   
-  if(is.null(title_aes_list$text_cex)){
-    n_lines = ifelse(!is.null(title_aes_list$n_lines), title_aes_list$n_lines, 1)
-    sep = ifelse(!is.null(title_aes_list$sep), title_aes_list$sep, '\n')
+  if(is.null(title_aes_list[['text_cex']])){
+    
+    n_lines = ifelse(!is.null(title_aes_list[['n_lines']]), title_aes_list[['n_lines']], 1)
     lines = cex_val_convergence(
       string = title,
       n_lines = n_lines,
-      sep = sep,
+      sep = '\n',
       height = title_height,
       width = width,
       units = units
       )
-    title_aes_list$text_cex = convert_to_matrix(lines$cex_val)
+    title_aes_list[['text_cex']] = convert_to_matrix(lines$cex_val)
     title = lines$lines
-    if(length(title) > 1) title_aes_list$round_rect_radius = convert_to_matrix(0)
+    if (length(title) > 1) {
+      
+      title_aes_list[['round_rect_radius']] = convert_to_matrix(0)
+      
+    }
+    
   }
   
   title_grob = convert_to_matrix_grob(
@@ -264,9 +280,9 @@ create_border_grob = function(border_color, border_width, border_sides){
     border_sides = 'top, bottom, left, right'
     )
 
-  border_color = ifelse(is.null(border_color), def_vals$border_color, border_color)
-  border_width = ifelse(is.null(border_width), def_vals$border_width, border_width)
-  border_sides = ifelse(is.null(border_sides), def_vals$border_sides, border_sides)
+  border_color = ifelse(is.null(border_color), def_vals[['border_color']], border_color)
+  border_width = ifelse(is.null(border_width), def_vals[['border_width']], border_width)
+  border_sides = ifelse(is.null(border_sides), def_vals[['border_sides']], border_sides)
   
   cell_border_gs = grid::gList()
   borders_split = unlist(strsplit(border_sides, split = ', ', fixed = T))

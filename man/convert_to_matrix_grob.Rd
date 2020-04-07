@@ -11,7 +11,7 @@ convert_to_matrix_grob(
   height = numeric(),
   width = numeric(),
   padding = numeric(),
-  units = c("mm", "cm", "inches"),
+  units = c("mm"),
   text_cex_adj = 0.2
 )
 }

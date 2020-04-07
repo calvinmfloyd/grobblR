@@ -35,7 +35,6 @@
 #' \item \code{column_widths_p}
 #' \item \code{n_lines}
 #' \item \code{padding_p}
-#' \item \code{text_cex_addition}
 #' 
 #' }
 #' }

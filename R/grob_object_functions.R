@@ -57,7 +57,7 @@ grob_matrix = function(x) {
 
   if (nrow(test) > 0) {
     
-    test = data.frame(test, stringsAsFactors = TRUE)
+    test = dplyr::as_tibble(test)
     test[['grobblR_group']] = 'cells'
   
   }
@@ -106,7 +106,7 @@ grob_text = function(x) {
 
   if (nrow(test) > 0) {
     
-    test = data.frame(test, stringsAsFactors = TRUE)
+    test = dplyr::as_tibble(test)
     test[['grobblR_group']] = 'cells'
   
   }

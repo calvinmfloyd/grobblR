@@ -67,20 +67,6 @@ get_matrix_structure_lookup_df = function(current,
           ncol = nc
           )
         )
-      ),
-    # T ----
-    # > Text CEX Addition ----
-    dplyr::tibble(
-      structure = 'text_cex_addition',
-      theme = 'default',
-      accepted_classes = list(c('numeric')),
-      value = list(
-        matrix(
-          data = 0,
-          nrow = 1,
-          ncol = nc
-          )
-        )
       )
 
     ) %>%

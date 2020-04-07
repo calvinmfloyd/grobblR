@@ -1,8 +1,13 @@
 #' Takes in an object, and converts it to a grob based on inputted aesthetics arguments.
 #'
-#' @param x The object which needs to be converted to a grob. Must be either: A data.frame/matrix, the file name of a .png image, a character string, a vector, a ggplot object, NA (for an empty grob), or already a grob. 
+#' @param x The object which needs to be converted to a grob. Must be either: 
+#' A data.frame/matrix, the file name of a .png image, a character string, a 
+#' vector, a ggplot object, or \code{NA} (for an empty grob). 
+#' 
 #' @param height The numeric height in mm of the desired grob.
+#' 
 #' @param width The numeric width in mm of the desired grob.
+#' 
 #' @param aes_list The list outputted by \code{ga_list} which contains elements 
 #' to adjust aesthetics to the grob of \code{x}. Different type of grobs have
 #' different types of elements of this list which will affect its aesthetics.
@@ -24,8 +29,7 @@ convert_to_grob = function(x,
     x$width = width
     x$units = units
     aes_list = x$finish_ga_list
-    x = x$current
-    colnames(x) = NULL
+    x = x$current %>% purrr::set_names(NULL)
       
   }
   
@@ -142,9 +146,9 @@ convert_to_grob = function(x,
   # Text 
   else if (ifelse(is.character(x), !grepl('.png', x), FALSE)) {
 
-    if (is.null(aes_list$text_cex)) {
+    if (is.null(aes_list[['text_cex']])) {
       
-      n_lines = ifelse(!is.null(aes_list$n_lines), aes_list$n_lines, 10000)
+      n_lines = ifelse(!is.null(aes_list[['n_lines']]), aes_list[['n_lines']], 10000)
       
       lines = cex_val_convergence(
         string = x,
@@ -154,12 +158,12 @@ convert_to_grob = function(x,
         width = width,
         units = units
         )
-      aes_list$text_cex = convert_to_matrix(lines$cex_val)
+      aes_list[['text_cex']] = convert_to_matrix(lines$cex_val)
       
     } else {
       
       lines = line_creator(
-        cex_val = aes_list$text_cex,
+        cex_val = aes_list[['text_cex']],
         string = x,
         height = height,
         width = width,
@@ -213,13 +217,6 @@ convert_to_grob = function(x,
 
   }
   
-  # Pre-Made grob 
-  else if (grid::is.grob(x)) {
-
-    grob = x
-
-  }
-  
   # NA (empty grob)
   else if (is.na(x)) {
 
@@ -262,13 +259,12 @@ convert_to_matrix_grob = function(df,
                                   height = numeric(),
                                   width = numeric(),
                                   padding = numeric(),
-                                  units = c('mm', 'cm', 'inches'),
+                                  units = c('mm'),
                                   text_cex_adj = 0.2){
 
   stopifnot(!is.null(nrow(df)), !is.null(ncol(df)))
   stopifnot(!length(height) == 0, !length(width) == 0)
   stopifnot(m_type %in% 1:5)
-  units = match.arg(units)
 
   m_type_desc = data.frame(
     m_type = c(1, 2, 3, 4, 5),
@@ -288,14 +284,6 @@ convert_to_matrix_grob = function(df,
 
   for(val_name in names(def_vals_non_matrices)){
 
-    if (length(aes_list[[val_name]]) > 1 & !val_name %in% c('padding_p')) {
-      
-      stop(
-        sprintf("The %s in aes_list has a length of %d, but must be a single value.", val_name, length(aes_list[[val_name]])),
-        call. = FALSE
-        )
-    }
-
     if (length(aes_list[[val_name]]) == 0){
       
       aes_list[[val_name]] = def_vals_non_matrices[[val_name]]
@@ -303,10 +291,10 @@ convert_to_matrix_grob = function(df,
     }
   }
 
-  padding = (aes_list$padding_p[1])*width
+  padding = (aes_list[['padding_p']][1])*width
   
   def_vals_matrices = list(
-    font_face = c(1, 1, 2, 3, 4),
+    font_face = c(1, 1, 2, 3, 2),
     background_color = c('white', 'white', 'white', 'white', 'white'),
     background_alpha = c(1, 1, 1, 1, 1),
     border_sides = c('', '', 'bottom', '', ''),
@@ -368,7 +356,7 @@ convert_to_matrix_grob = function(df,
   }
   
   # Making adjustments to text_cex, if need be 
-  adjust_cex = length(aes_list$text_cex) == 0 & length(height) == 1
+  adjust_cex = length(aes_list[['text_cex']]) == 0 & length(height) == 1
 
   if(!adjust_cex){
 
@@ -399,7 +387,7 @@ convert_to_matrix_grob = function(df,
   
   # Adding in default values (matrices) if they are missing 
 
-  def_vals_matrices$text_cex = rep(def_text_cex, length(def_vals_matrices[[1]]))
+  def_vals_matrices[['text_cex']] = rep(def_text_cex, length(def_vals_matrices[[1]]))
   background_color_not_inputted = all(dim(aes_list$background_color) == 0)
 
   for(val_name in names(def_vals_matrices)){
@@ -414,12 +402,21 @@ convert_to_matrix_grob = function(df,
       def_vals_matrices[[val_name]][m_type]
       )
 
-    if(all(dim(aes_list[[val_name]]) <= 1)){
+    if (all(dim(aes_list[[val_name]]) <= 1)) {
+      
       aes_list[[val_name]] = matrix(def_vals_matrices[[val_name]][m_type], nrow = nr, ncol = nc)
+      
     } else {
-      if(nrow(aes_list[[val_name]]) != nr | ncol(aes_list[[val_name]]) != nc) stop(sprintf(
-        "The dimensions of %s in aes_list do not match the dimension of the matrix its linked to.", val_name),
-        .call = FALSE)
+      
+      if (nrow(aes_list[[val_name]]) != nr | ncol(aes_list[[val_name]]) != nc) {
+        
+        error_msg = glue::glue("
+          The dimensions of {val_name} in aes_list do not match the dimension of the matrix it's linked to.
+          ")
+        
+        stop(error_msg, .call = FALSE)
+        
+      }
     }
   }
 
@@ -435,11 +432,15 @@ convert_to_matrix_grob = function(df,
   
   for(val_name in c('text_just', 'text_align')){
     if(!any(is.numeric(aes_list[[val_name]]), all(aes_list[[val_name]] %in% c('left', 'right', 'center')))){
-      stop(paste0(
-        sprintf("The %s in aes_list must either be a numeric value (usually between 0 and 1), ", val_name),
-        "or a character value in ('left', 'right', 'center'). Also, do not mix character values and ",
-        "numeric values."),
-        call. = FALSE)
+      
+      error_msg = glue::glue("
+        The {val_name} in aes_list must either be a numeric value (usually between 0 and 1), \\
+        or a character value in ('left', 'right', 'center'). Also, do not mix character values and \\
+        numeric values.
+        ")
+      
+      stop(error_msg, call. = FALSE)
+      
     }
   }
 
@@ -463,11 +464,15 @@ convert_to_matrix_grob = function(df,
 
   for(val_name in c('text_v_just', 'text_v_align')){
     if(!any(is.numeric(aes_list[[val_name]]), all(aes_list[[val_name]] %in% c('top', 'bottom', 'center')))){
-      stop(paste0(
-        sprintf("The %s in aes_list must either be a numeric value (usually between 0 and 1), ", val_name),
-        "or a character value in ('top', 'bottom', 'center'). Also, do not mix character values and ",
-        "numeric values."),
-        call. = FALSE)
+      
+      error_msg = glue::glue("
+        The {val_name} in aes_list must either be a numeric value (usually between 0 and 1), \\
+        or a character value in ('top', 'bottom', 'center'). Also, do not mix character values and \\
+        numeric values.
+        ")
+      
+      stop(error_msg, call. = FALSE)
+      
     }
   }
 
@@ -484,10 +489,13 @@ convert_to_matrix_grob = function(df,
   # Aesthetic value type checks before we start creating the grobs themselves
   for(val_name in names(def_orig_vals_list)){
     if(!class(c(aes_list[[val_name]])) %in% class(def_orig_vals_list[[val_name]])){
-      stop(sprintf(
-        "The class of %s in aes_list must be %s.", val_name, class(def_orig_vals_list[[val_name]])),
-        call. = FALSE
-        )
+      
+      error_msg = glue::glue("
+        The class of {val_name} in aes_list must be {class(def_orig_vals_list[[val_name]])}.
+        ")
+      
+      stop(error_msg, call. = FALSE)
+      
     }
   }
 
@@ -499,36 +507,36 @@ convert_to_matrix_grob = function(df,
     for(i in 1:nr){
 
       rect_grob = grid::roundrectGrob(
-        r = grid::unit(aes_list$round_rect_radius, 'snpc'),
+        r = grid::unit(aes_list[['round_rect_radius']], 'snpc'),
         gp = grid::gpar(
-          fill = aes_list$background_color[i,j],
-          col = aes_list$background_color[i,j],
-          alpha = aes_list$background_alpha[i,j]
+          fill = aes_list[['background_color']][i,j],
+          col = aes_list[['background_color']][i,j],
+          alpha = aes_list[['background_alpha']][i,j]
           )
         )
       
       text_grob = grid::textGrob(
         df[i,j],
-        x = grid::unit(aes_list$text_align[i,j], "npc"),
-        y = grid::unit(aes_list$text_v_align[i,j], "npc"),
-        hjust = aes_list$text_just[i,j],
-        vjust = aes_list$text_v_just[i,j],
-        rot = aes_list$text_rot[i,j],
+        x = grid::unit(aes_list[['text_align']][i,j], "npc"),
+        y = grid::unit(aes_list[['text_v_align']][i,j], "npc"),
+        hjust = aes_list[['text_just']][i,j],
+        vjust = aes_list[['text_v_just']][i,j],
+        rot = aes_list[['text_rot']][i,j],
         gp = grid::gpar(
-          fontface = aes_list$font_face[i,j],
-          fontfamily = aes_list$text_font[i,j],
-          cex = aes_list$text_cex[i,j],
-          col = aes_list$text_color[i,j]
+          fontface = aes_list[['font_face']][i,j],
+          fontfamily = aes_list[['text_font']][i,j],
+          cex = aes_list[['text_cex']][i,j],
+          col = aes_list[['text_color']][i,j]
           )
         )
 
-      borders_split = unlist(strsplit(aes_list$border_sides[i,j], split = ', ', fixed = T))
+      borders_split = unlist(strsplit(aes_list[['border_sides']][i,j], split = ', ', fixed = T))
       if(length(borders_split) > 0){
 
         cell_border_gs = create_border_grob(
-          border_color = aes_list$border_color[i,j],
-          border_width = aes_list$border_width[i,j],
-          border_sides = aes_list$border_sides[i,j]
+          border_color = aes_list[['border_color']][i,j],
+          border_width = aes_list[['border_width']][i,j],
+          border_sides = aes_list[['border_sides']][i,j]
           )
 
         raw_grobs = grid::gList(raw_grobs, grid::grobTree(rect_grob, cell_border_gs, text_grob))
@@ -541,7 +549,7 @@ convert_to_matrix_grob = function(df,
     }}
 
   # Layout Matrix
-  layout_matrix = get_layout_matrix(df, aes_list$group_elements)
+  layout_matrix = get_layout_matrix(df, aes_list[['group_elements']])
   first_element_indices = unlist(lapply(unique(c(layout_matrix)), function(x) min(which(c(layout_matrix) == x))))
 
   gridExtra::arrangeGrob(

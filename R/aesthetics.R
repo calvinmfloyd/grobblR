@@ -305,10 +305,10 @@ alter_at = function(grob_object,
     n_rows_above = sum(total_rows < min(target_rows))
     n_rows_below = sum(total_rows > max(target_rows))
     df_above = matrix(NA, nrow = n_rows_above, ncol = current_nc) %>% 
-      data.frame() %>%
+      dplyr::tibble() %>%
       purrr::set_names(colnames(data))  
     df_below = matrix(NA, nrow = n_rows_below, ncol = current_nc) %>% 
-      data.frame() %>%
+      dplyr::tibble() %>%
       purrr::set_names(colnames(data))  
     
     data = rbind(df_above, data, df_below)
@@ -337,7 +337,7 @@ alter_at = function(grob_object,
     if (length(which_columns) == 0) {
       
       error_msg = glue::glue("
-        None of the columasdsadasDSAn names provided in alter_at() are valid. Valid column names are: \\
+        None of the column names provided in alter_at() are valid. Valid column names are: \\
         {glue::glue_collapse(valid_column_names, sep = ', ', width = 100)}
         ")
       
@@ -432,7 +432,7 @@ alter_at = function(grob_object,
     dplyr::pull(which_to_alter)
   
   boolean_matrix = aes_matrix(df = data, value = FALSE) %>%
-    data.frame(stringsAsFactors = FALSE) %>%
+    dplyr::as_tibble() %>%
     dplyr::select(
       -dplyr::matches('grobblR_group')
       ) %>%

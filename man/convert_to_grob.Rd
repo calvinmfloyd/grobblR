@@ -7,7 +7,9 @@
 convert_to_grob(x, height, width, aes_list = ga_list())
 }
 \arguments{
-\item{x}{The object which needs to be converted to a grob. Must be either: A data.frame/matrix, the file name of a .png image, a character string, a vector, a ggplot object, NA (for an empty grob), or already a grob.}
+\item{x}{The object which needs to be converted to a grob. Must be either: 
+A data.frame/matrix, the file name of a .png image, a character string, a 
+vector, a ggplot object, or \code{NA} (for an empty grob).}
 
 \item{height}{The numeric height in mm of the desired grob.}
 

@@ -3,9 +3,9 @@
 grob_matrix_object = R6::R6Class(
   classname = "grob_matrix_object",
   public = list(
-    initial = data.frame(stringsAsFactors = FALSE),
+    initial = dplyr::tibble(),
     current = matrix(),
-    test = data.frame(stringsAsFactors = FALSE),
+    test = dplyr::tibble(),
     type = character(),
     current_group = NA_character_,
     current_aesthetic = NA_character_,
