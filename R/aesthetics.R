@@ -131,11 +131,17 @@ add_aesthetic = function(grob_object,
 #' 
 #' If no logical predicates provided, then the entire columns will be altered.
 #' 
-#' @param columns A character vector of column names of the initial data.frame/matrix
-#' the user wishes to alter.
+#' @param columns A character vector of column names, or numeric column indices,
+#' of the initial data.frame/matrix, or \code{data} if it is provided, the user wishes to alter.
+#' 
+#' @param rows A numeric vector of row indices, of the initial data.frame/matrix, 
+#' or \code{data} if it is provided, the user wishes to alter.
 #' 
 #' @param data A separate data.frame/matrix of the same dimensions as the initial 
 #' data.frame/matrix which the \code{.f} function and any filters will be applied to.
+#' 
+#' Must match the dimensions of the subset of the initial data.frame/matrix the user
+#' is attempting to alter.
 #' 
 #' @param aesthetic Which aesthetic the user wants to make alterations to. If left 
 #' \code{NULL}, the function will look for the most previous altered aesthetic, either

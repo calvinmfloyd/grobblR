@@ -64,8 +64,7 @@ ga_list(
   colname_column_widths_p = NULL,
   colname_padding_p = NULL,
   maintain_aspect_ratio = NULL,
-  n_lines = NULL,
-  str_sep = NULL
+  n_lines = NULL
 )
 }
 \arguments{

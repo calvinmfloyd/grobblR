@@ -17,4 +17,8 @@ Initialize a grob text object, to be used within \code{\link{grob_col}}.
 }
 \examples{
 
+"The quick brown fox jumps over the lazy dog" \%>\%
+  grob_text() \%>\%
+  view_grob()
+
 }

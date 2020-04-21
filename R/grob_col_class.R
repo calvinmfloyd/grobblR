@@ -17,9 +17,11 @@ grob_col_class = R6::R6Class(
     title = character(),
     title_p = 0.1,
     title_aes_list = ga_list(),
+    title_height = numeric(),
     caption = character(),
     caption_p = 0.05,
     caption_aes_list = ga_list(),
+    caption_height = numeric(),
     grob_layout_location = '',
     initialize = function(contents,
                           aes_list,
@@ -31,12 +33,15 @@ grob_col_class = R6::R6Class(
                           title,
                           title_p,
                           title_aes_list,
+                          title_height,
                           caption,
                           caption_p,
                           caption_aes_list,
+                          caption_height,
                           width,
                           hjust,
                           vjust){
+      
       self$contents = contents
       self$proportion = proportion
       self$aes_list = aes_list
@@ -47,12 +52,15 @@ grob_col_class = R6::R6Class(
       self$title = title
       self$title_p = title_p
       self$title_aes_list = title_aes_list
+      self$title_height = title_height
       self$caption = caption
       self$caption_p = caption_p
       self$caption_aes_list = caption_aes_list
+      self$caption_height = caption_height
       self$width = width
       self$hjust = hjust
       self$vjust = vjust
+      
     }),
   active = list(
     grob = function(contents = self$contents,
@@ -66,9 +74,11 @@ grob_col_class = R6::R6Class(
                     border_aes_list = self$border_aes_list,
                     title = self$title,
                     title_p = self$title_p,
+                    title_height = self$title_height,
                     title_aes_list = self$title_aes_list,
                     caption = self$caption,
                     caption_p = self$caption_p,
+                    caption_height = self$caption_height,
                     caption_aes_list = self$caption_aes_list,
                     hjust = self$hjust,
                     vjust = self$vjust,
@@ -76,61 +86,80 @@ grob_col_class = R6::R6Class(
 
       content_classes = unlist(lapply(contents, class))
       if (any(content_classes %in% 'grob_row') & !all(content_classes %in% c('grob_row', 'R6'))) {
-        stop(
-          call. = FALSE,
-          paste0(
-            "When creating grob-row's within a grob-col, all objects, x, must be wrapped with grob_row(grob_col(x)).\n",
-            sprintf(
-              'The following classes found were not wrapped with grob_row(grob_col(x)): %s',
-              paste(unique(content_classes[!content_classes %in% c('R6', 'grob_row')]), collapse = ', ')
-              )
-            )
-          )
+        
+        errored_classes = unique(content_classes[!content_classes %in% c('R6', 'grob_row')])
+        error_msg = glue::glue("
+          When creating grob-row's within a grob-col, all objects, x, must be wrapped with grob_row(grob_col(x)).
+          The following classes found were not wrapped with grob_row(grob_col(x)): {paste(errored_classes, collapse = ', ')}
+          ")
+        stop(error_msg, call. = FALSE)
+        
       }
       
-      if(!any(content_classes %in% c('R6', 'grob_row')) & length(contents) > 1){
-        stop(
-          call. = FALSE,
-          paste0(
-            'Only one non grob_row object allowed within ', location, '.\n',
-            paste0(
-              'Multiple grob_row classes found within ', location, ': ',
-              paste(unique(content_classes), collapse = ', ')
-              )
-            )
-          )
+      if (!any(content_classes %in% c('R6', 'grob_row')) & length(contents) > 1) {
+        
+        error_msg = glue::glue("
+          Only one non grob_row object allowed with {location}.
+          Multiple non grob_row classes found: {paste(unique(content_classes), collapse = ', ')}
+          ")
+        stop(error_msg, call. = FALSE)
+        
       }
       
-      if(title_p < 0 | title_p > 0.5) {
-        stop(paste0('title_p in the ', location, ' must be a numeric value between 0 and 0.5.'), call. = FALSE)
+      if (title_p < 0 | title_p > 0.5) {
+        
+        error_msg = glue::glue("title_p in the {location} must be a numeric value between 0 and 0.5.")
+        stop(error_msg, call. = FALSE)
+        
       } 
       
-      if(!is.character(title)) {
-        stop('title in the ', location, ' must be a character string.', call. = FALSE)
+      if (!is.character(title)) {
+        
+        error_msg = glue::glue("title in the {location} must be a character string.")
+        stop(error_msg, call. = FALSE)
+        
       }
       
-      if(!is.character(caption)) {
-        stop('caption in the ', location, ' must be a character string.', call. = FALSE)
+      if (!is.character(caption)) {
+        
+        error_msg = glue::glue("caption in the {location} must be a character string.")
+        stop(error_msg, call. = FALSE)
+        
       }
 
-      if(!is.logical(border)) {
-        stop(paste0('border in the ', location, ' must be a TRUE/FALSE value.'), call. = FALSE)
+      if (!is.logical(border)) {
+        
+        error_msg = glue::glue("border in the {location} must be a TRUE/FALSE value.")
+        stop(error_msg, call. = FALSE)
+        
       }
       
-      if(class(aes_list) != 'grob_aes_list') {
-        stop(paste0('Did you use ga_list() for the aes_list in the ', location, '?'), call. = FALSE)
+      if (class(aes_list) != 'grob_aes_list') {
+        
+        error_msg = glue::glue("Did you use ga_list() for the aes_list in the {location}?")
+        stop(error_msg, call. = FALSE)
+        
       }
       
-      if(class(border_aes_list) != 'grob_aes_list') {
-        stop(paste0('Did you use ga_list() for the border_aes_list in the ', location, '?'), call. = FALSE)
+      if (class(border_aes_list) != 'grob_aes_list') {
+        
+        error_msg = glue::glue("Did you use ga_list() for the border_aes_list in the {location}?")
+        stop(error_msg, call. = FALSE)
+        
       }
       
-      if(class(title_aes_list) != 'grob_aes_list') {
-        stop(paste0('Did you use ga_list() for the title_aes_list in the ', location, '?'), call. = FALSE)
+      if (class(title_aes_list) != 'grob_aes_list') {
+        
+        error_msg = glue::glue("Did you use ga_list() for the title_aes_list in the {location}?")
+        stop(error_msg, call. = FALSE)
+        
       }
       
-      if(!is.numeric(padding) | length(padding) != 1) {
-        stop(paste0('padding in the ', location, ' must be a single numeric value in ', units, '.'), call. = FALSE)
+      if (!is.numeric(padding) | length(padding) != 1) {
+        
+        error_msg = glue::glue("padding in the {location} must be a single numeric value in millimeters.")
+        stop(error_msg, call. = FALSE)
+        
       }
 
       title_present = nchar(title) > 0
@@ -138,9 +167,29 @@ grob_col_class = R6::R6Class(
       padding = ifelse(!is.na(padding), padding, padding_proportion*min(c(height, width)))
       width_w_padding = width - 2*padding
       height_w_padding = height - 2*padding
-      title_height = height_w_padding*title_p*title_present
-      caption_height = height_w_padding*caption_p*caption_present
-      grob_height = height_w_padding - title_height - caption_height
+      
+      title_grob_caption_heights = allot_sizes(
+        space_size = height_w_padding,
+        inputted_proportions = c(
+          ifelse(title_present, title_p, 0),
+          1, 
+          ifelse(caption_present, caption_p, 0)
+          ),
+        inputted_sizes = c(
+          title_height*title_present,
+          NA_real_,
+          caption_height*caption_present
+          ),
+        grob_layout_location = location,
+        affected_grobs = "title / grob / caption",
+        measurement = 'height',
+        units = units
+        )
+      
+      title_height = title_grob_caption_heights[1]
+      grob_height = title_grob_caption_heights[2]
+      caption_height = title_grob_caption_heights[3]
+      
       raw_grobs = grid::gList()
 
       if (is(contents[[1]], 'grob_row')) {
@@ -207,9 +256,7 @@ grob_col_class = R6::R6Class(
           grob = grob,
           title = title,
           title_aes_list = title_aes_list,
-          title_p = title_p,
-          title_height = title_height,
-          units = units
+          title_height = title_height
           )
         
       }
@@ -220,9 +267,7 @@ grob_col_class = R6::R6Class(
           grob = grob,
           caption = caption,
           caption_aes_list = caption_aes_list,
-          caption_p = caption_p,
-          caption_height = caption_height,
-          units = units
+          caption_height = caption_height
           )
         
       }

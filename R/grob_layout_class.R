@@ -15,6 +15,7 @@ grob_layout_class = R6::R6Class(
     caption_p = 0.15,
     caption_aes_list = ga_list(),
     page_number = '',
+    grob_layout_location = '',
     initialize = function(contents,
                           height,
                           width,
@@ -162,9 +163,7 @@ grob_layout_class = R6::R6Class(
           grob = grob,
           title = title,
           title_aes_list = title_aes_list,
-          title_p = title_p,
-          title_height = title_height,
-          units = units
+          title_height = title_height
           )
         
       }
@@ -175,9 +174,7 @@ grob_layout_class = R6::R6Class(
           grob = grob,
           caption = caption,
           caption_aes_list = caption_aes_list,
-          caption_p = caption_p,
-          caption_height = caption_height,
-          units = units
+          caption_height = caption_height
           )
         
       }

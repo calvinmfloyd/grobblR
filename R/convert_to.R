@@ -250,7 +250,9 @@ convert_to_grob = function(x,
 #' }
 #' @param height A numeric value designating the total height of the matrix grob in mm.
 #' @param width A numeric value designating the total width of the matrix grob in mm.
+#' @param padding A numeric value designating the amount of padding around the matrix cells.
 #' @param text_cex_adj A numeric value used to adjust the automatic text cex sizing.
+#' @param units millimeters
 #' @return A grob of df, with the corresponding aesthetics.
 
 convert_to_matrix_grob = function(df,
@@ -299,9 +301,9 @@ convert_to_matrix_grob = function(df,
     background_alpha = c(1, 1, 1, 1, 1),
     border_sides = c('', '', 'bottom', '', ''),
     text_color = c('black', 'black', 'gray40', 'gray40', 'gray40'),
-    text_align = c(0.5, 0.5, 0.5, 0.0, 0.0),
+    text_align = c(0.5, 0.5, 0.5, 0.0, 0.5),
     text_v_align = c(0.5, 0.5, 0.5, 0.5, 0.5),
-    text_just = c(0.5, 0.5, 0.5, 0.0, 0.0),
+    text_just = c(0.5, 0.5, 0.5, 0.0, 0.5),
     text_v_just = c(0.5, 0.5, 0.5, 0.5, 0.5),
     text_font = c('sans', 'sans', 'sans', 'sans', 'sans', 'sans'),
     text_rot = c(0.0, 0.0, 0.0, 0.0, 0.0),
@@ -366,7 +368,7 @@ convert_to_matrix_grob = function(df,
 
     optimal_cvs = sapply(
       X = 1:nc, 
-      FUN = function(x){
+      function(x){
         column_edited = ifelse(df[,x] %in% '', " ", df[,x])
         cex_val_convergence(
           string = paste(column_edited, collapse = '\n'),

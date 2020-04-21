@@ -120,9 +120,7 @@ allot_sizes = function(space_size,
 add_caption_grob = function(grob,
                             caption,
                             caption_aes_list,
-                            caption_p,
-                            caption_height,
-                            units) {
+                            caption_height) {
 
   white_space_p = 0.05
   grob_height = sum(as.numeric(grob$heights))
@@ -138,7 +136,7 @@ add_caption_grob = function(grob,
       sep = '\n',
       height = caption_height,
       width = width,
-      units = units
+      units = "mm"
       )
     caption_aes_list[['text_cex']] = convert_to_matrix(lines[['cex_val']])
     caption = lines$lines
@@ -155,7 +153,7 @@ add_caption_grob = function(grob,
     df = matrix(caption, ncol = 1),
     height = caption_height - caption_height*white_space_p,
     width = width,
-    units = units,
+    units = "mm",
     aes_list = caption_aes_list,
     m_type = 4
     )
@@ -164,14 +162,14 @@ add_caption_grob = function(grob,
     grobs = grid::gList(grob, grid::nullGrob(), caption_grob),
     layout_matrix = matrix(c(1, 2, 3), ncol = 1),
     heights = grid::unit(
-      units = units,
+      units = "mm",
       x = c(
         grob_height,
         caption_height*white_space_p,
         caption_height - caption_height*white_space_p
         )
       ),
-    widths = grid::unit(x = width, units = units)
+    widths = grid::unit(x = width, units = "mm")
     )
 
 }
@@ -218,9 +216,7 @@ add_page_number = function(grob, page_number, padding){
 add_title_grob = function(grob,
                           title,
                           title_aes_list,
-                          title_p,
-                          title_height,
-                          units) {
+                          title_height) {
 
   white_space_p = 0.05
   grob_height = sum(as.numeric(grob$heights))
@@ -235,7 +231,7 @@ add_title_grob = function(grob,
       sep = '\n',
       height = title_height,
       width = width,
-      units = units
+      units = "mm"
       )
     title_aes_list[['text_cex']] = convert_to_matrix(lines$cex_val)
     title = lines$lines
@@ -251,7 +247,7 @@ add_title_grob = function(grob,
     df = matrix(title, ncol = 1),
     height = title_height - title_height*white_space_p,
     width = width,
-    units = units,
+    units = "mm",
     aes_list = title_aes_list,
     m_type = 5
     )
@@ -260,14 +256,14 @@ add_title_grob = function(grob,
     grobs = grid::gList(title_grob, grid::nullGrob(), grob),
     layout_matrix = matrix(c(1, 2, 3), ncol = 1),
     heights = grid::unit(
-      units = units,
+      units = "mm",
       x = c(
         title_height - title_height*white_space_p,
         title_height*white_space_p,
         grob_height
         )
       ),
-    widths = grid::unit(x = width, units = units)
+    widths = grid::unit(x = width, units = "mm")
     )
 
 }

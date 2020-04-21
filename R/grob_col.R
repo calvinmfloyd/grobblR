@@ -31,7 +31,10 @@
 #' controls aesthetics of the title of the grob-column.
 #' 
 #' @param title_p The numeric proportion of height within the grob-column which
-#' will be used by the title grob. A numeric value between 0 and 0.25.
+#' will be used by the title grob.
+#' 
+#' @param title_height The numeric height in mm within the grob_column which will
+#' be used by the title grob. Will override \code{title_p} if provided.
 #' 
 #' @param caption A character string which will be displayed as the caption of the grob-column.
 #' 
@@ -39,7 +42,10 @@
 #' controls aesthetics of the caption of the grob-column.
 #' 
 #' @param caption_p The numeric proportion of height within the grob-column
-#' which will be used by the caption grob. A numeric value between 0 and 0.25.
+#' which will be used by the caption grob.
+#' 
+#' @param caption_height The numeric height in mm within the grob_column which will
+#' be used by the caption grob. Will override \code{caption_p} if provided.
 #' 
 #' @param padding_p The proportion of the minimum of the height and width which
 #' will be used for the padding around the edge of the grob-column.
@@ -74,10 +80,10 @@
 #' @examples 
 #' 
 #' grob_col(
-#'   'grob-column',
+#'   "grob-column",
 #'   aes_list = ga_list(
-#'     text_color = 'red',
-#'     background_color = 'gray90'
+#'     text_color = "red",
+#'     background_color = "gray90"
 #'     )
 #'   ) %>%
 #'  view_grob(100, 100)
@@ -92,9 +98,11 @@ grob_col = function(...,
                     title = "",
                     title_aes_list = ga_list(),
                     title_p = 0.15,
+                    title_height = NA_real_,
                     caption = "",
                     caption_aes_list = ga_list(),
                     caption_p = 0.15,
+                    caption_height = NA_real_,
                     padding_p = 0.05,
                     padding = NA_real_,
                     hjust = 0.5,
@@ -118,9 +126,11 @@ grob_col = function(...,
     title = title,
     title_p = title_p,
     title_aes_list = title_aes_list,
+    title_height = title_height,
     caption = caption,
     caption_p = caption_p,
     caption_aes_list = caption_aes_list,
+    caption_height = caption_height,
     hjust = hjust,
     vjust = vjust
     )

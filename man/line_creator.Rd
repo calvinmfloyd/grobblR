@@ -9,7 +9,7 @@ line_creator(
   string,
   height = numeric(),
   width = numeric(),
-  units = c("mm", "cm", "inches"),
+  units = c("mm"),
   sep = "\\n"
 )
 }
@@ -21,6 +21,8 @@ line_creator(
 \item{height}{A numeric value designating the total height of the matrix grob in mm.}
 
 \item{width}{A numeric value designating the total width of the matrix grob in mm.}
+
+\item{units}{millimeters}
 
 \item{sep}{The separator within the character string which designates where a new line should start.}
 }

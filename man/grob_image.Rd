@@ -17,5 +17,12 @@ Initialize a grob image object, to be used within \code{\link{grob_col}}.
 }
 \examples{
 
+gg = data.frame(x = c(5, 14, 6, 10), y = c(3, 30, 17, 7)) \%>\%
+  ggplot2::ggplot(mapping = ggplot2::aes(x = x, y = y)) +
+  ggplot2::geom_line(color = 'red') 
+  
+gg \%>\%
+  grob_image() \%>\%
+  view_grob()
 
 }

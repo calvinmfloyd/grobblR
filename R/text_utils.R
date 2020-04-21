@@ -5,13 +5,14 @@
 #' @param sep The separator within the character string which designates where a new line should start.
 #' @param height A numeric value designating the total height of the matrix grob in mm.
 #' @param width A numeric value designating the total width of the matrix grob in mm.
+#' @param units millimeters
 #' @return A list containing a vector with each index equal to a line of the broken-down string, a TRUE/FALSE value indicating whether the lines will fit within equal sized rows and the widths in mm of each of the lines.
 
 line_creator = function(cex_val,
                         string,
                         height = numeric(),
                         width = numeric(),
-                        units = c('mm', 'cm', 'inches'),
+                        units = c('mm'),
                         sep = '\n') {
 
   if(sep == '|') stop("Cannot use '|' as a separator.", call. = F)

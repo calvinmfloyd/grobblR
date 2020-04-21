@@ -14,9 +14,11 @@ grob_col(
   title = "",
   title_aes_list = ga_list(),
   title_p = 0.15,
+  title_height = NA_real_,
   caption = "",
   caption_aes_list = ga_list(),
   caption_p = 0.15,
+  caption_height = NA_real_,
   padding_p = 0.05,
   padding = NA_real_,
   hjust = 0.5,
@@ -52,7 +54,10 @@ Ignored if \code{border} is set to FALSE.}
 controls aesthetics of the title of the grob-column.}
 
 \item{title_p}{The numeric proportion of height within the grob-column which
-will be used by the title grob. A numeric value between 0 and 0.25.}
+will be used by the title grob.}
+
+\item{title_height}{The numeric height in mm within the grob_column which will
+be used by the title grob. Will override \code{title_p} if provided.}
 
 \item{caption}{A character string which will be displayed as the caption of the grob-column.}
 
@@ -60,7 +65,10 @@ will be used by the title grob. A numeric value between 0 and 0.25.}
 controls aesthetics of the caption of the grob-column.}
 
 \item{caption_p}{The numeric proportion of height within the grob-column
-which will be used by the caption grob. A numeric value between 0 and 0.25.}
+which will be used by the caption grob.}
+
+\item{caption_height}{The numeric height in mm within the grob_column which will
+be used by the caption grob. Will override \code{caption_p} if provided.}
 
 \item{padding_p}{The proportion of the minimum of the height and width which
 will be used for the padding around the edge of the grob-column.
@@ -97,10 +105,10 @@ The grob-column function where an object is converted a grob. Works within \code
 \examples{
 
 grob_col(
-  'grob-column',
+  "grob-column",
   aes_list = ga_list(
-    text_color = 'red',
-    background_color = 'gray90'
+    text_color = "red",
+    background_color = "gray90"
     )
   ) \%>\%
  view_grob(100, 100)

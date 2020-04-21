@@ -15,9 +15,11 @@ grob_row_class = R6::R6Class(
     title = '',
     title_p = 0.1,
     title_aes_list = ga_list(),
+    title_height = numeric(),
     caption = '',
     caption_p = 0.05,
     caption_aes_list = ga_list(),
+    caption_height = numeric(),
     grob_layout_location = '',
     initialize = function(contents,
                           proportion,
@@ -29,9 +31,12 @@ grob_row_class = R6::R6Class(
                           title,
                           title_p,
                           title_aes_list,
+                          title_height,
                           caption,
                           caption_p,
-                          caption_aes_list){
+                          caption_aes_list,
+                          caption_height) {
+      
       self$contents = contents
       self$proportion = proportion
       self$border = border
@@ -42,9 +47,12 @@ grob_row_class = R6::R6Class(
       self$title = title
       self$title_p = title_p
       self$title_aes_list = title_aes_list
+      self$title_height = title_height
       self$caption = caption
       self$caption_p = caption_p
       self$caption_aes_list = caption_aes_list
+      self$caption_height = caption_height
+      
     }),
   active = list(
     grob = function(contents = self$contents,
@@ -58,12 +66,15 @@ grob_row_class = R6::R6Class(
                     title = self$title,
                     title_p = self$title_p,
                     title_aes_list = self$title_aes_list,
+                    title_height = self$title_height,
                     caption = self$caption,
                     caption_p = self$caption_p,
                     caption_aes_list = self$caption_aes_list,
+                    caption_height = self$caption_height,
                     location = self$grob_layout_location){
 
-      if(!all(unlist(lapply(contents, class)) %in% c('R6', 'grob_col'))) {
+      if (!all(unlist(lapply(contents, class)) %in% c('R6', 'grob_col'))) {
+        
         stop(paste0("Did you remember to wrap all of your objects within the ", location, " with grob_col()?"), .call = FALSE)
       }
       
@@ -125,9 +136,28 @@ grob_row_class = R6::R6Class(
         )
       
       height_w_padding = height - 2*padding
-      title_height = height_w_padding*title_p*title_present
-      caption_height = height_w_padding*caption_p*caption_present
-      grob_height = height_w_padding - title_height - caption_height
+      title_grob_caption_heights = allot_sizes(
+        space_size = height_w_padding,
+        inputted_proportions = c(
+          ifelse(title_present, title_p, 0),
+          1, 
+          ifelse(caption_present, caption_p, 0)
+          ),
+        inputted_sizes = c(
+          title_height*title_present,
+          NA_real_,
+          caption_height*caption_present
+          ),
+        grob_layout_location = location,
+        affected_grobs = "title / grob / caption",
+        measurement = 'height',
+        units = units
+        )
+      
+      title_height = title_grob_caption_heights[1]
+      grob_height = title_grob_caption_heights[2]
+      caption_height = title_grob_caption_heights[3]
+      
       raw_grobs = grid::gList()
 
       for(i in 1:length(contents)){
@@ -152,9 +182,7 @@ grob_row_class = R6::R6Class(
           grob = grob,
           title = title,
           title_aes_list = title_aes_list,
-          title_p = title_p,
-          title_height = title_height,
-          units = units
+          title_height = title_height
           )
 
       }
@@ -165,9 +193,7 @@ grob_row_class = R6::R6Class(
           grob = grob,
           caption = caption,
           caption_aes_list = caption_aes_list,
-          caption_p = caption_p,
-          caption_height = caption_height,
-          units = units
+          caption_height = caption_height
           )
 
       }

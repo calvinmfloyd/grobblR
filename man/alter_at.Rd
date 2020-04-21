@@ -29,11 +29,17 @@ evaluates to TRUE are evaluated.
 
 If no logical predicates provided, then the entire columns will be altered.}
 
-\item{columns}{A character vector of column names of the initial data.frame/matrix
-the user wishes to alter.}
+\item{columns}{A character vector of column names, or numeric column indices,
+of the initial data.frame/matrix, or \code{data} if it is provided, the user wishes to alter.}
+
+\item{rows}{A numeric vector of row indices, of the initial data.frame/matrix, 
+or \code{data} if it is provided, the user wishes to alter.}
 
 \item{data}{A separate data.frame/matrix of the same dimensions as the initial 
-data.frame/matrix which the \code{.f} function and any filters will be applied to.}
+data.frame/matrix which the \code{.f} function and any filters will be applied to.
+
+Must match the dimensions of the subset of the initial data.frame/matrix the user
+is attempting to alter.}
 
 \item{aesthetic}{Which aesthetic the user wants to make alterations to. If left 
 \code{NULL}, the function will look for the most previous altered aesthetic, either

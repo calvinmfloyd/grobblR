@@ -51,7 +51,7 @@ view_grob = function(grob,
   is_grob_layout = any(is(grob) %in% c('grob_layout'))
   is_grob_row = is(grob, 'grob_row')
   is_grob_col = is(grob, 'grob_col')
-
+  
   if (!any(is_grob_object, is_grob_layout, is_grob_row, is_grob_col)) {
     
     accepted_functions = c('grob_layout()', 'grob_matrix()', 'grob_image()', 'grob_row()', 'grob_col()')
@@ -70,10 +70,17 @@ view_grob = function(grob,
     
     gc = grob_col(grob, width = width)
     gc$height = height
+    gc$grob_layout_location = 'grob-object'
     
     gridExtra::grid.arrange(gc$grob)
 
   } else if (any(is_grob_row, is_grob_col, is_grob_layout)) {
+    
+    location = dplyr::case_when(
+      is_grob_layout ~ 'grob-layout',
+      is_grob_row ~ 'grob-row',
+      is_grob_col ~ 'grob-column',
+      )
     
     height = dplyr::case_when(
       !is.na(height) ~ height,
@@ -89,6 +96,7 @@ view_grob = function(grob,
 
     grob$height = height
     grob$width = width
+    grob$grob_layout_location = location
     gridExtra::grid.arrange(grob$grob)
     
   }

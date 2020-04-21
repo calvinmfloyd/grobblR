@@ -33,6 +33,10 @@ convert_to_matrix_grob(
 
 \item{width}{A numeric value designating the total width of the matrix grob in mm.}
 
+\item{padding}{A numeric value designating the amount of padding around the matrix cells.}
+
+\item{units}{millimeters}
+
 \item{text_cex_adj}{A numeric value used to adjust the automatic text cex sizing.}
 }
 \value{

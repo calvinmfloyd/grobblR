@@ -82,6 +82,10 @@ grob_matrix = function(x) {
 #' 
 #' @examples 
 #' 
+#' "The quick brown fox jumps over the lazy dog" %>%
+#'   grob_text() %>%
+#'   view_grob()
+#' 
 
 grob_text = function(x) {
   
@@ -130,6 +134,13 @@ grob_text = function(x) {
 #' 
 #' @examples 
 #' 
+#' gg = data.frame(x = c(5, 14, 6, 10), y = c(3, 30, 17, 7)) %>%
+#'   ggplot2::ggplot(mapping = ggplot2::aes(x = x, y = y)) +
+#'   ggplot2::geom_line(color = 'red') 
+#'   
+#' gg %>%
+#'   grob_image() %>%
+#'   view_grob()
 #'
 
 grob_image = function(x) {
