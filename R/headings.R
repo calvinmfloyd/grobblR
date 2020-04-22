@@ -24,7 +24,8 @@ column_names_to_row = function(df) {
     
       mat = df$current
       column_names = colnames(mat)
-      mat = dplyr::as_tibble(mat) %>% purrr::set_names(NULL)
+      mat = tibble::as_tibble(mat, .name_repair = "check_unique") %>% 
+        purrr::set_names(NULL)
       
       mat_w_column_names = rbind(column_names, mat)
       df$current = mat_w_column_names

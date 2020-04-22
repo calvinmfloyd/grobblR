@@ -263,15 +263,10 @@ alter_at = function(grob_object,
   } else {
     
     # - If the user skipped the add_aesthetic() step, and didn't provide a group
-    # within this function, then an error message will pop up.
+    # within this function, then we will default to the "cells"
     if (is.na(grob_object$current_group)) {
       
-      error_msg = glue::glue("
-        Please provide a group ('cells', 'column_names' or 'column_headings') to \\
-        adjust, either within add_aesthetic() or alter_at().
-        ")
-      
-      stop(error_msg, call. = FALSE)
+      grob_object$current_group = "cells"
       
     }
     
@@ -310,11 +305,15 @@ alter_at = function(grob_object,
     target_rows = which(grob_object$test[['grobblR_group']] %in% grob_object$current_group)
     n_rows_above = sum(total_rows < min(target_rows))
     n_rows_below = sum(total_rows > max(target_rows))
+    
     df_above = matrix(NA, nrow = n_rows_above, ncol = current_nc) %>% 
-      dplyr::tibble() %>%
-      purrr::set_names(colnames(data))  
+      as.data.frame() %>%
+      tibble::as_tibble() %>%
+      purrr::set_names(colnames(data))
+    
     df_below = matrix(NA, nrow = n_rows_below, ncol = current_nc) %>% 
-      dplyr::tibble() %>%
+      as.data.frame() %>%
+      tibble::as_tibble() %>%
       purrr::set_names(colnames(data))  
     
     data = rbind(df_above, data, df_below)
@@ -438,7 +437,7 @@ alter_at = function(grob_object,
     dplyr::pull(which_to_alter)
   
   boolean_matrix = aes_matrix(df = data, value = FALSE) %>%
-    dplyr::as_tibble() %>%
+    tibble::as_tibble() %>%
     dplyr::select(
       -dplyr::matches('grobblR_group')
       ) %>%

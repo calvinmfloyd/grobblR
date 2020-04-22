@@ -100,7 +100,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     
     # B ----
     # > Background Alpha ----
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'background_alpha',
       group = 'cells',
       theme = 'default',
@@ -113,7 +113,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'background_alpha',
       group = 'column_names',
       theme = 'default',
@@ -126,7 +126,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'background_alpha',
       group = 'column_headings',
       theme = 'default',
@@ -140,7 +140,7 @@ get_matrix_aesthetic_lookup_df = function(test,
         )
       ),
     # > Background Color ----
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'background_color',
       group = 'cells',
       theme = 'default',
@@ -160,7 +160,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'background_color',
       group = 'column_names',
       theme = 'default',
@@ -173,7 +173,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'background_color',
       group = 'column_headings',
       theme = 'default',
@@ -187,7 +187,7 @@ get_matrix_aesthetic_lookup_df = function(test,
         )
       ),
     # > Border Color ----
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'border_color',
       group = 'cells',
       theme = 'default',
@@ -200,7 +200,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'border_color',
       group = 'column_names',
       theme = 'default',
@@ -213,7 +213,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'border_color',
       group = 'column_headings',
       theme = 'default',
@@ -227,7 +227,7 @@ get_matrix_aesthetic_lookup_df = function(test,
         )
       ),
     # > Border Sides ----
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'border_sides',
       group = 'cells',
       theme = 'default',
@@ -244,7 +244,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'border_sides',
       group = 'column_names',
       theme = 'default',
@@ -257,7 +257,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'border_sides',
       group = 'column_headings',
       theme = 'default',
@@ -271,7 +271,7 @@ get_matrix_aesthetic_lookup_df = function(test,
         )
       ),
     # > Border Width ----
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'border_width',
       group = 'cells',
       theme = 'default',
@@ -284,7 +284,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'border_width',
       group = 'column_names',
       theme = 'default',
@@ -297,7 +297,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'border_width',
       group = 'column_headings',
       theme = 'default',
@@ -312,7 +312,7 @@ get_matrix_aesthetic_lookup_df = function(test,
       ),
     # F ----
     # > Font Face ----
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'font_face',
       group = 'cells',
       theme = 'default',
@@ -325,7 +325,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'font_face',
       group = 'column_names',
       theme = 'default',
@@ -338,7 +338,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'font_face',
       group = 'column_headings',
       theme = 'default',
@@ -353,7 +353,7 @@ get_matrix_aesthetic_lookup_df = function(test,
       ),
     # G ----
     # > Group Elements ----
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'group_elements',
       group = 'cells',
       theme = 'default',
@@ -366,7 +366,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'group_elements',
       group = 'column_names',
       theme = 'default',
@@ -379,7 +379,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'group_elements',
       group = 'column_headings',
       theme = 'default',
@@ -394,7 +394,7 @@ get_matrix_aesthetic_lookup_df = function(test,
       ),
     # R ----
     # > Round Rectangle Radius ----
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'round_rect_radius',
       group = 'cells',
       theme = 'default',
@@ -407,7 +407,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'round_rect_radius',
       group = 'column_names',
       theme = 'default',
@@ -420,7 +420,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'round_rect_radius',
       group = 'column_headings',
       theme = 'default',
@@ -436,7 +436,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     # T ----
     # > Text Align ----
     # --> Horizontally
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'text_align',
       group = 'cells',
       theme = 'default',
@@ -449,7 +449,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'text_align',
       group = 'column_names',
       theme = 'default',
@@ -462,7 +462,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'text_align',
       group = 'column_headings',
       theme = 'default',
@@ -478,7 +478,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     # > Text CEX ----
     # --> CEX is the multiplier applied to font size, found in:
     # https://stat.ethz.ch/R-manual/R-devel/library/grid/html/gpar.html
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'text_cex',
       group = 'cells',
       theme = 'default',
@@ -491,7 +491,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'text_cex',
       group = 'column_names',
       theme = 'default',
@@ -504,7 +504,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'text_cex',
       group = 'column_headings',
       theme = 'default',
@@ -518,7 +518,7 @@ get_matrix_aesthetic_lookup_df = function(test,
         )
       ),
     # > Text Font ----
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'text_font',
       group = 'cells',
       theme = 'default',
@@ -531,7 +531,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'text_font',
       group = 'column_names',
       theme = 'default',
@@ -544,7 +544,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'text_font',
       group = 'column_headings',
       theme = 'default',
@@ -558,7 +558,7 @@ get_matrix_aesthetic_lookup_df = function(test,
         )
       ),
     # > Text Color ----
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'text_color',
       group = 'cells',
       theme = 'default',
@@ -571,7 +571,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'text_color',
       group = 'column_names',
       theme = 'default',
@@ -584,7 +584,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'text_color',
       group = 'column_headings',
       theme = 'default',
@@ -599,7 +599,7 @@ get_matrix_aesthetic_lookup_df = function(test,
       ),
     # > Text Justification ----
     # --> Horizontally
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'text_just',
       group = 'cells',
       theme = 'default',
@@ -612,7 +612,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'text_just',
       group = 'column_names',
       theme = 'default',
@@ -625,7 +625,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'text_just',
       group = 'column_headings',
       theme = 'default',
@@ -639,7 +639,7 @@ get_matrix_aesthetic_lookup_df = function(test,
         )
       ),
     # > Text Vertical Align ----
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'text_v_align',
       group = 'cells',
       theme = 'default',
@@ -652,7 +652,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'text_v_align',
       group = 'column_names',
       theme = 'default',
@@ -665,7 +665,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'text_v_align',
       group = 'column_headings',
       theme = 'default',
@@ -679,7 +679,7 @@ get_matrix_aesthetic_lookup_df = function(test,
         )
       ),
     # > Text Vertical Justification ----
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'text_v_just',
       group = 'cells',
       theme = 'default',
@@ -692,7 +692,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'text_v_just',
       group = 'column_names',
       theme = 'default',
@@ -705,7 +705,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'text_v_just',
       group = 'column_headings',
       theme = 'default',
@@ -719,7 +719,7 @@ get_matrix_aesthetic_lookup_df = function(test,
         )
       ),
     # > Text Rotation ----
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'text_rot',
       group = 'cells',
       theme = 'default',
@@ -732,7 +732,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'text_rot',
       group = 'column_names',
       theme = 'default',
@@ -745,7 +745,7 @@ get_matrix_aesthetic_lookup_df = function(test,
           )
         )
       ),
-    dplyr::tibble(
+    tibble::tibble(
       aesthetic = 'text_rot',
       group = 'column_headings',
       theme = 'default',

@@ -34,7 +34,7 @@ get_matrix_structure_lookup_df = function(current,
     
     # C ----
     # > Column Widths Proportions ----
-    dplyr::tibble(
+    tibble::tibble(
       structure = 'column_widths_p',
       theme = 'default',
       accepted_classes = list(c('numeric')),
@@ -48,7 +48,7 @@ get_matrix_structure_lookup_df = function(current,
       ),
     # N ----
     # > Number of Lines ----
-    dplyr::tibble(
+    tibble::tibble(
       structure = 'n_lines',
       theme = 'default',
       accepted_classes = list(c('numeric')),
@@ -56,7 +56,7 @@ get_matrix_structure_lookup_df = function(current,
       ),
     # P ----
     # > Padding Proportions ----
-    dplyr::tibble(
+    tibble::tibble(
       structure = 'padding_p',
       theme = 'default',
       accepted_classes = list(c('numeric')),
@@ -101,7 +101,7 @@ get_image_structure_lookup_df = function() {
     
     # A ----
     # > Aspect Ratio Multiplier ----
-    dplyr::tibble(
+    tibble::tibble(
       structure = 'aspect_ratio_multiplier',
       accepted_classes = list(c('numeric')),
       theme = 'default',
@@ -109,7 +109,7 @@ get_image_structure_lookup_df = function() {
       ),
     # M ----
     # > Maintain Aspect Ratio ----
-    dplyr::tibble(
+    tibble::tibble(
       structure = 'maintain_aspect_ratio',
       accepted_classes = list(c('logical')),
       theme = 'default',

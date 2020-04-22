@@ -32,8 +32,8 @@ Plotted with \code{\link[gridExtra]{grid.arrange}}.
 \examples{
 
 df = data.frame(
-  v2 = c(15, 4, 16, 11),
-  v2 = c(10, 30, 3, 10)
+  x = c(15, 4, 16, 11),
+  y = c(10, 30, 3, 10)
   ) 
   
 df \%>\%

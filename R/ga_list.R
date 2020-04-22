@@ -8,7 +8,7 @@
 #' increase/decrease the aspect ratio of images.
 #' 
 #' @param background_alpha Controls the background alpha/opacity of the elements 
-#' of the text / matrix. Default is 1.0.
+#' of the text / matrix.
 #' 
 #' @param background_color Controls the background color of the elements of the text / matrix.
 #' 
