@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# grobblR
+# grobblR <img src='man/figures/logo.png' align="right" height="160" />
 
 <!-- badges: start -->
 
@@ -9,8 +9,8 @@
 
 The grobblR package allows R users the ability to intuitively create
 flexible, reproducible PDF reports comprised of aesthetically pleasing
-tables, images, plots and/or text. The way grobblR does this is by
-implementing *grobs* from the
+tables, images, plots and/or text. This is done by implementing *grobs*
+from the
 [grid](https://www.rdocumentation.org/packages/grid/versions/3.6.1) and
 [gridExtra](https://cran.r-project.org/web/packages/gridExtra/index.html)
 packages.
