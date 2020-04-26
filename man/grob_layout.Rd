@@ -2,51 +2,86 @@
 % Please edit documentation in R/grob_layout.R
 \name{grob_layout}
 \alias{grob_layout}
-\title{The main \code{grobblR} function which contains and organizes \code{\link{grob_col}}'s and \code{\link{grob_row}}'s, giving the overall grob-layout its shape.}
+\title{Grob Layout}
 \usage{
-grob_layout(..., height = 280, width = 216, units = c("mm", "cm",
-  "inches"), title = "", title_aes_list = ga_list(), title_p = 0.1,
-  caption = "", caption_aes_list = ga_list(), caption_p = 0.05,
-  padding_p = 0.05, padding = NA_real_, page_number = "")
+grob_layout(
+  ...,
+  height = 280,
+  width = 216,
+  title = "",
+  title_aes_list = ga_list(),
+  title_p = 0.1,
+  title_height = NA_real_,
+  caption = "",
+  caption_aes_list = ga_list(),
+  caption_p = 0.05,
+  caption_height = NA_real_,
+  padding_p = 0.05,
+  padding = NA_real_,
+  page_number = ""
+)
 }
 \arguments{
-\item{...}{The combination of grob-rows and grob-columns which will help give the main grob-layout outputted its shape and look.}
+\item{...}{The combination of grob-rows and grob-columns which will help give 
+the main grob-layout outputted its structure and aesthetics.}
 
-\item{height}{The numeric height of the grob-layout in the \code{units} supplied. Default is 280 mm - which is the height of an upright 8.5 x 11 inches piece of copy paper.}
+\item{height}{The numeric height of the grob-layout in millimeters.
 
-\item{width}{The numeric width of the grob in the \code{units} supplied. Default is 216 mm - which is the width of an upright 8.5 x 11 inches piece of copy paper.}
+Default is 280 mm - which is the height of an upright 8.5 x 11 inches piece of copy paper.}
 
-\item{units}{The units of the given height and width for the grob. Options are 'mm', 'cm' or 'inches'. Default is 'mm'.}
+\item{width}{The numeric width of the grob in millimeters.
+
+Default is 216 mm - which is the width of an upright 8.5 x 11 inches piece of copy paper.}
 
 \item{title}{A character string which will be displayed as the title of the grob-layout.}
 
-\item{title_aes_list}{The list outputted by \code{\link{ga_list}}, which controls aesthetics of the title of the grob-layout.}
+\item{title_aes_list}{The list outputted by \code{\link{ga_list}}, which
+controls aesthetics of the title of the grob-layout.}
 
-\item{title_p}{The numeric proportion of height within the grob-layout and its allotted space which will be used by the title grob. A numeric value between 0 and 0.25.}
+\item{title_p}{The numeric proportion the grob-layout's height will be used by the title grob.}
 
-\item{caption}{A character string which will be displayed as the caption at the bottom of the grob-layout.}
+\item{title_height}{The numeric height in mm within the grob-layout which will
+be used by the title grob. Will override \code{title_p} if provided.}
 
-\item{caption_aes_list}{The list outputted by \code{\link{ga_list}}, which controls aesthetics of the caption of the grob-layout.}
+\item{caption}{A character string which will be displayed as the caption at
+the bottom of the grob-layout.}
 
-\item{caption_p}{The numeric proportion of height within the grob-layout and its allotted space which will be used by the caption grob. A numeric value between 0 and 0.25.}
+\item{caption_aes_list}{The list outputted by \code{\link{ga_list}}, which
+controls aesthetics of the caption of the grob-layout.}
 
-\item{padding_p}{The proportion of the minimum of the height and width which will be used for the padding around the edge of the grob-layout. Overridden by any numeric value provided in the \code{padding} parameter.}
+\item{caption_p}{The numeric proportion of height within the grob-layout and
+its allotted space which will be used by the caption grob.}
 
-\item{padding}{The numeric amount of padding around the edge of the grob-layout in the \code{units} supplied.}
+\item{caption_height}{The numeric height in mm within the grob-layout which will
+be used by the caption grob. Will override \code{caption_p} if provided.}
 
-\item{page_number}{A single value that can be converted to an integer for the page number in the bottom right of the grob-layout within the padding. If it cannot be converted to an integer, the page number will not appear.}
+\item{padding_p}{The proportion of the minimum of the height and width which 
+will be used for the padding around the edge of the grob-layout.
+
+Overridden by any numeric value provided in the \code{padding} parameter.}
+
+\item{padding}{The numeric amount of padding around the edge of the grob-layout
+in millimeters.}
+
+\item{page_number}{A single value that can be converted to an integer for the
+page number in the bottom right of the grob-layout within its padding.
+If it cannot be converted to an integer, the page number will not appear.}
 }
 \value{
-An R6 class object containing all information necessary to create the overall grob-layout. The grob itself is called with \code{grob_layout()$grob}.
+An R6 class object containing all information necessary to create
+the overall grob-layout.
 }
 \description{
-The main \code{grobblR} function which contains and organizes \code{\link{grob_col}}'s and \code{\link{grob_row}}'s, giving the overall grob-layout its shape.
+The main \code{grobblR} function which contains and organizes
+\code{\link{grob_col}}'s and \code{\link{grob_row}}'s, giving the overall
+grob-layout its shape.
 }
 \examples{
-gl = grob_layout(
-  grob_row(grob_col(1), grob_col(2)),
-  grob_row(grob_col(3))
-  )
-# to retrieve the grob-layout
-gl$grob
+
+grob_layout(
+  grob_row(grob_col(1, border = TRUE), grob_col(2, border = TRUE)),
+  grob_row(grob_col(3, border = TRUE))
+  ) \%>\%
+  view_grob(100, 100)
+  
 }

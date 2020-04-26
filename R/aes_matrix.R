@@ -1,3 +1,4 @@
+
 #' Create a matrix based off the dimensions of a data.frame/matrix and a single 
 #' value to make up its cells. Designed to be used as an aesthetic matrix within
 #' \code{\link{ga_list}}.
@@ -44,19 +45,17 @@ aes_matrix = function(df, value, column_names = FALSE) {
 #' }
 #' Also, the user can provide the row name of the column they wish to alter.
 #' @return A matrix with the desired rows altered.
-#' @examples 
-#' df = data.frame(x = c(1, 2, 3), y = c(4, 5, 6))
-#' mat = aes_matrix(df, 'white')
-#' alter_rows(mat = mat, value = 'red', rows = c(1, 2))
 #' @export
 
 alter_rows = function(mat, value, rows = NULL) {
   
+  mat = check_mat(mat = mat, location = 'alter_rows()')
   value = check_value(value = value)
   rows = check_rows(mat = mat, rows = rows)
   
   mat[rows, 1:ncol(mat)] = value
-  mat
+  return(mat)
+
 
 }
 
@@ -74,14 +73,11 @@ alter_rows = function(mat, value, rows = NULL) {
 #' }
 #' Also, the user can provide the column name of the column they wish to alter.
 #' @return A matrix with the desired columns altered.
-#' @examples 
-#' df = data.frame(x = c(1, 2, 3), y = c(4, 5, 6))
-#' mat = aes_matrix(df, 'white')
-#' alter_columns(mat = mat, value = 'red', columns = 1)
 #' @export
 
 alter_columns = function(mat, value, columns = NULL) {
   
+  mat = check_mat(mat = mat, location = 'alter_columns()')
   value = check_value(value = value)
   columns = check_columns(mat = mat, columns = columns)
   
@@ -99,10 +95,6 @@ alter_columns = function(mat, value, columns = NULL) {
 #' @param columns The columns the user wishes to alter. See \code{\link{alter_columns}}
 #' for information on special inputs.
 #' @return A matrix with the desired cells altered.
-#' @examples 
-#' df = data.frame(x = c(1, 2, 3), y = c(4, 5, 6))
-#' mat = aes_matrix(df, 'white')
-#' alter_cells(mat = mat, value = 'red', rows = c(1,2), columns = 1)
 #' @export
 
 alter_cells = function(mat, value, rows = NULL, columns = NULL) {
@@ -129,6 +121,23 @@ get_last_indicator = function() {
 
 get_first_indicator = function() {
   'first'
+}
+
+check_mat = function(mat, location) {
+
+  is_matrix_check = 'matrix' %in% methods::is(mat)
+  
+  if (!(is_matrix_check)) {
+    
+    stop(
+      call. = FALSE,
+      paste0('The object inserted into ', location, ' must be a matrix.')
+      )
+
+  }
+  
+  return(mat)
+
 }
 
 check_value = function(value) {

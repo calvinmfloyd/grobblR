@@ -33,7 +33,7 @@ get_layout_matrix = function(df, group_elements_df) {
       
     } else if (left_mat[index]) {
 
-      # Checking to make sure the element to the left wants to be grouped together
+      # - Checking to make sure the element to the left wants to be grouped together
       layout_vec[index] = ifelse(
         group_elements_vec[index - nr],
         layout_vec[index - nr],
@@ -42,7 +42,7 @@ get_layout_matrix = function(df, group_elements_df) {
       
     } else if (above_mat[index]) {
       
-      # Checking to make sure the element above wants to be grouped together,
+      # - Checking to make sure the element above wants to be grouped together,
       # and that it's not already being grouped together with its left element
       left_of_above_element_index = index - 1 - nr
       above_element_index = index - 1

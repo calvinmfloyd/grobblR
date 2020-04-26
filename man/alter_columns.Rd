@@ -27,8 +27,3 @@ A matrix with the desired columns altered.
 \description{
 Alter the values at specific columns of a matrix.
 }
-\examples{
-df = data.frame(x = c(1, 2, 3), y = c(4, 5, 6))
-mat = aes_matrix(df, 'white')
-alter_columns(mat = mat, value = 'red', columns = 1)
-}

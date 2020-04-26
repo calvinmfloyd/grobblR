@@ -1,0 +1,261 @@
+---
+title: "Grob Layout Customization"
+author: "Calvin Floyd"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Grob Layout Customization}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 4,
+  fig.height = 4
+)
+```
+
+
+* Arguably the most crucial function in `grobblR` is `grob_layout()`, which needs to be utilized in order to create the final PDF.
+* `grob_layout()` reads the grob-row's and grob-columns within it to know how to _layout_ the page. See the [grobblR vignette](grobblR.html) for information on how it allots space to the grob-rows and grob-columns.
+* There are many ways customize individual grob-rows and grob-columns within the grob-layout, including borders, titles and captions.
+
+```{r load}
+library(grobblR)
+```
+
+## Borders
+
+* Within `grob_layout()`, the `grob_row()` and `grob_col()` functions are able to put borders around their contents.
+
+```{r two_by_two_system_w_borders}
+grob_layout(
+  grob_row(
+    grob_col(1),
+    grob_col(border = TRUE, 2)
+    ),
+  grob_row(
+    border = TRUE,
+    grob_col(3),
+    grob_col(
+      border = TRUE,
+      grob_row(border = TRUE, grob_col(border = TRUE, 4)),
+      grob_row(border = TRUE, grob_col(border = TRUE, 5))
+      )
+    ),
+  height = 100,
+  width = 100
+  ) %>%
+  view_grob()
+```
+
+* Those borders are customizable. With the `border_aes_list` argument and the `ga_list()` function, the user can adjust
+  * Which border sides to display (`border_sides`)
+  * The border width (`border_width`)
+  * The border color (`border_color`)
+* For more information on the aesthetics above, see `?ga_list`.
+
+```{r customizable_borders}
+grob_layout(
+  grob_row(
+    grob_col(1),
+    grob_col(
+      border = TRUE,
+      border_aes_list = ga_list(
+        border_color = "red"
+        ),
+      2
+      )
+    ),
+  grob_row(
+    border = TRUE,
+    border_aes_list = ga_list(
+      border_sides = "top",
+      border_width = 5
+      ),
+    grob_col(3),
+    grob_col(
+      border = TRUE,
+      border_aes_list = ga_list(
+        border_sides = "left, bottom",
+        border_color = "blue",
+        border_width = 4
+        ),
+      4
+      )
+    ),
+  height = 100,
+  width = 100
+  ) %>%
+  view_grob()
+```
+
+##  Titles
+
+* Titles can be added to either `grob_layout()`, `grob_row()` or `grob_col()`.
+
+```{r title}
+grob_layout(
+  title = "grob-layout title",
+  grob_row(
+    grob_col(1),
+    grob_col(title = "grob-column title", 2)
+    ),
+  grob_row(
+    title = "grob-row title",
+    grob_col(3),
+    grob_col(4)
+    )
+  ) %>%
+  view_grob(height = 100, width = 100)
+```
+
+* The height of the title can be adjusted by either giving an explicit height in millimeters to the `title_height` argument, or changing the title height proportion with `title_p`.
+  * `title_p` corresponds to the proportion of the height allotted to the grob in question which will be given to the title.
+  *  `title_height` will override `title_p` in all cases.
+  
+```{r title_height_adjustment}
+grob_layout(
+  title = "grob-layout title",
+  title_height = 20,
+  grob_row(
+    grob_col(1),
+    grob_col(
+      title = "grob-column title",
+      title_p = 0.5,
+      2
+      )
+    ),
+  grob_row(
+    title = "grob-row title",
+    title_height = 10,
+    grob_col(3),
+    grob_col(4)
+    )
+  ) %>%
+  view_grob(height = 100, width = 100)
+```
+
+* The aesthetics of the title can be altered as well with the `title_aes_list` argument and `ga_list()`.
+
+```{r title_aesthetic_adjustment}
+grob_layout(
+  title = "grob-layout title",
+  title_height = 20,
+  title_aes_list = ga_list(
+    text_color = "blue",
+    border_sides = "bottom"
+    ),
+  grob_row(
+    grob_col(1),
+    grob_col(
+      title = "grob-column title",
+      title_p = 0.5,
+      title_aes_list = ga_list(
+        font_face = 3,
+        text_color = "white",
+        background_color = "gray40"
+        ),
+      2
+      )
+    )
+  ) %>%
+  view_grob(height = 100, width = 100)
+```
+
+## Captions
+
+* Everything that applies to titles also applies to captions, as `grob_layout()`, `grob_col()` and `grob_row()` are all equipped with `caption`, `caption_aes_list`,  `caption_p` and `caption_height` arguments.
+* By default, captions are more subtle than titles, but their appearances can be altered however the user wants.
+
+```{r caption}
+grob_layout(
+  caption = "grob-layout caption",
+  grob_row(
+    grob_col(1),
+    grob_col(caption = "grob-column caption", 2)
+    ),
+  grob_row(
+    caption = "grob-row caption",
+    grob_col(3),
+    grob_col(4)
+    )
+  ) %>%
+  view_grob(height = 100, width = 100)
+```
+
+  
+```{r caption_height_adjustment}
+grob_layout(
+  caption = "grob-layout caption",
+  caption_height = 20,
+  grob_row(
+    grob_col(1),
+    grob_col(
+      caption = "grob-column caption",
+      caption_p = 0.5,
+      2
+      )
+    ),
+  grob_row(
+    caption = "grob-row caption",
+    caption_height = 10,
+    grob_col(3),
+    grob_col(4)
+    )
+  ) %>%
+  view_grob(height = 100, width = 100)
+```
+
+```{r caption_aesthetic_adjustment}
+grob_layout(
+  caption = "grob-layout caption",
+  caption_height = 20,
+  caption_aes_list = ga_list(
+    text_color = "blue",
+    border_sides = "bottom"
+    ),
+  grob_row(
+    grob_col(1),
+    grob_col(
+      caption = "grob-column caption",
+      caption_p = 0.5,
+      caption_aes_list = ga_list(
+        font_face = 3,
+        text_color = "white",
+        background_color = "gray40"
+        ),
+      2
+      )
+    )
+  ) %>%
+  view_grob(height = 100, width = 100)
+```
+
+## Page Numbers
+
+* The user can add a page number to the bottom right of the page if he/she wishes, by utilizing the `page_number` argument within `grob_layout()`.
+* The page number is inserted into the padding of the overall grob-layout.
+* As of now, the aesthetics of the page number is restricted to the default behavior.
+
+```{r page_numbers}
+grob_layout(
+  grob_row(
+    grob_col(1),
+    grob_col(2)
+    ),
+  grob_row(
+    grob_col(3),
+    grob_col(4)
+    ),
+  page_number = 1
+  ) %>%
+  view_grob(height = 100, width = 100)
+```
+
+* FYI - The page number allotted space is more meant for a fully-sized grob-layout (using default grob-layout size) than it is for a 100mm x 100mm sized grob.
+
+

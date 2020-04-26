@@ -1,9 +1,9 @@
 
 grob_layout_class = R6::R6Class(
-  "grob_layout",
+  classname = "grob_layout",
   public = list(
-    height = 100,
-    width = 100,
+    height = NA_real_,
+    width = NA_real_,
     units = 'mm',
     padding = NA_real_,
     padding_proportion = 0.1,
@@ -11,35 +11,40 @@ grob_layout_class = R6::R6Class(
     title = character(),
     title_p = 0.2,
     title_aes_list = ga_list(),
+    title_height = numeric(),
     caption = character(),
     caption_p = 0.15,
     caption_aes_list = ga_list(),
+    caption_height = numeric(),
     page_number = '',
+    grob_layout_location = '',
     initialize = function(contents,
                           height,
                           width,
-                          units,
                           padding,
                           padding_proportion,
                           page_number,
                           title,
                           title_p,
                           title_aes_list,
+                          title_height,
                           caption,
                           caption_p,
-                          caption_aes_list){
+                          caption_aes_list,
+                          caption_height){
       self$contents = contents
       self$height = height
       self$width = width
-      self$units = units
       self$padding = padding
       self$padding_proportion = padding_proportion
       self$page_number = page_number
       self$title = title
       self$title_p = title_p
+      self$title_height = title_height
       self$title_aes_list = title_aes_list
       self$caption = caption
       self$caption_p = caption_p
+      self$caption_height = caption_height
       self$caption_aes_list = caption_aes_list
 
     }),
@@ -55,9 +60,11 @@ grob_layout_class = R6::R6Class(
                     title = self$title,
                     title_p = self$title_p,
                     title_aes_list = self$title_aes_list,
+                    title_height = self$title_height,
                     caption = self$caption,
                     caption_p = self$caption_p,
-                    caption_aes_list = self$caption_aes_list) {
+                    caption_aes_list = self$caption_aes_list,
+                    caption_height = self$caption_height) {
 
       if(!all(unlist(lapply(contents, class)) %in% c('R6', 'grob_row'))) {
         stop(
@@ -118,9 +125,28 @@ grob_layout_class = R6::R6Class(
       padding = ifelse(!is.na(padding), padding, padding_proportion*min(c(height, width)))
       width_w_padding = width - 2*padding
       height_w_padding = height - 2*padding
-      title_height = height_w_padding*title_p*title_present
-      caption_height = height_w_padding*caption_p*caption_present
-      grob_height = height_w_padding - title_height - caption_height
+      
+      title_grob_caption_heights = allot_sizes(
+        space_size = height_w_padding,
+        inputted_proportions = c(
+          ifelse(title_present, title_p, 0),
+          1, 
+          ifelse(caption_present, caption_p, 0)
+          ),
+        inputted_sizes = c(
+          title_height*title_present,
+          NA_real_,
+          caption_height*caption_present
+          ),
+        grob_layout_location = "grob-layout",
+        affected_grobs = "title / grob / caption",
+        measurement = 'height',
+        units = units
+        )
+      
+      title_height = title_grob_caption_heights[1]
+      grob_height = title_grob_caption_heights[2]
+      caption_height = title_grob_caption_heights[3]
 
       # Creating the Layout Matrix ----
       nr = length(contents)
@@ -142,11 +168,12 @@ grob_layout_class = R6::R6Class(
       raw_grobs = grid::gList()
       for(i in 1:nr){
         
-        contents[[i]]$height = row_heights[i]
-        contents[[i]]$width = width_w_padding
-        contents[[i]]$units = units
-        contents[[i]]$grob_layout_location = trimws(paste0(scales::ordinal(i), " grob-row"))
-        raw_grobs = grid::gList(raw_grobs, contents[[i]]$grob)
+        grob_row_clone = contents[[i]]$clone()
+        grob_row_clone$height = row_heights[i]
+        grob_row_clone$width = width_w_padding
+        grob_row_clone$units = units
+        grob_row_clone$grob_layout_location = trimws(paste0(scales::ordinal(i), " grob-row"))
+        raw_grobs = grid::gList(raw_grobs, grob_row_clone$grob)
         
       }
 
@@ -163,9 +190,7 @@ grob_layout_class = R6::R6Class(
           grob = grob,
           title = title,
           title_aes_list = title_aes_list,
-          title_p = title_p,
-          title_height = title_height,
-          units = units
+          title_height = title_height
           )
         
       }
@@ -176,9 +201,7 @@ grob_layout_class = R6::R6Class(
           grob = grob,
           caption = caption,
           caption_aes_list = caption_aes_list,
-          caption_p = caption_p,
-          caption_height = caption_height,
-          units = units
+          caption_height = caption_height
           )
         
       }

@@ -1,25 +1,35 @@
 Package: grobblR
-Title: The package intent on creating reports within the R environment as easy and intuitive as possible.
+Title: The package intent on allowing users to build flexible and aesthetically pleasing PDF reports
 Version: 1.0
 Authors@R: person("Calvin", "Floyd", email = "calvin.michael.floyd@gmail.com", role = c("aut", "cre"))
-Description: Making use of graphical grid objects (grobs), grobblR intuitively combines objects of various types into a single, cohesive grob which can be converted into reports.
+Description: The grobblR package allows R users the ability to intuitively create 
+  flexible, reproducible PDF reports comprised of aesthetically pleasing tables, 
+  images, plots and/or text.
 Depends: R (>= 3.3.1)
 Imports:
+  dplyr,
   ggplot2,
+  glue,
   graphics,
   grDevices,
   grid,
   gridExtra,
+  methods,
+  magrittr,
   png,
+  purrr,
   R6,
   scales,
-  stringr
-License: 1.0.153
+  stringr,
+  tibble,
+  tools
+License: MIT + file LICENSE
 Language: en-US
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 Suggests: 
-  knitr,
-  rmarkdown
+    knitr,
+    rmarkdown,
+    testthat
 VignetteBuilder: knitr
