@@ -11,9 +11,11 @@ grob_layout(
   title = "",
   title_aes_list = ga_list(),
   title_p = 0.1,
+  title_height = NA_real_,
   caption = "",
   caption_aes_list = ga_list(),
   caption_p = 0.05,
+  caption_height = NA_real_,
   padding_p = 0.05,
   padding = NA_real_,
   page_number = ""
@@ -36,9 +38,10 @@ Default is 216 mm - which is the width of an upright 8.5 x 11 inches piece of co
 \item{title_aes_list}{The list outputted by \code{\link{ga_list}}, which
 controls aesthetics of the title of the grob-layout.}
 
-\item{title_p}{The numeric proportion the grob-layout's height will be used by the title grob.
+\item{title_p}{The numeric proportion the grob-layout's height will be used by the title grob.}
 
-A numeric value between 0 and 0.25.}
+\item{title_height}{The numeric height in mm within the grob-layout which will
+be used by the title grob. Will override \code{title_p} if provided.}
 
 \item{caption}{A character string which will be displayed as the caption at
 the bottom of the grob-layout.}
@@ -47,9 +50,10 @@ the bottom of the grob-layout.}
 controls aesthetics of the caption of the grob-layout.}
 
 \item{caption_p}{The numeric proportion of height within the grob-layout and
-its allotted space which will be used by the caption grob.
+its allotted space which will be used by the caption grob.}
 
-A numeric value between 0 and 0.25.}
+\item{caption_height}{The numeric height in mm within the grob-layout which will
+be used by the caption grob. Will override \code{caption_p} if provided.}
 
 \item{padding_p}{The proportion of the minimum of the height and width which 
 will be used for the padding around the edge of the grob-layout.

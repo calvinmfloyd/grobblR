@@ -23,7 +23,7 @@ test_that(
       alter_at(~ "blue", columns = 2, rows = 2, aesthetic = "background_color") %>%
       alter_at(~ "white", columns = 2, rows = 2, aesthetic = "text_color")
     
-    expect_true(is(mat_grob_matrix, "R6"))
+    expect_true(methods::is(mat_grob_matrix, "R6"))
     
   })
 

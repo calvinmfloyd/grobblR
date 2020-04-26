@@ -1,4 +1,7 @@
 
+# - To help with dplyr-related "no visible binding for global variable" note popping
+# up when running devtools::check()
+utils::globalVariables(c("grobblR_group", "applied_filter", "which_to_alter", "."))
 
 units_convert = function(x, from_units, to_units) {
   

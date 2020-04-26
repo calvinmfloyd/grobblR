@@ -192,7 +192,7 @@ grob_col_class = R6::R6Class(
       
       raw_grobs = grid::gList()
 
-      if (is(contents[[1]], 'grob_row')) {
+      if (methods::is(contents[[1]], 'grob_row')) {
         
         inputted_heights = sapply(1:length(contents), function(i) contents[[i]]$height)
         inputted_proportions = sapply(1:length(contents), function(i) contents[[i]]$proportion)
@@ -214,7 +214,7 @@ grob_col_class = R6::R6Class(
 
       for(i in 1:length(contents)){
 
-        if (is(contents[[i]], 'grob_row')) {
+        if (methods::is(contents[[i]], 'grob_row')) {
           
           grob_row_clone = contents[[i]]$clone()
           grob_row_clone$height = heights[i]

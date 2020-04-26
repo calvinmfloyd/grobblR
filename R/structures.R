@@ -81,8 +81,8 @@ add_structure = function(grob_object,
                          structure,
                          value) {
   
-  is_grob_matrix = is(grob_object, 'grob_matrix_object')
-  is_grob_image = is(grob_object, 'grob_image_object')
+  is_grob_matrix = methods::is(grob_object, 'grob_matrix_object')
+  is_grob_image = methods::is(grob_object, 'grob_image_object')
   
   
   if (!any(is_grob_image, is_grob_matrix)) {

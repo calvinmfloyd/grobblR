@@ -56,7 +56,7 @@ controls aesthetics of the title of the grob-column.}
 \item{title_p}{The numeric proportion of height within the grob-column which
 will be used by the title grob.}
 
-\item{title_height}{The numeric height in mm within the grob_column which will
+\item{title_height}{The numeric height in mm within the grob-column which will
 be used by the title grob. Will override \code{title_p} if provided.}
 
 \item{caption}{A character string which will be displayed as the caption of the grob-column.}
@@ -67,7 +67,7 @@ controls aesthetics of the caption of the grob-column.}
 \item{caption_p}{The numeric proportion of height within the grob-column
 which will be used by the caption grob.}
 
-\item{caption_height}{The numeric height in mm within the grob_column which will
+\item{caption_height}{The numeric height in mm within the grob-column which will
 be used by the caption grob. Will override \code{caption_p} if provided.}
 
 \item{padding_p}{The proportion of the minimum of the height and width which

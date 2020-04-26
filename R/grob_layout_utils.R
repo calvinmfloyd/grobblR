@@ -179,7 +179,7 @@ add_page_number = function(grob, page_number, padding){
   grob_height = sum(as.numeric(grob$heights))
   grob_width = sum(as.numeric(grob$widths))
   
-  pn_pad_pct = (0.3)/2
+  pn_pad_pct = (0.2)/2
   ga_l = ga_list(text_color = 'gray40', background_color = NA)
   if (page_number == '') {
     

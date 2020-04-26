@@ -68,7 +68,6 @@ get_matrix_structure_lookup_df = function(current,
           )
         )
       )
-
     ) %>%
     dplyr::bind_rows()
   

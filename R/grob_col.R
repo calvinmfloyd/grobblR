@@ -33,7 +33,7 @@
 #' @param title_p The numeric proportion of height within the grob-column which
 #' will be used by the title grob.
 #' 
-#' @param title_height The numeric height in mm within the grob_column which will
+#' @param title_height The numeric height in mm within the grob-column which will
 #' be used by the title grob. Will override \code{title_p} if provided.
 #' 
 #' @param caption A character string which will be displayed as the caption of the grob-column.
@@ -44,7 +44,7 @@
 #' @param caption_p The numeric proportion of height within the grob-column
 #' which will be used by the caption grob.
 #' 
-#' @param caption_height The numeric height in mm within the grob_column which will
+#' @param caption_height The numeric height in mm within the grob-column which will
 #' be used by the caption grob. Will override \code{caption_p} if provided.
 #' 
 #' @param padding_p The proportion of the minimum of the height and width which

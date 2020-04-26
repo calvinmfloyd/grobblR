@@ -393,6 +393,28 @@ get_matrix_aesthetic_lookup_df = function(test,
         )
       ),
     # R ----
+    # > Replace NA ----
+    tibble::tibble(
+      aesthetic = 'replace_na',
+      group = 'cells',
+      theme = 'default',
+      accepted_classes = list(c('character')),
+      value = list(matrix("", nrow = nr_cells, ncol = nc_cells))
+      ),
+    tibble::tibble(
+      aesthetic = 'replace_na',
+      group = 'column_names',
+      theme = 'default',
+      accepted_classes = list(c('character')),
+      value = list(matrix("", nrow = nr_column_names, ncol = nc))
+      ),
+    tibble::tibble(
+      aesthetic = 'replace_na',
+      group = 'column_headings',
+      theme = 'default',
+      accepted_classes = list(c('character')),
+      value = list(matrix("", nrow = nr_column_headings, ncol = nc))
+      ),
     # > Round Rectangle Radius ----
     tibble::tibble(
       aesthetic = 'round_rect_radius',

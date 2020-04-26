@@ -62,7 +62,7 @@ grob_matrix_object = R6::R6Class(
           
           # - Check to make sure the class of the inputted matrix is of an 
           # accepted class
-          if (!any(is(input_mat[1,1]) %in% accepted_classes)) {
+          if (!any(methods::is(input_mat[1,1]) %in% accepted_classes)) {
     
             error_msg = glue::glue("
               The class of the {structure} structure input must be one of: \\
@@ -152,7 +152,7 @@ grob_matrix_object = R6::R6Class(
           
           # - Check to make sure the class of the inputted matrix is of an 
           # accepted class
-          if (!any(is(input_mat[1,1]) %in% accepted_classes)) {
+          if (!any(methods::is(input_mat[1,1]) %in% accepted_classes)) {
     
             error_msg = glue::glue("
               The class of the {aesthetic} aesthetic input must be one of: \\
@@ -190,7 +190,7 @@ grob_matrix_object = R6::R6Class(
         # for when we want an empty color. After we add in default values, we will convert
         # any elements of the matrix (if it is a character matrix) that have this
         # placeholder with the functional NA_character_.
-        if (is(input_mat[1,1], 'character')) {
+        if (methods::is(input_mat[1,1], 'character')) {
           
           input_mat[input_mat %in% get_empty_placeholder()] = NA_character_
           
@@ -240,7 +240,7 @@ grob_image_object = R6::R6Class(
           
         } else {
           
-          if (!any(is(input) %in% accepted_classes)) {
+          if (!any(methods::is(input) %in% accepted_classes)) {
     
             error_msg = glue::glue("
               The class of the {structure} structure input must be one of: \\

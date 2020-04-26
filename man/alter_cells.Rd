@@ -23,8 +23,3 @@ A matrix with the desired cells altered.
 \description{
 Alter the values at specific row-column combinations of a matrix.
 }
-\examples{
-df = data.frame(x = c(1, 2, 3), y = c(4, 5, 6))
-mat = aes_matrix(df, 'white')
-alter_cells(mat = mat, value = 'red', rows = c(1,2), columns = 1)
-}

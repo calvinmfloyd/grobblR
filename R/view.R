@@ -47,10 +47,10 @@ view_grob = function(grob,
   
   default_height = 100
   default_width = 100
-  is_grob_object = any(is(grob) %in% c('grob_matrix_object', 'grob_image_object'))
-  is_grob_layout = any(is(grob) %in% c('grob_layout'))
-  is_grob_row = is(grob, 'grob_row')
-  is_grob_col = is(grob, 'grob_col')
+  is_grob_object = any(methods::is(grob) %in% c('grob_matrix_object', 'grob_image_object'))
+  is_grob_layout = any(methods::is(grob) %in% c('grob_layout'))
+  is_grob_row = methods::is(grob, 'grob_row')
+  is_grob_col = methods::is(grob, 'grob_col')
   
   if (!any(is_grob_object, is_grob_layout, is_grob_row, is_grob_col)) {
     

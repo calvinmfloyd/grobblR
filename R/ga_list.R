@@ -27,11 +27,17 @@
 #' @param column_widths_p If automatic column widths are not desired, the user 
 #' can provide a vector of width proportions corresponding to each column of the matrix.
 #' 
-#' @param font_face Controls the font face of the elements of the matrix 
-#' (i.e. bold, italic, etc.).
+#' @param font_face Controls the font face of the elements of the matrix. Currently
+#' only numeric font face's are accepted. See \code{\link[grid]{gpar}} for more
+#' information.
 #' 
 #' @param group_elements A boolean argument on whether like, adjacent matrix 
 #' elements should be grouped together into a single element.
+#' 
+#' @param replace_na Controls what \code{NA} values in matrix will be replaced
+#' with.
+#' 
+#' Default is an empty string.
 #' 
 #' @param round_rect_radius Controls the radius of the corners of the rectangles 
 #' matrix text is laid on top of.
@@ -40,10 +46,10 @@
 #' aspect ratio of the image should be maintained. Default is FALSE - meaning 
 #' the image will be stretched to fit the designated grid area.
 #' 
-#' @param text_align Controls where the text in each grid cell will be centered 
+#' @param text_align Controls where the text in each cell will be centered 
 #' around, horizontally. A numeric value between 0 and 1, with 0 being all the 
-#' way to the left of the grid cell, and 1 being all the way to the right of the 
-#' grid cell. Default is 0.5. Can also input 'left', 'right' or 'center', which 
+#' way to the left of the cell, and 1 being all the way to the right of the 
+#' cell. Default is 0.5. Can also input 'left', 'right' or 'center', which 
 #' will also make edits to \code{text_just} to make the text completely left-justified, 
 #' right-justified or centered, respectively.
 #' 
@@ -83,14 +89,19 @@
 #' 
 #' @param n_lines The maximum number of lines is desired for the character string to be broken up into.
 #'
+#' @param cell_background_alpha,cell_background_color,cell_border_color,cell_border_sides,cell_border_width,cell_font_face,cell_group_elements,cell_text_color,cell_text_align,cell_text_v_align,cell_text_just,cell_text_v_just,cell_text_cex,cell_text_font,cell_text_rot,cell_replace_na,cell_round_rect_radius,cell_column_widths_p,cell_padding_p
+#' These arguments correspond to that aesthetic / structure for cells of a matrix.
+#' 
+#' All are overridden by the corresponding arguments without \code{cell_} in front of them.
+#' 
+#' @param colname_background_alpha,colname_background_color,colname_border_color,colname_border_sides,colname_border_width,colname_font_face,colname_group_elements,colname_text_color,colname_text_align,colname_text_v_align,colname_text_just,colname_text_v_just,colname_text_cex,colname_text_font,colname_text_rot,colname_replace_na,colname_round_rect_radius,colname_column_widths_p,colname_padding_p
+#' These arguments correspond to that aesthetic / structure for column names of a matrix.
+#' 
+#' All are overridden by the corresponding arguments without \code{colname_} in front of them.
+#'
 #' @return A list with all possible aesthetic / structure elements.
 #' 
 #' @details 
-#' 
-#' Arguments beginning with \code{cell_} correspond to that aesthetic / structure 
-#' for cells of a matrix. Arguments beginning with \code{colname_} correspond to that aesthetic / structure 
-#' for column names of a matrix. Both are overridden by the argument without \code{cell_} or \code{colname_}
-#' in front of them.
 #' 
 #' Most of the matrix aesthetics / structures are inputted into \code{\link[grid]{gpar}}.
 #' More in-depth details on input possibilities can be found in its documentation.2
@@ -119,10 +130,12 @@ ga_list = function(aspect_ratio_multiplier = NULL,
                    text_cex = NULL,
                    text_font = NULL,
                    text_rot = NULL,
+                   replace_na = NULL,
                    round_rect_radius = NULL,
-                   column_widths = NULL,
                    column_widths_p = NULL,
                    padding_p = NULL,
+                   maintain_aspect_ratio = NULL,
+                   n_lines = NULL,
                    cell_font_face = NULL,
                    cell_group_elements = NULL,
                    cell_background_color = NULL,
@@ -138,8 +151,8 @@ ga_list = function(aspect_ratio_multiplier = NULL,
                    cell_text_cex = NULL,
                    cell_text_font = NULL,
                    cell_text_rot = NULL,
+                   cell_replace_na = NULL,
                    cell_round_rect_radius = NULL,
-                   cell_column_widths = NULL,
                    cell_column_widths_p = NULL,
                    cell_padding_p = NULL,
                    colname_font_face = NULL,
@@ -157,12 +170,10 @@ ga_list = function(aspect_ratio_multiplier = NULL,
                    colname_text_cex = NULL,
                    colname_text_font = NULL,
                    colname_text_rot = NULL,
+                   colname_replace_na = NULL,
                    colname_round_rect_radius = NULL,
-                   colname_column_widths = NULL,
                    colname_column_widths_p = NULL,
-                   colname_padding_p = NULL,
-                   maintain_aspect_ratio = NULL,
-                   n_lines = NULL) {
+                   colname_padding_p = NULL) {
 
   grob_aes_list = list(
     font_face = font_face,
@@ -179,8 +190,8 @@ ga_list = function(aspect_ratio_multiplier = NULL,
     text_v_just = text_v_just,
     text_cex = text_cex,
     text_font = text_font,
+    replace_na = replace_na,
     round_rect_radius = round_rect_radius,
-    column_widths = column_widths,
     column_widths_p = column_widths_p,
     padding_p = padding_p,
     cell_font_face = cell_font_face,
@@ -198,8 +209,8 @@ ga_list = function(aspect_ratio_multiplier = NULL,
     cell_text_cex = cell_text_cex,
     cell_text_font = cell_text_font,
     cell_text_rot = cell_text_rot,
+    cell_replace_na = cell_replace_na,
     cell_round_rect_radius = cell_round_rect_radius,
-    cell_column_widths = cell_column_widths,
     cell_column_widths_p = cell_column_widths_p,
     cell_padding_p = cell_padding_p,
     colname_font_face = colname_font_face,
@@ -217,8 +228,8 @@ ga_list = function(aspect_ratio_multiplier = NULL,
     colname_text_cex = colname_text_cex,
     colname_text_font = colname_text_font,
     colname_text_rot = colname_text_rot,
+    colname_replace_na = colname_replace_na,
     colname_round_rect_radius = colname_round_rect_radius,
-    colname_column_widths = colname_column_widths,
     colname_column_widths_p = colname_column_widths_p,
     colname_padding_p = colname_padding_p,
     maintain_aspect_ratio = maintain_aspect_ratio,
@@ -226,11 +237,7 @@ ga_list = function(aspect_ratio_multiplier = NULL,
     n_lines = n_lines
     )
   
-  grob_aes_list = lapply(
-    X = grob_aes_list,
-    FUN = convert_to_matrix
-    )
-  
+  grob_aes_list = lapply(X = grob_aes_list, FUN = convert_to_matrix)
   class(grob_aes_list) = 'grob_aes_list'
   return(grob_aes_list)
 

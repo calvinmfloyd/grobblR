@@ -41,6 +41,7 @@ options(stringsAsFactors = FALSE)
 #' \item \code{border_width}
 #' \item \code{font_face}
 #' \item \code{group_elements}
+#' \item \code{replace_na}
 #' \item \code{round_rect_radius}
 #' \item \code{text_align}
 #' \item \code{text_cex}
@@ -75,7 +76,7 @@ add_aesthetic = function(grob_object,
   group = match.arg(group)
   value = check_value(value = value)
   
-  is_grob_matrix = is(grob_object, 'grob_matrix_object')
+  is_grob_matrix = methods::is(grob_object, 'grob_matrix_object')
   
   # - Checking to make sure it's a valid grob object
   if (!is_grob_matrix) {
@@ -191,7 +192,7 @@ alter_at = function(grob_object,
                     aesthetic = NULL,
                     group = NULL) {
 
-  if (!is(grob_object, 'grob_matrix_object') | !grob_object[['type']] %in% 'matrix') {
+  if (!methods::is(grob_object, 'grob_matrix_object') | !grob_object[['type']] %in% 'matrix') {
     
     error_msg = "An object initialized by grob_matrix() must be passed through alter_at()." 
     stop(error_msg, call. = FALSE)

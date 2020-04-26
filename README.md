@@ -5,6 +5,8 @@
 
 <!-- badges: start -->
 
+![License](https://img.shields.io/github/license/calvinmfloyd/grobblR)
+![CRAN status](https://www.r-pkg.org/badges/version/grobblR)
 <!-- badges: end -->
 
 The grobblR package allows R users the ability to intuitively create
@@ -66,7 +68,7 @@ grob_layout(
   view_grob()
 ```
 
-<img src="man/figures/README-2x2 system-1.png" width="65%" />
+<img src="man/figures/README-two_by_two_system-1.png" width="65%" />
 
   - The `grob_row()`’s tell the `grob_layout()` that the user wants two
     rows on the outermost layer, and since there are two `grob_col()`’s
@@ -87,7 +89,7 @@ grob_layout(
   view_grob()
 ```
 
-<img src="man/figures/README-2 row, 3 element system-1.png" width="65%" />
+<img src="man/figures/README-two_by_three_system-1.png" width="65%" />
 
 ## Nested Rows and Columns
 
@@ -123,7 +125,7 @@ grob_layout(
   view_grob()
 ```
 
-<img src="man/figures/README-2x2 system w/ borders-1.png" width="65%" />
+<img src="man/figures/README-two_by_two_system_w_borders-1.png" width="65%" />
 
 ### Size Control
 
@@ -145,7 +147,7 @@ grob_layout(
   view_grob()
 ```
 
-<img src="man/figures/README-2x1 system - p parameter-1.png" width="65%" />
+<img src="man/figures/README-two_by_one_system_all_p-1.png" width="65%" />
 
   - The user can also specify specific heights/widths in the
     millimeters.
@@ -164,7 +166,7 @@ grob_layout(
   view_grob()
 ```
 
-<img src="man/figures/README-3x1 system - specific heights-1.png" width="65%" />
+<img src="man/figures/README-three_by_one_specific_heights-1.png" width="65%" />
 
   - Or the user can use a combination of specific heights and
     proportions to size the grobs:
@@ -182,7 +184,7 @@ grob_layout(
   view_grob()
 ```
 
-<img src="man/figures/README-3x1 system - combination-1.png" width="65%" />
+<img src="man/figures/README-three_by_one_system_combo-1.png" width="65%" />
 
 ## Matrix Grobs
 
@@ -208,7 +210,7 @@ grob_layout(
   view_grob()
 ```
 
-<img src="man/figures/README-First matrix example-1.png" width="65%" />
+<img src="man/figures/README-first_matrix-1.png" width="65%" />
 
   - If the user wants different cells of the matrix to have different
     aesthetics, the user can utilize `grob_matrix()` and `alter_at()`.
@@ -227,7 +229,7 @@ mat %>%
   view_grob()
 ```
 
-<img src="man/figures/README-First matrix, cell-by-cell customization, 1-1.png" width="65%" />
+<img src="man/figures/README-alter_at-1.png" width="65%" />
 
 ## ggplot Grobs
 
@@ -261,7 +263,7 @@ grob_layout(
   view_grob(height = 100, width = 100)
 ```
 
-<img src="man/figures/README-ggplot Grobs-1.png" width="65%" />
+<img src="man/figures/README-ggplot_grobs-1.png" width="65%" />
 
 ## Image Grobs
 
@@ -293,7 +295,7 @@ grob_layout(
   view_grob()
 ```
 
-<img src="man/figures/README-.png Grobs-1.png" width="65%" />
+<img src="man/figures/README-png_grobs-1.png" width="65%" />
 
   - Or the user can incorporate `grob_image()` and `add_structure()`.
 
@@ -322,7 +324,7 @@ grob_layout(
 
 <img src="man/figures/README-grob_image-1.png" width="65%" />
 
-## Character String Grobs
+## Text Grobs
 
   - grobblR handles long character strings by making the text as big as
     possible, while still being able to fit the text inside its allotted
@@ -349,7 +351,7 @@ grob_layout(
   view_grob()
 ```
 
-<img src="man/figures/README-simple text grob-1.png" width="65%" />
+<img src="man/figures/README-simple_text_grob-1.png" width="65%" />
 
   - The aesthetics of the text can be tweaked with `grob_text()` and
     `add_aesthetic()`.
@@ -405,7 +407,7 @@ grob_layout(
   view_grob()
 ```
 
-<img src="man/figures/README-empty space grob-1.png" width="65%" />
+<img src="man/figures/README-empty_space_grob-1.png" width="65%" />
 
 ## Grob Layout to PDF
 

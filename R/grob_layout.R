@@ -31,8 +31,8 @@
 #' 
 #' @param title_p The numeric proportion the grob-layout's height will be used by the title grob.
 #' 
-#' A numeric value between 0 and 0.25.
-#' 
+#' @param title_height The numeric height in mm within the grob-layout which will
+#' be used by the title grob. Will override \code{title_p} if provided.
 #' 
 #' @param caption A character string which will be displayed as the caption at
 #' the bottom of the grob-layout.
@@ -43,7 +43,8 @@
 #' @param caption_p The numeric proportion of height within the grob-layout and
 #' its allotted space which will be used by the caption grob.
 #' 
-#' A numeric value between 0 and 0.25.
+#' @param caption_height The numeric height in mm within the grob-layout which will
+#' be used by the caption grob. Will override \code{caption_p} if provided.
 #' 
 #' @param page_number A single value that can be converted to an integer for the
 #' page number in the bottom right of the grob-layout within its padding.
@@ -69,9 +70,11 @@ grob_layout = function(...,
                        title = '',
                        title_aes_list = ga_list(),
                        title_p = 0.1,
+                       title_height = NA_real_,
                        caption = '',
                        caption_aes_list = ga_list(),
                        caption_p = 0.05,
+                       caption_height = NA_real_,
                        padding_p = 0.05,
                        padding = NA_real_,
                        page_number = '') {
@@ -86,9 +89,11 @@ grob_layout = function(...,
     title = title,
     title_p = title_p,
     title_aes_list = title_aes_list,
+    title_height = title_height,
     caption = caption,
     caption_p = caption_p,
-    caption_aes_list = caption_aes_list
+    caption_aes_list = caption_aes_list,
+    caption_height = caption_height
     )
 
 }

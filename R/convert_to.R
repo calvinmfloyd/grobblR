@@ -22,8 +22,8 @@ convert_to_grob = function(x,
                            aes_list = ga_list()) {
 
   units = 'mm'
-
-  if (is(x, 'grob_matrix_object')) {
+  
+  if (methods::is(x, "grob_matrix_object")) {
     
     x$height = height
     x$width = width
@@ -33,7 +33,7 @@ convert_to_grob = function(x,
       
   }
   
-  if (is(x, 'grob_image_object')) {
+  if (methods::is(x, "grob_image_object")) {
     
     aes_list = x$finish_ga_list
     x = x$initial
@@ -310,6 +310,7 @@ convert_to_matrix_grob = function(df,
     border_color = c('gray40', 'gray40', 'gray40', 'gray40', 'gray40'),
     border_width = c(1, 1, 1, 1, 1),
     round_rect_radius = c(0.0, 0.0, 0.0, 0.0, 0.2),
+    replace_na = c("", "", "", "", ""),
     group_elements = c(FALSE, FALSE, FALSE, FALSE, FALSE)
     )
 
@@ -518,7 +519,7 @@ convert_to_matrix_grob = function(df,
         )
       
       text_grob = grid::textGrob(
-        df[i,j],
+        label = ifelse(is.na(df[i,j]), aes_list[['replace_na']][i,j], df[i,j]),
         x = grid::unit(aes_list[['text_align']][i,j], "npc"),
         y = grid::unit(aes_list[['text_v_align']][i,j], "npc"),
         hjust = aes_list[['text_just']][i,j],

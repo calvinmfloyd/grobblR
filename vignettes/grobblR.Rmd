@@ -1,24 +1,22 @@
 ---
-output: github_document
+title: "Introduction to grobblR"
+author: "Calvin Floyd"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to grobblR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
-```{r, include = FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "65%"
+  fig.width = 4,
+  fig.height = 4
 )
 ```
-
-# grobblR <img src='man/figures/logo.png' align="right" height="160" />
-
-<!-- badges: start -->
-![License](https://img.shields.io/github/license/calvinmfloyd/grobblR)
-![CRAN status](https://www.r-pkg.org/badges/version/grobblR)
-<!-- badges: end -->
 
 The grobblR package allows R users the ability to intuitively create flexible, reproducible PDF reports comprised of aesthetically pleasing tables, images, plots and/or text. This is done by implementing *grobs* from the [grid](https://www.rdocumentation.org/packages/grid/versions/3.6.1) and [gridExtra](https://cran.r-project.org/web/packages/gridExtra/index.html) packages.
 
@@ -154,7 +152,12 @@ grob_layout(
 mat = matrix(1:4, nrow = 2, byrow = TRUE)
 
 grob_layout(
-  grob_row(grob_col(mat, aes_list = ga_list(background_color = "gray90"))),
+  grob_row(
+    grob_col(
+      mat,
+      aes_list = ga_list(background_color = "gray90")
+      )
+    ),
   height = 100,
   width = 100
   ) %>%
@@ -167,9 +170,23 @@ grob_layout(
 ```{r alter_at}
 mat %>%
   grob_matrix() %>%
-  alter_at(~ "red", columns = 1, aesthetic = "text_color") %>%
-  alter_at(~ "blue", columns = 2, rows = 2, aesthetic = "background_color") %>%
-  alter_at(~ "white", columns = 2, rows = 2, aesthetic = "text_color") %>%
+  alter_at(
+    ~ "red",
+    columns = 1,
+    aesthetic = "text_color"
+    ) %>% 
+  alter_at(
+    ~ "blue",
+    columns = 2,
+    rows = 2,
+    aesthetic = "background_color"
+    ) %>%
+  alter_at(
+    ~ "white",
+    columns = 2,
+    rows = 2,
+    aesthetic = "text_color"
+    ) %>%
   view_grob()
 ```
 
@@ -183,14 +200,22 @@ library(ggplot2)
 
 gg1 = ggplot(
   data = iris, 
-  mapping = aes(x = Sepal.Length, y = Sepal.Width, color = Species)
+  mapping = aes(
+    x = Sepal.Length,
+    y = Sepal.Width,
+    color = Species
+    )
   ) +
   geom_point() +
   guides(color = FALSE)
 
 gg2 = ggplot(
   data = iris,
-  mapping = aes(x = Sepal.Length, y = Petal.Length, color = Species)
+  mapping = aes(
+    x = Sepal.Length,
+    y = Petal.Length,
+    color = Species
+    )
   ) +
   geom_point() +
   guides(color = FALSE)
@@ -213,12 +238,14 @@ grob_layout(
     border = TRUE,
     grob_col(
       border = TRUE,
-      'vignettes/kings_logo.png'
+      'kings_logo.png'
       ),
     grob_col(
       border = TRUE,
-      aes_list = ga_list(maintain_aspect_ratio = FALSE),
-      'vignettes/kings_logo.png'
+      aes_list = ga_list(
+        maintain_aspect_ratio = FALSE
+        ),
+      'kings_logo.png'
       )
     ),
   height = 100,
@@ -235,11 +262,11 @@ grob_layout(
     border = TRUE,
     grob_col(
       border = TRUE,
-      'vignettes/kings_logo.png'
+      'kings_logo.png'
       ),
     grob_col(
       border = TRUE,
-      'vignettes/kings_logo.png' %>%
+      'kings_logo.png' %>%
         grob_image() %>%
         add_structure("maintain_aspect_ratio", FALSE)
       )
@@ -369,8 +396,7 @@ grob_to_pdf(
   )
 ```
 
+## Conclusions
 
-
-
-
+The `grobblR` package provides R users a tool to quickly create dynamic and aesthetically pleasing PDF reports. In the future we hope to enhance and add even more features, but, even as it currently stands, we believe `grobblR` is a valuable utility in daily data visualization and data reporting tasks.
 

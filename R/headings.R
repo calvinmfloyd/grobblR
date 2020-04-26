@@ -7,7 +7,7 @@
 
 column_names_to_row = function(df) {
 
-  if ('grob_matrix_object' %in% is(df)) {
+  if ('grob_matrix_object' %in% methods::is(df)) {
   
     aesthetic_list_unedited = purrr::every(.x = df$aesthetic_list, .p = is.null)
     
@@ -125,7 +125,7 @@ add_column_headings = function(mat, headings = list(), heading_cols = list()) {
       
     }
     
-    if (is(mat, 'grob_matrix_object')) {
+    if (methods::is(mat, 'grob_matrix_object')) {
       
       heading_cols = list(1:ncol(mat$current))
       
@@ -150,7 +150,7 @@ add_column_headings = function(mat, headings = list(), heading_cols = list()) {
   }
   
   # - For the new aesthetic object process
-  if (is(mat, 'grob_matrix_object')) {
+  if (methods::is(mat, 'grob_matrix_object')) {
     
     if (mat$type != 'matrix') {
       

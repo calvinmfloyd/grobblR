@@ -34,3 +34,33 @@ into a multiple page PDF document.
 In the case of multiple page documents, the dimensions of the overall
 document will be determined by the dimensions of the first grob-layout listed.
 }
+\examples{
+
+\dontrun{
+
+grob_layout(
+  grob_row(
+    grob_col(1, border = T),
+    grob_col(2, border = T),
+    border = T
+    ),
+  grob_row(
+    grob_col(3, border = T),
+    grob_col(
+      grob_row(grob_col(4, border = T), border = T),
+      grob_row(grob_col(5, border = T), border = T),
+      border = T
+      ),
+    border = T
+    )
+  ) \%>\%
+  grob_to_pdf(
+    file_name = "test.pdf",
+    meta_data_title = "Test PDF"
+    )
+
+}
+
+
+
+}

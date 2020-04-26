@@ -1,8 +1,10 @@
 Package: grobblR
-Title: The package intent on creating reports within the R environment as easy and intuitive as possible.
+Title: The package intent on allowing users to build flexible and aesthetically pleasing PDF reports
 Version: 1.0
 Authors@R: person("Calvin", "Floyd", email = "calvin.michael.floyd@gmail.com", role = c("aut", "cre"))
-Description: The grobblR package allows R users the ability to intuitively create flexible, reproducible PDF reports comprised of aesthetically pleasing tables, images, plots and/or text.
+Description: The grobblR package allows R users the ability to intuitively create 
+  flexible, reproducible PDF reports comprised of aesthetically pleasing tables, 
+  images, plots and/or text.
 Depends: R (>= 3.3.1)
 Imports:
   dplyr,
@@ -12,6 +14,7 @@ Imports:
   grDevices,
   grid,
   gridExtra,
+  methods,
   magrittr,
   png,
   purrr,
@@ -20,7 +23,7 @@ Imports:
   stringr,
   tibble,
   tools
-License: 1.0.153
+License: MIT + file LICENSE
 Language: en-US
 Encoding: UTF-8
 LazyData: true

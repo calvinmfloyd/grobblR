@@ -49,6 +49,7 @@ Accepted aesthetics:
 \item \code{border_width}
 \item \code{font_face}
 \item \code{group_elements}
+\item \code{replace_na}
 \item \code{round_rect_radius}
 \item \code{text_align}
 \item \code{text_cex}

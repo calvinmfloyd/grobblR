@@ -45,10 +45,6 @@ aes_matrix = function(df, value, column_names = FALSE) {
 #' }
 #' Also, the user can provide the row name of the column they wish to alter.
 #' @return A matrix with the desired rows altered.
-#' @examples 
-#' df = data.frame(x = c(1, 2, 3), y = c(4, 5, 6))
-#' mat = aes_matrix(df, 'white')
-#' alter_rows(mat = mat, value = 'red', rows = c(1, 2))
 #' @export
 
 alter_rows = function(mat, value, rows = NULL) {
@@ -77,10 +73,6 @@ alter_rows = function(mat, value, rows = NULL) {
 #' }
 #' Also, the user can provide the column name of the column they wish to alter.
 #' @return A matrix with the desired columns altered.
-#' @examples 
-#' df = data.frame(x = c(1, 2, 3), y = c(4, 5, 6))
-#' mat = aes_matrix(df, 'white')
-#' alter_columns(mat = mat, value = 'red', columns = 1)
 #' @export
 
 alter_columns = function(mat, value, columns = NULL) {
@@ -103,10 +95,6 @@ alter_columns = function(mat, value, columns = NULL) {
 #' @param columns The columns the user wishes to alter. See \code{\link{alter_columns}}
 #' for information on special inputs.
 #' @return A matrix with the desired cells altered.
-#' @examples 
-#' df = data.frame(x = c(1, 2, 3), y = c(4, 5, 6))
-#' mat = aes_matrix(df, 'white')
-#' alter_cells(mat = mat, value = 'red', rows = c(1,2), columns = 1)
 #' @export
 
 alter_cells = function(mat, value, rows = NULL, columns = NULL) {
@@ -137,7 +125,7 @@ get_first_indicator = function() {
 
 check_mat = function(mat, location) {
 
-  is_matrix_check = 'matrix' %in% is(mat)
+  is_matrix_check = 'matrix' %in% methods::is(mat)
   
   if (!(is_matrix_check)) {
     
