@@ -127,7 +127,7 @@ grob_layout(
 
 <img src="man/figures/README-two_by_two_system_w_borders-1.png" width="65%" />
 
-### Size Control
+## Size Control
 
   - One way to control heights and widths of the grobs is by tweaking
     the `p` (standing for *proportion*) parameter within both
