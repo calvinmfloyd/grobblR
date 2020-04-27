@@ -414,7 +414,8 @@ convert_to_matrix_grob = function(df,
       if (nrow(aes_list[[val_name]]) != nr | ncol(aes_list[[val_name]]) != nc) {
         
         error_msg = glue::glue("
-          The dimensions of {val_name} in aes_list do not match the dimension of the matrix it's linked to.
+          The dimensions of {val_name} in aes_list ({nrow(aes_list[[val_name]])}x{ncol(aes_list[[val_name]])}) \\
+          do not match the dimension of the matrix it's linked to ({nr}x{nc}).
           ")
         
         stop(error_msg, .call = FALSE)
