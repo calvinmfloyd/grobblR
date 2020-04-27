@@ -104,7 +104,7 @@ grob_layout(
 ## Size Control
 
 * One way to control heights and widths of the grobs is by tweaking the `p` (standing for *proportion*) parameter within both `grob_row()` and `grob_col()`.
-* The default for `p` is 1, but let's see what happens when we tweak it for a grid-system with two grob-rows:
+* The default for `p` is 1, but sizes change if `p` differs from that.
 
 ```{r two_by_one_system_all_p}
 grob_layout(
@@ -116,7 +116,8 @@ grob_layout(
   view_grob()
 ```
 
-* The user can also specify specific heights/widths in the millimeters.
+* The grob-row with `p = 2` is given twice the height of the grob-row with `p = 1`.
+* The user can also supply specific heights/widths in millimeters.
 
 ```{r three_by_one_specific_heights}
 grob_layout(

@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 ```
 
 
-* Arguably the most crucial function in `grobblR` is `grob_layout()`, which needs to be utilized in order to create the final PDF.
+* Arguably the most crucial function in grobblR is `grob_layout()`, which needs to be utilized in order to create the final PDF.
 * `grob_layout()` reads the grob-row's and grob-columns within it to know how to _layout_ the page. See the [grobblR vignette](grobblR.html) for information on how it allots space to the grob-rows and grob-columns.
 * There are many ways customize individual grob-rows and grob-columns within the grob-layout, including borders, titles and captions.
 

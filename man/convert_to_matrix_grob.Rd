@@ -5,7 +5,7 @@
 \title{Converts a data.frame/matrix to a grob, with flexible aesthetics.}
 \usage{
 convert_to_matrix_grob(
-  df,
+  .df,
   aes_list = ga_list(),
   m_type = 1,
   height = numeric(),
@@ -16,7 +16,7 @@ convert_to_matrix_grob(
 )
 }
 \arguments{
-\item{df}{The data.frame/matrix to be converted to a grob.}
+\item{.df}{The data.frame/matrix to be converted to a grob.}
 
 \item{aes_list}{The list outputted by \code{\link{ga_list}} which gives the data.frame/matrix grob its aesthetics.}
 
@@ -40,7 +40,7 @@ convert_to_matrix_grob(
 \item{text_cex_adj}{A numeric value used to adjust the automatic text cex sizing.}
 }
 \value{
-A grob of df, with the corresponding aesthetics.
+A grob of \code{.df}, with the corresponding aesthetics.
 }
 \description{
 Converts a data.frame/matrix to a grob, with flexible aesthetics.

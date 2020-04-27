@@ -150,7 +150,7 @@ add_caption_grob = function(grob,
   }
   
   caption_grob = convert_to_matrix_grob(
-    df = matrix(caption, ncol = 1),
+    .df = matrix(caption, ncol = 1),
     height = caption_height - caption_height*white_space_p,
     width = width,
     units = "mm",
@@ -244,7 +244,7 @@ add_title_grob = function(grob,
   }
   
   title_grob = convert_to_matrix_grob(
-    df = matrix(title, ncol = 1),
+    .df = matrix(title, ncol = 1),
     height = title_height - title_height*white_space_p,
     width = width,
     units = "mm",

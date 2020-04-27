@@ -29,8 +29,9 @@ convert_to_grob = function(x,
     x$width = width
     x$units = units
     aes_list = x$finish_ga_list
-    x = x$current %>% purrr::set_names(NULL)
-      
+    x = x$current 
+    colnames(x) = NULL
+    
   }
   
   if (methods::is(x, "grob_image_object")) {
@@ -51,7 +52,9 @@ convert_to_grob = function(x,
 
     x = as.matrix(x)
     matrix_aes_elements = get_matrix_aes_elements()
-    colname_present = !is.null(colnames(x))
+    column_names_not_null = !is.null(colnames(x))
+    all_colnames_na = all(is.na(colnames(x)))
+    colname_present = column_names_not_null & !all_colnames_na
     height_adj = ifelse(colname_present, 1, 0)
 
     if (colname_present) {
@@ -73,7 +76,7 @@ convert_to_grob = function(x,
       }
 
       colname_grob = convert_to_matrix_grob(
-        df = x,
+        .df = x,
         m_type = 3,
         aes_list = colname_ga_list,
         height = height/(nrow(x) + 1),
@@ -98,7 +101,7 @@ convert_to_grob = function(x,
     }
 
     cell_grob = convert_to_matrix_grob(
-      df = x,
+      .df = x,
       m_type = ifelse(colname_present, 2, 1),
       aes_list = cell_ga_list,
       height = height - height*height_adj/(nrow(x) + 1),
@@ -174,7 +177,7 @@ convert_to_grob = function(x,
     
     text_matrix = matrix(lines$lines, ncol = 1)
     grob = convert_to_matrix_grob(
-      df = text_matrix,
+      .df = text_matrix,
       aes_list = aes_list,
       height = height,
       width = width,
@@ -238,7 +241,7 @@ convert_to_grob = function(x,
 
 #' Converts a data.frame/matrix to a grob, with flexible aesthetics.
 #'
-#' @param df The data.frame/matrix to be converted to a grob.
+#' @param .df The data.frame/matrix to be converted to a grob.
 #' @param aes_list The list outputted by \code{\link{ga_list}} which gives the data.frame/matrix grob its aesthetics.
 #' @param m_type A integer value which indicates what the default aesthetics of the table will be. Default is 1. The possible options:
 #' \enumerate{
@@ -253,18 +256,18 @@ convert_to_grob = function(x,
 #' @param padding A numeric value designating the amount of padding around the matrix cells.
 #' @param text_cex_adj A numeric value used to adjust the automatic text cex sizing.
 #' @param units millimeters
-#' @return A grob of df, with the corresponding aesthetics.
+#' @return A grob of \code{.df}, with the corresponding aesthetics.
 
-convert_to_matrix_grob = function(df,
+convert_to_matrix_grob = function(.df,
                                   aes_list = ga_list(),
                                   m_type = 1,
                                   height = numeric(),
                                   width = numeric(),
                                   padding = numeric(),
                                   units = c('mm'),
-                                  text_cex_adj = 0.2){
+                                  text_cex_adj = 0.2) {
 
-  stopifnot(!is.null(nrow(df)), !is.null(ncol(df)))
+  stopifnot(!is.null(nrow(.df)), !is.null(ncol(.df)))
   stopifnot(!length(height) == 0, !length(width) == 0)
   stopifnot(m_type %in% 1:5)
 
@@ -273,11 +276,15 @@ convert_to_matrix_grob = function(df,
     desc = c('matrix', 'table', 'column names', 'caption', 'title')
     )
 
-  df_fit = df
-  if(m_type == 3) df = matrix(colnames(df), nrow = 1)
+  .df_fit = .df
+  if (m_type == 3) {
+    
+    .df = matrix(colnames(.df), nrow = 1)
+    
+  }
 
-  nr = nrow(df)
-  nc = ncol(df)
+  nr = nrow(.df)
+  nc = ncol(.df)
 
   # Adding in default values (non-matrices) if they are missing
   def_vals_non_matrices = list(
@@ -331,7 +338,7 @@ convert_to_matrix_grob = function(df,
   } else {
   
     column_props = apply(
-      X = rbind(colnames(df_fit), df_fit),
+      X = rbind(colnames(.df_fit), .df_fit),
       MARGIN = 2,
       FUN = function(x) max(graphics::strwidth(c(x), units = 'in'))
       )
@@ -370,7 +377,7 @@ convert_to_matrix_grob = function(df,
     optimal_cvs = sapply(
       X = 1:nc, 
       function(x){
-        column_edited = ifelse(df[,x] %in% '', " ", df[,x])
+        column_edited = ifelse(.df[,x] %in% '', " ", .df[,x])
         cex_val_convergence(
           string = paste(column_edited, collapse = '\n'),
           n_lines = nr,
@@ -520,7 +527,7 @@ convert_to_matrix_grob = function(df,
         )
       
       text_grob = grid::textGrob(
-        label = ifelse(is.na(df[i,j]), aes_list[['replace_na']][i,j], df[i,j]),
+        label = ifelse(is.na(.df[i,j]), aes_list[['replace_na']][i,j], .df[i,j]),
         x = grid::unit(aes_list[['text_align']][i,j], "npc"),
         y = grid::unit(aes_list[['text_v_align']][i,j], "npc"),
         hjust = aes_list[['text_just']][i,j],
@@ -553,7 +560,7 @@ convert_to_matrix_grob = function(df,
     }}
 
   # Layout Matrix
-  layout_matrix = get_layout_matrix(df, aes_list[['group_elements']])
+  layout_matrix = get_layout_matrix(.df, aes_list[['group_elements']])
   first_element_indices = unlist(lapply(unique(c(layout_matrix)), function(x) min(which(c(layout_matrix) == x))))
 
   gridExtra::arrangeGrob(
@@ -626,6 +633,7 @@ convert_to_image_grob = function(img_path,
     )
 
 }
+
 
 
 
