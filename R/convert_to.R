@@ -48,7 +48,7 @@ convert_to_grob = function(x,
   }
   
   # Matrix / Data.Frame
-  if(is.data.frame(x) | is.matrix(x)){
+  if (is.data.frame(x) | is.matrix(x)) {
 
     x = as.matrix(x)
     matrix_aes_elements = get_matrix_aes_elements()
@@ -195,9 +195,9 @@ convert_to_grob = function(x,
       )
     
     aspect_ratio_multiplier = ifelse(
-      length(aes_list$aspect_ratio_multiplier) == 0,
-      1,
-      aes_list$aspect_ratio_multiplier
+      test = length(aes_list$aspect_ratio_multiplier) == 0,
+      yes = 1,
+      no = aes_list$aspect_ratio_multiplier
       )
     
     ggplot2::ggsave(
@@ -219,7 +219,13 @@ convert_to_grob = function(x,
     remove_file = file.remove(png_name)
 
   }
-  
+  # Pre-Made grob  
+  else if (grid::is.grob(x)) {
+    
+    grob = x
+
+
+  }  
   # NA (empty grob)
   else if (is.na(x)) {
 
@@ -440,21 +446,6 @@ convert_to_matrix_grob = function(.df,
   # Adjustments to text_just, text_align, text_v_just, text_v_align 
 
   # - Horizontal adjustments
-  
-  for(val_name in c('text_just', 'text_align')){
-    if(!any(is.numeric(aes_list[[val_name]]), all(aes_list[[val_name]] %in% c('left', 'right', 'center')))){
-      
-      error_msg = glue::glue("
-        The {val_name} in aes_list must either be a numeric value (usually between 0 and 1), \\
-        or a character value in ('left', 'right', 'center'). Also, do not mix character values and \\
-        numeric values.
-        ")
-      
-      stop(error_msg, call. = FALSE)
-      
-    }
-  }
-
   al_text_just = aes_list[['text_just']]
   al_text_align = aes_list[['text_align']]
 
@@ -468,24 +459,26 @@ convert_to_matrix_grob = function(.df,
   aes_list[['text_just']] = matrix(as.numeric(aes_list[['text_just']]), nrow = nr)
   aes_list[['text_align']] = matrix(as.numeric(aes_list[['text_align']]), nrow = nr)
 
-  # - Vertical adjustments
-
-  al_text_v_just = aes_list[['text_v_just']]
-  al_text_v_align = aes_list[['text_v_align']]
-
-  for(val_name in c('text_v_just', 'text_v_align')){
-    if(!any(is.numeric(aes_list[[val_name]]), all(aes_list[[val_name]] %in% c('top', 'bottom', 'center')))){
+  
+  for (val_name in c('text_just', 'text_align')) {
+    
+    if (!is.numeric(aes_list[[val_name]])) {
       
       error_msg = glue::glue("
         The {val_name} in aes_list must either be a numeric value (usually between 0 and 1), \\
-        or a character value in ('top', 'bottom', 'center'). Also, do not mix character values and \\
-        numeric values.
+        or a character value in ('left', 'right', 'center').
         ")
       
       stop(error_msg, call. = FALSE)
       
     }
+
   }
+
+  # - Vertical adjustments
+
+  al_text_v_just = aes_list[['text_v_just']]
+  al_text_v_align = aes_list[['text_v_align']]
 
   aes_list[['text_v_just']][al_text_v_just %in% 'center' | al_text_v_align %in% 'center'] = 0.5
   aes_list[['text_v_align']][al_text_v_just %in% 'center' | al_text_v_align %in% 'center'] = 0.5
@@ -496,6 +489,20 @@ convert_to_matrix_grob = function(.df,
 
   aes_list[['text_v_just']] = matrix(as.numeric(aes_list[['text_v_just']]), nrow = nr)
   aes_list[['text_v_align']] = matrix(as.numeric(aes_list[['text_v_align']]), nrow = nr)
+  
+  for(val_name in c('text_v_just', 'text_v_align')){
+    if(!any(is.numeric(aes_list[[val_name]]), all(aes_list[[val_name]] %in% c('top', 'bottom', 'center')))){
+      
+      error_msg = glue::glue("
+        The {val_name} in aes_list must either be a numeric value (usually between 0 and 1), \\
+        or a character value in ('top', 'bottom', 'center').
+        ")
+      
+      stop(error_msg, call. = FALSE)
+      
+    }
+  }
+
 
   # Aesthetic value type checks before we start creating the grobs themselves
   for(val_name in names(def_orig_vals_list)){

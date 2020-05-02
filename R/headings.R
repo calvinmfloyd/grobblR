@@ -24,7 +24,8 @@ column_names_to_row = function(df) {
     
       mat = df$current
       column_names = colnames(mat)
-      mat = tibble::as_tibble(mat, .name_repair = "check_unique") %>% 
+      mat = mat %>%
+        tibble::as_tibble(.name_repair = "minimal") %>% 
         purrr::set_names(NULL)
       
       mat_w_column_names = rbind(column_names, mat)
@@ -194,7 +195,7 @@ add_column_headings = function(mat, headings = list(), heading_cols = list()) {
   # - For the old process of adding column headings
   } else {
     
-    grob_column_heading = rep(" ", ncol(mat))
+    column_headings = rep(" ", ncol(mat))
     for (i in 1:length(headings)) {
       
       is_column_index = is.numeric(heading_cols[[i]])
@@ -205,14 +206,14 @@ add_column_headings = function(mat, headings = list(), heading_cols = list()) {
         
       } else {
       
-        which_indices = which(colnames(mat@initial) %in% heading_cols[[i]])
+        which_indices = which(colnames(mat) %in% heading_cols[[i]])
         column_headings[which_indices] = headings[[i]]
       
       }
     
     }
     
-    mat_w_column_headings = rbind(grob_column_heading, mat)
+    mat_w_column_headings = rbind(column_headings, mat)
     return(mat_w_column_headings)
     
   }

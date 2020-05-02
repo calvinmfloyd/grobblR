@@ -70,7 +70,11 @@ grob_matrix = function(x) {
     # - Otherwise, send it straight through to be converted to a tibble  
     } else {
       
-      test = tibble::as_tibble(test)
+      # - Supressing messages due to potential name repair messages from tibble
+      test = suppressMessages({
+        test %>%
+        tibble::as_tibble(.name_repair = "unique")
+      })
       
     }
     
@@ -81,7 +85,6 @@ grob_matrix = function(x) {
   grob_object$test = test
   grob_object$current = convert_to_matrix(initial)
   grob_object = column_names_to_row(grob_object)
-  
   return(grob_object)
 
 }

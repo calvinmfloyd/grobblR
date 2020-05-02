@@ -291,7 +291,7 @@ get_matrix_aesthetic_lookup_df = function(test,
       accepted_classes = list(c('numeric')),
       value = list(
         matrix(
-          data = 3,
+          data = 1.5,
           nrow = nr_column_names,
           ncol = nc_cells
           )
@@ -304,7 +304,7 @@ get_matrix_aesthetic_lookup_df = function(test,
       accepted_classes = list(c('numeric')),
       value = list(
         matrix(
-          data = 3,
+          data = 1.5,
           nrow = nr_column_headings,
           ncol = nc_cells
           )
@@ -465,7 +465,7 @@ get_matrix_aesthetic_lookup_df = function(test,
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
-          data = ifelse(type %in% 'text', 'left', 'center'),
+          data = ifelse(type %in% 'text', 0.0, 0.5),
           nrow = nr_cells,
           ncol = nc_cells
           )
@@ -478,7 +478,7 @@ get_matrix_aesthetic_lookup_df = function(test,
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
-          data = 'center',
+          data = 0.5,
           nrow = nr_column_names,
           ncol = nc_cells
           )
@@ -491,7 +491,7 @@ get_matrix_aesthetic_lookup_df = function(test,
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
-          data = 'center',
+          data = 0.5,
           nrow = nr_column_headings,
           ncol = nc_cells
           )
@@ -628,7 +628,7 @@ get_matrix_aesthetic_lookup_df = function(test,
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
-          data = ifelse(type %in% 'text', 'left', 'center'),
+          data = ifelse(type %in% 'text', 0.0, 0.5),
           nrow = nr_cells,
           ncol = nc_cells
           )
@@ -641,7 +641,7 @@ get_matrix_aesthetic_lookup_df = function(test,
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
-          data = 'center',
+          data = 0.5,
           nrow = nr_column_names,
           ncol = nc_cells
           )
@@ -654,7 +654,7 @@ get_matrix_aesthetic_lookup_df = function(test,
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
-          data = 'center',
+          data = 0.5,
           nrow = nr_column_headings,
           ncol = nc_cells
           )
@@ -668,7 +668,7 @@ get_matrix_aesthetic_lookup_df = function(test,
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
-          data = 'center',
+          data = 0.5,
           nrow = nr_cells,
           ncol = nc_cells
           )
@@ -681,7 +681,7 @@ get_matrix_aesthetic_lookup_df = function(test,
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
-          data = 'center',
+          data = 0.5,
           nrow = nr_column_names,
           ncol = nc_cells
           )
@@ -694,7 +694,7 @@ get_matrix_aesthetic_lookup_df = function(test,
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
-          data = 'center',
+          data = 0.5,
           nrow = nr_column_headings,
           ncol = nc_cells
           )
@@ -708,7 +708,7 @@ get_matrix_aesthetic_lookup_df = function(test,
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
-          data = 'center',
+          data = 0.5,
           nrow = nr_cells,
           ncol = nc_cells
           )
@@ -721,7 +721,7 @@ get_matrix_aesthetic_lookup_df = function(test,
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
-          data = 'center',
+          data = 0.5,
           nrow = nr_column_names,
           ncol = nc_cells
           )
@@ -734,7 +734,7 @@ get_matrix_aesthetic_lookup_df = function(test,
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
-          data = 'center',
+          data = 0.5,
           nrow = nr_column_headings,
           ncol = nc_cells
           )
