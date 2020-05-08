@@ -44,3 +44,71 @@ testthat::test_that(
     
   })
 
+testthat::test_that(
+  desc = glue::glue("
+    No errors when passing in a matrix of aesthetics to add_aesthetic().
+    "),
+  code = {
+    
+    mat_grob_matrix = mat %>%
+      as.data.frame() %>%
+      grob_matrix() %>%
+      add_aesthetic("text_color", matrix("red", nrow = 2, ncol = 2), "cells")
+    
+    gl = grob_layout(grob_row(grob_col(mat_grob_matrix)))
+      
+    testthat::expect_true(grid::is.grob(gl$grob))
+    
+  })
+
+testthat::test_that(
+  desc = glue::glue("
+    Errors when passing in a wrongly-dimensioned matrix of aesthetics to add_aesthetic().
+    "),
+  code = {
+    
+    testthat::expect_error({
+    
+      mat %>%
+        as.data.frame() %>%
+        grob_matrix() %>%
+        add_aesthetic("text_color", matrix("red", nrow = 2, ncol = 3), "cells")
+      
+    })
+  
+  })
+
+testthat::test_that(
+  desc = glue::glue("
+    No errors when passing in a vector of structures to add_structure().
+    "),
+  code = {
+    
+    mat_grob_matrix = mat %>%
+      as.data.frame() %>%
+      grob_matrix() %>%
+      add_structure("column_widths_p", c(1, 2))
+    
+    gl = grob_layout(grob_row(grob_col(mat_grob_matrix)))
+      
+    testthat::expect_true(grid::is.grob(gl$grob))
+    
+  })
+
+testthat::test_that(
+  desc = glue::glue("
+    Errors when passing in a wrong-length vector of structures to add_structure().
+    "),
+  code = {
+    
+    testthat::expect_error({
+    
+      mat %>%
+        as.data.frame() %>%
+        grob_matrix() %>%
+        add_structure("column_widths_p", c(1, 2, 3))
+      
+    })
+    
+  })
+

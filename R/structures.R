@@ -108,15 +108,15 @@ add_structure = function(grob_object,
     location = 'add_structure()'
     )
   
-  if (length(value) == 1 & type %in% 'matrix') {
-    
-    value = rep(value, length = ncol(grob_object$current))
-    
-  }
-  
   if (type %in% 'matrix') {
     
     value = convert_to_matrix(value)
+    value = check_matrix_structure_value(
+      value = value,
+      df = grob_object$test,
+      location = "add_structure()",
+      type = structure
+      )
     
   }
   
@@ -192,3 +192,34 @@ check_structure = function(grob_object, type, structure, value, location) {
   return(structure)
   
 }
+
+check_matrix_structure_value = function(value,
+                                        df,
+                                        location,
+                                        type) {
+  
+  dim_of_df = dim(df[1, !colnames(df) %in% "grobblR_group"])
+  dim_of_value = dim(value)
+  
+  if (!all(dim_of_df == dim_of_value) & !all(dim_of_value == 1)) {
+    
+    error_msg = glue::glue("
+      The value provided in {location} for '{type}' must either be \\
+      of the dimensions {dim_of_df[1]}x{dim_of_df[2]} or a single value.
+      The inputted dimensions are {dim_of_value[1]}x{dim_of_value[2]}.
+      ")
+    
+    stop(error_msg, call. = FALSE)
+    
+  }
+  
+  if (all(dim_of_value == 1)) {
+    
+    value = convert_to_matrix(rep(value, dim_of_df[2]))
+    
+  }
+  
+  return(value)
+
+}
+

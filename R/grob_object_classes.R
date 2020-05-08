@@ -76,7 +76,7 @@ grob_matrix_object = R6::R6Class(
           # - Check to make sure that the dimensions of the inputted matrix
           # match up with what is expected from the default value matrix
           if (!all(dim(structure_list[[structure]]) == dim(default_mat))) {
-            
+            browser()
             nr_default = nrow(default_mat)
             nc_default = ncol(default_mat)
             nr_input = nrow(input_mat)

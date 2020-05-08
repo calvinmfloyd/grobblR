@@ -17,8 +17,11 @@ options(stringsAsFactors = FALSE)
 #' 'column_names' or the 'column_headings'. If the user is passing through an object 
 #' initialized by \code{\link{grob_text}}, then only 'cells' will be accepted.
 #' 
-#' @param value A single value the user wants to apply to the group of matrix / text 
+#' @param value A single value or a matrix of values the user wants to apply to the group of matrix / text 
 #' elements for the given aesthetic.
+#' 
+#' If a matrix of values is supplied, then the matrix must be of the same dimensions
+#' as the chosen subset of the matrix / text.
 #' 
 #' @return The R6 object of the grob matrix class with its aesthetics properties altered.
 #' 
@@ -74,8 +77,6 @@ add_aesthetic = function(grob_object,
                          group = c('cells', 'column_names', 'column_headings')) {
   
   group = match.arg(group)
-  value = check_value(value = value)
-  
   is_grob_matrix = methods::is(grob_object, 'grob_matrix_object')
   
   # - Checking to make sure it's a valid grob object
@@ -91,6 +92,14 @@ add_aesthetic = function(grob_object,
   
   aesthetic = check_aesthetic(aesthetic = aesthetic, type = 'matrix', location = 'add_aesthetic()')
   group = check_group(group = group, test = grob_object$test, location = 'add_aesthetic()')
+  value = convert_to_matrix(value)
+  value = check_matrix_aesthetic_value(
+    value = value,
+    df = grob_object$test,
+    group = group,
+    location = "add_aesthetic()",
+    type = aesthetic
+    )
   
   if (!is.null(grob_object$aesthetic_list[[aesthetic]])) {
     
@@ -507,4 +516,28 @@ check_group = function(group, test, location) {
   
 }
 
+check_matrix_aesthetic_value = function(value,
+                                        df,
+                                        group,
+                                        location,
+                                        type) {
+  
+  dim_of_df = dim(df[df[["grobblR_group"]] %in% group, !colnames(df) %in% "grobblR_group"])
+  dim_of_value = dim(value)
+  
+  if (!all(dim_of_df == dim_of_value) & !all(dim_of_value == 1)) {
+    
+    error_msg = glue::glue("
+      The value provided in {location} for '{type}' of the {group} must either be \\
+      of the dimensions {dim_of_df[1]}x{dim_of_df[2]} or a single value.
+      The inputted dimensions are {dim_of_value[1]}x{dim_of_value[2]}.
+      ")
+    
+    stop(error_msg, call. = FALSE)
+    
+  }
+  
+  return(value)
+
+}
 
