@@ -165,19 +165,22 @@ grob_text = function(x) {
 grob_image = function(x) {
   
   is_ggplot = ggplot2::is.ggplot(x)
-  is_existing_png = FALSE
+  is_existing_png_file_path = FALSE
+  is_existing_png_url = FALSE
   
   if (is.character(x)) {
     
-    is_existing_png = file.exists(x) & (tools::file_ext(x) %in% 'png')
+    is_existing_png_file_path = file.exists(x) & (tools::file_ext(x) %in% "png")
+    is_existing_png_url = RCurl::url.exists(url = x) & grepl(".png", x)
     
   }
   
-  if (!any(is_ggplot, is_existing_png)) {
+  if (!any(is_ggplot, is_existing_png_file_path, is_existing_png_url)) {
     
     error_msg = glue::glue("
       The object passed through grob_image() must either be a \\
-      ggplot object or a file path to a png image.
+      ggplot object, an existing URL to a .png image or an existing local file \\
+      path to a .png image.
       ")
     
     stop(error_msg, call. = FALSE)

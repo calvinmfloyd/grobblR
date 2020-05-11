@@ -5,15 +5,15 @@
 \title{Converts a raw .png file to a grob, with flexible aesthetics.}
 \usage{
 convert_to_image_grob(
-  img_path,
+  .image,
   aes_list,
   height = numeric(),
   width = numeric(),
-  units = c("mm", "cm", "inches")
+  units = c("mm")
 )
 }
 \arguments{
-\item{img_path}{The local path to the raw .png file.}
+\item{.image}{The local path to the raw .png file.}
 
 \item{aes_list}{The list outputted by \code{\link{ga_list}} which gives the image grob its aesthetics.}
 

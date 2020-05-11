@@ -127,17 +127,19 @@ convert_to_grob = function(x,
   }
   
   # Image 
-  else if (ifelse(is.character(x), tools::file_ext(x) %in% 'png', FALSE)) {
+  else if (ifelse(is.character(x), grepl("png", x), FALSE)) {
     
-    if (!file.exists(x)) {
+    if (!any(file.exists(x), RCurl::url.exists(url = x))) {
       
-      error_msg = glue::glue("The file '{x}' does not exist.")
+      error_msg = glue::glue("
+        '{glue:::glue_collapse(x, width = 75)}' is not an existing local path or an existing URL.
+        ")
       stop(error_msg, call. = FALSE)
 
     }
 
     grob = convert_to_image_grob(
-      img_path = x,
+      .image = x,
       aes_list = aes_list,
       height = height,
       width = width,
@@ -209,7 +211,7 @@ convert_to_grob = function(x,
       )
     
     grob = convert_to_image_grob(
-      img_path = png_name,
+      .image = png_name,
       aes_list = aes_list,
       height = height,
       width = width,
@@ -581,32 +583,45 @@ convert_to_matrix_grob = function(.df,
 
 #' Converts a raw .png file to a grob, with flexible aesthetics.
 #'
-#' @param img_path The local path to the raw .png file.
+#' @param .image The local path to the raw .png file.
 #' @param aes_list The list outputted by \code{\link{ga_list}} which gives the image grob its aesthetics.
 #' @param height A numeric value designating the total height of the matrix grob in mm.
 #' @param width A numeric value designating the total width of the matrix grob in mm.
 #' @param units The units of the given height and width for the grob. Options are 'mm', 'cm' or 'inches', with the default of 'mm'.
 #' @return A grob of the raw .png file.
 
-convert_to_image_grob = function(img_path,
+convert_to_image_grob = function(.image,
                                  aes_list,
                                  height = numeric(),
                                  width = numeric(),
-                                 units = c('mm', 'cm', 'inches')) {
+                                 units = c("mm")) {
 
   stopifnot(!length(height) == 0, !length(width) == 0)
   units = match.arg(units)
   
-  raw_png = png::readPNG(normalizePath(file.path(img_path)))
+  # - If the .image string is an existing URL we will assume
+  # the user is providing a link to an image.
+  if (RCurl::url.exists(url = .image)) {
+
+    raw_png = png::readPNG(source = RCurl::getURLContent(url = .image))
+
+  # - Otherwise we will assume it's a local file path to an image
+  } else {
+
+    raw_png = png::readPNG(source = normalizePath(path = file.path(.image)))
+
+  }
+  
+  
   edit_dims = ifelse(
-    length(aes_list$maintain_aspect_ratio) == 0,
-    TRUE,
-    aes_list$maintain_aspect_ratio
+    test = length(aes_list$maintain_aspect_ratio) == 0,
+    yes  = TRUE,
+    no   = aes_list$maintain_aspect_ratio
     )
   aspect_ratio_multiplier = ifelse(
-    length(aes_list$aspect_ratio_multiplier) == 0,
-    1,
-    aes_list$aspect_ratio_multiplier
+    test = length(aes_list$aspect_ratio_multiplier) == 0,
+    yes  = 1,
+    no   = aes_list$aspect_ratio_multiplier
     )
 
   if (edit_dims) {
