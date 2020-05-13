@@ -84,8 +84,8 @@ cex_val_convergence = function(string,
                                width,
                                units = c('mm', 'cm', 'inches'),
                                cex_val_min = 0,
-                               cex_val_max = 50,
-                               convergence_limit = 0.025){
+                               cex_val_max = 20,
+                               convergence_limit = 0.05){
 
   if (sep == '|') stop("Cannot use '|' as a separator.", call. = FALSE)
 
