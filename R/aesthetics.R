@@ -479,8 +479,7 @@ alter_at = function(grob_object,
 
 check_aesthetic = function(aesthetic, type, location) {
   
-    
-  valid_aesthetics = get_matrix_aesthetics()
+  valid_aesthetics = matrix_aesthetics
   
   if (!aesthetic %in% valid_aesthetics) {
     

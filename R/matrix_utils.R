@@ -30,7 +30,6 @@ find_optimal_text_cex = function(mat,
           height = height,
           units = units,
           width = column_widths[x],
-          convergence_limit = 0.025,
           sep = '\n'
         )$cex_val
       

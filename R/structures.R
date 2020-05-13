@@ -137,7 +137,7 @@ check_structure = function(grob_object, type, structure, value, location) {
       
     if (nrow(default_structure) == 0) {
       
-      valid_structures = get_all_matrix_structures()
+      valid_structures = matrix_structures
       
       error_msg = glue::glue("
         structure parameter within {location} must be one of: \\
@@ -166,7 +166,7 @@ check_structure = function(grob_object, type, structure, value, location) {
     
     if (nrow(default_structure) == 0) {
       
-      valid_structures = get_all_image_structures()
+      valid_structures = image_structures
       
       error_msg = glue::glue("
         structure parameter within {location} must be one of: \\
