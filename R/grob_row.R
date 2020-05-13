@@ -90,7 +90,7 @@ grob_row = function(...,
 
   if (!isTRUE(is.numeric(p) & p > 0)) {
     
-    stop('p in grob_row() must be a non-zero positive numeric value.', call. = FALSE)
+    stop("p in grob_row() must be a non-zero positive numeric value.", call. = FALSE)
     
   }
   

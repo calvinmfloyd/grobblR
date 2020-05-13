@@ -6,13 +6,9 @@
 \usage{
 convert_to_matrix_grob(
   .df,
-  aes_list = ga_list(),
-  m_type = 1,
+  aes_list = list(),
   height = numeric(),
-  width = numeric(),
-  padding = numeric(),
-  units = c("mm"),
-  text_cex_adj = 0.2
+  width = numeric()
 )
 }
 \arguments{
@@ -20,24 +16,9 @@ convert_to_matrix_grob(
 
 \item{aes_list}{The list outputted by \code{\link{ga_list}} which gives the data.frame/matrix grob its aesthetics.}
 
-\item{m_type}{A integer value which indicates what the default aesthetics of the table will be. Default is 1. The possible options:
-\enumerate{
-\item Plain theme.
-\item Table theme.
-\item Column name theme.
-\item Caption theme.
-\item Title theme.
-}}
-
 \item{height}{A numeric value designating the total height of the matrix grob in mm.}
 
 \item{width}{A numeric value designating the total width of the matrix grob in mm.}
-
-\item{padding}{A numeric value designating the amount of padding around the matrix cells.}
-
-\item{units}{millimeters}
-
-\item{text_cex_adj}{A numeric value used to adjust the automatic text cex sizing.}
 }
 \value{
 A grob of \code{.df}, with the corresponding aesthetics.

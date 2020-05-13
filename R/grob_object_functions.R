@@ -5,6 +5,8 @@ options(stringsAsFactors = FALSE)
 #' 
 #' Initialize a grob matrix object, to be used within \code{\link{grob_col}}.
 #' 
+#' Learn more in \code{vignette("grob_matrix")}
+#' 
 #' @param x Either a data.frame, a matrix or a vector.
 #' 
 #' @return An R6 object of the grob matrix class.
@@ -145,7 +147,8 @@ grob_text = function(x) {
 #' 
 #' Initialize a grob image object, to be used within \code{\link{grob_col}}.
 #' 
-#' @param x Either a ggplot object or a file path to png image.
+#' @param x Either a \code{ggplot} object, a file path to .png image or a URL
+#' to a .png image.
 #' 
 #' @return An R6 object of the grob image class.
 #' 
@@ -165,19 +168,22 @@ grob_text = function(x) {
 grob_image = function(x) {
   
   is_ggplot = ggplot2::is.ggplot(x)
-  is_existing_png = FALSE
+  is_existing_png_file_path = FALSE
+  is_existing_png_url = FALSE
   
   if (is.character(x)) {
     
-    is_existing_png = file.exists(x) & (tools::file_ext(x) %in% 'png')
+    is_existing_png_file_path = file.exists(x) & (tools::file_ext(x) %in% "png")
+    is_existing_png_url = RCurl::url.exists(url = x) & grepl(".png", x)
     
   }
   
-  if (!any(is_ggplot, is_existing_png)) {
+  if (!any(is_ggplot, is_existing_png_file_path, is_existing_png_url)) {
     
     error_msg = glue::glue("
       The object passed through grob_image() must either be a \\
-      ggplot object or a file path to a png image.
+      ggplot object, an existing URL to a .png image or an existing local file \\
+      path to a .png image.
       ")
     
     stop(error_msg, call. = FALSE)

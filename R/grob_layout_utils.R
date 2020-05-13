@@ -116,6 +116,122 @@ allot_sizes = function(space_size,
 
 }
 
+distribute_aes_list_to = function(x,
+                                  aes_list,
+                                  to = c("grob_matrix", "grob_text", "grob_image")) {
+  
+  
+  to = match.arg(to)
+  
+  supplied_aesthetics = aes_list %>%
+    # - Figuring out which elements of the aes_list are not null
+    purrr::map_lgl(~ !is.null(.)) %>% 
+    # - Taking only the TRUE elements
+    .[.] %>%
+    # - Extracting the not null names
+    names()
+  
+  if (to %in% "grob_matrix") {
+    
+    x = grob_matrix(x)
+    
+  } else if (to %in% "grob_text") {
+    
+    x = grob_text(x)
+    
+  } else if (to %in% "grob_image") {
+    
+    x = grob_image(x)
+    
+  }
+  
+  if (to %in% c("grob_matrix", "grob_text")) {
+    
+    # - Supplied overall aesthetics  
+    supplied_overall = supplied_aesthetics %>%
+      .[!grepl("^cell_|^colname", ., perl = TRUE)]
+    
+    supplied_overall_aesthetics = supplied_overall[supplied_overall %in% matrix_aesthetics]
+    supplied_overall_structures = supplied_overall[supplied_overall %in% matrix_structures]
+    
+    # - Supplied cell aesthetics  
+    supplied_cell_aesthetics = supplied_aesthetics %>%
+      .[grepl("^cell_", ., perl = TRUE)] %>% 
+      gsub(pattern = "cell_", replacement = "", x = .) %>%
+      .[. %in% matrix_aesthetics]
+
+    # - Supplied column name aesthetics  
+    supplied_colname_aesthetics = supplied_aesthetics %>%
+      .[grepl("^colname_", ., perl = TRUE)] %>% 
+      gsub(pattern = "colname_", replacement = "", x = .) %>%
+      .[. %in% matrix_aesthetics]
+
+    # - Looping through the overall aesthetics and apply them to the cells
+    for (overall_aes in supplied_overall_aesthetics) {
+    
+      x = x %>%
+        add_aesthetic(
+          aesthetic = overall_aes,
+          value = aes_list[[overall_aes]],
+          group = "cells"
+          )
+      
+    }
+    
+    # - Looping through the overall structures and applying them to the grob matrix
+    for (overall_str in supplied_overall_structures) {
+      
+      x = x %>%
+        add_structure(structure = overall_str, value = aes_list[[overall_str]])
+      
+    }
+    
+    # - Looping through the cell aesthetics and applying them to the grob matrix
+    for (cell_aes in supplied_cell_aesthetics) {
+    
+      x = x %>%
+        add_aesthetic(
+          aesthetic = cell_aes,
+          value = aes_list[[paste0("cell_", cell_aes)]],
+          group = "cells"
+          )
+      
+    }
+    
+    # - Looping through the column name aesthetics and applying them to the grob matrix
+    for (colname_aes in supplied_colname_aesthetics) {
+      
+      x = x %>%
+        add_aesthetic(
+          aesthetic = colname_aes,
+          value = aes_list[[paste0("colname_", colname_aes)]],
+          group = "column_names"
+          )
+      
+    }
+
+    
+  }
+  
+  else if (to %in% "grob_image") {
+    
+    supplied_image_structures = supplied_aesthetics[supplied_aesthetics %in% image_structures]
+    
+    # - Looping through the image structures and applying them to the grob image
+    for (image_str in supplied_image_structures) {
+
+      x = x %>%
+        add_structure(structure = image_str, value = aes_list[[image_str]][1,1])
+
+    }
+    
+  }
+  
+  return(x)
+  
+}
+
+
 
 add_caption_grob = function(grob,
                             caption,
@@ -126,37 +242,17 @@ add_caption_grob = function(grob,
   grob_height = sum(as.numeric(grob$heights))
   width = sum(as.numeric(grob$widths))
   
-  if(is.null(caption_aes_list[['text_cex']])){
-    
-    n_lines = ifelse(!is.null(caption_aes_list[['n_lines']]), caption_aes_list[['n_lines']], 10000)
-    
-    lines = cex_val_convergence(
-      string = caption,
-      n_lines = n_lines,
-      sep = '\n',
-      height = caption_height,
-      width = width,
-      units = "mm"
-      )
-    caption_aes_list[['text_cex']] = convert_to_matrix(lines[['cex_val']])
-    caption = lines$lines
-    
-    if (length(caption) > 1) {
-      
-      caption_aes_list[['round_rect_radius']] = convert_to_matrix(0)
-      
-    }
-    
-  }
-  
-  caption_grob = convert_to_matrix_grob(
-    .df = matrix(caption, ncol = 1),
-    height = caption_height - caption_height*white_space_p,
-    width = width,
-    units = "mm",
+  caption_grob_text = distribute_aes_list_to(
+    x = caption,
     aes_list = caption_aes_list,
-    m_type = 4
+    to = "grob_text"
     )
+  
+  caption_grob_text$theme = "caption"
+  caption_grob_col = grob_col(caption_grob_text, padding = 0)
+  caption_grob_col$height = caption_height - caption_height*white_space_p
+  caption_grob_col$width = width
+  caption_grob = caption_grob_col$grob
 
   gridExtra::arrangeGrob(
     grobs = grid::gList(grob, grid::nullGrob(), caption_grob),
@@ -180,26 +276,22 @@ add_page_number = function(grob, page_number, padding){
   grob_width = sum(as.numeric(grob$widths))
   
   pn_pad_pct = (0.2)/2
-  ga_l = ga_list(text_color = 'gray40', background_color = NA)
-  if (page_number == '') {
-    
-    ga_l[['text_cex']] = convert_to_matrix(1)
-    
-  }
+
+  pn_grob_text = grob_matrix(page_number) %>%
+    add_aesthetic(aesthetic = "text_color", value = "gray40", group = "cells") %>%
+    add_aesthetic(aesthetic = "background_color", value = "none", group = "cells")
   
-  page_number_grob = convert_to_grob(
-    x = page_number,
-    height = padding*(1 - 2*pn_pad_pct),
-    width = padding*(1 - 2*pn_pad_pct),
-    aes_list = ga_l
-    )
+  pn_grob_col = grob_col(pn_grob_text, padding = 0)
+  pn_grob_col$height = padding*(1 - 2*pn_pad_pct)
+  pn_grob_col$width = padding*(1 - 2*pn_pad_pct)
+  pn_grob = pn_grob_col$grob
 
   layout_matrix_w_pn = matrix(NA, nrow = 5, ncol = 5)
   layout_matrix_w_pn[2,2] = 1
   layout_matrix_w_pn[4,4] = 2
 
   gridExtra::arrangeGrob(
-    grobs = grid::gList(grob, page_number_grob),
+    grobs = grid::gList(grob, pn_grob),
     heights = grid::unit(
       x = c(padding, grob_height, padding*pn_pad_pct, (padding - 2*padding*pn_pad_pct), padding*pn_pad_pct),
       units = 'mm'
@@ -221,37 +313,19 @@ add_title_grob = function(grob,
   white_space_p = 0.05
   grob_height = sum(as.numeric(grob$heights))
   width = sum(as.numeric(grob$widths))
-  
-  if(is.null(title_aes_list[['text_cex']])){
-    
-    n_lines = ifelse(!is.null(title_aes_list[['n_lines']]), title_aes_list[['n_lines']], 1)
-    lines = cex_val_convergence(
-      string = title,
-      n_lines = n_lines,
-      sep = '\n',
-      height = title_height,
-      width = width,
-      units = "mm"
-      )
-    title_aes_list[['text_cex']] = convert_to_matrix(lines$cex_val)
-    title = lines$lines
-    if (length(title) > 1) {
-      
-      title_aes_list[['round_rect_radius']] = convert_to_matrix(0)
-      
-    }
-    
-  }
-  
-  title_grob = convert_to_matrix_grob(
-    .df = matrix(title, ncol = 1),
-    height = title_height - title_height*white_space_p,
-    width = width,
-    units = "mm",
-    aes_list = title_aes_list,
-    m_type = 5
-    )
 
+  title_grob_text = distribute_aes_list_to(
+    x = title,
+    aes_list = title_aes_list,
+    to = "grob_text"
+    )
+  
+  title_grob_text$theme = "title"
+  title_grob_col = grob_col(title_grob_text, padding = 0)
+  title_grob_col$height = title_height - title_height*white_space_p
+  title_grob_col$width = width
+  title_grob = title_grob_col$grob
+  
   gridExtra::arrangeGrob(
     grobs = grid::gList(title_grob, grid::nullGrob(), grob),
     layout_matrix = matrix(c(1, 2, 3), ncol = 1),

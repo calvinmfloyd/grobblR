@@ -19,6 +19,7 @@ Imports:
   png,
   purrr,
   R6,
+  RCurl,
   scales,
   stringr,
   tibble,

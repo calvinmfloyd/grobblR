@@ -15,6 +15,9 @@ An R6 object of the grob matrix class.
 \description{
 Initialize a grob matrix object, to be used within \code{\link{grob_col}}.
 }
+\details{
+Learn more in \code{vignette("grob_matrix")}
+}
 \examples{
 
 data.frame(

@@ -17,8 +17,11 @@ or \code{\link{grob_text}}.}
 
 \item{aesthetic}{The matrix aesthetic the user wishes to add.}
 
-\item{value}{A single value the user wants to apply to the group of matrix / text 
-elements for the given aesthetic.}
+\item{value}{A single value or a matrix of values the user wants to apply to the group of matrix / text 
+elements for the given aesthetic.
+
+If a matrix of values is supplied, then the matrix must be of the same dimensions
+as the chosen subset of the matrix / text.}
 
 \item{group}{The group of the grob matrix object the user wants to add the 
 aesthetic to. 

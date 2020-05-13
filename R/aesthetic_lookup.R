@@ -103,7 +103,33 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'background_alpha',
       group = 'cells',
-      theme = 'default',
+      theme = "caption",
+      accepted_classes = list(c('numeric')),
+      value = list(
+        matrix(
+          data = 1,
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'background_alpha',
+      group = 'cells',
+      theme = "title",
+      accepted_classes = list(c('numeric')),
+      value = list(
+        matrix(
+          data = 1,
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'background_alpha',
+      group = 'cells',
+      theme = "default",
       accepted_classes = list(c('numeric')),
       value = list(
         matrix(
@@ -116,7 +142,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'background_alpha',
       group = 'column_names',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('numeric')),
       value = list(
         matrix(
@@ -129,7 +155,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'background_alpha',
       group = 'column_headings',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('numeric')),
       value = list(
         matrix(
@@ -143,7 +169,33 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'background_color',
       group = 'cells',
-      theme = 'default',
+      theme = "caption",
+      accepted_classes = list(c('character')),
+      value = list(
+        matrix(
+          data = get_empty_placeholder(),
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'background_color',
+      group = 'cells',
+      theme = "title",
+      accepted_classes = list(c('character')),
+      value = list(
+        matrix(
+          data = get_empty_placeholder(),
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'background_color',
+      group = 'cells',
+      theme = "default",
       accepted_classes = list(c('character')),
       value = list(
         matrix(
@@ -163,7 +215,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'background_color',
       group = 'column_names',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('character')),
       value = list(
         matrix(
@@ -176,7 +228,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'background_color',
       group = 'column_headings',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('character')),
       value = list(
         matrix(
@@ -190,7 +242,33 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'border_color',
       group = 'cells',
-      theme = 'default',
+      theme = "caption",
+      accepted_classes = list(c('character')),
+      value = list(
+        matrix(
+          data = 'gray40',
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'border_color',
+      group = 'cells',
+      theme = "title",
+      accepted_classes = list(c('character')),
+      value = list(
+        matrix(
+          data = 'gray40',
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'border_color',
+      group = 'cells',
+      theme = "default",
       accepted_classes = list(c('character')),
       value = list(
         matrix(
@@ -203,7 +281,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'border_color',
       group = 'column_names',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('character')),
       value = list(
         matrix(
@@ -216,7 +294,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'border_color',
       group = 'column_headings',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('character')),
       value = list(
         matrix(
@@ -230,7 +308,33 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'border_sides',
       group = 'cells',
-      theme = 'default',
+      theme = "caption",
+      accepted_classes = list(c('character')),
+      value = list(
+        matrix(
+          data = "",
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'border_sides',
+      group = 'cells',
+      theme = "title",
+      accepted_classes = list(c('character')),
+      value = list(
+        matrix(
+          data = "",
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'border_sides',
+      group = 'cells',
+      theme = "default",
       accepted_classes = list(c('character')),
       value = list(
         matrix(
@@ -247,7 +351,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'border_sides',
       group = 'column_names',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('character')),
       value = list(
         matrix(
@@ -260,7 +364,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'border_sides',
       group = 'column_headings',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('character')),
       value = list(
         matrix(
@@ -274,7 +378,33 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'border_width',
       group = 'cells',
-      theme = 'default',
+      theme = "caption",
+      accepted_classes = list(c('numeric')),
+      value = list(
+        matrix(
+          data = 1,
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'border_width',
+      group = 'cells',
+      theme = "title",
+      accepted_classes = list(c('numeric')),
+      value = list(
+        matrix(
+          data = 1,
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'border_width',
+      group = 'cells',
+      theme = "default",
       accepted_classes = list(c('numeric')),
       value = list(
         matrix(
@@ -287,7 +417,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'border_width',
       group = 'column_names',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('numeric')),
       value = list(
         matrix(
@@ -300,7 +430,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'border_width',
       group = 'column_headings',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('numeric')),
       value = list(
         matrix(
@@ -315,7 +445,33 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'font_face',
       group = 'cells',
-      theme = 'default',
+      theme = "title",
+      accepted_classes = list(c('numeric', 'character')),
+      value = list(
+        matrix(
+          data = 2,
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'font_face',
+      group = 'cells',
+      theme = "caption",
+      accepted_classes = list(c('numeric', 'character')),
+      value = list(
+        matrix(
+          data = 3,
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'font_face',
+      group = 'cells',
+      theme = "default",
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
@@ -328,7 +484,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'font_face',
       group = 'column_names',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
@@ -341,7 +497,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'font_face',
       group = 'column_headings',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
@@ -356,7 +512,33 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'group_elements',
       group = 'cells',
-      theme = 'default',
+      theme = "caption",
+      accepted_classes = list(c('logical')),
+      value = list(
+        matrix(
+          data = FALSE,
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'group_elements',
+      group = 'cells',
+      theme = "title",
+      accepted_classes = list(c('logical')),
+      value = list(
+        matrix(
+          data = FALSE,
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'group_elements',
+      group = 'cells',
+      theme = "default",
       accepted_classes = list(c('logical')),
       value = list(
         matrix(
@@ -369,7 +551,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'group_elements',
       group = 'column_names',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('logical')),
       value = list(
         matrix(
@@ -382,7 +564,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'group_elements',
       group = 'column_headings',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('logical')),
       value = list(
         matrix(
@@ -397,21 +579,35 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'replace_na',
       group = 'cells',
-      theme = 'default',
+      theme = "caption",
+      accepted_classes = list(c('character')),
+      value = list(matrix("", nrow = nr_cells, ncol = nc_cells))
+      ),
+    tibble::tibble(
+      aesthetic = 'replace_na',
+      group = 'cells',
+      theme = "title",
+      accepted_classes = list(c('character')),
+      value = list(matrix("", nrow = nr_cells, ncol = nc_cells))
+      ),
+    tibble::tibble(
+      aesthetic = 'replace_na',
+      group = 'cells',
+      theme = "default",
       accepted_classes = list(c('character')),
       value = list(matrix("", nrow = nr_cells, ncol = nc_cells))
       ),
     tibble::tibble(
       aesthetic = 'replace_na',
       group = 'column_names',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('character')),
       value = list(matrix("", nrow = nr_column_names, ncol = nc))
       ),
     tibble::tibble(
       aesthetic = 'replace_na',
       group = 'column_headings',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('character')),
       value = list(matrix("", nrow = nr_column_headings, ncol = nc))
       ),
@@ -419,7 +615,33 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'round_rect_radius',
       group = 'cells',
-      theme = 'default',
+      theme = "caption",
+      accepted_classes = list(c('numeric')),
+      value = list(
+        matrix(
+          data = ifelse(nr_cells == 1, 0.2, 0),
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'round_rect_radius',
+      group = 'cells',
+      theme = "title",
+      accepted_classes = list(c('numeric')),
+      value = list(
+        matrix(
+          data = ifelse(nr_cells == 1, 0.2, 0),
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'round_rect_radius',
+      group = 'cells',
+      theme = "default",
       accepted_classes = list(c('numeric')),
       value = list(
         matrix(
@@ -432,7 +654,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'round_rect_radius',
       group = 'column_names',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('numeric')),
       value = list(
         matrix(
@@ -445,7 +667,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'round_rect_radius',
       group = 'column_headings',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('numeric')),
       value = list(
         matrix(
@@ -461,11 +683,37 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'text_align',
       group = 'cells',
-      theme = 'default',
+      theme = "caption",
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
-          data = ifelse(type %in% 'text', 0.0, 0.5),
+          data = 0.0,
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'text_align',
+      group = 'cells',
+      theme = "title",
+      accepted_classes = list(c('numeric', 'character')),
+      value = list(
+        matrix(
+          data = 0.5,
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'text_align',
+      group = 'cells',
+      theme = "default",
+      accepted_classes = list(c('numeric', 'character')),
+      value = list(
+        matrix(
+          data = 0.5,
           nrow = nr_cells,
           ncol = nc_cells
           )
@@ -474,7 +722,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'text_align',
       group = 'column_names',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
@@ -487,7 +735,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'text_align',
       group = 'column_headings',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
@@ -503,7 +751,33 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'text_cex',
       group = 'cells',
-      theme = 'default',
+      theme = "caption",
+      accepted_classes = list(c('numeric')),
+      value = list(
+        matrix(
+          data = default_cell_text_cex,
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'text_cex',
+      group = 'cells',
+      theme = "title",
+      accepted_classes = list(c('numeric')),
+      value = list(
+        matrix(
+          data = default_cell_text_cex,
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'text_cex',
+      group = 'cells',
+      theme = "default",
       accepted_classes = list(c('numeric')),
       value = list(
         matrix(
@@ -516,7 +790,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'text_cex',
       group = 'column_names',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('numeric')),
       value = list(
         matrix(
@@ -529,7 +803,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'text_cex',
       group = 'column_headings',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('numeric')),
       value = list(
         matrix(
@@ -543,7 +817,33 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'text_font',
       group = 'cells',
-      theme = 'default',
+      theme = "caption",
+      accepted_classes = list(c('character')),
+      value = list(
+        matrix(
+          data = 'sans',
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'text_font',
+      group = 'cells',
+      theme = "title",
+      accepted_classes = list(c('character')),
+      value = list(
+        matrix(
+          data = 'sans',
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'text_font',
+      group = 'cells',
+      theme = "default",
       accepted_classes = list(c('character')),
       value = list(
         matrix(
@@ -556,7 +856,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'text_font',
       group = 'column_names',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('character')),
       value = list(
         matrix(
@@ -569,7 +869,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'text_font',
       group = 'column_headings',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('character')),
       value = list(
         matrix(
@@ -583,7 +883,33 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'text_color',
       group = 'cells',
-      theme = 'default',
+      theme = "title",
+      accepted_classes = list(c('character')),
+      value = list(
+        matrix(
+          data = "gray40",
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'text_color',
+      group = 'cells',
+      theme = "caption",
+      accepted_classes = list(c('character')),
+      value = list(
+        matrix(
+          data = "gray40",
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'text_color',
+      group = 'cells',
+      theme = "default",
       accepted_classes = list(c('character')),
       value = list(
         matrix(
@@ -596,7 +922,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'text_color',
       group = 'column_names',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('character')),
       value = list(
         matrix(
@@ -609,7 +935,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'text_color',
       group = 'column_headings',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('character')),
       value = list(
         matrix(
@@ -624,11 +950,37 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'text_just',
       group = 'cells',
-      theme = 'default',
+      theme = "caption",
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
-          data = ifelse(type %in% 'text', 0.0, 0.5),
+          data = 0.0,
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'text_just',
+      group = 'cells',
+      theme = "title",
+      accepted_classes = list(c('numeric', 'character')),
+      value = list(
+        matrix(
+          data = 0.5,
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'text_just',
+      group = 'cells',
+      theme = "default",
+      accepted_classes = list(c('numeric', 'character')),
+      value = list(
+        matrix(
+          data = 0.5,
           nrow = nr_cells,
           ncol = nc_cells
           )
@@ -637,7 +989,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'text_just',
       group = 'column_names',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
@@ -650,7 +1002,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'text_just',
       group = 'column_headings',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
@@ -664,7 +1016,33 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'text_v_align',
       group = 'cells',
-      theme = 'default',
+      theme = "caption",
+      accepted_classes = list(c('numeric', 'character')),
+      value = list(
+        matrix(
+          data = 0.5,
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'text_v_align',
+      group = 'cells',
+      theme = "title",
+      accepted_classes = list(c('numeric', 'character')),
+      value = list(
+        matrix(
+          data = 0.5,
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'text_v_align',
+      group = 'cells',
+      theme = "default",
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
@@ -677,7 +1055,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'text_v_align',
       group = 'column_names',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
@@ -690,7 +1068,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'text_v_align',
       group = 'column_headings',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
@@ -704,7 +1082,33 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'text_v_just',
       group = 'cells',
-      theme = 'default',
+      theme = "caption",
+      accepted_classes = list(c('numeric', 'character')),
+      value = list(
+        matrix(
+          data = 0.5,
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'text_v_just',
+      group = 'cells',
+      theme = "title",
+      accepted_classes = list(c('numeric', 'character')),
+      value = list(
+        matrix(
+          data = 0.5,
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'text_v_just',
+      group = 'cells',
+      theme = "default",
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
@@ -717,7 +1121,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'text_v_just',
       group = 'column_names',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
@@ -730,7 +1134,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'text_v_just',
       group = 'column_headings',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('numeric', 'character')),
       value = list(
         matrix(
@@ -744,7 +1148,33 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'text_rot',
       group = 'cells',
-      theme = 'default',
+      theme = "caption",
+      accepted_classes = list(c('numeric')),
+      value = list(
+        matrix(
+          data = 0,
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'text_rot',
+      group = 'cells',
+      theme = "title",
+      accepted_classes = list(c('numeric')),
+      value = list(
+        matrix(
+          data = 0,
+          nrow = nr_cells,
+          ncol = nc_cells
+          )
+        )
+      ),
+    tibble::tibble(
+      aesthetic = 'text_rot',
+      group = 'cells',
+      theme = "default",
       accepted_classes = list(c('numeric')),
       value = list(
         matrix(
@@ -757,7 +1187,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'text_rot',
       group = 'column_names',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('numeric')),
       value = list(
         matrix(
@@ -770,7 +1200,7 @@ get_matrix_aesthetic_lookup_df = function(test,
     tibble::tibble(
       aesthetic = 'text_rot',
       group = 'column_headings',
-      theme = 'default',
+      theme = "default",
       accepted_classes = list(c('numeric')),
       value = list(
         matrix(
