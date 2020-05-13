@@ -4,6 +4,8 @@
 #' The main \code{grobblR} function which contains and organizes
 #' \code{\link{grob_col}}'s and \code{\link{grob_row}}'s, giving the overall
 #' grob-layout its shape.
+#' 
+#' Learn more in \code{vignette("grob_layout")}
 #'
 #' @param ... The combination of grob-rows and grob-columns which will help give 
 #' the main grob-layout outputted its structure and aesthetics.

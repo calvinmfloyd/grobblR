@@ -18,24 +18,24 @@ knitr::opts_chunk$set(
 )
 ```
 
-The grobblR package allows R users the ability to intuitively create flexible, reproducible PDF reports comprised of aesthetically pleasing tables, images, plots and/or text. This is done by implementing *grobs* from the [grid](https://www.rdocumentation.org/packages/grid/versions/3.6.1) and [gridExtra](https://cran.r-project.org/web/packages/gridExtra/index.html) packages.
+The grobblR package allows R users the ability to intuitively create flexible, reproducible PDF reports comprised of aesthetically pleasing tables, images, plots and/or text. This is done by implementing *grobs* from the `grid` and `gridExtra` packages.
 
 Within grobblR, the objects able to be converted to a grob are:  
 
   * Data frames / matrices
       + Or a vector of values
-  * `ggplot2` objects  
-  * `.png` files
+  * `ggplot2` objects
+  * A file path or a URL to a `.png` image
   * Character strings
   * Empty space (represented with `NA`)
 
 ## Installation
 
-You can install the development version from [GitHub](https://github.com/) with:
+You can install the development version from [GitHub](https://github.com/calvinmfloyd/grobblR) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("calvinmfloyd/grobblR")
+devtools::install_github("calvinmfloyd/grobblR", build_vignettes = TRUE, force = TRUE)
 ```
 
 ***
@@ -74,7 +74,7 @@ grob_layout(
 ## Nested Rows and Columns
 
 * One of the ways that makes grobblR truly flexible is the ability to create "nested" rows and columns - where we can insert grob-rows into grob-columns, and vice-versa.
-* This is made possible by incorporating the active classes within the [R6](https://cran.r-project.org/web/packages/R6/index.html) package.
+* This is made possible by incorporating the active classes within the `R6` package.
 * The above grob with a second grob-column in the second grob-row which contains two grob-rows within it:
 
 ```{r two_by_two_system_w_borders}
@@ -246,7 +246,7 @@ grob_layout(
       aes_list = ga_list(
         maintain_aspect_ratio = FALSE
         ),
-      'kings_logo.png'
+      'https://raw.githubusercontent.com/calvinmfloyd/grobblR/master/vignettes/kings_logo.png'
       )
     ),
   height = 100,
@@ -267,7 +267,7 @@ grob_layout(
       ),
     grob_col(
       border = TRUE,
-      'kings_logo.png' %>%
+      'https://raw.githubusercontent.com/calvinmfloyd/grobblR/master/vignettes/kings_logo.png' %>%
         grob_image() %>%
         add_structure("maintain_aspect_ratio", FALSE)
       )

@@ -167,7 +167,7 @@ grob_col_class = R6::R6Class(
       padding = ifelse(!is.na(padding), padding, padding_proportion*min(c(height, width)))
       width_w_padding = width - 2*padding
       height_w_padding = height - 2*padding
-      
+
       title_grob_caption_heights = allot_sizes(
         space_size = height_w_padding,
         inputted_proportions = c(
@@ -238,8 +238,9 @@ grob_col_class = R6::R6Class(
             heights = grid::unit(c(2*padding*(1-vjust), heights, 2*padding*vjust), units),
             widths = grid::unit(c(2*padding*hjust, width_w_padding, 2*padding*(1-hjust)), units)
             )
-          
+
           raw_grobs = grid::gList(raw_grobs, g)
+
         }
       }
 
@@ -272,14 +273,18 @@ grob_col_class = R6::R6Class(
         
       }
 
-      if(border) grob = grid::grobTree(
-        grob,
-        create_border_grob(
-          border_color = border_aes_list$border_color,
-          border_width = border_aes_list$border_width,
-          border_sides = border_aes_list$border_sides
+      if (border) {
+        
+        grob = grid::grobTree(
+          grob,
+          create_border_grob(
+            border_color = border_aes_list$border_color,
+            border_width = border_aes_list$border_width,
+            border_sides = border_aes_list$border_sides
+            )
           )
-        )
+        
+      }
 
       return(grob)
 

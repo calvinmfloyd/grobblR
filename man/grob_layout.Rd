@@ -76,6 +76,9 @@ The main \code{grobblR} function which contains and organizes
 \code{\link{grob_col}}'s and \code{\link{grob_row}}'s, giving the overall
 grob-layout its shape.
 }
+\details{
+Learn more in \code{vignette("grob_layout")}
+}
 \examples{
 
 grob_layout(

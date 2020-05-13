@@ -15,7 +15,7 @@ grob_matrix_object = R6::R6Class(
     column_headings_added = 0,
     height = NULL,
     width = NULL,
-    units = NULL,
+    units = "mm",
     theme = 'default',
     initialize = function(initial,
                           type){
@@ -32,6 +32,7 @@ grob_matrix_object = R6::R6Class(
                               type = self$type,
                               test = self$test,
                               current = self$current,
+                              theme = self$theme,
                               aesthetic_list = self$aesthetic_list,
                               structure_list = self$structure_list) {
       
@@ -76,7 +77,7 @@ grob_matrix_object = R6::R6Class(
           # - Check to make sure that the dimensions of the inputted matrix
           # match up with what is expected from the default value matrix
           if (!all(dim(structure_list[[structure]]) == dim(default_mat))) {
-            browser()
+            
             nr_default = nrow(default_mat)
             nc_default = ncol(default_mat)
             nr_input = nrow(input_mat)
@@ -100,7 +101,6 @@ grob_matrix_object = R6::R6Class(
       }
       
       # > Aesthetics ----
-      
       aesthetic_lookup_list = get_matrix_aesthetic_lookup_df(
         test = test,
         current = current,
@@ -113,7 +113,8 @@ grob_matrix_object = R6::R6Class(
  
       current = aesthetic_lookup_list[['current']]
       self$current = current
-      aesthetic_lookup_df = aesthetic_lookup_list[['lookup_df']]
+      aesthetic_lookup_df = aesthetic_lookup_list[['lookup_df']] %>% 
+        dplyr::filter(theme == !!theme)
       
       test_body_groups = unique(test[['grobblR_group']])
 
@@ -195,10 +196,78 @@ grob_matrix_object = R6::R6Class(
           input_mat[input_mat %in% get_empty_placeholder()] = NA_character_
           
         }
+        
         aesthetic_list[[aesthetic]] = input_mat
         
       }
       
+      # - Any final manual edits we need to make before sending the aesthetic list off
+      
+      # --> Text Align & Text Justification: left / right / center aligning
+      al_text_just  = aesthetic_list[['text_just']]
+      al_text_align = aesthetic_list[['text_align']]
+    
+      aesthetic_list[['text_just']][al_text_just %in% 'center' | al_text_align %in% 'center'] = 0.5
+      aesthetic_list[['text_align']][al_text_just %in% 'center' | al_text_align %in% 'center'] = 0.5
+      aesthetic_list[['text_just']][al_text_just %in% 'left' | al_text_align %in% 'left'] = 0
+      aesthetic_list[['text_align']][al_text_just %in% 'left' | al_text_align %in% 'left'] = 0
+      aesthetic_list[['text_just']][al_text_just %in% 'right' | al_text_align %in% 'right'] = 1
+      aesthetic_list[['text_align']][al_text_just %in% 'right' | al_text_align %in% 'right'] = 1
+
+      aesthetic_list[['text_just']] = matrix(
+        data = as_numeric_without_warnings(aesthetic_list[['text_just']]),
+        nrow = nrow(aesthetic_list[['text_just']])
+        )
+      
+      aesthetic_list[['text_align']] = matrix(
+        data = as_numeric_without_warnings(aesthetic_list[['text_align']]),
+        nrow = nrow(aesthetic_list[['text_align']])
+        )
+
+      if (any(is.na(aesthetic_list[['text_align']])) | any(is.na(aesthetic_list[['text_just']]))) {
+        
+        error_msg = glue::glue("
+          If a character string is inputted into text_align or text_just, the \\
+          character value must be in ('left', 'right', 'center').
+          ")
+        
+        stop(error_msg, call. = FALSE)
+        
+      }
+      
+      # --> Text Vertical Align & Text Vertical Justification: top / bottom / center aligning
+      al_text_v_just  = aesthetic_list[['text_v_just']]
+      al_text_v_align = aesthetic_list[['text_v_align']]
+    
+      aesthetic_list[['text_v_just']][al_text_v_just %in% 'center' | al_text_v_align %in% 'center'] = 0.5
+      aesthetic_list[['text_v_align']][al_text_v_just %in% 'center' | al_text_v_align %in% 'center'] = 0.5
+      aesthetic_list[['text_v_just']][al_text_v_just %in% 'bottom' | al_text_v_align %in% 'bottom'] = 0
+      aesthetic_list[['text_v_align']][al_text_v_just %in% 'bottom' | al_text_v_align %in% 'bottom'] = 0
+      aesthetic_list[['text_v_just']][al_text_v_just %in% 'top' | al_text_v_align %in% 'top'] = 1
+      aesthetic_list[['text_v_align']][al_text_v_just %in% 'top' | al_text_v_align %in% 'top'] = 1
+
+      aesthetic_list[['text_v_just']] = matrix(
+        data = as_numeric_without_warnings(aesthetic_list[['text_v_just']]),
+        nrow = nrow(aesthetic_list[['text_v_just']])
+        )
+      
+      aesthetic_list[['text_v_align']] = matrix(
+        data = as_numeric_without_warnings(aesthetic_list[['text_v_align']]),
+        nrow = nrow(aesthetic_list[['text_v_align']])
+        )
+      
+      if (any(is.na(aesthetic_list[['text_v_align']])) | any(is.na(aesthetic_list[['text_v_just']]))) {
+        
+        error_msg = glue::glue("
+          If a character string is inputted into text_v_align or text_v_just, the \\
+          character value must be in ('top', 'bottom', 'center').
+          ")
+        
+        stop(error_msg, call. = FALSE)
+        
+      }
+      
+      # - Returning final, combined aesthetic / structure list
       return(c(aesthetic_list, structure_list))
       
     })
@@ -241,7 +310,7 @@ grob_image_object = R6::R6Class(
         } else {
           
           if (!any(methods::is(input) %in% accepted_classes)) {
-    
+
             error_msg = glue::glue("
               The class of the {structure} structure input must be one of: \\
               {paste(accepted_classes, collapse = ', ')}

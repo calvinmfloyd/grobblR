@@ -206,12 +206,16 @@ grob_layout_class = R6::R6Class(
         
       }
       
-      grob = add_page_number(
-        grob = grob,
-        page_number = page_number,
-        padding = padding
-        )
+      if (padding > 0) {
+        
+        grob = add_page_number(
+          grob = grob,
+          page_number = page_number,
+          padding = padding
+          )
 
+      }
+      
       grob
 
     })

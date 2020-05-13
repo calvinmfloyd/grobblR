@@ -5,6 +5,8 @@ options(stringsAsFactors = FALSE)
 #' 
 #' Initialize a grob matrix object, to be used within \code{\link{grob_col}}.
 #' 
+#' Learn more in \code{vignette("grob_matrix")}
+#' 
 #' @param x Either a data.frame, a matrix or a vector.
 #' 
 #' @return An R6 object of the grob matrix class.
@@ -145,7 +147,8 @@ grob_text = function(x) {
 #' 
 #' Initialize a grob image object, to be used within \code{\link{grob_col}}.
 #' 
-#' @param x Either a ggplot object or a file path to png image.
+#' @param x Either a \code{ggplot} object, a file path to .png image or a URL
+#' to a .png image.
 #' 
 #' @return An R6 object of the grob image class.
 #' 

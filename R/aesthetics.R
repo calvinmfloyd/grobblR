@@ -505,7 +505,8 @@ check_group = function(group, test, location) {
     
     error_msg = glue::glue("
       group within {location} must be one of: \\
-      {paste(valid_groups, collapse = ', ')}
+      {paste(valid_groups, collapse = ', ')}. Attempted to apply an aesthetic to \\
+      the {group}.
       ")
     
     stop(error_msg, call. = FALSE)

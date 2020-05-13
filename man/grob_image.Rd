@@ -7,7 +7,8 @@
 grob_image(x)
 }
 \arguments{
-\item{x}{Either a ggplot object or a file path to png image.}
+\item{x}{Either a \code{ggplot} object, a file path to .png image or a URL
+to a .png image.}
 }
 \value{
 An R6 object of the grob image class.

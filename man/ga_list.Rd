@@ -177,4 +177,7 @@ view the documentation of \code{\link{add_aesthetic}}.
 
 To see which of the arguments are structures and what types of grobs they apply to,
 view the documentation of \code{\link{add_structure}}.
+
+For the color aesthetics (most notably \code{background_color}), inputting "none"
+will remove the color entirely, so the color will appear transparent.
 }

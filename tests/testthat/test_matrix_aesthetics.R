@@ -26,3 +26,41 @@ testthat::test_that(
     testthat::expect_true(grid::is.grob(gl$grob))
     
   })
+
+testthat::test_that(
+  desc = glue::glue("
+    Errors when inputting a text horizontal alignment that doesn't fit our \\
+    text aligning conventions.
+    "),
+  code = {
+    
+    expect_error({
+      
+      df %>%
+        grob_col(
+          aes_list = ga_list(text_align = "leftt")
+          ) %>%
+        view_grob()
+      
+    })
+    
+  })
+
+testthat::test_that(
+  desc = glue::glue("
+    Errors when inputting a text vertical alignment that doesn't fit our \\
+    text aligning conventions.
+    "),
+  code = {
+    
+    expect_error({
+      
+      df %>%
+        grob_col(
+          aes_list = ga_list(text_v_align = "toppppp")
+          ) %>%
+        view_grob()
+      
+    })
+    
+  })
