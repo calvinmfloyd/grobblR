@@ -12,28 +12,24 @@
 The grobblR package allows R users the ability to intuitively create
 flexible, reproducible PDF reports comprised of aesthetically pleasing
 tables, images, plots and/or text. This is done by implementing *grobs*
-from the
-[grid](https://www.rdocumentation.org/packages/grid/versions/3.6.1) and
-[gridExtra](https://cran.r-project.org/web/packages/gridExtra/index.html)
-packages.
+from the `grid` and `gridExtra` packages.
 
 Within grobblR, the objects able to be converted to a grob are:
 
   - Data frames / matrices
       - Or a vector of values
-  - `ggplot2` objects  
-  - `.png` files
+  - `ggplot2` objects
+  - A file path or a URL to a `.png` image
   - Character strings
   - Empty space (represented with `NA`)
 
 ## Installation
 
-You can install the development version from
-[GitHub](https://github.com/) with:
+You can install the development version from GitHub with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("calvinmfloyd/grobblR")
+devtools::install_github("calvinmfloyd/grobblR", build_vignettes = TRUE, force = TRUE)
 ```
 
 -----
@@ -285,8 +281,10 @@ grob_layout(
       ),
     grob_col(
       border = TRUE,
-      aes_list = ga_list(maintain_aspect_ratio = FALSE),
-      'vignettes/kings_logo.png'
+      aes_list = ga_list(
+        maintain_aspect_ratio = FALSE
+        ),
+      'https://raw.githubusercontent.com/calvinmfloyd/grobblR/master/vignettes/kings_logo.png'
       )
     ),
   height = 100,
@@ -311,7 +309,7 @@ grob_layout(
       ),
     grob_col(
       border = TRUE,
-      'vignettes/kings_logo.png' %>%
+      'https://raw.githubusercontent.com/calvinmfloyd/grobblR/master/vignettes/kings_logo.png' %>%
         grob_image() %>%
         add_structure("maintain_aspect_ratio", FALSE)
       )
@@ -367,7 +365,7 @@ grob_layout(
       text %>%
         grob_text() %>%
         add_aesthetic("text_color", "blue") %>%
-        add_aesthetic("font_face", 3)
+        add_aesthetic("font_face", "italic")
       )
     ),
   height = 100,
