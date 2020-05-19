@@ -176,7 +176,7 @@ convert_to_matrix_grob = function(.df,
   
   # - Setting row-heights, which at this time will all be equal heights
   row_heights = rep(height/nr, nr)
-  
+
   column_props = aes_list[['column_widths_p']]/sum(aes_list[['column_widths_p']])
   column_widths = width*column_props
 
