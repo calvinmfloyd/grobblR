@@ -88,7 +88,7 @@ add_structure = function(grob_object,
   if (!any(is_grob_image, is_grob_matrix)) {
     
     error_msg = glue::glue("
-      Please provide an object outputted by grob_matrix(), grob_text() or grob_image in add_structure().
+      Please provide an object outputted by grob_matrix(), grob_text() or grob_image() in add_structure().
       ")
     
     stop(error_msg, call. = FALSE)
@@ -117,6 +117,8 @@ add_structure = function(grob_object,
       location = "add_structure()",
       type = structure
       )
+    grob_object$last_edit = "structure"
+    grob_object$current_structure = structure
     
   }
   
@@ -162,7 +164,7 @@ check_structure = function(grob_object, type, structure, value, location) {
     
   } else if (type %in% 'image') {
     
-      default_structure = get_image_structure(structure = structure)
+    default_structure = get_image_structure(structure = structure)
     
     if (nrow(default_structure) == 0) {
       
@@ -192,6 +194,26 @@ check_structure = function(grob_object, type, structure, value, location) {
   return(structure)
   
 }
+
+check_structure_validity = function(structure, location) {
+  
+  valid_structures = matrix_structures
+  
+  if (!structure %in% valid_structures) {
+    
+    error_msg = glue::glue("
+      structure parameter within {location} must be one of: \\
+      {paste(valid_structures, collapse = ', ')}
+      ")
+    
+    stop(error_msg, call. = FALSE)
+  
+  }
+  
+  return(structure)
+  
+}
+
 
 check_matrix_structure_value = function(value,
                                         df,

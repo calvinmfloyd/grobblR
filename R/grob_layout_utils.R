@@ -147,6 +147,8 @@ distribute_aes_list_to = function(x,
   
   if (to %in% c("grob_matrix", "grob_text")) {
     
+    matrix_groups = unique(x$test[["grobblR_group"]])
+    
     # - Supplied overall aesthetics  
     supplied_overall = supplied_aesthetics %>%
       .[!grepl("^cell_|^colname", ., perl = TRUE)]
@@ -168,13 +170,17 @@ distribute_aes_list_to = function(x,
 
     # - Looping through the overall aesthetics and apply them to the cells
     for (overall_aes in supplied_overall_aesthetics) {
-    
-      x = x %>%
-        add_aesthetic(
-          aesthetic = overall_aes,
-          value = aes_list[[overall_aes]],
-          group = "cells"
-          )
+
+      for (group in matrix_groups) {
+        
+        x = x %>%
+          add_aesthetic(
+            aesthetic = overall_aes,
+            value = aes_list[[overall_aes]],
+            group = group
+            )
+        
+      }
       
     }
     

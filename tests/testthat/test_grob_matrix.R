@@ -112,3 +112,26 @@ testthat::test_that(
     
   })
 
+
+testthat::test_that(
+  desc = glue::glue("
+    Errors when trying to alter an aesthetic and a structure at the same time.
+    "),
+  code = {
+    
+    testthat::expect_error({
+    
+      mat %>%
+        as.data.frame() %>%
+        grob_matrix() %>%
+        alter_at(
+          ~ 2,
+          structure = "column_widths_p",
+          aesthetic = "font_face"
+          )
+      
+    })
+  
+  })
+
+
