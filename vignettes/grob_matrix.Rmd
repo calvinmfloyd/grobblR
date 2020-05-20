@@ -186,9 +186,8 @@ df %>%
 
 ## alter_at()
 
-* `alter_at()` is the function that is truly empowers the user to implement cell-by-cell aesthetic customization.
-  * Does _not_ apply to matrix structures.
-* Inherits the aesthetic and group from the most previous `add_aesthetic()`.
+* `alter_at()` is the function that is truly empowers the user to implement cell-by-cell aesthetic / structure customization.
+* Inherits the aesthetic / structure and group from the most previous `add_aesthetic()` / `add_structure()` / `alter_at()`.
   * Otherwise, the user must specify the specific aesthetic and group he/she wants to alter.
 * The user can select specific columns and/or rows to apply a value/function to.
   * Selected rows must be numeric row indices.
@@ -210,6 +209,18 @@ df %>%
     columns = c("x", "y"),
     rows = 1
     ) %>%
+  view_grob()
+
+```
+
+* Matrix structures can also be altered (like the column width proportions).
+
+```{r alter_at_structure}
+
+df %>%
+  grob_matrix() %>%
+  add_structure("column_widths_p", 1) %>%
+  alter_at(~ 3, columns = 1) %>%
   view_grob()
 
 ```
@@ -279,6 +290,7 @@ grob_matrix_with_new_data = formatted_df %>%
 grob_matrix_with_new_data %>% view_grob()
 
 ```
+
 
 ## Inserting into Grob Layout
 
