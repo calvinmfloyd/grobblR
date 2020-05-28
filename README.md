@@ -96,7 +96,7 @@ grob_layout(
     create “nested” rows and columns - where we can insert grob-rows
     into grob-columns, and vice-versa.
   - This is made possible by incorporating the active classes within the
-    [R6](https://cran.r-project.org/web/packages/R6/index.html) package.
+    [R6](https://CRAN.R-project.org/package=R6) package.
   - The below grob-layout has a second grob-column in the second
     grob-row which contains two grob-rows within it:
 
