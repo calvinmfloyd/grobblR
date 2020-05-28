@@ -19,7 +19,7 @@ Within grobblR, the objects able to be converted to a grob are:
   - Data frames / matrices
       - Or a vector of values
   - `ggplot2` objects
-  - A file path or a URL to a `.png` image
+  - A file path or a URL to a .png image
   - Character strings
   - Empty space (represented with `NA`)
 
@@ -87,6 +87,9 @@ grob_layout(
 
 <img src="man/figures/README-two_by_three_system-1.png" width="65%" />
 
+  - Run `vignette("grob_layout")` for more information on
+    `grob_layout()`.
+
 ## Nested Rows and Columns
 
   - One of the ways that makes grobblR truly flexible is the ability to
@@ -94,8 +97,8 @@ grob_layout(
     into grob-columns, and vice-versa.
   - This is made possible by incorporating the active classes within the
     [R6](https://cran.r-project.org/web/packages/R6/index.html) package.
-  - The above grob with a second grob-column in the second grob-row
-    which contains two grob-rows within it:
+  - The below grob-layout has a second grob-column in the second
+    grob-row which contains two grob-rows within it:
 
 <!-- end list -->
 
@@ -187,7 +190,7 @@ grob_layout(
   - Using the `aes_list` parameter and the `ga_list()` function within
     `grob_col()`, the aesthetics of individual grobs can be adjusted to
     how the user intends them to appear.
-  - See `?grobblR::ga_list` for a full list and description for each of
+  - Run `?grobblR::ga_list` for a full list and description for each of
     the possible aesthetic options.
   - For uniform background color for each cell in a matrix, one option
     is inputting a single value for `background_color` as an element
@@ -213,6 +216,8 @@ grob_layout(
   - The use can alter specific cells / groups of cells, and different
     aesthetics with `alter_at()` once the `grob_matrix()` object is
     initialized.
+  - Run `vignette("grob_matrix")` for more information on
+    `grob_matrix()`.
 
 <!-- end list -->
 
@@ -263,7 +268,8 @@ grob_layout(
 
 ## Image Grobs
 
-  - Only images in `.png` format are allowed in grobblR.
+  - Only images in .png format are allowed in grobblR. The user must
+    provide either a valid file path or a valid URL to the image.
   - If the user does not want to maintain the aspect ratio of the image
     and allow it to be stretched within its allotted space,
     `maintain_aspect_ratio = FALSE` must be inserted within the

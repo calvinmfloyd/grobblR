@@ -3,49 +3,36 @@
 #' @param df The data.frame/matrix.
 #' @return A matrix of the initial data.frame/matrix with its column
 #' names as the first row.
-#' @export 
 
 column_names_to_row = function(df) {
 
-  if ('grob_matrix_object' %in% methods::is(df)) {
+  aesthetic_list_unedited = purrr::every(.x = df$aesthetic_list, .p = is.null)
   
-    aesthetic_list_unedited = purrr::every(.x = df$aesthetic_list, .p = is.null)
-    
-    if (!aesthetic_list_unedited) {
+  if (!aesthetic_list_unedited) {
 
-      stop(
-        call. = FALSE,
-        "The user must convert column names to rows before making any aesthetic changes."
-        )
+    stop(
+      call. = FALSE,
+      "The user must convert column names to rows before making any aesthetic changes."
+      )
+
+  }
   
-    }
-    
-    if (length(colnames(df$initial)) > 0) {
-    
-      mat = df$current
-      column_names = colnames(mat)
-      mat = mat %>%
-        tibble::as_tibble(.name_repair = "minimal") %>% 
-        purrr::set_names(NULL)
-      
-      mat_w_column_names = rbind(column_names, mat)
-      df$current = mat_w_column_names
-      df$test = add_extra_row_to_df(df = df$test, row_name_label = 'column_names')
-      df$column_names_to_row = df$column_names_to_row + 1
-      
-    }
-    
-    return(df)
-    
-  } else {
+  if (length(colnames(df$initial)) > 0) {
   
-    mat = convert_to_matrix(df)
-    grob_col_names = colnames(mat)
-    colnames(mat) = NULL
-    mat_w_column_names = rbind(grob_col_names, mat)
-    return(mat_w_column_names)
+    mat = df$current
+    column_names = colnames(mat)
+    mat = mat %>%
+      tibble::as_tibble(.name_repair = "minimal") %>% 
+      purrr::set_names(NULL)
+    
+    mat_w_column_names = rbind(column_names, mat)
+    df$current = mat_w_column_names
+    df$test = add_extra_row_to_df(df = df$test, row_name_label = 'column_names')
+    df$column_names_to_row = df$column_names_to_row + 1
     
   }
+  
+  return(df)
   
 }
 
@@ -111,7 +98,8 @@ add_column_headings = function(mat, headings = list(), heading_cols = list()) {
     
   }
   
-  # - If no heading_cols are provided then it will be assumed that 
+  # - If no heading_cols are provided then it will be assumed that the user wants
+  # to apply a single heading above all the columns
   no_heading_cols_provided = length(heading_cols) == 0
   if (no_heading_cols_provided) {
     
@@ -125,17 +113,9 @@ add_column_headings = function(mat, headings = list(), heading_cols = list()) {
       stop(error_msg, call. = FALSE)
       
     }
-    
-    if (methods::is(mat, 'grob_matrix_object')) {
       
-      heading_cols = list(1:ncol(mat$current))
+    heading_cols = list(1:ncol(mat$current))
       
-    } else {
-      
-      heading_cols = list(1:ncol(mat))
-      
-    }
-    
   }
   
   same_length_check = length(headings) != length(heading_cols)
@@ -150,72 +130,44 @@ add_column_headings = function(mat, headings = list(), heading_cols = list()) {
     
   }
   
-  # - For the new aesthetic object process
-  if (methods::is(mat, 'grob_matrix_object')) {
     
-    if (mat$type != 'matrix') {
-      
-      error_msg = glue::glue("
-        Only an object initialized with grob_matrix() can be passed through \\
-        add_column_headings().
-        ")
-      
-      stop(error_msg, call. = FALSE)
-      
-    }
+  if (mat$type != 'matrix') {
     
-    mat$test = add_extra_row_to_df(df = mat$test, row_name_label = 'column_headings')
-
-    # - Users will have the option to pass in column indices or actual column
-    # names, so we will loop through the headings and evaluate each time whether
-    # the user passed in column indices or column names.
-    column_headings = rep(" ", ncol(mat$current))
-    for (i in 1:length(headings)) {
-      
-      is_column_index = is.numeric(heading_cols[[i]])
-      
-      if (is_column_index) {
-        
-        column_headings[heading_cols[[i]]] = headings[[i]]
-        
-      } else {
-      
-        which_indices = which(colnames(mat$initial) %in% heading_cols[[i]])
-        column_headings[which_indices] = headings[[i]]
-      
-      }
+    error_msg = glue::glue("
+      Only an object initialized with grob_matrix() can be passed through \\
+      add_column_headings().
+      ")
     
-    }
-    
-    mat$current = rbind(column_headings, mat$current)
-    mat$column_headings_added = mat$column_headings_added + 1
-    
-    return(mat)
-  
-  # - For the old process of adding column headings
-  } else {
-    
-    column_headings = rep(" ", ncol(mat))
-    for (i in 1:length(headings)) {
-      
-      is_column_index = is.numeric(heading_cols[[i]])
-      
-      if (is_column_index) {
-        
-        column_headings[heading_cols[[i]]] = headings[[i]]
-        
-      } else {
-      
-        which_indices = which(colnames(mat) %in% heading_cols[[i]])
-        column_headings[which_indices] = headings[[i]]
-      
-      }
-    
-    }
-    
-    mat_w_column_headings = rbind(column_headings, mat)
-    return(mat_w_column_headings)
+    stop(error_msg, call. = FALSE)
     
   }
+  
+  mat$test = add_extra_row_to_df(df = mat$test, row_name_label = 'column_headings')
+
+  # - Users will have the option to pass in column indices or actual column
+  # names, so we will loop through the headings and evaluate each time whether
+  # the user passed in column indices or column names.
+  column_headings = rep(" ", ncol(mat$current))
+  for (i in 1:length(headings)) {
+    
+    is_column_index = is.numeric(heading_cols[[i]])
+    
+    if (is_column_index) {
+      
+      column_headings[heading_cols[[i]]] = headings[[i]]
+      
+    } else {
+    
+      which_indices = which(colnames(mat$initial) %in% heading_cols[[i]])
+      column_headings[which_indices] = headings[[i]]
+    
+    }
+  
+  }
+  
+  mat$current = rbind(column_headings, mat$current)
+  mat$column_headings_added = mat$column_headings_added + 1
+  
+  return(mat)
   
 }
