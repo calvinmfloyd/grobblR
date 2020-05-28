@@ -1,8 +1,12 @@
 Package: grobblR
-Title: The package intent on allowing users to build flexible and aesthetically pleasing PDF reports
+Title: Creating Flexible, Reproducible PDF Reports
 Version: 0.1.0
-Authors@R: person("Calvin", "Floyd", email = "calvin.michael.floyd@gmail.com", role = c("aut", "cre"))
-Description: The grobblR package allows R users the ability to intuitively create 
+Authors@R: c(person(given = "Calvin",
+                  family = "Floyd",
+                  email = "calvin.michael.floyd@gmail.com",
+                  role = c("aut", "cre")
+                  ))
+Description: A tool which allows R users the ability to intuitively create 
   flexible, reproducible PDF reports comprised of aesthetically pleasing tables, 
   images, plots and/or text.
 Depends: R (>= 3.3.1)
@@ -18,9 +22,7 @@ Imports:
   magrittr,
   png,
   purrr,
-  R6,
   RCurl,
-  scales,
   stringr,
   tibble,
   tools
@@ -32,5 +34,7 @@ RoxygenNote: 7.1.0
 Suggests: 
     knitr,
     rmarkdown,
+    R6,
+    scales,
     testthat
 VignetteBuilder: knitr

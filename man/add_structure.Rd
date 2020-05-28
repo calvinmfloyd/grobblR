@@ -71,15 +71,8 @@ df \%>\%
 gg = ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = x, y = y)) +
   ggplot2::geom_line(color = 'red')
   
-# Normal scale
 gg \%>\%
   grob_image() \%>\% 
-  view_grob()
-  
-# Doubling the aspect ratio
-gg \%>\%
-  grob_image() \%>\% 
-  add_structure(structure = 'aspect_ratio_multiplier', value = 2) \%>\%
   view_grob()
   
 }
