@@ -1,6 +1,6 @@
 Package: grobblR
 Title: The package intent on allowing users to build flexible and aesthetically pleasing PDF reports
-Version: 1.0
+Version: 0.1.0
 Authors@R: person("Calvin", "Floyd", email = "calvin.michael.floyd@gmail.com", role = c("aut", "cre"))
 Description: The grobblR package allows R users the ability to intuitively create 
   flexible, reproducible PDF reports comprised of aesthetically pleasing tables, 

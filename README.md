@@ -263,7 +263,8 @@ grob_layout(
 
 ## Image Grobs
 
-  - Only images in `.png` format are allowed in grobblR.
+  - Only images in `.png` format are allowed in grobblR. The user must
+    provide either a valid file path or a valid URL to the image.
   - If the user does not want to maintain the aspect ratio of the image
     and allow it to be stretched within its allotted space,
     `maintain_aspect_ratio = FALSE` must be inserted within the
