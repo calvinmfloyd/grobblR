@@ -1,6 +1,4 @@
 
-options(stringsAsFactors = FALSE)
-
 #' Grob Matrix
 #' 
 #' Initialize a grob matrix object, to be used within \code{\link{grob_col}}.
@@ -67,7 +65,7 @@ grob_matrix = function(x) {
     # of tibble::as_tibble()
     if (initial_type == 'matrix' & is.null(colnames(test))) {
       
-      test = tibble::as_tibble(as.data.frame(test))
+      test = tibble::as_tibble(as.data.frame(test, stringsAsFactors = FALSE))
     
     # - Otherwise, send it straight through to be converted to a tibble  
     } else {
@@ -131,7 +129,7 @@ grob_text = function(x) {
 
   if (nrow(test) > 0) {
     
-    test = tibble::as_tibble(as.data.frame(test))
+    test = tibble::as_tibble(as.data.frame(test, stringsAsFactors = FALSE))
     test[['grobblR_group']] = 'cells'
   
   }

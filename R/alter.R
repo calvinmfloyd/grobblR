@@ -289,12 +289,12 @@ alter_at = function(grob_object,
     n_rows_below = sum(total_rows > max(target_rows))
     
     df_above = matrix(NA, nrow = n_rows_above, ncol = current_nc) %>% 
-      as.data.frame() %>%
+      as.data.frame(stringsAsFactors = FALSE) %>%
       tibble::as_tibble() %>%
       purrr::set_names(colnames(data))
     
     df_below = matrix(NA, nrow = n_rows_below, ncol = current_nc) %>% 
-      as.data.frame() %>%
+      as.data.frame(stringsAsFactors = FALSE) %>%
       tibble::as_tibble() %>%
       purrr::set_names(colnames(data))  
     

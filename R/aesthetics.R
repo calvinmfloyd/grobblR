@@ -1,6 +1,4 @@
 
-options(stringsAsFactors = FALSE)
-
 #' Add an Aesthetic
 #' 
 #' Add an aesthetic to a grob matrix object.

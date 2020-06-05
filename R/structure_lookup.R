@@ -1,6 +1,4 @@
 
-options(stringsAsFactors = FALSE)
-
 # Matrix ----
 
 get_matrix_structure_lookup_df = function(current,

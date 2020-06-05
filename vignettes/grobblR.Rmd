@@ -392,8 +392,8 @@ second_page_grob_layout = grob_layout(
 
 grob_to_pdf(
   list(first_page_grob_layout, second_page_grob_layout),
-  file_name = 'test.pdf',
-  meta_data_title = 'Test PDF'
+  file_name = file.path(tempdir(), "test.pdf"),
+  meta_data_title = "Test PDF"
   )
 ```
 

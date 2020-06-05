@@ -6,7 +6,7 @@ testthat::context(glue::glue("
 # Testing Variables ----
 
 mat = matrix(1:4, nrow = 2, byrow = TRUE)
-df = as.data.frame(mat)
+df = as.data.frame(mat, stringsAsFactors = FALSE)
 
 # Tests ----
 

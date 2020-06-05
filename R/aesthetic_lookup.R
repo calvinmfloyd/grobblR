@@ -1,6 +1,4 @@
 
-options(stringsAsFactors = FALSE)
-
 get_empty_placeholder = function() {
   
   'none'
