@@ -26,7 +26,7 @@ decimal_places = function(x) {
   
   if ((x %% 1) != 0) {
     
-    return(nchar(strsplit(sub('0+$', '', as.character(round(x,5))), ".", fixed = T)[[1]][[2]]))
+    return(nchar(strsplit(sub('0+$', '', as.character(round(x,5))), ".", fixed = TRUE)[[1]][[2]]))
     
   } else {
     

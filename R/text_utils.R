@@ -15,12 +15,17 @@ line_creator = function(cex_val,
                         units = c('mm'),
                         sep = '\n') {
 
-  if(sep == '|') stop("Cannot use '|' as a separator.", call. = F)
+  if (sep == '|') {
+    
+    stop("Cannot use '|' as a separator.", call. = FALSE)
+    
+  }
+  
   units = match.arg(units)
   
   paragraphs = unlist(strsplit(string, split = sep))
 
-  if(length(paragraphs) == 0){
+  if (length(paragraphs) == 0) {
 
     list(
       'valid' = TRUE,

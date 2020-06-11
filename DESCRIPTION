@@ -1,14 +1,14 @@
 Package: grobblR
-Title: Creating Flexible, Reproducible PDF Reports
+Title: Creating Flexible, Reproducible 'PDF' Reports
 Version: 0.1.0
 Authors@R: c(person(given = "Calvin",
                   family = "Floyd",
                   email = "calvin.michael.floyd@gmail.com",
-                  role = c("aut", "cre")
+                  role = c("aut", "cre", "cph")
                   ))
-Description: A tool which allows R users the ability to intuitively create 
-  flexible, reproducible PDF reports comprised of aesthetically pleasing tables, 
-  images, plots and/or text.
+Description: A tool which allows users the ability to intuitively create 
+  flexible, reproducible portable document format reports comprised of 
+  aesthetically pleasing tables, images, plots and/or text.
 Depends: R (>= 3.3.1)
 Imports:
   dplyr,

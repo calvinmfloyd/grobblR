@@ -75,7 +75,7 @@
 grob_row = function(...,
                     p = 1,
                     height = NA_real_,
-                    border = F,
+                    border = FALSE,
                     border_aes_list = ga_list(),
                     title = '',
                     title_aes_list = ga_list(),

@@ -361,7 +361,7 @@ create_border_grob = function(border_color, border_width, border_sides){
   border_sides = ifelse(is.null(border_sides), def_vals[['border_sides']], border_sides)
   
   cell_border_gs = grid::gList()
-  borders_split = unlist(strsplit(border_sides, split = ', ', fixed = T))
+  borders_split = unlist(strsplit(border_sides, split = ', ', fixed = TRUE))
 
   if (length(borders_split) > 0) {
     

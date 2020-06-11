@@ -28,18 +28,18 @@
 #' 
 #' grob_layout(
 #'   grob_row(
-#'     grob_col(1, border = T),
-#'     grob_col(2, border = T),
-#'     border = T
+#'     grob_col(1, border = TRUE),
+#'     grob_col(2, border = TRUE),
+#'     border = TRUE
 #'     ),
 #'   grob_row(
-#'     grob_col(3, border = T),
+#'     grob_col(3, border = TRUE),
 #'     grob_col(
-#'       grob_row(grob_col(4, border = T), border = T),
-#'       grob_row(grob_col(5, border = T), border = T),
-#'       border = T
+#'       grob_row(grob_col(4, border = TRUE), border = TRUE),
+#'       grob_row(grob_col(5, border = TRUE), border = TRUE),
+#'       border = TRUE
 #'       ),
-#'     border = T
+#'     border = TRUE
 #'     )
 #'   ) %>%
 #'   grob_to_pdf(
