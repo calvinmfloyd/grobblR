@@ -6,7 +6,9 @@
 <!-- badges: start -->
 
 ![License](https://img.shields.io/github/license/calvinmfloyd/grobblR)
-![CRAN status](https://www.r-pkg.org/badges/version/grobblR)
+![CRAN status](https://www.r-pkg.org/badges/version/grobblR) [![Travis
+build
+status](https://travis-ci.com/calvinmfloyd/grobblR.svg?branch=master)](https://travis-ci.com/calvinmfloyd/grobblR)
 <!-- badges: end -->
 
 The grobblR package allows R users the ability to intuitively create

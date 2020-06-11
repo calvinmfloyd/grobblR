@@ -7,3 +7,4 @@
 ^data-raw$
 ^CRAN-RELEASE$
 ^cran-comments\.md$
+^\.travis\.yml$
