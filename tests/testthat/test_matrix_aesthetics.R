@@ -64,3 +64,25 @@ testthat::test_that(
     })
     
   })
+
+testthat::test_that(
+  desc = glue::glue("
+    No errors when inputting a character string for font_face in alter_at() \\
+    ('bold', 'italic', etc).
+    "),
+  code = {
+    
+    gl = df %>%
+      grob_matrix() %>%
+      alter_at(
+        ~ "bold",
+        columns = 1,
+        aesthetic = "font_face"
+        ) %>%
+      grob_col() %>%
+      grob_row() %>%
+      grob_layout()
+    
+    expect_true(grid::is.grob(gl$grob))
+    
+  })

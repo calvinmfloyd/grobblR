@@ -182,7 +182,7 @@ convert_to_matrix_grob = function(.df,
 
   # - Creating each of our mini grobs that will compose the matrix grob
   raw_grobs = grid::gList()
-  
+ 
   for(j in 1:nc){
     
     for(i in 1:nr){
@@ -204,7 +204,13 @@ convert_to_matrix_grob = function(.df,
         vjust = aes_list[['text_v_just']][i,j],
         rot = aes_list[['text_rot']][i,j],
         gp = grid::gpar(
-          fontface = aes_list[['font_face']][i,j],
+          # - Checks to see if the user provided a numeric for the font face (1, 2, 3, ...)
+          # or a character ("bold", "italic", etc.)
+          fontface = ifelse(
+            test = !is.na(as_numeric_without_warnings(aes_list[['font_face']][i,j])),
+            yes = as.numeric(aes_list[['font_face']][i,j]),
+            no = aes_list[['font_face']][i,j]
+            ),
           fontfamily = aes_list[['text_font']][i,j],
           cex = aes_list[['text_cex']][i,j],
           col = aes_list[['text_color']][i,j]
