@@ -7,6 +7,8 @@ This is a resubmission. In this version I have:
 
 * Changed all instances of "F" to "FALSE", and "T" to "TRUE".
 
+* Altered the package link to gridExtra::grid.arrange().
+
 ## Test environments
 * local OS X install, R 3.6.3
 * ubuntu 16.04 (on travis-ci), R 4.0.0
