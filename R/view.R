@@ -20,7 +20,7 @@
 #' 
 #' @export
 #' 
-#' @details Plotted with \code{\link[gridExtra]{grid.arrange}}.
+#' @details Plotted with \code{\link[gridExtra:arrangeGrob]{gridExtra::grid.arrange()}}.
 #' 
 #' @examples 
 #' 

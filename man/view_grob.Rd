@@ -27,7 +27,7 @@ View an grob outputted by one of the \code{grob_} functions with a given width a
 height.
 }
 \details{
-Plotted with \code{\link[gridExtra]{grid.arrange}}.
+Plotted with \code{\link[gridExtra:arrangeGrob]{gridExtra::grid.arrange()}}.
 }
 \examples{
 
