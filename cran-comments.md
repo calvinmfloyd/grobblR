@@ -1,13 +1,9 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
-* Changed "R users" to "users" in the description filed of DESCRIPTION.
+* Unwrapped all examples which were previously wrapped with \dontrun{}.
 
-* Added myself as the copyright holder in the Authors@R field.
-
-* Changed all instances of "F" to "FALSE", and "T" to "TRUE".
-
-* Altered the package link to gridExtra::grid.arrange().
+* Ensured all grob_to_pdf() references in examples/vignettes/tests saved files to tempdir().
 
 ## Test environments
 * local OS X install, R 3.6.3

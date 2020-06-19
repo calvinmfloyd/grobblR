@@ -24,8 +24,6 @@
 #' 
 #' @examples 
 #' 
-#' \dontrun{
-#' 
 #' grob_layout(
 #'   grob_row(
 #'     grob_col(1, border = TRUE),
@@ -43,13 +41,9 @@
 #'     )
 #'   ) %>%
 #'   grob_to_pdf(
-#'     file_name = "test.pdf",
+#'     file_name = file.path(tempdir(), "test.pdf"),
 #'     meta_data_title = "Test PDF"
 #'     )
-#' 
-#' }
-#' 
-#' 
 #' 
 
 grob_to_pdf = function(...,
