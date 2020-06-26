@@ -5,7 +5,8 @@
 
 <!-- badges: start -->
 
-![License](https://img.shields.io/github/license/calvinmfloyd/grobblR)
+[![License:
+MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ![CRAN status](https://www.r-pkg.org/badges/version/grobblR) [![Travis
 build
 status](https://travis-ci.com/calvinmfloyd/grobblR.svg?branch=master)](https://travis-ci.com/calvinmfloyd/grobblR)
@@ -27,11 +28,11 @@ Within grobblR, the objects able to be converted to a grob are:
 
 ## Installation
 
-You can install the development version from GitHub with:
+You can install the latest version on
+[CRAN](https://cran.r-project.org/web/packages/grobblR/index.html) with
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("calvinmfloyd/grobblR", build_vignettes = TRUE, force = TRUE)
+install.packages("grobblR")
 ```
 
 -----

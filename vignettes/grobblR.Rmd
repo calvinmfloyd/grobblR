@@ -31,11 +31,10 @@ Within grobblR, the objects able to be converted to a grob are:
 
 ## Installation
 
-You can install the development version from [GitHub](https://github.com/calvinmfloyd/grobblR) with:
+You can install the latest version on [CRAN](https://cran.r-project.org/web/packages/grobblR/index.html) with
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("calvinmfloyd/grobblR", build_vignettes = TRUE, force = TRUE)
+install.packages("grobblR")
 ```
 
 ***
