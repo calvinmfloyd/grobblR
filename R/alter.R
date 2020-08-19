@@ -323,7 +323,7 @@ alter_at = function(grob_object,
   if (!is.numeric(columns)) {
     
     valid_column_names = colnames(data %>% dplyr::select(-grobblR_group))
-    which_columns = which(columns %in% valid_column_names)
+    which_columns = which(valid_column_names %in% columns)
     
     if (length(which_columns) == 0) {
       

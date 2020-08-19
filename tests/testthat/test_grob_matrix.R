@@ -35,7 +35,7 @@ testthat::test_that(
   code = {
     
     mat_grob_matrix = mat %>%
-      as.data.frame(stringsAsFactors = FALSE) %>%
+      as.data.frame() %>%
       purrr::set_names("X", "X") %>%
       grob_matrix() %>%
       add_aesthetic("group_elements", TRUE, "column_names")
@@ -51,7 +51,7 @@ testthat::test_that(
   code = {
     
     mat_grob_matrix = mat %>%
-      as.data.frame(stringsAsFactors = FALSE) %>%
+      as.data.frame() %>%
       grob_matrix() %>%
       add_aesthetic("text_color", matrix("red", nrow = 2, ncol = 2), "cells")
     
@@ -70,7 +70,7 @@ testthat::test_that(
     testthat::expect_error({
     
       mat %>%
-        as.data.frame(stringsAsFactors = FALSE) %>%
+        as.data.frame() %>%
         grob_matrix() %>%
         add_aesthetic("text_color", matrix("red", nrow = 2, ncol = 3), "cells")
       
@@ -85,7 +85,7 @@ testthat::test_that(
   code = {
     
     mat_grob_matrix = mat %>%
-      as.data.frame(stringsAsFactors = FALSE) %>%
+      as.data.frame() %>%
       grob_matrix() %>%
       add_structure("column_widths_p", c(1, 2))
     
@@ -104,7 +104,7 @@ testthat::test_that(
     testthat::expect_error({
     
       mat %>%
-        as.data.frame(stringsAsFactors = FALSE) %>%
+        as.data.frame() %>%
         grob_matrix() %>%
         add_structure("column_widths_p", c(1, 2, 3))
       
@@ -122,13 +122,37 @@ testthat::test_that(
     testthat::expect_error({
     
       mat %>%
-        as.data.frame(stringsAsFactors = FALSE) %>%
+        as.data.frame() %>%
         grob_matrix() %>%
         alter_at(
           ~ 2,
           structure = "column_widths_p",
           aesthetic = "font_face"
           )
+      
+    })
+  
+  })
+
+testthat::test_that(
+  desc = glue::glue("
+    The correct aesthetic column is being altered when selecting specific column names.
+    "),
+  code = {
+    
+    testthat::expect_true({
+    
+      gm = mat %>%
+        as.data.frame() %>%
+        purrr::set_names(c("var1", "var2")) %>%
+        grob_matrix() %>%
+        alter_at(
+          ~ 2,
+          columns = "var2",
+          aesthetic = "font_face"
+          )
+      
+      all(gm[["aesthetic_list"]][["font_face"]][-1, 2] == 2)
       
     })
   
