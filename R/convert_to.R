@@ -196,13 +196,34 @@ convert_to_matrix_grob = function(.df,
           )
         )
       
-      text_grob = grid::textGrob(
-        label = ifelse(is.na(.df[i,j]), aes_list[['replace_na']][i,j], .df[i,j]),
+      # text_grob = grid::textGrob(
+      #   label = ifelse(is.na(.df[i,j]), aes_list[['replace_na']][i,j], .df[i,j]),
+      #   x = grid::unit(aes_list[['text_align']][i,j], "npc"),
+      #   y = grid::unit(aes_list[['text_v_align']][i,j], "npc"),
+      #   hjust = aes_list[['text_just']][i,j],
+      #   vjust = aes_list[['text_v_just']][i,j],
+      #   rot = aes_list[['text_rot']][i,j],
+      #   gp = grid::gpar(
+      #     # - Checks to see if the user provided a numeric for the font face (1, 2, 3, ...)
+      #     # or a character ("bold", "italic", etc.)
+      #     fontface = ifelse(
+      #       test = !is.na(as_numeric_without_warnings(aes_list[['font_face']][i,j])),
+      #       yes = as.numeric(aes_list[['font_face']][i,j]),
+      #       no = aes_list[['font_face']][i,j]
+      #       ),
+      #     fontfamily = aes_list[['text_font']][i,j],
+      #     cex = aes_list[['text_cex']][i,j],
+      #     col = aes_list[['text_color']][i,j]
+      #     )
+      #   )
+      
+      text_grob = gridtext::textbox_grob(
+        text = ifelse(is.na(.df[i,j]), aes_list[['replace_na']][i,j], .df[i,j]),
         x = grid::unit(aes_list[['text_align']][i,j], "npc"),
         y = grid::unit(aes_list[['text_v_align']][i,j], "npc"),
         hjust = aes_list[['text_just']][i,j],
         vjust = aes_list[['text_v_just']][i,j],
-        rot = aes_list[['text_rot']][i,j],
+        # rot = aes_list[['text_rot']][i,j],
         gp = grid::gpar(
           # - Checks to see if the user provided a numeric for the font face (1, 2, 3, ...)
           # or a character ("bold", "italic", etc.)
@@ -212,11 +233,12 @@ convert_to_matrix_grob = function(.df,
             no = aes_list[['font_face']][i,j]
             ),
           fontfamily = aes_list[['text_font']][i,j],
-          cex = aes_list[['text_cex']][i,j],
+          # fontsize = 6*aes_list[['text_cex']][i,j],
+          # cex = aes_list[['text_cex']][i,j],
           col = aes_list[['text_color']][i,j]
           )
         )
-
+      browser()
       borders_split = unlist(strsplit(aes_list[['border_sides']][i,j], split = ', ', fixed = TRUE))
       if(length(borders_split) > 0){
 
@@ -239,12 +261,14 @@ convert_to_matrix_grob = function(.df,
   layout_matrix = get_layout_matrix(.df, aes_list[['group_elements']])
   first_element_indices = unlist(lapply(unique(c(layout_matrix)), function(x) min(which(c(layout_matrix) == x))))
 
-  gridExtra::arrangeGrob(
+  grob = gridExtra::arrangeGrob(
     grobs = raw_grobs[first_element_indices],
     heights = grid::unit(row_heights, units),
     widths = grid::unit(column_widths, units),
     layout_matrix = layout_matrix
     )
+  
+  return(grob)
 
 }
 
