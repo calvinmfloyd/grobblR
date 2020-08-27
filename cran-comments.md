@@ -1,3 +1,7 @@
+## Resubmission
+This is a resubmission. In this version I have:
+
+* Converted all CRAN page URL's for a package to the proper canonical form.
 
 ## Test environments
 * local OS X install, R 4.0.1

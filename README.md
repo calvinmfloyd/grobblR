@@ -29,7 +29,7 @@ Within grobblR, the objects able to be converted to a grob are:
 ## Installation
 
 You can install the latest version on
-[CRAN](https://cran.r-project.org/web/packages/grobblR/index.html) with
+[CRAN](https://CRAN.R-project.org/package=grobblR) with
 
 ``` r
 install.packages("grobblR")
