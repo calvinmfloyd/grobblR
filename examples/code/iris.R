@@ -103,7 +103,7 @@ title_grob_row = grob_row(
   # - Saving the final grob-layout to a PDF
   gl %>%
     grob_to_pdf(
-      file_name = "~/grobblR/examples/iris_report.pdf",
+      file_name = "~/grobblR/examples/reports/iris.pdf",
       meta_data_title = "Iris Dataset"
       )
 
