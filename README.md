@@ -28,7 +28,7 @@ Within grobblR, the objects able to be converted to a grob are:
 
 [Example
 reports](https://github.com/calvinmfloyd/grobblR/tree/master/examples/reports)
-created by `grobblR`.
+created by grobblR.
 
 ## Installation
 
