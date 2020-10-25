@@ -26,6 +26,10 @@ Within grobblR, the objects able to be converted to a grob are:
   - Character strings
   - Empty space (represented with `NA`)
 
+[Example
+reports](https://github.com/calvinmfloyd/grobblR/tree/master/examples/reports)
+created by `grobblR`.
+
 ## Installation
 
 You can install the latest version on
