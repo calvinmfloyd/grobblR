@@ -1,7 +1,6 @@
 
 testthat::context(glue::glue("
-  Testing various scenarios grob_image() must pass, that have errored in \\
-  the past.
+  Testing various scenarios grob_image() must pass.
   "))
 
 # Testing Variables ----
