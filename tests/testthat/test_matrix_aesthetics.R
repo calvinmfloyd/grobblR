@@ -1,7 +1,5 @@
 
-testthat::context(glue::glue("
-  Testing various matrix aesthetics scenarios that have errored in the past.
-  "))
+testthat::context(glue::glue("Testing various matrix aesthetics scenarios that must pass."))
 
 # Testing Variables ----
 

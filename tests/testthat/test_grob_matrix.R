@@ -1,31 +1,14 @@
 
 testthat::context(glue::glue("
-  Testing various scenarios grob_matrix() must pass, that have errored in \\
-  the past.
+  Testing various scenarios grob_matrix() must pass.
   "))
 
 # Testing Variables ----
 
 mat = matrix(1:4, nrow = 2, byrow = TRUE)
 
-# Tests ----
-
-testthat::test_that(
-  desc = glue::glue("
-    No errors when passing in a matrix without column names, and altering \\
-    individual cells.
-    "),
-  code = {
-    
-    mat_grob_matrix = mat %>%
-      grob_matrix() %>%
-      alter_at(~ "red", columns = 1, aesthetic = "text_color") %>%
-      alter_at(~ "blue", columns = 2, rows = 2, aesthetic = "background_color") %>%
-      alter_at(~ "white", columns = 2, rows = 2, aesthetic = "text_color")
-    
-    testthat::expect_true(methods::is(mat_grob_matrix, "R6"))
-    
-  })
+# - Sections below sorted alphabetically
+# add_aesthetic() ----
 
 testthat::test_that(
   desc = glue::glue("
@@ -78,6 +61,74 @@ testthat::test_that(
   
   })
 
+# add_column_headings() ----
+
+testthat::test_that(
+  desc = glue::glue("
+    Errors when trying to add column headings after altering aesthetics.
+    "),
+  code = {
+    
+    testthat::expect_error({
+
+      mat %>%
+        as.data.frame() %>%
+        grob_matrix() %>%
+        alter_at(
+          ~ "bold",
+          aesthetic = "font_face"
+          ) %>%
+        add_column_headings(c('HEADING'))
+
+    })
+  
+  })
+
+testthat::test_that(
+  desc = glue::glue("
+    Warning if the user tries to add column headings at column name positions that don't exist.
+    "),
+  code = {
+    
+    testthat::expect_warning({
+    
+      mat %>%
+        as.data.frame() %>%
+        purrr::set_names(c("col1", "col2")) %>%
+        grob_matrix() %>%
+        add_column_headings(
+          headings = list("COLUMN1", "COLUMN2"),
+          heading_cols = list(1, "z")
+          )
+      
+    })
+  
+  })
+
+testthat::test_that(
+  desc = glue::glue("
+    Error if the user tries to add_column_headings() at numeric column indices that don't exist.
+    "),
+  code = {
+    
+    testthat::expect_error({
+    
+      mat %>%
+        as.data.frame() %>%
+        purrr::set_names(c("col1", "col2")) %>%
+        grob_matrix() %>%
+        add_column_headings(
+          headings = list("COLUMN1", "COLUMN2"),
+          heading_cols = list(20, "col1")
+          )
+      
+    })
+  
+  })
+
+
+# add_structure() ----
+
 testthat::test_that(
   desc = glue::glue("
     No errors when passing in a vector of structures to add_structure().
@@ -112,6 +163,24 @@ testthat::test_that(
     
   })
 
+# alter_at() ----
+
+testthat::test_that(
+  desc = glue::glue("
+    No errors when passing in a matrix without column names, and altering \\
+    individual cells.
+    "),
+  code = {
+    
+    mat_grob_matrix = mat %>%
+      grob_matrix() %>%
+      alter_at(~ "red", columns = 1, aesthetic = "text_color") %>%
+      alter_at(~ "blue", columns = 2, rows = 2, aesthetic = "background_color") %>%
+      alter_at(~ "white", columns = 2, rows = 2, aesthetic = "text_color")
+    
+    testthat::expect_true(methods::is(mat_grob_matrix, "R6"))
+    
+  })
 
 testthat::test_that(
   desc = glue::glue("
@@ -158,4 +227,94 @@ testthat::test_that(
   
   })
 
+# alter_column_names() ----
 
+testthat::test_that(
+  desc = glue::glue("
+    The front facing data frame is altered by alter_column_names() but the \\
+    underlying testing data frame is not.
+    "),
+  code = {
+    
+    testthat::expect_true({
+    
+      gm = mat %>%
+        as.data.frame() %>%
+        purrr::set_names(c("col1", "col2")) %>%
+        grob_matrix() %>%
+        alter_column_names(
+          column_names = list("COLUMN1"),
+          column_name_cols = list(1:2)
+          )
+  
+      all(
+        gm[["current"]][1,1] == "COLUMN1",
+        gm[["current"]][1,2] == "COLUMN1",
+        colnames(gm[["test"]])[1] == "col1",
+        colnames(gm[["test"]])[2] == "col2"
+        )
+      
+    })
+  
+  })
+
+testthat::test_that(
+  desc = glue::glue("
+    Warning if the user tries to alter column names at column name positions that don't exist.
+    "),
+  code = {
+    
+    testthat::expect_warning({
+    
+      mat %>%
+        as.data.frame() %>%
+        purrr::set_names(c("col1", "col2")) %>%
+        grob_matrix() %>%
+        alter_column_names(
+          column_names = list("COLUMN1", "COLUMN2"),
+          column_name_cols = list(1, "z")
+          )
+      
+    })
+  
+  })
+
+testthat::test_that(
+  desc = glue::glue("
+    Error if the user tries to alter column names at numeric column indices that don't exist.
+    "),
+  code = {
+    
+    testthat::expect_error({
+    
+      mat %>%
+        as.data.frame() %>%
+        purrr::set_names(c("col1", "col2")) %>%
+        grob_matrix() %>%
+        alter_column_names(
+          column_names = list("COLUMN1", "COLUMN2"),
+          column_name_cols = list(10, "col1")
+          )
+      
+    })
+  
+  })
+
+testthat::test_that(
+  desc = glue::glue("
+    Error if the user tries to alter column names of a matrix with no column names initially.
+    "),
+  code = {
+    
+    testthat::expect_error({
+    
+      mat %>%
+        grob_matrix() %>%
+        alter_column_names(
+          column_names = list("COLUMN1", "COLUMN2"),
+          column_name_cols = list(10, "col1")
+          )
+      
+    })
+  
+  })

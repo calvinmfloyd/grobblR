@@ -111,7 +111,7 @@ df %>%
 * Giving a width proportion of 3 to the first column and a width proportion of 1 to the other two means `x` will be given 3 times the amount of width as `y` and `z`.
   * Default width proportions are determined by the width of the elements in each column.
 
-## Column Headings
+## add_column_headings()
 
 * To add column headings to a grob matrix `add_column_headings()` must be utilized after `grob_matrix()`.
 
@@ -183,6 +183,35 @@ df %>%
 
 ```
 
+## alter_column_names()
+
+* If the user wants to change the displayed column names to something other than the initial column names  passed through `grob_matrix()`, the user should utilize `alter_column_names()`.
+
+```{r initial_alter_column_names}
+
+df %>%
+  grob_matrix() %>%
+  alter_column_names(
+    column_names = list("C1", "C2", "C3"),
+    column_name_cols = list(1, 2, 3)
+    ) %>%
+  view_grob()
+
+```
+
+* Very useful for creating column names that span across multiple columns.
+
+```{r alter_column_names_group_names}
+
+df %>%
+  grob_matrix() %>%
+  alter_column_names(
+    column_names = list("GROUP"),
+    column_name_cols = list(1:2)
+    ) %>%
+  view_grob()
+
+```
 
 ## alter_at()
 

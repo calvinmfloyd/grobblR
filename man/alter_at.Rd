@@ -17,14 +17,13 @@ alter_at(
 )
 }
 \arguments{
-\item{grob_object}{The R6 grob object class initialized by \code{\link{grob_matrix}}
-or \code{\link{grob_text}}.}
+\item{grob_object}{The R6 grob object class initialized by \code{\link{grob_matrix}}.}
 
 \item{.f}{A quosure style lambda \code{~ fun(.)}, which the user wants to apply
 to the specific subset of cells.}
 
 \item{...}{Logical predicates defined in terms of the variables in the initial 
-data.frame/matrix, or if the user provides a new data.frame to evaluate via 
+data frame / matrix, or if the user provides a new data.frame to evaluate via 
 \code{data}. Multiple conditions are combined with \code{&}. Only rows where the condition 
 evaluates to TRUE are evaluated. 
 
