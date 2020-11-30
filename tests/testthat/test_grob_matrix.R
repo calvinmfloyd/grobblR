@@ -299,3 +299,22 @@ testthat::test_that(
     })
   
   })
+
+testthat::test_that(
+  desc = glue::glue("
+    Error if the user tries to alter column names of a matrix with no column names initially.
+    "),
+  code = {
+    
+    testthat::expect_error({
+    
+      mat %>%
+        grob_matrix() %>%
+        alter_column_names(
+          column_names = list("COLUMN1", "COLUMN2"),
+          column_name_cols = list(10, "col1")
+          )
+      
+    })
+  
+  })
