@@ -1,7 +1,8 @@
-## Resubmission
-This is a resubmission. In this version I have:
+## Release Summary
 
-* Converted all CRAN page URL's for a package to the proper canonical form.
+* Adding in new function `alter_column_names()` and adding more error catches within `add_column_headings()`.
+* Added extra tests.
+* Added an extra section to the `grob_matrix` vignette.
 
 ## Test environments
 * local OS X install, R 4.0.1

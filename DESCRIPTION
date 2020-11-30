@@ -1,6 +1,6 @@
 Package: grobblR
 Title: Creating Flexible, Reproducible 'PDF' Reports
-Version: 0.1.1
+Version: 0.2.0
 Authors@R: c(person(given = "Calvin",
                   family = "Floyd",
                   email = "calvin.michael.floyd@gmail.com",
