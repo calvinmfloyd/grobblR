@@ -1,11 +1,10 @@
 ## Release Summary
 
-* Adding in new function `alter_column_names()` and adding more error catches within `add_column_headings()`.
-* Added extra tests.
-* Added an extra section to the `grob_matrix` vignette.
+* Fixed bug within alter_column_names() due to tibble upgrading to 3.1.3
+* Sped up the process of processing strings and converting to grobs by checking if it is a valid URL structure before seeing if that URL exists
 
 ## Test environments
-* local OS X install, R 4.0.1
+* local OS X install, R 4.1.1
 * ubuntu 16.04 (on travis-ci), R 4.0.0
 * win-builder (devel and release)
 

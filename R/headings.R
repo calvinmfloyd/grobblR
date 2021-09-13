@@ -21,10 +21,7 @@ column_names_to_row = function(df) {
   
     mat = df$current
     column_names = colnames(mat)
-    mat = mat %>%
-      tibble::as_tibble(.name_repair = "minimal") %>% 
-      purrr::set_names(NULL)
-    
+    mat = mat %>% tibble::as_tibble(.name_repair = "minimal")
     mat_w_column_names = rbind(column_names, mat)
     df$current = mat_w_column_names
     df$test = add_extra_row_to_df(df = df$test, row_name_label = 'column_names')
@@ -370,7 +367,7 @@ alter_column_names = function(mat,
       }
       
     }
-    
+  
     mat$current[column_name_row, which_indices] = column_names[[i]]
     mat$aesthetic_list[["group_elements"]][column_name_row, which_indices] = group_elements
     

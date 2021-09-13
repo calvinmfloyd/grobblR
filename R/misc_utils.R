@@ -42,3 +42,9 @@ as_numeric_without_warnings = function(x) {
   suppressWarnings(as.numeric(x))
   
 }
+
+check_is_valid_url = function(x) {
+  
+  any(grepl("(https?|ftp)://[^\\s/$.?#].[^\\s]*", x))
+  
+}
