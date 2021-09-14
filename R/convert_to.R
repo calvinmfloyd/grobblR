@@ -39,11 +39,18 @@ convert_to_grob = function(x,
   }
   
   # - Converting to a grob text or a grob image depending on whether the character
-  # string is actually an exisiting png file path or an existing png URL
+  # string is actually an existing png file path or an existing png URL
   if (is.character(x)) {
     
     is_existing_png_file_path = file.exists(x) & (tools::file_ext(x) %in% "png")
-    is_existing_png_url = RCurl::url.exists(url = x) & grepl(".png", x)
+    is_valid_png_url = check_is_valid_url(x = x) & grepl(".png", x)
+    is_existing_png_url = FALSE
+    
+    if (is_valid_png_url) {
+      
+      is_existing_png_url = RCurl::url.exists(url = x)
+      
+    }
     
     if (is_existing_png_file_path | is_existing_png_url) {
       
@@ -264,9 +271,18 @@ convert_to_image_grob = function(.image,
 
   units = "mm"
   
+  is_valid_png_url = check_is_valid_url(x = .image) & grepl(".png", .image)
+  is_existing_png_url = FALSE
+    
+  if (is_valid_png_url) {
+      
+    is_existing_png_url = RCurl::url.exists(url = .image)
+      
+  }
+  
   # - If the .image string is an existing URL we will assume
   # the user is providing a link to an image.
-  if (RCurl::url.exists(url = .image)) {
+  if (is_existing_png_url) {
 
     raw_png = png::readPNG(source = RCurl::getURLContent(url = .image))
 

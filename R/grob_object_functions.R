@@ -70,7 +70,7 @@ grob_matrix = function(x) {
     # - Otherwise, send it straight through to be converted to a tibble  
     } else {
       
-      # - Supressing messages due to potential name repair messages from tibble
+      # - Suppressing messages due to potential name repair messages from tibble
       test = suppressMessages({
         test %>%
         tibble::as_tibble(.name_repair = "unique")
@@ -172,7 +172,14 @@ grob_image = function(x) {
   if (is.character(x)) {
     
     is_existing_png_file_path = file.exists(x) & (tools::file_ext(x) %in% "png")
-    is_existing_png_url = RCurl::url.exists(url = x) & grepl(".png", x)
+    is_valid_png_url = check_is_valid_url(x = x) & grepl(".png", x)
+    is_existing_png_url = FALSE
+    
+    if (is_valid_png_url) {
+      
+      is_existing_png_url = RCurl::url.exists(url = x)
+      
+    }
     
   }
   
