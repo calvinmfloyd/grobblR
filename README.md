@@ -7,9 +7,8 @@
 
 [![License:
 MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![CRAN status](https://www.r-pkg.org/badges/version/grobblR) [![Travis
-build
-status](https://travis-ci.com/calvinmfloyd/grobblR.svg?branch=master)](https://travis-ci.com/calvinmfloyd/grobblR)
+![CRAN status](https://www.r-pkg.org/badges/version/grobblR) [![R build
+status](https://github.com/calvinmfloyd/grobblR/workflows/R-CMD-check/badge.svg)](https://github.com/calvinmfloyd/grobblR/actions?workflow=R-CMD-check)
 <!-- badges: end -->
 
 The grobblR package allows R users the ability to intuitively create
@@ -19,12 +18,12 @@ from the `grid` and `gridExtra` packages.
 
 Within grobblR, the objects able to be converted to a grob are:
 
-  - Data frames / matrices
-      - Or a vector of values
-  - `ggplot2` objects
-  - A file path or a URL to a .png image
-  - Character strings
-  - Empty space (represented with `NA`)
+-   Data frames / matrices
+    -   Or a vector of values
+-   `ggplot2` objects
+-   A file path or a URL to a .png image
+-   Character strings
+-   Empty space (represented with `NA`)
 
 [Example
 reports](https://github.com/calvinmfloyd/grobblR/tree/master/examples/reports)
@@ -39,25 +38,23 @@ You can install the latest version on
 install.packages("grobblR")
 ```
 
------
+------------------------------------------------------------------------
 
 ## Grob Layout
 
-  - We decided on a Shiny-like bootstrap method to arrange grobs, which
+-   We decided on a Shiny-like bootstrap method to arrange grobs, which
     would incorporate nested grob-rows (a row combining one or several
     grobs) and grob-columns (a column combining one or several grobs)
     within an overall layout of grobs (which we will call a
     grob-layout).
-  - The main grob-layout function evaluates the overall dimensions of
+-   The main grob-layout function evaluates the overall dimensions of
     the page you desire, and then distributes heights and widths to the
     grobs that will make up the page, based on proportions and the
     amount of grob-rows (`grob_row()`) and grob-columns (`grob_col()`)
     within the overall grob-layout (`grob_layout()`).
-  - For example, if we wanted to do a simple `2 x 2` grid system on a
+-   For example, if we wanted to do a simple `2 x 2` grid system on a
     `100mm x 100mm` (millimeters is the default unit in grobblR) page,
     we would simply write:
-
-<!-- end list -->
 
 ``` r
 library(grobblR)
@@ -73,14 +70,12 @@ grob_layout(
 
 <img src="man/figures/README-two_by_two_system-1.png" width="65%" />
 
-  - The `grob_row()`’s tell the `grob_layout()` that the user wants two
+-   The `grob_row()`’s tell the `grob_layout()` that the user wants two
     rows on the outermost layer, and since there are two `grob_col()`’s
     within each of the `grob_row()`’s, the result is a `2 x 2` grid.
-  - But the result doesn’t have to be a nice `2 x 2` grid - we could
+-   But the result doesn’t have to be a nice `2 x 2` grid - we could
     have a layout where the first row has two columns and the second has
     one:
-
-<!-- end list -->
 
 ``` r
 grob_layout(
@@ -94,20 +89,18 @@ grob_layout(
 
 <img src="man/figures/README-two_by_three_system-1.png" width="65%" />
 
-  - Run `vignette("grob_layout")` for more information on
+-   Run `vignette("grob_layout")` for more information on
     `grob_layout()`.
 
 ## Nested Rows and Columns
 
-  - One of the ways that makes grobblR truly flexible is the ability to
+-   One of the ways that makes grobblR truly flexible is the ability to
     create “nested” rows and columns - where we can insert grob-rows
     into grob-columns, and vice-versa.
-  - This is made possible by incorporating the active classes within the
+-   This is made possible by incorporating the active classes within the
     [R6](https://CRAN.R-project.org/package=R6) package.
-  - The below grob-layout has a second grob-column in the second
+-   The below grob-layout has a second grob-column in the second
     grob-row which contains two grob-rows within it:
-
-<!-- end list -->
 
 ``` r
 grob_layout(
@@ -135,12 +128,10 @@ grob_layout(
 
 ## Size Control
 
-  - One way to control heights and widths of the grobs is by tweaking
+-   One way to control heights and widths of the grobs is by tweaking
     the `p` (standing for *proportion*) parameter within both
     `grob_row()` and `grob_col()`.
-  - The default for `p` is 1, but sizes change if `p` differs from that.
-
-<!-- end list -->
+-   The default for `p` is 1, but sizes change if `p` differs from that.
 
 ``` r
 grob_layout(
@@ -154,11 +145,9 @@ grob_layout(
 
 <img src="man/figures/README-two_by_one_system_all_p-1.png" width="65%" />
 
-  - The grob-row with `p = 2` is given twice the height of the grob-row
+-   The grob-row with `p = 2` is given twice the height of the grob-row
     with `p = 1`.
-  - The user can also supply specific heights/widths in millimeters.
-
-<!-- end list -->
+-   The user can also supply specific heights/widths in millimeters.
 
 ``` r
 grob_layout(
@@ -174,10 +163,8 @@ grob_layout(
 
 <img src="man/figures/README-three_by_one_specific_heights-1.png" width="65%" />
 
-  - Or the user can use a combination of specific heights and
+-   Or the user can use a combination of specific heights and
     proportions to size the grobs:
-
-<!-- end list -->
 
 ``` r
 grob_layout(
@@ -194,16 +181,14 @@ grob_layout(
 
 ## Matrix Grobs
 
-  - Using the `aes_list` parameter and the `ga_list()` function within
+-   Using the `aes_list` parameter and the `ga_list()` function within
     `grob_col()`, the aesthetics of individual grobs can be adjusted to
     how the user intends them to appear.
-  - Run `?grobblR::ga_list` for a full list and description for each of
+-   Run `?grobblR::ga_list` for a full list and description for each of
     the possible aesthetic options.
-  - For uniform background color for each cell in a matrix, one option
+-   For uniform background color for each cell in a matrix, one option
     is inputting a single value for `background_color` as an element
     within `aes_list`:
-
-<!-- end list -->
 
 ``` r
 mat = matrix(1:4, nrow = 2, byrow = TRUE)
@@ -218,15 +203,13 @@ grob_layout(
 
 <img src="man/figures/README-first_matrix-1.png" width="65%" />
 
-  - If the user wants different cells of the matrix to have different
+-   If the user wants different cells of the matrix to have different
     aesthetics, the user can utilize `grob_matrix()` and `alter_at()`.
-  - The use can alter specific cells / groups of cells, and different
+-   The use can alter specific cells / groups of cells, and different
     aesthetics with `alter_at()` once the `grob_matrix()` object is
     initialized.
-  - Run `vignette("grob_matrix")` for more information on
+-   Run `vignette("grob_matrix")` for more information on
     `grob_matrix()`.
-
-<!-- end list -->
 
 ``` r
 mat %>%
@@ -241,10 +224,8 @@ mat %>%
 
 ## ggplot Grobs
 
-  - The `ggplot2` plot is stretched or squished depending on what the
+-   The `ggplot2` plot is stretched or squished depending on what the
     dimensions of the allotted space are:
-
-<!-- end list -->
 
 ``` r
 data(iris)
@@ -256,14 +237,16 @@ gg1 = ggplot(
   ) +
   geom_point() +
   guides(color = FALSE)
-
+#> Warning: `guides(<scale> = FALSE)` is deprecated. Please use `guides(<scale> =
+#> "none")` instead.
 gg2 = ggplot(
   data = iris,
   mapping = aes(x = Sepal.Length, y = Petal.Length, color = Species)
   ) +
   geom_point() +
   guides(color = FALSE)
-
+#> Warning: `guides(<scale> = FALSE)` is deprecated. Please use `guides(<scale> =
+#> "none")` instead.
 grob_layout(
   grob_row(grob_col(gg1), grob_col(gg2)),
   grob_row(grob_col(gg1))
@@ -275,14 +258,12 @@ grob_layout(
 
 ## Image Grobs
 
-  - Only images in .png format are allowed in grobblR. The user must
+-   Only images in .png format are allowed in grobblR. The user must
     provide either a valid file path or a valid URL to the image.
-  - If the user does not want to maintain the aspect ratio of the image
+-   If the user does not want to maintain the aspect ratio of the image
     and allow it to be stretched within its allotted space,
     `maintain_aspect_ratio = FALSE` must be inserted within the
     `aes_list` list.
-
-<!-- end list -->
 
 ``` r
 grob_layout(
@@ -308,9 +289,7 @@ grob_layout(
 
 <img src="man/figures/README-png_grobs-1.png" width="65%" />
 
-  - Or the user can incorporate `grob_image()` and `add_structure()`.
-
-<!-- end list -->
+-   Or the user can incorporate `grob_image()` and `add_structure()`.
 
 ``` r
 grob_layout(
@@ -337,13 +316,11 @@ grob_layout(
 
 ## Text Grobs
 
-  - grobblR handles long character strings by making the text as big as
+-   grobblR handles long character strings by making the text as big as
     possible, while still being able to fit the text inside its allotted
     space.
-  - This results in automatically putting different words on different
+-   This results in automatically putting different words on different
     lines:
-
-<!-- end list -->
 
 ``` r
 text = "The quick brown fox jumps over the lazy dog."
@@ -364,10 +341,8 @@ grob_layout(
 
 <img src="man/figures/README-simple_text_grob-1.png" width="65%" />
 
-  - The aesthetics of the text can be tweaked with `grob_text()` and
+-   The aesthetics of the text can be tweaked with `grob_text()` and
     `add_aesthetic()`.
-
-<!-- end list -->
 
 ``` r
 grob_layout(
@@ -391,10 +366,8 @@ grob_layout(
 
 ## Empty Space Grobs
 
-  - Empty space grobs in case the user needs to compact, or shift grobs
+-   Empty space grobs in case the user needs to compact, or shift grobs
     around:
-
-<!-- end list -->
 
 ``` r
 df = data.frame(letter = letters[1:5], col1 = 1:5, col2 = 5:1)
@@ -422,14 +395,12 @@ grob_layout(
 
 ## Grob Layout to PDF
 
-  - The default values for the `height` and `width` parameters within
+-   The default values for the `height` and `width` parameters within
     `grob_layout()` are `280` millimeters and `216` millimeters, as
     these are the values needed to properly fit the grob-layout onto a
     piece of standard computer paper, portrait orientation.
-  - Converting multiple grob-layout’s into a single PDF report using
+-   Converting multiple grob-layout’s into a single PDF report using
     `grob_to_pdf()`, with a file title and a meta data title:
-
-<!-- end list -->
 
 ``` r
 first_page_grob_layout = grob_layout(

@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ![CRAN status](https://www.r-pkg.org/badges/version/grobblR)
-[![Travis build status](https://travis-ci.com/calvinmfloyd/grobblR.svg?branch=master)](https://travis-ci.com/calvinmfloyd/grobblR)
+[![R build status](https://github.com/calvinmfloyd/grobblR/workflows/R-CMD-check/badge.svg)](https://github.com/calvinmfloyd/grobblR/actions?workflow=R-CMD-check)
 <!-- badges: end -->
 
 The grobblR package allows R users the ability to intuitively create flexible, reproducible PDF reports comprised of aesthetically pleasing tables, images, plots and/or text. This is done by implementing *grobs* from the `grid` and `gridExtra` packages.
