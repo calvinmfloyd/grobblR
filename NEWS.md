@@ -1,4 +1,11 @@
 
+# grobblR 0.2.1
+
+## Bug Fixes
+
+* Editing the backend to solve bugs with `alter_column_names()` as a result of `tibble` moving to `3.1.4`.
+* Slight speed bumps for processing text grobs.
+
 # grobblR 0.2.0
 
 * Adding in more error catches for `add_column_headings()`
