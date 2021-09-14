@@ -256,7 +256,7 @@ grob_layout(
 
 * Or the user can incorporate `grob_image()` and `add_structure()`.
 
-```{r grob_image}
+```{r grob_image, eval=FALSE}
 grob_layout(
   grob_row(
     border = TRUE,
