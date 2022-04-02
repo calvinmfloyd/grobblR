@@ -42,7 +42,7 @@ install.packages("grobblR")
 
 ## Grob Layout
 
--   We decided on a Shiny-like bootstrap method to arrange grobs, which
+-   We decided on a bootstrap-like method to arrange grobs, which
     would incorporate nested grob-rows (a row combining one or several
     grobs) and grob-columns (a column combining one or several grobs)
     within an overall layout of grobs (which we will call a
