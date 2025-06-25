@@ -165,7 +165,7 @@ grob_text = function(x) {
 
 grob_image = function(x) {
   
-  is_ggplot = ggplot2::is.ggplot(x)
+  is_ggplot = ggplot2::is_ggplot(x)
   is_existing_png_file_path = FALSE
   is_existing_png_url = FALSE
   

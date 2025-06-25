@@ -65,7 +65,7 @@ convert_to_grob = function(x,
   }
   
   # - Converting to a grob image if it is a ggplot object
-  if (ggplot2::is.ggplot(x)) {
+  if (ggplot2::is_ggplot(x)) {
   
     x = distribute_aes_list_to(x = x, aes_list = aes_list, to = "grob_image")  
     
@@ -112,7 +112,7 @@ convert_to_grob = function(x,
 
   }
   # - ggplot objects
-  else if (ggplot2::is.ggplot(x)) {
+  else if (ggplot2::is_ggplot(x)) {
     
     tmp_file_path = file.path(
       tempdir(),
