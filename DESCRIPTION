@@ -1,8 +1,6 @@
 Package: grobblR
 Title: Creating Flexible, Reproducible 'PDF' Reports
 Version: 0.2.2
-Author: Calvin Floyd <calvin.michael.floyd@gmail.com>
-Maintainer: Calvin Floyd <calvin.michael.floyd@gmail.com>
 Authors@R: c(person(given = "Calvin",
                   family = "Floyd",
                   email = "calvin.michael.floyd@gmail.com",

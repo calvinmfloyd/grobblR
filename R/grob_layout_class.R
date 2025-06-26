@@ -108,11 +108,11 @@ grob_layout_class = R6::R6Class(
         stop(paste0('padding in grob_layout() must be a single numeric value in ', units, '.'), .call = FALSE)
       }
       
-      if(class(title_aes_list) != 'grob_aes_list') {
+      if(!inherits(title_aes_list, 'grob_aes_list')) {
         stop('Did you use ga_list() for the title_aes_list in grob_layout()?', .call = FALSE)
       }
       
-      if(class(caption_aes_list) != 'grob_aes_list') {
+      if(!inherits(caption_aes_list, 'grob_aes_list')) {
         stop('Did you use ga_list() for the caption_aes_list in grob_layout()?', .call = FALSE)
       }
 
