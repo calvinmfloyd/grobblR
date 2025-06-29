@@ -12,7 +12,7 @@ Description: A tool which allows users the ability to intuitively create
 Depends: R (>= 3.3)
 Imports:
   dplyr,
-  ggplot2,
+  ggplot2 (>= 3.5.2),
   glue,
   graphics,
   grDevices,
