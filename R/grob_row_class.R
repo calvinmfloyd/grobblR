@@ -106,11 +106,11 @@ grob_row_class = R6::R6Class(
         stop(paste0('title_aes_list in the ', location, ' must be a list.', call. = FALSE))
       }
       
-      if(class(border_aes_list) != 'grob_aes_list') {
+      if(!inherits(border_aes_list, 'grob_aes_list')) {
         stop(paste0('Did you use ga_list() for the border_aes_list in the ', location,'?', call. = FALSE))
       }
       
-      if(class(title_aes_list) != 'grob_aes_list') {
+      if(!inherits(title_aes_list, 'grob_aes_list')) {
         stop(paste0('Did you use ga_list() for the title_aes_list in the ', location, '?', call. = FALSE))
       }
       

@@ -134,21 +134,21 @@ grob_col_class = R6::R6Class(
         
       }
       
-      if (class(aes_list) != 'grob_aes_list') {
+      if (!inherits(aes_list, 'grob_aes_list')) {
         
         error_msg = glue::glue("Did you use ga_list() for the aes_list in the {location}?")
         stop(error_msg, call. = FALSE)
         
       }
       
-      if (class(border_aes_list) != 'grob_aes_list') {
+      if (!inherits(border_aes_list, 'grob_aes_list')) {
         
         error_msg = glue::glue("Did you use ga_list() for the border_aes_list in the {location}?")
         stop(error_msg, call. = FALSE)
         
       }
       
-      if (class(title_aes_list) != 'grob_aes_list') {
+      if (!inherits(title_aes_list, 'grob_aes_list')) {
         
         error_msg = glue::glue("Did you use ga_list() for the title_aes_list in the {location}?")
         stop(error_msg, call. = FALSE)

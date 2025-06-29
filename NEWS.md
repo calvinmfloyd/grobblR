@@ -1,3 +1,9 @@
+# grobblR 0.2.2
+
+## Fixed Failing Tests
+
+* Removed test with external URL dependency that was causing CRAN check failures.
+  * URL .png functionality verified locally with alternative URLs.
 
 # grobblR 0.2.1
 
